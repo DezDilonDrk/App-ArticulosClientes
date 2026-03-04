@@ -38,9 +38,9 @@ public static class ArticuloEndpoints
             articulo.categoria = updatedArticulo.categoria;
             return Results.Ok(articulo);
         });
-        app.MapDelete("/articulos/{nombre}", (string nombre) =>
+        app.MapDelete("/articulos/{id:int}", (int id) =>
         {
-            var articulo = articulos.FirstOrDefault(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase));
+            var articulo = articulos.FirstOrDefault(a => a.id == id);
             if (articulo is null)
             {
                 return Results.NotFound();
