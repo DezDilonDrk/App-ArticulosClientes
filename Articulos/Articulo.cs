@@ -1,4 +1,4 @@
-﻿namespace Articulos_Backend
+﻿namespace Articulos_Backend.Articulos
 {
     public class Articulo
     {
