@@ -22,12 +22,12 @@ public static class ClienteEndpoints
         };
 
 
-        app.MapGet("/clientes", () =>
+        /* app.MapGet("/clientes", () =>
         {
             return clientes;
-        });
+        }); */
 
-        app.MapGet("/clientes/dni/{dni}", (string dni) =>
+        app.MapGet("/clientes/{dni}", (string dni) =>
         {
             var cliente = clientes.FirstOrDefault(c => c.Dni == dni);
             return cliente is not null
@@ -35,7 +35,7 @@ public static class ClienteEndpoints
                 : Results.NotFound();
         });
 
-        app.MapGet("/clientes/nombre/{nombre}", (string nombre) => {
+        app.MapGet("/clientes", (string? nombre) => {
             var resultado = clientes
                 .Where(c => c.Nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -56,7 +56,7 @@ public static class ClienteEndpoints
         });
 
 
-        app.MapPut("/clientes/dni/{dni}", (string dni, Cliente clienteActualizado) =>
+        app.MapPut("/clientes/{dni}", (string dni, Cliente clienteActualizado) =>
         {
             var clienteExistente = clientes.FirstOrDefault(c => c.Dni == dni);
 
@@ -78,7 +78,7 @@ public static class ClienteEndpoints
         });
 
 
-        app.MapDelete("/clientes/dni/{dni}", (string dni) =>
+        app.MapDelete("/clientes/{dni}", (string dni) =>
         {
             var cliente = clientes.FirstOrDefault(c => c.Dni == dni);
 
