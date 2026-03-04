@@ -7,9 +7,9 @@ public static class ArticuloEndpoints
     {
         var lista = new List<Articulo>
         {
-            new Articulo("Laptop", 999.99, "Electronics"),
-            new Articulo("Smartphone", 499.99, "Electronics"),
-            new Articulo("Table", 199.99, "Furniture")
+            new Articulo(1, "Laptop", 999.99, "Electronics"),
+            new Articulo(2, "Smartphone", 499.99, "Electronics"),
+            new Articulo(3, "Table", 199.99, "Furniture")
         };
 
         app.MapGet("/articulos", () =>
@@ -18,7 +18,7 @@ public static class ArticuloEndpoints
         })
         .WithName("GetArticulo");
 
-        app.MapGet("/articulos/id/{id}", (int id) =>
+        app.MapGet("/articulos/{id:int}", (int id) =>
         {
             var articulo = lista.FirstOrDefault(a => a.id == id);
             return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
@@ -26,14 +26,14 @@ public static class ArticuloEndpoints
 
         app.MapGet("/articulos/{nombre}", (string nombre) =>
         {
-            var articulo = lista.FirstOrDefault(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase));
+            var articulo = lista.Where(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase)).ToList;
             return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
         });
 
         app.MapPost("/articulos", (Articulo articulo) =>
         {
             lista.Add(articulo);
-            return Results.Created($"/Articulo/{articulo.nombre}", articulo);
+            return Results.Created($"/Articulo/{articulo.id}", articulo);
         });
 
         app.MapPut("/articulos/{nombre}", (string nombre, Articulo updatedArticulo) =>

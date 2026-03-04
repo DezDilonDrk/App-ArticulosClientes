@@ -10,8 +10,9 @@
 
         public String categoria { get; set; }
 
-        public Articulo(String nombre, double precio, String categoria)
+        public Articulo(int id, String nombre, double precio, String categoria)
         {
+            this.id = id;
             this.nombre = nombre;
             this.precio = precio;
             this.categoria = categoria;
