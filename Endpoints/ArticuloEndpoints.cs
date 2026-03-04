@@ -18,6 +18,12 @@ public static class ArticuloEndpoints
         })
         .WithName("GetArticulo");
 
+        app.MapGet("/articulos/id/{id}", (int id) =>
+        {
+            var articulo = lista.FirstOrDefault(a => a.id == id);
+            return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
+        });
+
         app.MapGet("/articulos/{nombre}", (string nombre) =>
         {
             var articulo = lista.FirstOrDefault(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase));
