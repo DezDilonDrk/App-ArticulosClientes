@@ -1,12 +1,11 @@
 ﻿using ClientesASPNET;
+using System.Runtime.CompilerServices;
 
 namespace Articulos_Backend.Endpoints;
 
 public static class ClienteEndpoints
 {
-    public static WebApplication MapClienteEndpoints(this WebApplication app)
-    {
-        List<Cliente> clientes = new List<Cliente>
+     static List<Cliente> clientes = new List<Cliente>
         {
             new Cliente { Dni = "11446251A", Nombre = "Juan", Apellidos = "Fernandez Mendez", Email = "juans114@gmail.com" },
             new Cliente { Dni = "11446251B", Nombre = "Manolo", Apellidos = "Hernandez", Email = "manolete53@gmail.com" },
@@ -20,31 +19,18 @@ public static class ClienteEndpoints
             new Cliente { Dni = "11446251J", Nombre = "Federico", Apellidos = "Fernandez", Email = "Federicoo26@gmail.com" },
             new Cliente { Dni = "11446252Z", Nombre = "María", Apellidos = "Díaz Blanco", Email = "mariadbisgood@gmail.com" }
         };
-
-
-        /* app.MapGet("/clientes", () =>
-        {
-            return clientes;
-        }); */
-
+    public static WebApplication MapClienteEndpoints(this WebApplication app)
+    {
         app.MapGet("/clientes/{dni}", (string dni) =>
-        {
-            var cliente = clientes.FirstOrDefault(c => c.Dni == dni);
-            return cliente is not null
-                ? Results.Ok(cliente)
-                : Results.NotFound();
-        });
-
+            {
+                var cliente = clientes.FirstOrDefault(c => c.Dni == dni);
+                return cliente is not null
+                    ? Results.Ok(cliente)
+                    : Results.NotFound();
+            });
         app.MapGet("/clientes", (string? nombre) => {
-            var resultado = clientes
-                .Where(c => c.Nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-            return resultado.Any()
-                ? Results.Ok(resultado)
-                : Results.NotFound();
-        });
-
-
+                return Results.Ok(getClientes(nombre));
+            });
         app.MapPost("/clientes", (Cliente cliente) =>
         {
             if (clientes.Any(c => c.Dni == cliente.Dni || c.Email == cliente.Email))
@@ -54,8 +40,6 @@ public static class ClienteEndpoints
             clientes.Add(cliente);
             return Results.Created($"/clientes/dni/{cliente.Dni}", cliente);
         });
-
-
         app.MapPut("/clientes/{dni}", (string dni, Cliente clienteActualizado) =>
         {
             var clienteExistente = clientes.FirstOrDefault(c => c.Dni == dni);
@@ -76,8 +60,6 @@ public static class ClienteEndpoints
 
             return Results.Ok(clienteExistente);
         });
-
-
         app.MapDelete("/clientes/{dni}", (string dni) =>
         {
             var cliente = clientes.FirstOrDefault(c => c.Dni == dni);
@@ -91,8 +73,15 @@ public static class ClienteEndpoints
 
             return Results.NoContent();
         });
-
-
         return app;
+    }
+
+    private static List<Cliente> getClientes(string nombre) 
+    {
+        if (string.IsNullOrEmpty(nombre))
+        {
+            return clientes;
+        }
+        return clientes.Where(c => c.Nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 }
