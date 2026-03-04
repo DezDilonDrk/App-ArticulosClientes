@@ -20,7 +20,7 @@ public static class ArticuloEndpoints
         })
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-        app.MapGet("/articulos/{nombre}", (string nombre) =>
+        app.MapGet("/articulos/{nombre}", (string? nombre) =>
         {
             return Results.Ok(getArticulos(nombre));
         }).Produces<List<Articulo>>(StatusCodes.Status200OK);
