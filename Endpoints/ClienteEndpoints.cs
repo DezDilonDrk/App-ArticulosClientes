@@ -27,10 +27,12 @@ public static class ClienteEndpoints
                 return cliente is not null
                     ? Results.Ok(cliente)
                     : Results.NotFound();
-            });
+            })
+            .Produces<Cliente>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound);
         app.MapGet("/clientes", (string? nombre) => {
                 return Results.Ok(getClientes(nombre));
-            });
+            }).Produces<List<Cliente>>(StatusCodes.Status200OK);
         app.MapPost("/clientes", (Cliente cliente) =>
         {
             if (clientes.Any(c => c.Dni == cliente.Dni || c.Email == cliente.Email))
@@ -39,7 +41,9 @@ public static class ClienteEndpoints
             }
             clientes.Add(cliente);
             return Results.Created($"/clientes/dni/{cliente.Dni}", cliente);
-        });
+        })
+        .Produces<Cliente>(StatusCodes.Status201Created)
+        .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/clientes/{dni}", (string dni, Cliente clienteActualizado) =>
         {
             var clienteExistente = clientes.FirstOrDefault(c => c.Dni == dni);
@@ -59,7 +63,10 @@ public static class ClienteEndpoints
             clienteExistente.Email = clienteActualizado.Email;
 
             return Results.Ok(clienteExistente);
-        });
+        })
+        .Produces<Cliente>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status409Conflict);
         app.MapDelete("/clientes/{dni}", (string dni) =>
         {
             var cliente = clientes.FirstOrDefault(c => c.Dni == dni);
@@ -72,7 +79,9 @@ public static class ClienteEndpoints
             clientes.Remove(cliente);
 
             return Results.NoContent();
-        });
+        })
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status404NotFound);
         return app;
     }
 
