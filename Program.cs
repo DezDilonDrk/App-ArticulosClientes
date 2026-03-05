@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var repositorioCliente = new ClienteRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
+var repositorioArticulo = new ArticuloRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

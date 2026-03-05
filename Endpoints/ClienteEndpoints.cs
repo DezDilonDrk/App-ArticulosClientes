@@ -6,20 +6,6 @@ namespace Articulos_Backend.Endpoints;
 
 public static class ClienteEndpoints
 {
-     /* static List<Cliente> clientes = new List<Cliente>
-     {
-        new Cliente { Dni = "11446251A", Nombre = "Juan", Apellidos = "Fernandez Mendez", Email = "juans114@gmail.com" },
-        new Cliente { Dni = "11446251B", Nombre = "Manolo", Apellidos = "Hernandez", Email = "manolete53@gmail.com" },
-        new Cliente { Dni = "11446251C", Nombre = "Felipe", Apellidos = "Moreno", Email = "tomatitocherry@gmail.com" },
-        new Cliente { Dni = "11446251D", Nombre = "Isabel", Apellidos = "Lopez Mendez", Email = "isaaab3l@gmail.com" },
-        new Cliente { Dni = "11446251E", Nombre = "Maria José", Apellidos = "Casalins", Email = "mariajolamejor@gmail.com" },
-        new Cliente { Dni = "11446251F", Nombre = "Francisco", Apellidos = "Martínez Díaz", Email = "paco@gmail.com" },
-        new Cliente { Dni = "11446251G", Nombre = "José", Apellidos = "Pérez Garcia", Email = "josetrabajando@gmail.com" },
-        new Cliente { Dni = "11446251H", Nombre = "Emilio", Apellidos = "Martínez García", Email = "emiliodepracticas@gmail.com" },
-        new Cliente { Dni = "11446251I", Nombre = "Alejandro", Apellidos = "Hernandez Mendez", Email = "heiscalledalex@gmail.com" },
-        new Cliente { Dni = "11446251J", Nombre = "Federico", Apellidos = "Fernandez", Email = "Federicoo26@gmail.com" },
-        new Cliente { Dni = "11446252Z", Nombre = "María", Apellidos = "Díaz Blanco", Email = "mariadbisgood@gmail.com" }
-     }; */
     public static WebApplication MapClienteEndpoints(this WebApplication app, ClienteRepository repo)
     {
         app.MapGet("/clientes/{dni}", (string dni) =>
@@ -77,13 +63,4 @@ public static class ClienteEndpoints
         .Produces(StatusCodes.Status404NotFound);
         return app;
     }
-
-    /* private static List<Cliente> getClientes(string nombre) 
-    {
-        if (string.IsNullOrEmpty(nombre))
-        {
-            return clientes;
-        }
-        return clientes.Where(c => c.Nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase)).ToList();
-    } */
 }
