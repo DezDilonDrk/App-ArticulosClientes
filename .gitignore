@@ -4,3 +4,8 @@
 
 /.vs
 /Frontend/.vs
+/Articulos-Backend.csproj.user
+/obj
+/Frontend/Articulos-Frontend/obj/Debug/net10.0-windows
+/Frontend/Articulos-Frontend/obj
+/Frontend/Articulos-Frontend/bin/Debug/net10.0-windows
