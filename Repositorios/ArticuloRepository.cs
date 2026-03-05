@@ -52,12 +52,13 @@ public class ArticuloRepository
         }
     }
 
-    public void Actualizar(Articulo articulo)
+    public bool Actualizar(Articulo articulo)
     {
-        using ( var db = Connection )
+        using (var db = Connection)
         {
             string sql = "UPDATE Articulos SET Nombre = @Nombre, Precio = @Precio, Categoria = @Categoria WHERE Id = @Id";
-            db.Execute(sql, articulo);
+            var filasAfectadas = db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, Id = articulo.id });
+            return filasAfectadas > 0;
         }
     }
 

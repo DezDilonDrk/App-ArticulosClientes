@@ -34,8 +34,8 @@ public static class ArticuloEndpoints
         .Produces(StatusCodes.Status404NotFound);
         app.MapPost("/articulos", (Articulo articulo) =>
         {
-            var articuloExistente = repo.ObtenerPorNombre(articulo.nombre);
-            if (articuloExistente is not null)
+            var articuloExistente = repo.ObtenerPorId(articulo.id);
+            if (articuloExistente != null)
             {
                 return Results.Conflict($"Ya existe un artículo con el nombre '{articulo.nombre}'.");
             }
@@ -46,17 +46,26 @@ public static class ArticuloEndpoints
         .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/articulos/{id:int}", (int id, Articulo updatedArticulo) =>
         {
-            var articulo = repo.ObtenerPorId;
-            if (articulo is null)
+            var existing = repo.ObtenerPorId(id);
+            if (existing is null)
             {
                 return Results.NotFound();
             }
-            repo.Actualizar(updatedArticulo);
-            return Results.Ok(articulo);
+
+            updatedArticulo.id = id;
+
+            var success = repo.Actualizar(updatedArticulo);
+            if (!success)
+            {
+                return Results.Conflict("No se pudo actualizar el artículo.");
+            }
+
+            var refreshed = repo.ObtenerPorId(id) ?? updatedArticulo;
+            return Results.Ok(refreshed);
         })
-        .Produces<Cliente>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound)
-        .Produces(StatusCodes.Status409Conflict);
+.Produces<Articulo>(StatusCodes.Status200OK)
+.Produces(StatusCodes.Status404NotFound)
+.Produces(StatusCodes.Status409Conflict);
         app.MapDelete("/articulos/{id:int}", (int id) =>
         {
             var articulo = repo.ObtenerPorId(id);
