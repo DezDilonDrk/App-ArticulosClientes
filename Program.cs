@@ -18,5 +18,5 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.MapClienteEndpoints(repositorioCliente);
-app.MapArticuloEndpoints();
+app.MapArticuloEndpoints(repositorioArticulo);
 app.Run();
