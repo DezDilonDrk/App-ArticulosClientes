@@ -42,7 +42,14 @@ public class ArticuloRepository
             return db.Query<Articulo>(sql, new { Nombre = $"%{nombre}%" });
         }
     }
-
+    public Articulo ObtenerPorNombreExacto(string nombre)
+    {
+        using (var db = Connection)
+        {
+            string sql = "SELECT * FROM Articulos WHERE Nombre = @Nombre";
+            return db.QueryFirstOrDefault<Articulo>(sql, new { Nombre = nombre });
+        }
+    }
     public void Insertar(Articulo articulo)
     {
         using ( var db = Connection )

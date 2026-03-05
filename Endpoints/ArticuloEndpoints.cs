@@ -34,8 +34,8 @@ public static class ArticuloEndpoints
         .Produces(StatusCodes.Status404NotFound);
         app.MapPost("/articulos", (Articulo articulo) =>
         {
-            var articuloExistente = repo.ObtenerPorNombre(articulo.nombre);
-            if (articuloExistente is not null)
+            var articuloExistente = repo.ObtenerPorNombreExacto(articulo.nombre);
+            if (articuloExistente != null)
             {
                 return Results.Conflict($"Ya existe un artículo con el nombre '{articulo.nombre}'.");
             }
