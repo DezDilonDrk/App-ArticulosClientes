@@ -1,0 +1,303 @@
+[
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__1",
+    "RelativePath": "articulos",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Articulos_Backend.Articulos.Articulo",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__2",
+    "RelativePath": "articulos",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "articulo",
+        "Type": "Articulos_Backend.Articulos.Articulo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Articulos_Backend.Articulos.Articulo",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 201
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 409
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__0",
+    "RelativePath": "articulos/{id:int}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Articulos_Backend.Articulos.Articulo",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__3",
+    "RelativePath": "articulos/{id:int}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedArticulo",
+        "Type": "Articulos_Backend.Articulos.Articulo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Articulos_Backend.Articulos.Articulo",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 409
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__4",
+    "RelativePath": "articulos/{id:int}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ClienteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapClienteEndpoints\u003Eb__1",
+    "RelativePath": "clientes",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[ClientesASPNET.Cliente, Articulos-Backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ClienteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapClienteEndpoints\u003Eb__2",
+    "RelativePath": "clientes",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cliente",
+        "Type": "ClientesASPNET.Cliente",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ClientesASPNET.Cliente",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 201
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 409
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ClienteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapClienteEndpoints\u003Eb__0",
+    "RelativePath": "clientes/{dni}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dni",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ClientesASPNET.Cliente",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ClienteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapClienteEndpoints\u003Eb__3",
+    "RelativePath": "clientes/{dni}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dni",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "clienteActualizado",
+        "Type": "ClientesASPNET.Cliente",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ClientesASPNET.Cliente",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 409
+      }
+    ]
+  },
+  {
+    "ContainingType": "Articulos_Backend.Endpoints.ClienteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapClienteEndpoints\u003Eb__4",
+    "RelativePath": "clientes/{dni}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dni",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 204
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      }
+    ]
+  }
+]
