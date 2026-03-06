@@ -17,7 +17,7 @@ namespace Articulos_Frontend
         public ArticuloForm()
         {
             InitializeComponent();
-            string connStr = "Server=localhost;Database=articulos_db;User Id=sa;Password=your_password;";
+            string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             repo = new ArticuloRepository(connStr);
         }
 
@@ -39,7 +39,7 @@ namespace Articulos_Frontend
         private void cargarArticulos(string nombre)
         {
             IEnumerable<Articulo> articulos;
-            if (string.IsNullOrEmpty(nombre))
+            if (string.IsNullOrWhiteSpace(nombre))
             {
                 articulos = repo.ObtenerArticulos();
 
@@ -48,12 +48,12 @@ namespace Articulos_Frontend
             {
                 articulos = repo.ObtenerPorNombre(nombre);
             }
+            dataGridView1.DataSource = articulos.ToList();
         }
 
         private void BotonBuscar_Click(object sender, EventArgs e)
         {
-            string nombre = TextoNombre.Text;
-            cargarArticulos(nombre);
+            cargarArticulos(TextoNombre.Text);
         }
 
 
