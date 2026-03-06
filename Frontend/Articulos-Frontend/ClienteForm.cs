@@ -150,7 +150,7 @@ namespace Articulos_Frontend
 
         private void BotonMasC_Click(object sender, EventArgs e)
         {
-            cargarClientes(textBoxCliente.Text);
+
         }
 
         private void BotonMenosC_Click(object sender, EventArgs e)
