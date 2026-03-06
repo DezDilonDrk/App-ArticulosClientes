@@ -23,17 +23,24 @@ namespace Articulos_Frontend
 
         private void ArticuloForm_Load(object sender, EventArgs e)
         {
-
+            cargarArticulos(null);
         }
 
         private void botonAdd_Click(object sender, EventArgs e)
         {
-            
+            using (var f = new ArticuloDetailForm(repo, null))
+            {
+                if (f.ShowDialog() == DialogResult.OK)
+                {
+                    cargarArticulos(TextoNombre.Text);
+                }
+            }
         }
 
         private void botonDel_Click(object sender, EventArgs e)
         {
-
+            repo.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+            cargarArticulos(null);
         }
 
         private void cargarArticulos(string nombre)
@@ -56,6 +63,23 @@ namespace Articulos_Frontend
             cargarArticulos(TextoNombre.Text);
         }
 
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var articulo = dataGridView1.Rows[e.RowIndex].DataBoundItem as Articulo;
+                if (articulo != null)
+                {
+                    using (var f = new ArticuloDetailForm(repo, articulo))
+                    {
+                        if (f.ShowDialog() == DialogResult.OK)
+                        {
+                            cargarArticulos(TextoNombre.Text);
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }
