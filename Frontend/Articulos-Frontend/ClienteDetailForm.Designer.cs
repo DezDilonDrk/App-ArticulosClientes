@@ -1,6 +1,6 @@
 ﻿namespace Articulos_Frontend
 {
-    partial class ClienteForm
+    partial class ClienteDetailForm
     {
         /// <summary>
         /// Required designer variable.
@@ -20,11 +20,18 @@
             base.Dispose(disposing);
         }
 
-        private TextBox textBoxCliente;
-        private Button BotonMasC;
-        private Button BotonMenosC;
-        private Label labelNombreCliente;
-        private Button BotonBuscar;
-        private DataGridView dgvCliente;
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private TextBox textBox3;
+        private TextBox textBox4;
+        private Label LabelDni;
+        private Label LabelNombre;
+        private Label LabelApellidos;
+        private Label LabelEmail;
     }
 }

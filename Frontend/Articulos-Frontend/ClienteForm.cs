@@ -33,7 +33,7 @@ namespace Articulos_Frontend
 
         private void InitializeComponent()
         {
-            s = new Button();
+            BotonMasC = new Button();
             BotonMenosC = new Button();
             labelNombreCliente = new Label();
             BotonBuscar = new Button();
@@ -42,17 +42,17 @@ namespace Articulos_Frontend
             ((ISupportInitialize)dgvCliente).BeginInit();
             SuspendLayout();
             // 
-            // s
+            // BotonMasC
             // 
-            s.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            s.Location = new Point(760, 23);
-            s.Name = "s";
-            s.Padding = new Padding(0, 0, 0, 4);
-            s.Size = new Size(60, 60);
-            s.TabIndex = 0;
-            s.Text = " + ";
-            s.UseVisualStyleBackColor = true;
-            s.Click += BotonMasC_Click;
+            BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            BotonMasC.Location = new Point(760, 23);
+            BotonMasC.Name = "BotonMasC";
+            BotonMasC.Padding = new Padding(0, 0, 0, 4);
+            BotonMasC.Size = new Size(60, 60);
+            BotonMasC.TabIndex = 0;
+            BotonMasC.Text = " + ";
+            BotonMasC.UseVisualStyleBackColor = true;
+            BotonMasC.Click += BotonMasC_Click;
             // 
             // BotonMenosC
             // 
@@ -116,7 +116,7 @@ namespace Articulos_Frontend
             Controls.Add(BotonBuscar);
             Controls.Add(labelNombreCliente);
             Controls.Add(BotonMenosC);
-            Controls.Add(s);
+            Controls.Add(BotonMasC);
             Name = "ClienteForm";
             ((ISupportInitialize)dgvCliente).EndInit();
             ResumeLayout(false);
@@ -150,7 +150,16 @@ namespace Articulos_Frontend
 
         private void BotonMasC_Click(object sender, EventArgs e)
         {
-            cargarClientes(textBoxCliente.Text);
+            Cliente nuevoCliente = new Cliente();
+
+            using (var form = new ClienteDetailForm(nuevoCliente))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    clienteRepository.Insertar(form.Cliente);
+                    cargarClientes(textBoxCliente.Text);
+                }
+            }
         }
 
         private void BotonMenosC_Click(object sender, EventArgs e)
