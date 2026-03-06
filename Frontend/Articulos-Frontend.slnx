@@ -1,4 +1,6 @@
 <Solution>
-  <Project Path="../Backend/Articulos-Backend.csproj" />
+  <Project Path="../Backend/Articulos-Backend.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="Articulos-Frontend/Articulos-Frontend.csproj" />
 </Solution>
