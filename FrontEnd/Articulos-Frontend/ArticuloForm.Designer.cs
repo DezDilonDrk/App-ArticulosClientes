@@ -51,9 +51,9 @@
             TextoNombre.Font = new Font("Segoe UI", 12F);
             TextoNombre.Location = new Point(266, 75);
             TextoNombre.Name = "TextoNombre";
+            TextoNombre.PlaceholderText = "Escribe aqui un articulo";
             TextoNombre.Size = new Size(220, 29);
             TextoNombre.TabIndex = 1;
-            TextoNombre.Text = "Escribe aqui un articulo";
             // 
             // BotonAdd
             // 
