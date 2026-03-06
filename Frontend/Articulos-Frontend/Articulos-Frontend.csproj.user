@@ -10,6 +10,9 @@
     <Compile Update="ClienteForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="ClienteUpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

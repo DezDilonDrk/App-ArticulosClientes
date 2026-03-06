@@ -10,17 +10,21 @@ using System.Windows.Forms;
 
 namespace Articulos_Frontend
 {
-    public partial class ClienteDetailForm : Form
+    public partial class ClienteUpdateForm : Form
     {
         private ClienteRepository clienteRepository;
-        public ClienteDetailForm(Cliente cliente)
+        public ClienteUpdateForm(Cliente cliente)
         {
             InitializeComponent();
+
+            textBoxDni.Text = cliente.Dni;
+            textBoxNombre.Text = cliente.Nombre;
+            textBoxApellidos.Text = cliente.Apellidos;
+            textBoxEmail.Text = cliente.Email;
 
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             clienteRepository = new ClienteRepository(connStr);
         }
-
 
         private void InitializeComponent()
         {
@@ -32,7 +36,7 @@ namespace Articulos_Frontend
             LabelNombre = new Label();
             LabelApellidos = new Label();
             LabelEmail = new Label();
-            BotonCrearC = new Button();
+            BotonActualizarC = new Button();
             SuspendLayout();
             // 
             // textBoxDni
@@ -111,24 +115,24 @@ namespace Articulos_Frontend
             LabelEmail.Text = "Email: ";
             LabelEmail.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // BotonCrearC
+            // BotonActualizarC
             // 
-            BotonCrearC.AutoSize = true;
-            BotonCrearC.BackColor = Color.LightGreen;
-            BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            BotonCrearC.ForeColor = SystemColors.ControlDarkDark;
-            BotonCrearC.Location = new Point(301, 227);
-            BotonCrearC.Name = "BotonCrearC";
-            BotonCrearC.Size = new Size(150, 30);
-            BotonCrearC.TabIndex = 12;
-            BotonCrearC.Text = "Crear";
-            BotonCrearC.UseVisualStyleBackColor = false;
-            BotonCrearC.Click += BotonCrearC_Click;
+            BotonActualizarC.AutoSize = true;
+            BotonActualizarC.BackColor = Color.LightGreen;
+            BotonActualizarC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            BotonActualizarC.ForeColor = SystemColors.ControlDarkDark;
+            BotonActualizarC.Location = new Point(301, 227);
+            BotonActualizarC.Name = "BotonActualizarC";
+            BotonActualizarC.Size = new Size(150, 30);
+            BotonActualizarC.TabIndex = 12;
+            BotonActualizarC.Text = "Actualizar";
+            BotonActualizarC.UseVisualStyleBackColor = false;
+            BotonActualizarC.Click += BotonActualizarC_Click;
             // 
-            // ClienteDetailForm
+            // ClienteUpdateForm
             // 
             ClientSize = new Size(580, 363);
-            Controls.Add(BotonCrearC);
+            Controls.Add(BotonActualizarC);
             Controls.Add(LabelEmail);
             Controls.Add(LabelApellidos);
             Controls.Add(LabelNombre);
@@ -137,26 +141,28 @@ namespace Articulos_Frontend
             Controls.Add(textBoxApellidos);
             Controls.Add(textBoxNombre);
             Controls.Add(textBoxDni);
-            Name = "ClienteDetailForm";
+            Name = "ClienteUpdateForm";
             ResumeLayout(false);
             PerformLayout();
 
         }
 
-        private void BotonCrearC_Click(object sender, EventArgs e)
+        private void BotonActualizarC_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text)){
+            if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text))
+            {
                 try
                 {
                     Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
-                    clienteRepository.Insertar(cliente);
-                    MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clienteRepository.Actualizar(cliente);
+                    MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            } else
+            }
+            else
             {
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

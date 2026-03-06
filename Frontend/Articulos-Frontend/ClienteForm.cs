@@ -50,7 +50,7 @@ namespace Articulos_Frontend
             BotonMasC.Padding = new Padding(0, 0, 0, 4);
             BotonMasC.Size = new Size(60, 60);
             BotonMasC.TabIndex = 0;
-            BotonMasC.Text = " + ";
+            BotonMasC.Text = " +";
             BotonMasC.UseVisualStyleBackColor = true;
             BotonMasC.Click += BotonMasC_Click;
             // 
@@ -62,7 +62,7 @@ namespace Articulos_Frontend
             BotonMenosC.Padding = new Padding(0, 0, 0, 4);
             BotonMenosC.Size = new Size(60, 60);
             BotonMenosC.TabIndex = 1;
-            BotonMenosC.Text = " - ";
+            BotonMenosC.Text = " -";
             BotonMenosC.UseVisualStyleBackColor = true;
             BotonMenosC.Click += BotonMenosC_Click;
             // 
@@ -77,13 +77,14 @@ namespace Articulos_Frontend
             // 
             // BotonBuscar
             // 
+            BotonBuscar.BackColor = SystemColors.GradientActiveCaption;
             BotonBuscar.Font = new Font("Segoe UI", 10F);
             BotonBuscar.Location = new Point(360, 104);
             BotonBuscar.Name = "BotonBuscar";
             BotonBuscar.Size = new Size(150, 30);
             BotonBuscar.TabIndex = 3;
             BotonBuscar.Text = "Buscar";
-            BotonBuscar.UseVisualStyleBackColor = true;
+            BotonBuscar.UseVisualStyleBackColor = false;
             BotonBuscar.Click += BotonBuscar_Click;
             // 
             // textBoxCliente
@@ -95,7 +96,6 @@ namespace Articulos_Frontend
             textBoxCliente.Size = new Size(200, 40);
             textBoxCliente.TabIndex = 4;
             textBoxCliente.TextAlign = HorizontalAlignment.Center;
-            textBoxCliente.TextChanged += textBox_TextChanged;
             // 
             // dgvCliente
             // 
@@ -104,6 +104,7 @@ namespace Articulos_Frontend
             dgvCliente.MultiSelect = false;
             dgvCliente.Name = "dgvCliente";
             dgvCliente.ReadOnly = true;
+            dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
             dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCliente.Size = new Size(808, 225);
             dgvCliente.TabIndex = 5;
@@ -123,13 +124,7 @@ namespace Articulos_Frontend
             PerformLayout();
 
         }
-
-        private void textBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cargarClientes(string nombreFiltro)
+        private void buscarClientes(string nombreFiltro)
         {
             IEnumerable<Cliente> clientes;
             if (string.IsNullOrWhiteSpace(nombreFiltro))
@@ -145,7 +140,7 @@ namespace Articulos_Frontend
 
         private void BotonBuscar_Click(object sender, EventArgs e)
         {
-            cargarClientes(textBoxCliente.Text);
+            buscarClientes(textBoxCliente.Text);
         }
 
         private void BotonMasC_Click(object sender, EventArgs e)
@@ -156,15 +151,33 @@ namespace Articulos_Frontend
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    clienteRepository.Insertar(form.Cliente);
-                    cargarClientes(textBoxCliente.Text);
+                    clienteRepository.Insertar(nuevoCliente);
                 }
+                buscarClientes(textBoxCliente.Text);
             }
         }
 
         private void BotonMenosC_Click(object sender, EventArgs e)
         {
+            clienteRepository.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+            buscarClientes(textBoxCliente.Text);
+        }
 
+        private void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
+                Cliente cliente = clienteRepository.ObtenerPorDni(dni);
+                using (var form = new ClienteUpdateForm(cliente))
+                {
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        clienteRepository.Actualizar(cliente);
+                    }
+                    buscarClientes(textBoxCliente.Text);
+                }
+            }
         }
     }
 }

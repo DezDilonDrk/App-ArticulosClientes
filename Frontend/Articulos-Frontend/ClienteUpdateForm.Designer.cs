@@ -1,6 +1,6 @@
 ﻿namespace Articulos_Frontend
 {
-    partial class ClienteDetailForm
+    partial class ClienteUpdateForm
     {
         /// <summary>
         /// Required designer variable.
@@ -20,11 +20,6 @@
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-
         private TextBox textBoxDni;
         private TextBox textBoxNombre;
         private TextBox textBoxApellidos;
@@ -33,6 +28,6 @@
         private Label LabelNombre;
         private Label LabelApellidos;
         private Label LabelEmail;
-        private Button BotonCrearC;
+        private Button BotonActualizarC;
     }
 }
