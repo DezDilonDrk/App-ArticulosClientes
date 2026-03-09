@@ -88,7 +88,7 @@
             // 
             // detallesTitulo
             // 
-            detallesTitulo.Font = new Font("Stencil", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            detallesTitulo.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             detallesTitulo.Location = new Point(26, 23);
             detallesTitulo.Name = "detallesTitulo";
             detallesTitulo.Size = new Size(481, 52);
@@ -120,6 +120,7 @@
             Controls.Add(detallePrecio);
             Controls.Add(detalleNombre);
             Name = "ArticuloDetailForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "ArticuloDetailForm";
             ResumeLayout(false);
             PerformLayout();

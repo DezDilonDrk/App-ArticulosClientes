@@ -13,12 +13,15 @@ namespace Articulos_Frontend
     public partial class ClienteForm : Form
     {
         private ClienteRepository clienteRepository;
+        private ErrorProvider errorProvider;
         public ClienteForm()
         {
             InitializeComponent();
 
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             clienteRepository = new ClienteRepository(connStr);
+
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -121,8 +124,8 @@ namespace Articulos_Frontend
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ClienteForm";
-            Load += ClienteForm_Load;
             StartPosition = FormStartPosition.CenterScreen;
+            Load += ClienteForm_Load;
             ((ISupportInitialize)dgvCliente).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -144,6 +147,20 @@ namespace Articulos_Frontend
                 clientes = clienteRepository.BuscarPorNombre(nombreFiltro);
             }
             dgvCliente.DataSource = clientes.ToList();
+            if (dgvCliente.Columns["Dni"] != null)
+            {
+                dgvCliente.Columns["Dni"].Width = 80;
+                dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
+            }
+            if (dgvCliente.Columns["Nombre"] != null)
+                dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            if (dgvCliente.Columns["Apellidos"] != null)
+                dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            if (dgvCliente.Columns["Email"] != null)
+            {
+                dgvCliente.Columns["Email"].Width = 250;
+                dgvCliente.Columns["Email"].Resizable = DataGridViewTriState.False;
+            }
         }
 
         private void BotonBuscar_Click(object sender, EventArgs e)
