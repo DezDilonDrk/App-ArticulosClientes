@@ -104,10 +104,10 @@ namespace Articulos_Frontend
             dgvCliente.MultiSelect = false;
             dgvCliente.Name = "dgvCliente";
             dgvCliente.ReadOnly = true;
-            dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
             dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCliente.Size = new Size(808, 225);
             dgvCliente.TabIndex = 5;
+            dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
             // 
             // ClienteForm
             // 
@@ -118,11 +118,19 @@ namespace Articulos_Frontend
             Controls.Add(labelNombreCliente);
             Controls.Add(BotonMenosC);
             Controls.Add(BotonMasC);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "ClienteForm";
+            Load += ClienteForm_Load;
+            StartPosition = FormStartPosition.CenterScreen;
             ((ISupportInitialize)dgvCliente).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
+        }
+        private void ClienteForm_Load(object sender, EventArgs e)
+        {
+            buscarClientes(null);
         }
         private void buscarClientes(string nombreFiltro)
         {

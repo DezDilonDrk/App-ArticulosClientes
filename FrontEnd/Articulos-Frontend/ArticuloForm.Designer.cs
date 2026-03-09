@@ -108,6 +108,8 @@
             Controls.Add(BotonAdd);
             Controls.Add(TextoNombre);
             Controls.Add(EtiquetaNombre);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "ArticuloForm";
             Text = "ArticuloForm";
             Load += ArticuloForm_Load;
