@@ -29,9 +29,21 @@ namespace Articulos_Frontend
 
         public void botonConfirm_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxNombre.Text) || !double.TryParse(textBoxPrecio.Text, out var textPrecio))
+            if (string.IsNullOrWhiteSpace(textBoxNombre.Text))
             {
-                MessageBox.Show("Introduce un nombre y un precio válido.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Nombre obligatorio");
+                return;
+            }
+
+            if (!double.TryParse(textBoxPrecio.Text, out var textPrecio) || textPrecio < 0)
+            {
+                MessageBox.Show("Precio inválido (no negativo)");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(textBoxCategoria.Text))
+            {
+                MessageBox.Show("Categoria obligatoria");
                 return;
             }
 

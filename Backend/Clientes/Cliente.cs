@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ClientesASPNET
 {
     public class Cliente
@@ -5,6 +7,7 @@ namespace ClientesASPNET
         public string Dni { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
+        [EmailAddress(ErrorMessage = "Correo inválido")]
         public string Email { get; set; }
 
         public Cliente() { }
