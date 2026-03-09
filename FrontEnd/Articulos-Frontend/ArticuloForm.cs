@@ -6,19 +6,21 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Articulos_Backend.Articulos;
-using Articulos_Backend.Repositorios;
+//using Articulos_Backend.Repositorios;
 
 namespace Articulos_Frontend
 {
     public partial class ArticuloForm : Form
     {
-        private ArticuloRepository repo;
+        //private ArticuloRepository repo;
+        private ArticuloApiClient api;
 
         public ArticuloForm()
         {
             InitializeComponent();
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-            repo = new ArticuloRepository(connStr);
+            //repo = new ArticuloRepository(connStr);
+            api = new ArticuloApiClient();
         }
 
         private void ArticuloForm_Load(object sender, EventArgs e)
@@ -28,7 +30,7 @@ namespace Articulos_Frontend
 
         private void botonAdd_Click(object sender, EventArgs e)
         {
-            using (var f = new ArticuloDetailForm(repo, null))
+            using (var f = new ArticuloDetailForm(api, null))
             {
                 if (f.ShowDialog() == DialogResult.OK)
                 {
@@ -37,25 +39,24 @@ namespace Articulos_Frontend
             }
         }
 
-        private void botonDel_Click(object sender, EventArgs e)
+        private async void botonDel_Click(object sender, EventArgs e)
         {
-            repo.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+            await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
             cargarArticulos(null);
         }
 
-        private void cargarArticulos(string nombre)
+        private async void cargarArticulos(string nombre)
         {
-            IEnumerable<Articulo> articulos;
-            if (string.IsNullOrWhiteSpace(nombre))
-            {
-                articulos = repo.ObtenerArticulos();
+            var articulos = await api.ObtenerArticulos();
 
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(nombre))
             {
-                articulos = repo.ObtenerPorNombre(nombre);
+                articulos = articulos
+                    .Where(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
             }
-            dataGridView1.DataSource = articulos.ToList();
+
+            dataGridView1.DataSource = articulos;
         }
 
         private void BotonBuscar_Click(object sender, EventArgs e)
@@ -70,7 +71,7 @@ namespace Articulos_Frontend
                 var articulo = dataGridView1.Rows[e.RowIndex].DataBoundItem as Articulo;
                 if (articulo != null)
                 {
-                    using (var f = new ArticuloDetailForm(repo, articulo))
+                    using (var f = new ArticuloDetailForm(api, articulo))
                     {
                         if (f.ShowDialog() == DialogResult.OK)
                         {

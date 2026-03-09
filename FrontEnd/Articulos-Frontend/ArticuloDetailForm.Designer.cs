@@ -33,9 +33,9 @@
             detalleCategoria = new Label();
             textBoxNombre = new TextBox();
             textBoxPrecio = new TextBox();
-            textBoxCategoria = new TextBox();
             detallesTitulo = new Label();
             botonConfirm = new Button();
+            comboBoxCategoria = new ComboBox();
             SuspendLayout();
             // 
             // detalleNombre
@@ -79,13 +79,6 @@
             textBoxPrecio.Size = new Size(131, 23);
             textBoxPrecio.TabIndex = 4;
             // 
-            // textBoxCategoria
-            // 
-            textBoxCategoria.Location = new Point(253, 209);
-            textBoxCategoria.Name = "textBoxCategoria";
-            textBoxCategoria.Size = new Size(131, 23);
-            textBoxCategoria.TabIndex = 5;
-            // 
             // detallesTitulo
             // 
             detallesTitulo.Font = new Font("Stencil", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -106,14 +99,24 @@
             botonConfirm.UseVisualStyleBackColor = true;
             botonConfirm.Click += botonConfirm_Click;
             // 
+            // comboBoxCategoria
+            // 
+            comboBoxCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCategoria.Location = new Point(253, 209);
+            comboBoxCategoria.Name = "comboBoxCategoria";
+            comboBoxCategoria.Size = new Size(131, 23);
+            comboBoxCategoria.TabIndex = 0;
+            // 
             // ArticuloDetailForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.Yellow_Emoji_Face_meme_4;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(583, 343);
+            Controls.Add(comboBoxCategoria);
             Controls.Add(botonConfirm);
             Controls.Add(detallesTitulo);
-            Controls.Add(textBoxCategoria);
             Controls.Add(textBoxPrecio);
             Controls.Add(textBoxNombre);
             Controls.Add(detalleCategoria);
@@ -132,8 +135,8 @@
         private Label detalleCategoria;
         private TextBox textBoxNombre;
         private TextBox textBoxPrecio;
-        private TextBox textBoxCategoria;
         private Label detallesTitulo;
         private Button botonConfirm;
+        private ComboBox comboBoxCategoria;
     }
 }

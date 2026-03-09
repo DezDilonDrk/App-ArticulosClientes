@@ -111,6 +111,8 @@ namespace Articulos_Frontend
             // 
             // ClienteForm
             // 
+            BackgroundImage = Properties.Resources.Free_Powerpoint_Backgrounds_Template_Green_and_White;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(832, 392);
             Controls.Add(dgvCliente);
             Controls.Add(textBoxCliente);
@@ -121,8 +123,8 @@ namespace Articulos_Frontend
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ClienteForm";
-            Load += ClienteForm_Load;
             StartPosition = FormStartPosition.CenterScreen;
+            Load += ClienteForm_Load;
             ((ISupportInitialize)dgvCliente).EndInit();
             ResumeLayout(false);
             PerformLayout();

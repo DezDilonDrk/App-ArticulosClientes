@@ -12,22 +12,26 @@ namespace Articulos_Frontend
 {
     public partial class ArticuloDetailForm : Form
     {
-        private ArticuloRepository _repo;
+        private ArticuloApiClient _client;
         private Articulo _articulo;
-        public ArticuloDetailForm(ArticuloRepository repo, Articulo articulo)
+        public ArticuloDetailForm(ArticuloApiClient client, Articulo articulo)
         {
             InitializeComponent();
-            _repo = repo;
+            _client = client;
             _articulo = articulo;
+            var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
+            comboBoxCategoria.DataSource = categorias.ToList();
+            comboBoxCategoria.SelectedIndex = -1;
             if (articulo != null)
             {
                 textBoxNombre.Text = articulo.nombre;
                 textBoxPrecio.Text = articulo.precio.ToString();
-                textBoxCategoria.Text = articulo.categoria;
+                comboBoxCategoria.Text = articulo.categoria;
             }
+            
         }
 
-        public void botonConfirm_Click(object sender, EventArgs e)
+        public async void botonConfirm_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxNombre.Text))
             {
@@ -41,7 +45,7 @@ namespace Articulos_Frontend
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(textBoxCategoria.Text))
+            if (string.IsNullOrWhiteSpace(comboBoxCategoria.Text))
             {
                 MessageBox.Show("Categoria obligatoria");
                 return;
@@ -52,26 +56,28 @@ namespace Articulos_Frontend
                 var id = 0;
                 var nombre = textBoxNombre.Text.Trim();
                 var precio = textPrecio;
-                var categoria = textBoxCategoria.Text?.Trim();
+                var categoria = comboBoxCategoria.Text?.Trim();
                 var articulo = new Articulo(id, nombre, precio, categoria);
 
                 try
                 {
-                    _repo.Insertar(articulo);
+                    await _client.Crear(articulo);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
                 }
+                return;
             }
             else
             {
                 _articulo.nombre = textBoxNombre.Text.Trim();
                 _articulo.precio = textPrecio;
-                _articulo.categoria = textBoxCategoria.Text?.Trim();
-                var ok = _repo.Actualizar(_articulo);
+                _articulo.categoria = comboBoxCategoria.Text?.Trim();
+                var ok = await _client.Actualizar(_articulo.id, _articulo);
                 if (!ok)
                 {
                     MessageBox.Show("No se pudo actualizar el artículo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

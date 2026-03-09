@@ -127,6 +127,8 @@ namespace Articulos_Frontend
             // 
             // ClienteDetailForm
             // 
+            BackgroundImage = Properties.Resources.hinh_nen_powerpoint_don_gian_111;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(580, 363);
             Controls.Add(BotonCrearC);
             Controls.Add(LabelEmail);
