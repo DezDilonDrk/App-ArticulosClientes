@@ -8,160 +8,202 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Articulos_Frontend
+namespace Articulos_Frontend;
+
+public partial class ClienteDetailForm : Form
 {
-    public partial class ClienteDetailForm : Form
+    private ClienteRepository clienteRepository;
+    public ClienteDetailForm(Cliente cliente)
     {
-        private ClienteRepository clienteRepository;
-        public ClienteDetailForm(Cliente cliente)
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-            clienteRepository = new ClienteRepository(connStr);
+        string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
+        clienteRepository = new ClienteRepository(connStr);
+    }
+
+
+    private void InitializeComponent()
+    {
+        textBoxDni = new TextBox();
+        textBoxNombre = new TextBox();
+        textBoxApellidos = new TextBox();
+        textBoxEmail = new TextBox();
+        LabelDni = new Label();
+        LabelNombre = new Label();
+        LabelApellidos = new Label();
+        LabelEmail = new Label();
+        BotonCrearC = new Button();
+        SuspendLayout();
+        // 
+        // textBoxDni
+        // 
+        textBoxDni.Location = new Point(204, 73);
+        textBoxDni.Name = "textBoxDni";
+        textBoxDni.PlaceholderText = "Introduzca el dni";
+        textBoxDni.Size = new Size(247, 23);
+        textBoxDni.TabIndex = 11;
+        // 
+        // textBoxNombre
+        // 
+        textBoxNombre.Location = new Point(204, 102);
+        textBoxNombre.Name = "textBoxNombre";
+        textBoxNombre.PlaceholderText = "Introduzca el nombre";
+        textBoxNombre.Size = new Size(247, 23);
+        textBoxNombre.TabIndex = 10;
+        // 
+        // textBoxApellidos
+        // 
+        textBoxApellidos.Location = new Point(204, 131);
+        textBoxApellidos.Name = "textBoxApellidos";
+        textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
+        textBoxApellidos.Size = new Size(247, 23);
+        textBoxApellidos.TabIndex = 9;
+        // 
+        // textBoxEmail
+        // 
+        textBoxEmail.Location = new Point(204, 160);
+        textBoxEmail.Name = "textBoxEmail";
+        textBoxEmail.PlaceholderText = "Introduzca el email";
+        textBoxEmail.Size = new Size(247, 23);
+        textBoxEmail.TabIndex = 8;
+        // 
+        // LabelDni
+        // 
+        LabelDni.AutoSize = true;
+        LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        LabelDni.Location = new Point(149, 73);
+        LabelDni.Name = "LabelDni";
+        LabelDni.Size = new Size(45, 21);
+        LabelDni.TabIndex = 4;
+        LabelDni.Text = "Dni: ";
+        LabelDni.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // LabelNombre
+        // 
+        LabelNombre.AutoSize = true;
+        LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        LabelNombre.Location = new Point(115, 102);
+        LabelNombre.Name = "LabelNombre";
+        LabelNombre.Size = new Size(81, 21);
+        LabelNombre.TabIndex = 5;
+        LabelNombre.Text = "Nombre: ";
+        LabelNombre.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // LabelApellidos
+        // 
+        LabelApellidos.AutoSize = true;
+        LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        LabelApellidos.Location = new Point(104, 131);
+        LabelApellidos.Name = "LabelApellidos";
+        LabelApellidos.Size = new Size(90, 21);
+        LabelApellidos.TabIndex = 6;
+        LabelApellidos.Text = "Apellidos: ";
+        LabelApellidos.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // LabelEmail
+        // 
+        LabelEmail.AutoSize = true;
+        LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        LabelEmail.Location = new Point(135, 160);
+        LabelEmail.Name = "LabelEmail";
+        LabelEmail.Size = new Size(61, 21);
+        LabelEmail.TabIndex = 7;
+        LabelEmail.Text = "Email: ";
+        LabelEmail.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // BotonCrearC
+        // 
+        BotonCrearC.AutoSize = true;
+        BotonCrearC.BackColor = Color.LightGreen;
+        BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        BotonCrearC.ForeColor = SystemColors.ControlDarkDark;
+        BotonCrearC.Location = new Point(301, 227);
+        BotonCrearC.Name = "BotonCrearC";
+        BotonCrearC.Size = new Size(150, 30);
+        BotonCrearC.TabIndex = 12;
+        BotonCrearC.Text = "Crear";
+        BotonCrearC.UseVisualStyleBackColor = false;
+        BotonCrearC.Click += BotonCrearC_Click;
+        // 
+        // ClienteDetailForm
+        // 
+        ClientSize = new Size(580, 363);
+        Controls.Add(BotonCrearC);
+        Controls.Add(LabelEmail);
+        Controls.Add(LabelApellidos);
+        Controls.Add(LabelNombre);
+        Controls.Add(LabelDni);
+        Controls.Add(textBoxEmail);
+        Controls.Add(textBoxApellidos);
+        Controls.Add(textBoxNombre);
+        Controls.Add(textBoxDni);
+        Name = "ClienteDetailForm";
+        StartPosition = FormStartPosition.CenterParent;
+        ResumeLayout(false);
+        PerformLayout();
+
+    }
+
+    private void BotonCrearC_Click(object sender, EventArgs e)
+    {
+        if (!validarCamposLlenos() || !ValidarDni(textBoxDni.Text) || !ValidarEmail(textBoxEmail.Text)) return;
+        try
+        {
+            Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
+            clienteRepository.Insertar(cliente);
+            MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
-
-        private void InitializeComponent()
+        catch (Exception ex)
         {
-            textBoxDni = new TextBox();
-            textBoxNombre = new TextBox();
-            textBoxApellidos = new TextBox();
-            textBoxEmail = new TextBox();
-            LabelDni = new Label();
-            LabelNombre = new Label();
-            LabelApellidos = new Label();
-            LabelEmail = new Label();
-            BotonCrearC = new Button();
-            SuspendLayout();
-            // 
-            // textBoxDni
-            // 
-            textBoxDni.Location = new Point(204, 73);
-            textBoxDni.Name = "textBoxDni";
-            textBoxDni.PlaceholderText = "Introduzca el dni";
-            textBoxDni.Size = new Size(247, 23);
-            textBoxDni.TabIndex = 11;
-            // 
-            // textBoxNombre
-            // 
-            textBoxNombre.Location = new Point(204, 102);
-            textBoxNombre.Name = "textBoxNombre";
-            textBoxNombre.PlaceholderText = "Introduzca el nombre";
-            textBoxNombre.Size = new Size(247, 23);
-            textBoxNombre.TabIndex = 10;
-            // 
-            // textBoxApellidos
-            // 
-            textBoxApellidos.Location = new Point(204, 131);
-            textBoxApellidos.Name = "textBoxApellidos";
-            textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
-            textBoxApellidos.Size = new Size(247, 23);
-            textBoxApellidos.TabIndex = 9;
-            // 
-            // textBoxEmail
-            // 
-            textBoxEmail.Location = new Point(204, 160);
-            textBoxEmail.Name = "textBoxEmail";
-            textBoxEmail.PlaceholderText = "Introduzca el email";
-            textBoxEmail.Size = new Size(247, 23);
-            textBoxEmail.TabIndex = 8;
-            // 
-            // LabelDni
-            // 
-            LabelDni.AutoSize = true;
-            LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDni.Location = new Point(149, 73);
-            LabelDni.Name = "LabelDni";
-            LabelDni.Size = new Size(45, 21);
-            LabelDni.TabIndex = 4;
-            LabelDni.Text = "Dni: ";
-            LabelDni.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // LabelNombre
-            // 
-            LabelNombre.AutoSize = true;
-            LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelNombre.Location = new Point(115, 102);
-            LabelNombre.Name = "LabelNombre";
-            LabelNombre.Size = new Size(81, 21);
-            LabelNombre.TabIndex = 5;
-            LabelNombre.Text = "Nombre: ";
-            LabelNombre.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // LabelApellidos
-            // 
-            LabelApellidos.AutoSize = true;
-            LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelApellidos.Location = new Point(104, 131);
-            LabelApellidos.Name = "LabelApellidos";
-            LabelApellidos.Size = new Size(90, 21);
-            LabelApellidos.TabIndex = 6;
-            LabelApellidos.Text = "Apellidos: ";
-            LabelApellidos.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // LabelEmail
-            // 
-            LabelEmail.AutoSize = true;
-            LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelEmail.Location = new Point(135, 160);
-            LabelEmail.Name = "LabelEmail";
-            LabelEmail.Size = new Size(61, 21);
-            LabelEmail.TabIndex = 7;
-            LabelEmail.Text = "Email: ";
-            LabelEmail.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // BotonCrearC
-            // 
-            BotonCrearC.AutoSize = true;
-            BotonCrearC.BackColor = Color.LightGreen;
-            BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            BotonCrearC.ForeColor = SystemColors.ControlDarkDark;
-            BotonCrearC.Location = new Point(301, 227);
-            BotonCrearC.Name = "BotonCrearC";
-            BotonCrearC.Size = new Size(150, 30);
-            BotonCrearC.TabIndex = 12;
-            BotonCrearC.Text = "Crear";
-            BotonCrearC.UseVisualStyleBackColor = false;
-            BotonCrearC.Click += BotonCrearC_Click;
-            // 
-            // ClienteDetailForm
-            // 
-            BackgroundImage = Properties.Resources.hinh_nen_powerpoint_don_gian_111;
-            BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(580, 363);
-            Controls.Add(BotonCrearC);
-            Controls.Add(LabelEmail);
-            Controls.Add(LabelApellidos);
-            Controls.Add(LabelNombre);
-            Controls.Add(LabelDni);
-            Controls.Add(textBoxEmail);
-            Controls.Add(textBoxApellidos);
-            Controls.Add(textBoxNombre);
-            Controls.Add(textBoxDni);
-            Name = "ClienteDetailForm";
-            ResumeLayout(false);
-            PerformLayout();
-
+            MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-        private void BotonCrearC_Click(object sender, EventArgs e)
+    }
+    private bool validarCamposLlenos() {
+        if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxEmail.Text)) { 
+            return true;
+        }
+        MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return false;
+    }
+    private bool ValidarEmail(string email)
+    {
+        try
         {
-            if(!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text)){
-                try
-                {
-                    Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
-                    clienteRepository.Insertar(cliente);
-                    MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            } else
-            {
-                MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        } catch
+        {
+            MessageBox.Show("Por favor, introduzca un email válido con el formato: {usuario}@{proveedor}.{dominio}", "Email no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+    }
+    private bool ValidarDni(string dni)
+    {
+        if (textBoxDni.Text.Length == 9)
+        {
+            if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$")) {
+                MessageBox.Show("El DNI debe tener 9 caracteres, 8 letras y un número al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
+            string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            int numero;
+            try 
+            { numero = int.Parse(dni.Substring(0, 8)); }
+            catch
+            {
+                MessageBox.Show("Los primeros 8 caracteres del DNI deben ser números. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            char letraCalculada = letras[numero % 23];
+            if (char.ToUpper(dni[8]) != letraCalculada)
+            {
+                MessageBox.Show("La letra del DNI no es correcta. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
         }
+        MessageBox.Show("El DNI debe tener 9 caracteres, 8 letras y un número al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return false;
+        
     }
 }

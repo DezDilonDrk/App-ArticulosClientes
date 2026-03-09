@@ -61,15 +61,16 @@
             // 
             // Menu
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(700, 338);
             BackgroundImage = Properties.Resources._8a027296c847ff9188483471a1830469;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(700, 338);
             Controls.Add(menuStrip1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Menu";
             Text = "MenúPrácticas";
+            WindowState = FormWindowState.Maximized;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

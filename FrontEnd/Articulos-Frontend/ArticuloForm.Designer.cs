@@ -113,6 +113,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ArticuloForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ArticuloForm";
             Load += ArticuloForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
