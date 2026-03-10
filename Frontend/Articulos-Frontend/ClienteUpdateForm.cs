@@ -74,6 +74,7 @@ namespace Articulos_Frontend
             // LabelDni
             // 
             LabelDni.AutoSize = true;
+            LabelDni.BackColor = Color.Transparent;
             LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             LabelDni.Location = new Point(149, 73);
             LabelDni.Name = "LabelDni";
@@ -85,6 +86,7 @@ namespace Articulos_Frontend
             // LabelNombre
             // 
             LabelNombre.AutoSize = true;
+            LabelNombre.BackColor = Color.Transparent;
             LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             LabelNombre.Location = new Point(115, 102);
             LabelNombre.Name = "LabelNombre";
@@ -96,6 +98,7 @@ namespace Articulos_Frontend
             // LabelApellidos
             // 
             LabelApellidos.AutoSize = true;
+            LabelApellidos.BackColor = Color.Transparent;
             LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             LabelApellidos.Location = new Point(104, 131);
             LabelApellidos.Name = "LabelApellidos";
@@ -107,6 +110,7 @@ namespace Articulos_Frontend
             // LabelEmail
             // 
             LabelEmail.AutoSize = true;
+            LabelEmail.BackColor = Color.Transparent;
             LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             LabelEmail.Location = new Point(135, 160);
             LabelEmail.Name = "LabelEmail";
