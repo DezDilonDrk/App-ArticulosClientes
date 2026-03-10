@@ -20,7 +20,7 @@ public class ArticuloRepository
     {
         using ( var db = Connection )
         {
-            string sql = "SELECT Id, Nombre, Precio, Categoria FROM Articulos";
+            string sql = "SELECT Id, Nombre, Precio, Categoria, FechaCreacion, FechaActualizacion FROM Articulos";
             return db.Query<Articulo>(sql).ToList();
         }
     }
@@ -54,8 +54,8 @@ public class ArticuloRepository
     {
         using ( var db = Connection )
         {
-            string sql = "INSERT INTO Articulos (Nombre, Precio, Categoria) VALUES (@Nombre, @Precio, @Categoria)";
-            db.Execute(sql, articulo);
+            string sql = "INSERT INTO Articulos (Nombre, Precio, Categoria, FechaCreacion) VALUES (@Nombre, @Precio, @Categoria, @FechaCreacion)";
+            db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, FechaCreacion = DateTime.Now});
         }
     }
 
@@ -63,8 +63,8 @@ public class ArticuloRepository
     {
         using (var db = Connection)
         {
-            string sql = "UPDATE Articulos SET Nombre = @Nombre, Precio = @Precio, Categoria = @Categoria WHERE Id = @Id";
-            var filasAfectadas = db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, Id = articulo.id });
+            string sql = "UPDATE Articulos SET Nombre = @Nombre, Precio = @Precio, Categoria = @Categoria, FechaActualizacion = @FechaActualizacion WHERE Id = @Id";
+            var filasAfectadas = db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, FechaActualizacion = DateTime.Now, Id = articulo.id });
             return filasAfectadas > 0;
         }
     }

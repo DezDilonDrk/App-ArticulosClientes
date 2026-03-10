@@ -82,5 +82,9 @@ namespace Articulos_Frontend
             }
         }
 
+        private void EtiquetaNombre_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
