@@ -8,8 +8,8 @@ public class ArticuloApiClient
 
     public ArticuloApiClient()
     {
-        _http = new HttpClient();
-        _http.BaseAddress = new Uri("http://192.168.1.148:5000");
+        httpClient = new HttpClient();
+        httpClient.BaseAddress = new Uri("http://192.168.1.148:5000");
     }   
 
     public async Task<List<Articulo>> ObtenerArticulos()
