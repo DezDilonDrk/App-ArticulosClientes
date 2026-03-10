@@ -15,7 +15,7 @@ namespace Articulos_Frontend.Client
         public ClienteApiClient()
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://192.168.1.148:5000");
+            httpClient.BaseAddress = new Uri("http://192.168.1.147:5000");
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {
