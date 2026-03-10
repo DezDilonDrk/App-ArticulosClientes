@@ -1,4 +1,5 @@
 ﻿using Articulos_Backend.Repositorios;
+using Articulos_Frontend.Client;
 using ClientesASPNET;
 using System;
 using System.Collections.Generic;
@@ -8,202 +9,201 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Articulos_Frontend
+namespace Articulos_Frontend;
+
+public partial class ClienteForm : Form
 {
-    public partial class ClienteForm : Form
+    private ClienteApiClient ClienteApiClient;
+    private ErrorProvider errorProvider;
+    public ClienteForm()
     {
-        private ClienteRepository clienteRepository;
-        private ErrorProvider errorProvider;
-        public ClienteForm()
+        InitializeComponent();
+
+        string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
+        ClienteApiClient = new ClienteApiClient();
+
+
+    }
+
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label1_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void InitializeComponent()
+    {
+        BotonMasC = new Button();
+        BotonMenosC = new Button();
+        labelNombreCliente = new Label();
+        BotonBuscar = new Button();
+        textBoxCliente = new TextBox();
+        dgvCliente = new DataGridView();
+        ((ISupportInitialize)dgvCliente).BeginInit();
+        SuspendLayout();
+        // 
+        // BotonMasC
+        // 
+        BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+        BotonMasC.Location = new Point(760, 23);
+        BotonMasC.Name = "BotonMasC";
+        BotonMasC.Padding = new Padding(0, 0, 0, 4);
+        BotonMasC.Size = new Size(60, 60);
+        BotonMasC.TabIndex = 0;
+        BotonMasC.Text = " +";
+        BotonMasC.UseVisualStyleBackColor = true;
+        BotonMasC.Click += BotonMasC_Click;
+        // 
+        // BotonMenosC
+        // 
+        BotonMenosC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+        BotonMenosC.Location = new Point(760, 89);
+        BotonMenosC.Name = "BotonMenosC";
+        BotonMenosC.Padding = new Padding(0, 0, 0, 4);
+        BotonMenosC.Size = new Size(60, 60);
+        BotonMenosC.TabIndex = 1;
+        BotonMenosC.Text = " -";
+        BotonMenosC.UseVisualStyleBackColor = true;
+        BotonMenosC.Click += BotonMenosC_Click;
+        // 
+        // labelNombreCliente
+        // 
+        labelNombreCliente.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+        labelNombreCliente.Location = new Point(209, 45);
+        labelNombreCliente.Name = "labelNombreCliente";
+        labelNombreCliente.Size = new Size(95, 31);
+        labelNombreCliente.TabIndex = 2;
+        labelNombreCliente.Text = "Nombre: ";
+        // 
+        // BotonBuscar
+        // 
+        BotonBuscar.BackColor = SystemColors.GradientActiveCaption;
+        BotonBuscar.Font = new Font("Segoe UI", 10F);
+        BotonBuscar.Location = new Point(360, 104);
+        BotonBuscar.Name = "BotonBuscar";
+        BotonBuscar.Size = new Size(150, 30);
+        BotonBuscar.TabIndex = 3;
+        BotonBuscar.Text = "Buscar";
+        BotonBuscar.UseVisualStyleBackColor = false;
+        BotonBuscar.Click += BotonBuscar_Click;
+        // 
+        // textBoxCliente
+        // 
+        textBoxCliente.Location = new Point(310, 45);
+        textBoxCliente.Multiline = true;
+        textBoxCliente.Name = "textBoxCliente";
+        textBoxCliente.PlaceholderText = "Busque aquí por nombre";
+        textBoxCliente.Size = new Size(200, 40);
+        textBoxCliente.TabIndex = 4;
+        textBoxCliente.TextAlign = HorizontalAlignment.Center;
+        // 
+        // dgvCliente
+        // 
+        dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvCliente.Location = new Point(12, 155);
+        dgvCliente.MultiSelect = false;
+        dgvCliente.Name = "dgvCliente";
+        dgvCliente.ReadOnly = true;
+        dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dgvCliente.Size = new Size(808, 225);
+        dgvCliente.TabIndex = 5;
+        dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
+        // 
+        // ClienteForm
+        // 
+        BackgroundImage = Properties.Resources.Free_Powerpoint_Backgrounds_Template_Green_and_White;
+        BackgroundImageLayout = ImageLayout.Stretch;
+        ClientSize = new Size(832, 392);
+        Controls.Add(dgvCliente);
+        Controls.Add(textBoxCliente);
+        Controls.Add(BotonBuscar);
+        Controls.Add(labelNombreCliente);
+        Controls.Add(BotonMenosC);
+        Controls.Add(BotonMasC);
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
+        Name = "ClienteForm";
+        StartPosition = FormStartPosition.CenterScreen;
+        Load += ClienteForm_Load;
+        ((ISupportInitialize)dgvCliente).EndInit();
+        ResumeLayout(false);
+        PerformLayout();
+
+    }
+    private void ClienteForm_Load(object sender, EventArgs e)
+    {
+        buscarClientes(null);
+    }
+    private async void buscarClientes(string nombreFiltro)
+    {
+        IEnumerable<Cliente> clientes;
+        if (string.IsNullOrWhiteSpace(nombreFiltro))
         {
-            InitializeComponent();
-
-            string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-            clienteRepository = new ClienteRepository(connStr);
-
-
+            clientes = await ClienteApiClient.ObtenerClientes();
         }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        else
         {
-
+            clientes = await ClienteApiClient.BuscarPorNombre(nombreFiltro);
         }
-
-        private void label1_Click(object sender, EventArgs e)
+        dgvCliente.DataSource = clientes.ToList();
+        if (dgvCliente.Columns["Dni"] != null)
         {
-
+            dgvCliente.Columns["Dni"].Width = 80;
+            dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
         }
-
-        private void InitializeComponent()
+        if (dgvCliente.Columns["Nombre"] != null)
+            dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        if (dgvCliente.Columns["Apellidos"] != null)
+            dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        if (dgvCliente.Columns["Email"] != null)
         {
-            BotonMasC = new Button();
-            BotonMenosC = new Button();
-            labelNombreCliente = new Label();
-            BotonBuscar = new Button();
-            textBoxCliente = new TextBox();
-            dgvCliente = new DataGridView();
-            ((ISupportInitialize)dgvCliente).BeginInit();
-            SuspendLayout();
-            // 
-            // BotonMasC
-            // 
-            BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            BotonMasC.Location = new Point(760, 23);
-            BotonMasC.Name = "BotonMasC";
-            BotonMasC.Padding = new Padding(0, 0, 0, 4);
-            BotonMasC.Size = new Size(60, 60);
-            BotonMasC.TabIndex = 0;
-            BotonMasC.Text = " +";
-            BotonMasC.UseVisualStyleBackColor = true;
-            BotonMasC.Click += BotonMasC_Click;
-            // 
-            // BotonMenosC
-            // 
-            BotonMenosC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            BotonMenosC.Location = new Point(760, 89);
-            BotonMenosC.Name = "BotonMenosC";
-            BotonMenosC.Padding = new Padding(0, 0, 0, 4);
-            BotonMenosC.Size = new Size(60, 60);
-            BotonMenosC.TabIndex = 1;
-            BotonMenosC.Text = " -";
-            BotonMenosC.UseVisualStyleBackColor = true;
-            BotonMenosC.Click += BotonMenosC_Click;
-            // 
-            // labelNombreCliente
-            // 
-            labelNombreCliente.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            labelNombreCliente.Location = new Point(209, 45);
-            labelNombreCliente.Name = "labelNombreCliente";
-            labelNombreCliente.Size = new Size(95, 31);
-            labelNombreCliente.TabIndex = 2;
-            labelNombreCliente.Text = "Nombre: ";
-            // 
-            // BotonBuscar
-            // 
-            BotonBuscar.BackColor = SystemColors.GradientActiveCaption;
-            BotonBuscar.Font = new Font("Segoe UI", 10F);
-            BotonBuscar.Location = new Point(360, 104);
-            BotonBuscar.Name = "BotonBuscar";
-            BotonBuscar.Size = new Size(150, 30);
-            BotonBuscar.TabIndex = 3;
-            BotonBuscar.Text = "Buscar";
-            BotonBuscar.UseVisualStyleBackColor = false;
-            BotonBuscar.Click += BotonBuscar_Click;
-            // 
-            // textBoxCliente
-            // 
-            textBoxCliente.Location = new Point(310, 45);
-            textBoxCliente.Multiline = true;
-            textBoxCliente.Name = "textBoxCliente";
-            textBoxCliente.PlaceholderText = "Busque aquí por nombre";
-            textBoxCliente.Size = new Size(200, 40);
-            textBoxCliente.TabIndex = 4;
-            textBoxCliente.TextAlign = HorizontalAlignment.Center;
-            // 
-            // dgvCliente
-            // 
-            dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCliente.Location = new Point(12, 155);
-            dgvCliente.MultiSelect = false;
-            dgvCliente.Name = "dgvCliente";
-            dgvCliente.ReadOnly = true;
-            dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCliente.Size = new Size(808, 225);
-            dgvCliente.TabIndex = 5;
-            dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
-            // 
-            // ClienteForm
-            // 
-            BackgroundImage = Properties.Resources.Free_Powerpoint_Backgrounds_Template_Green_and_White;
-            BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(832, 392);
-            Controls.Add(dgvCliente);
-            Controls.Add(textBoxCliente);
-            Controls.Add(BotonBuscar);
-            Controls.Add(labelNombreCliente);
-            Controls.Add(BotonMenosC);
-            Controls.Add(BotonMasC);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
-            Name = "ClienteForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            Load += ClienteForm_Load;
-            ((ISupportInitialize)dgvCliente).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
-
+            dgvCliente.Columns["Email"].Width = 250;
+            dgvCliente.Columns["Email"].Resizable = DataGridViewTriState.False;
         }
-        private void ClienteForm_Load(object sender, EventArgs e)
+    }
+
+    private void BotonBuscar_Click(object sender, EventArgs e)
+    {
+        buscarClientes(textBoxCliente.Text);
+    }
+
+    private void BotonMasC_Click(object sender, EventArgs e)
+    {
+        Cliente nuevoCliente = new Cliente();
+
+        using (var form = new ClienteDetailForm(nuevoCliente))
         {
-            buscarClientes(null);
-        }
-        private void buscarClientes(string nombreFiltro)
-        {
-            IEnumerable<Cliente> clientes;
-            if (string.IsNullOrWhiteSpace(nombreFiltro))
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                clientes = clienteRepository.ObtenerClientes();
+                ClienteApiClient.Crear(nuevoCliente);
             }
-            else
-            {
-                clientes = clienteRepository.BuscarPorNombre(nombreFiltro);
-            }
-            dgvCliente.DataSource = clientes.ToList();
-            if (dgvCliente.Columns["Dni"] != null)
-            {
-                dgvCliente.Columns["Dni"].Width = 80;
-                dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
-            }
-            if (dgvCliente.Columns["Nombre"] != null)
-                dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            if (dgvCliente.Columns["Apellidos"] != null)
-                dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            if (dgvCliente.Columns["Email"] != null)
-            {
-                dgvCliente.Columns["Email"].Width = 250;
-                dgvCliente.Columns["Email"].Resizable = DataGridViewTriState.False;
-            }
-        }
-
-        private void BotonBuscar_Click(object sender, EventArgs e)
-        {
             buscarClientes(textBoxCliente.Text);
         }
+    }
 
-        private void BotonMasC_Click(object sender, EventArgs e)
+    private void BotonMenosC_Click(object sender, EventArgs e)
+    {
+        ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+        buscarClientes(textBoxCliente.Text);
+    }
+
+    private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex >= 0)
         {
-            Cliente nuevoCliente = new Cliente();
-
-            using (var form = new ClienteDetailForm(nuevoCliente))
+            string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
+            Cliente cliente = await ClienteApiClient.ObtenerPorDni(dni);
+            using (var form = new ClienteUpdateForm(cliente))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    clienteRepository.Insertar(nuevoCliente);
+                    ClienteApiClient.Actualizar(dni, cliente);
                 }
                 buscarClientes(textBoxCliente.Text);
-            }
-        }
-
-        private void BotonMenosC_Click(object sender, EventArgs e)
-        {
-            clienteRepository.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
-            buscarClientes(textBoxCliente.Text);
-        }
-
-        private void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
-                Cliente cliente = clienteRepository.ObtenerPorDni(dni);
-                using (var form = new ClienteUpdateForm(cliente))
-                {
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        clienteRepository.Actualizar(cliente);
-                    }
-                    buscarClientes(textBoxCliente.Text);
-                }
             }
         }
     }

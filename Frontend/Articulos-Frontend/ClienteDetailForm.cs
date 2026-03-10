@@ -1,4 +1,5 @@
 ﻿using Articulos_Backend.Repositorios;
+using Articulos_Frontend.Client;
 using ClientesASPNET;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,13 @@ namespace Articulos_Frontend;
 
 public partial class ClienteDetailForm : Form
 {
-    private ClienteRepository clienteRepository;
+    private ClienteApiClient clienteApiClient;
     public ClienteDetailForm(Cliente cliente)
     {
         InitializeComponent();
 
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-        clienteRepository = new ClienteRepository(connStr);
+        clienteApiClient = new ClienteApiClient();
     }
 
 
@@ -149,8 +150,8 @@ public partial class ClienteDetailForm : Form
         if (!validarCamposLlenos() || !ValidarDni(textBoxDni.Text) || !ValidarEmail(textBoxEmail.Text)) return;
         try
         {
-            Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
-            clienteRepository.Insertar(cliente);
+            Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
+            clienteApiClient.Crear(cliente);
             MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
@@ -179,31 +180,31 @@ public partial class ClienteDetailForm : Form
     }
     private bool ValidarDni(string dni)
     {
-        if (textBoxDni.Text.Length == 9)
+        if (textBoxDni.Text.Length != 9)
         {
-            if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$")) {
-                MessageBox.Show("El DNI debe tener 9 caracteres, 8 letras y un número al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            int numero;
-            try 
-            { numero = int.Parse(dni.Substring(0, 8)); }
-            catch
-            {
-                MessageBox.Show("Los primeros 8 caracteres del DNI deben ser números. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            char letraCalculada = letras[numero % 23];
-            if (char.ToUpper(dni[8]) != letraCalculada)
-            {
-                MessageBox.Show("La letra del DNI no es correcta. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            return true;
+            MessageBox.Show("El DNI debe tener 9 caracteres, 8 números y una letra mayúscula al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
-        MessageBox.Show("El DNI debe tener 9 caracteres, 8 letras y un número al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        return false;
-        
+        if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
+        {
+            MessageBox.Show("El DNI debe tener 9 caracteres, 8 números y una letra mayúscula al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+        string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int numero;
+        try
+        { numero = int.Parse(dni.Substring(0, 8)); }
+        catch
+        {
+            MessageBox.Show("Los primeros 8 caracteres del DNI deben ser números. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+        char letraCalculada = letras[numero % 23];
+        if (char.ToUpper(dni[8]) != letraCalculada)
+        {
+            MessageBox.Show("La letra del DNI no es correcta. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+        return true;
     }
 }

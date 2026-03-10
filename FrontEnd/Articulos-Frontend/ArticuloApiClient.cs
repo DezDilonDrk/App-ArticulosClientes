@@ -4,7 +4,7 @@ using Articulos_Backend.Articulos;
 
 public class ArticuloApiClient
 {
-    private readonly HttpClient _http;
+    private readonly HttpClient httpClient;
 
     public ArticuloApiClient()
     {
@@ -14,26 +14,26 @@ public class ArticuloApiClient
 
     public async Task<List<Articulo>> ObtenerArticulos()
     {
-        return await _http.GetFromJsonAsync<List<Articulo>>("/articulos");
+        return await httpClient.GetFromJsonAsync<List<Articulo>>("/articulos");
     }
 
     public async Task<Articulo?> ObtenerPorId(int id)
     {
-        return await _http.GetFromJsonAsync<Articulo>($"/articulos/{id}");
+        return await httpClient.GetFromJsonAsync<Articulo>($"/articulos/{id}");
     }
     public async Task Crear(Articulo articulo)
     {
-        await _http.PostAsJsonAsync("/articulos", articulo);
+        await httpClient.PostAsJsonAsync("/articulos", articulo);
     }
 
     public async Task<bool> Actualizar(int id, Articulo articulo)
 {
-    var response = await _http.PutAsJsonAsync($"/articulos/{id}", articulo);
+    var response = await httpClient.PutAsJsonAsync($"/articulos/{id}", articulo);
     return response.IsSuccessStatusCode;
 }
 
     public async Task Eliminar(int id)
     {
-        await _http.DeleteAsync($"/articulos/{id}");
+        await httpClient.DeleteAsync($"/articulos/{id}");
     }
 }
