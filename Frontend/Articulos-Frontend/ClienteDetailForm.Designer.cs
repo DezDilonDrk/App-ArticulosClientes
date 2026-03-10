@@ -34,5 +34,7 @@
         private Label LabelApellidos;
         private Label LabelEmail;
         private Button BotonCrearC;
+        private CheckBox checkSalir;
+        private Label LabelTitulo;
     }
 }

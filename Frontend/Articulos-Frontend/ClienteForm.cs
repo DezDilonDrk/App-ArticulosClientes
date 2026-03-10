@@ -227,7 +227,16 @@ public partial class ClienteForm : Form
 
     private void BotonMenosC_Click(object sender, EventArgs e)
     {
-        ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+        DialogResult resultado = MessageBox.Show(
+        "¿Está seguro de que desea eliminar este cliente?",
+        "Confirmar eliminación",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Warning);
+
+        if(resultado == DialogResult.Yes)
+        {
+            ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+        }
         buscarClientes(textBoxCliente.Text);
     }
 

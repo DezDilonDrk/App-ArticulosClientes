@@ -29,5 +29,7 @@
         private Label LabelApellidos;
         private Label LabelEmail;
         private Button BotonActualizarC;
+        private CheckBox checkSalir;
+        private Label LabelTitulo;
     }
 }

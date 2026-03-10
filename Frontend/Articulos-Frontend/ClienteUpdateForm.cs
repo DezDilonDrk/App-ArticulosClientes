@@ -37,11 +37,14 @@ namespace Articulos_Frontend
             LabelApellidos = new Label();
             LabelEmail = new Label();
             BotonActualizarC = new Button();
+            checkSalir = new CheckBox();
+            LabelTitulo = new Label();
             SuspendLayout();
             // 
             // textBoxDni
             // 
-            textBoxDni.Location = new Point(204, 73);
+            textBoxDni.Enabled = false;
+            textBoxDni.Location = new Point(204, 92);
             textBoxDni.Name = "textBoxDni";
             textBoxDni.PlaceholderText = "Introduzca el dni";
             textBoxDni.Size = new Size(247, 23);
@@ -49,7 +52,7 @@ namespace Articulos_Frontend
             // 
             // textBoxNombre
             // 
-            textBoxNombre.Location = new Point(204, 102);
+            textBoxNombre.Location = new Point(204, 121);
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.PlaceholderText = "Introduzca el nombre";
             textBoxNombre.Size = new Size(247, 23);
@@ -57,7 +60,7 @@ namespace Articulos_Frontend
             // 
             // textBoxApellidos
             // 
-            textBoxApellidos.Location = new Point(204, 131);
+            textBoxApellidos.Location = new Point(204, 150);
             textBoxApellidos.Name = "textBoxApellidos";
             textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
             textBoxApellidos.Size = new Size(247, 23);
@@ -65,7 +68,7 @@ namespace Articulos_Frontend
             // 
             // textBoxEmail
             // 
-            textBoxEmail.Location = new Point(204, 160);
+            textBoxEmail.Location = new Point(204, 179);
             textBoxEmail.Name = "textBoxEmail";
             textBoxEmail.PlaceholderText = "Introduzca el email";
             textBoxEmail.Size = new Size(247, 23);
@@ -76,7 +79,7 @@ namespace Articulos_Frontend
             LabelDni.AutoSize = true;
             LabelDni.BackColor = Color.Transparent;
             LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDni.Location = new Point(149, 73);
+            LabelDni.Location = new Point(149, 92);
             LabelDni.Name = "LabelDni";
             LabelDni.Size = new Size(45, 21);
             LabelDni.TabIndex = 4;
@@ -88,7 +91,7 @@ namespace Articulos_Frontend
             LabelNombre.AutoSize = true;
             LabelNombre.BackColor = Color.Transparent;
             LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelNombre.Location = new Point(115, 102);
+            LabelNombre.Location = new Point(115, 121);
             LabelNombre.Name = "LabelNombre";
             LabelNombre.Size = new Size(81, 21);
             LabelNombre.TabIndex = 5;
@@ -100,7 +103,7 @@ namespace Articulos_Frontend
             LabelApellidos.AutoSize = true;
             LabelApellidos.BackColor = Color.Transparent;
             LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelApellidos.Location = new Point(104, 131);
+            LabelApellidos.Location = new Point(104, 150);
             LabelApellidos.Name = "LabelApellidos";
             LabelApellidos.Size = new Size(90, 21);
             LabelApellidos.TabIndex = 6;
@@ -112,7 +115,7 @@ namespace Articulos_Frontend
             LabelEmail.AutoSize = true;
             LabelEmail.BackColor = Color.Transparent;
             LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelEmail.Location = new Point(135, 160);
+            LabelEmail.Location = new Point(135, 179);
             LabelEmail.Name = "LabelEmail";
             LabelEmail.Size = new Size(61, 21);
             LabelEmail.TabIndex = 7;
@@ -125,21 +128,46 @@ namespace Articulos_Frontend
             BotonActualizarC.BackColor = Color.DodgerBlue;
             BotonActualizarC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             BotonActualizarC.ForeColor = SystemColors.ControlLightLight;
-            BotonActualizarC.Location = new Point(301, 227);
+            BotonActualizarC.Location = new Point(301, 246);
             BotonActualizarC.Name = "BotonActualizarC";
             BotonActualizarC.Size = new Size(150, 30);
-            BotonActualizarC.TabIndex = 4;
+            BotonActualizarC.TabIndex = 5;
             BotonActualizarC.Text = "Actualizar";
             BotonActualizarC.UseVisualStyleBackColor = false;
             BotonActualizarC.Click += BotonActualizarC_Click;
             BotonActualizarC.MouseEnter += Boton_MouseEnter;
             BotonActualizarC.MouseLeave += Boton_MouseLeave;
             // 
+            // checkSalir
+            // 
+            checkSalir.BackColor = Color.Transparent;
+            checkSalir.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            checkSalir.Location = new Point(104, 251);
+            checkSalir.Name = "checkSalir";
+            checkSalir.Size = new Size(146, 20);
+            checkSalir.TabIndex = 4;
+            checkSalir.Text = "Salir al Actualizar";
+            checkSalir.TextAlign = ContentAlignment.MiddleCenter;
+            checkSalir.UseVisualStyleBackColor = false;
+            // 
+            // LabelTitulo
+            // 
+            LabelTitulo.BackColor = Color.Transparent;
+            LabelTitulo.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            LabelTitulo.Location = new Point(135, 18);
+            LabelTitulo.Name = "LabelTitulo";
+            LabelTitulo.Size = new Size(316, 36);
+            LabelTitulo.TabIndex = 0;
+            LabelTitulo.Text = "ACTUALIZAR USUARIO";
+            LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // ClienteUpdateForm
             // 
             BackgroundImage = Properties.Resources.hinh_nen_powerpoint_don_gian_11;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(580, 363);
+            Controls.Add(LabelTitulo);
+            Controls.Add(checkSalir);
             Controls.Add(BotonActualizarC);
             Controls.Add(LabelEmail);
             Controls.Add(LabelApellidos);
@@ -173,6 +201,10 @@ namespace Articulos_Frontend
             else
             {
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            if (checkSalir.Checked)
+            {
+                this.Close();
             }
         }
         private void Boton_MouseEnter(object sender, EventArgs e)
