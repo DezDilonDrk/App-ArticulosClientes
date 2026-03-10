@@ -6,6 +6,7 @@ using ClientesASPNET;
 using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var repositorioCliente = new ClienteRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -16,7 +17,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.MapClienteEndpoints(repositorioCliente);
 app.MapArticuloEndpoints(repositorioArticulo);
 app.Run();
