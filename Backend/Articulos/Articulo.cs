@@ -13,12 +13,21 @@ namespace Articulos_Backend.Articulos
 
         public String categoria { get; set; }
 
-        public Articulo(int id, String nombre, decimal precio, String categoria)
+        public DateTime FechaCreacion { get; set; }
+        public DateTime? FechaActualizacion { get; set; }
+
+        public Articulo(int id, String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
         {
             this.id = id;
             this.nombre = nombre;
             this.precio = precio;
             this.categoria = categoria;
+            this.FechaCreacion = fechaCreacion;
+            this.FechaActualizacion = fechaActualizacion;
+        }
+
+        public Articulo()
+        {
         }
     }
 }
