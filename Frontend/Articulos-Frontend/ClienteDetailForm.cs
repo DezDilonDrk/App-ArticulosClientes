@@ -25,6 +25,7 @@ public partial class ClienteDetailForm : Form
 
     private void InitializeComponent()
     {
+        ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteDetailForm));
         textBoxDni = new TextBox();
         textBoxNombre = new TextBox();
         textBoxApellidos = new TextBox();
@@ -71,6 +72,7 @@ public partial class ClienteDetailForm : Form
         // LabelDni
         // 
         LabelDni.AutoSize = true;
+        LabelDni.BackColor = Color.Transparent;
         LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
         LabelDni.Location = new Point(149, 73);
         LabelDni.Name = "LabelDni";
@@ -82,6 +84,7 @@ public partial class ClienteDetailForm : Form
         // LabelNombre
         // 
         LabelNombre.AutoSize = true;
+        LabelNombre.BackColor = Color.Transparent;
         LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
         LabelNombre.Location = new Point(115, 102);
         LabelNombre.Name = "LabelNombre";
@@ -93,6 +96,7 @@ public partial class ClienteDetailForm : Form
         // LabelApellidos
         // 
         LabelApellidos.AutoSize = true;
+        LabelApellidos.BackColor = Color.Transparent;
         LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
         LabelApellidos.Location = new Point(104, 131);
         LabelApellidos.Name = "LabelApellidos";
@@ -104,6 +108,7 @@ public partial class ClienteDetailForm : Form
         // LabelEmail
         // 
         LabelEmail.AutoSize = true;
+        LabelEmail.BackColor = Color.Transparent;
         LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
         LabelEmail.Location = new Point(135, 160);
         LabelEmail.Name = "LabelEmail";
@@ -115,9 +120,9 @@ public partial class ClienteDetailForm : Form
         // BotonCrearC
         // 
         BotonCrearC.AutoSize = true;
-        BotonCrearC.BackColor = Color.LightGreen;
+        BotonCrearC.BackColor = SystemColors.MenuHighlight;
         BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        BotonCrearC.ForeColor = SystemColors.ControlDarkDark;
+        BotonCrearC.ForeColor = SystemColors.ControlLightLight;
         BotonCrearC.Location = new Point(301, 227);
         BotonCrearC.Name = "BotonCrearC";
         BotonCrearC.Size = new Size(150, 30);
@@ -125,9 +130,12 @@ public partial class ClienteDetailForm : Form
         BotonCrearC.Text = "Crear";
         BotonCrearC.UseVisualStyleBackColor = false;
         BotonCrearC.Click += BotonCrearC_Click;
+        BotonCrearC.MouseEnter += Boton_MouseEnter;
+        BotonCrearC.MouseLeave += Boton_MouseLeave;
         // 
         // ClienteDetailForm
         // 
+        BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
         ClientSize = new Size(580, 363);
         Controls.Add(BotonCrearC);
         Controls.Add(LabelEmail);
@@ -206,5 +214,23 @@ public partial class ClienteDetailForm : Form
             return false;
         }
         return true;
+    }
+    private void Boton_MouseEnter(object sender, EventArgs e)
+    {
+        Button btn = sender as Button;
+        if (btn != null)
+        {
+            btn.BackColor = Color.LightSkyBlue;
+            btn.ForeColor = Color.RoyalBlue;
+        }
+    }
+    private void Boton_MouseLeave(object sender, EventArgs e)
+    {
+        Button btn = sender as Button;
+        if (btn != null)
+        {
+            btn.BackColor = Color.DodgerBlue;
+            btn.ForeColor = SystemColors.ControlLightLight;
+        }
     }
 }

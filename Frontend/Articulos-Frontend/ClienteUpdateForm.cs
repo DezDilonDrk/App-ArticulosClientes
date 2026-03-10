@@ -118,9 +118,9 @@ namespace Articulos_Frontend
             // BotonActualizarC
             // 
             BotonActualizarC.AutoSize = true;
-            BotonActualizarC.BackColor = Color.LightGreen;
+            BotonActualizarC.BackColor = Color.DodgerBlue;
             BotonActualizarC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            BotonActualizarC.ForeColor = SystemColors.ControlDarkDark;
+            BotonActualizarC.ForeColor = SystemColors.ControlLightLight;
             BotonActualizarC.Location = new Point(301, 227);
             BotonActualizarC.Name = "BotonActualizarC";
             BotonActualizarC.Size = new Size(150, 30);
@@ -128,6 +128,8 @@ namespace Articulos_Frontend
             BotonActualizarC.Text = "Actualizar";
             BotonActualizarC.UseVisualStyleBackColor = false;
             BotonActualizarC.Click += BotonActualizarC_Click;
+            BotonActualizarC.MouseEnter += Boton_MouseEnter;
+            BotonActualizarC.MouseLeave += Boton_MouseLeave;
             // 
             // ClienteUpdateForm
             // 
@@ -167,6 +169,24 @@ namespace Articulos_Frontend
             else
             {
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void Boton_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.BackColor = Color.LightSkyBlue;
+                btn.ForeColor = Color.RoyalBlue;
+            }
+        }
+        private void Boton_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+            {
+                btn.BackColor = Color.DodgerBlue;
+                btn.ForeColor = SystemColors.ControlLightLight;
             }
         }
     }

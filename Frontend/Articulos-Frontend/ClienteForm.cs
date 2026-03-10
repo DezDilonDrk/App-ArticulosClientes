@@ -37,6 +37,7 @@ public partial class ClienteForm : Form
 
     private void InitializeComponent()
     {
+        ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteForm));
         BotonMasC = new Button();
         BotonMenosC = new Button();
         labelNombreCliente = new Label();
@@ -48,30 +49,42 @@ public partial class ClienteForm : Form
         // 
         // BotonMasC
         // 
+        BotonMasC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        BotonMasC.BackColor = Color.DodgerBlue;
         BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+        BotonMasC.ForeColor = SystemColors.ControlLightLight;
         BotonMasC.Location = new Point(760, 23);
         BotonMasC.Name = "BotonMasC";
         BotonMasC.Padding = new Padding(0, 0, 0, 4);
         BotonMasC.Size = new Size(60, 60);
         BotonMasC.TabIndex = 0;
         BotonMasC.Text = " +";
-        BotonMasC.UseVisualStyleBackColor = true;
+        BotonMasC.UseVisualStyleBackColor = false;
         BotonMasC.Click += BotonMasC_Click;
+        BotonMasC.MouseEnter += Boton_MouseEnter;
+        BotonMasC.MouseLeave += Boton_MouseLeave;
         // 
         // BotonMenosC
         // 
+        BotonMenosC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        BotonMenosC.BackColor = Color.DodgerBlue;
         BotonMenosC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+        BotonMenosC.ForeColor = SystemColors.ControlLightLight;
         BotonMenosC.Location = new Point(760, 89);
         BotonMenosC.Name = "BotonMenosC";
         BotonMenosC.Padding = new Padding(0, 0, 0, 4);
         BotonMenosC.Size = new Size(60, 60);
         BotonMenosC.TabIndex = 1;
         BotonMenosC.Text = " -";
-        BotonMenosC.UseVisualStyleBackColor = true;
+        BotonMenosC.UseVisualStyleBackColor = false;
         BotonMenosC.Click += BotonMenosC_Click;
+        BotonMenosC.MouseEnter += Boton_MouseEnter;
+        BotonMenosC.MouseLeave += Boton_MouseLeave;
         // 
         // labelNombreCliente
         // 
+        labelNombreCliente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        labelNombreCliente.BackColor = Color.Transparent;
         labelNombreCliente.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
         labelNombreCliente.Location = new Point(209, 45);
         labelNombreCliente.Name = "labelNombreCliente";
@@ -81,19 +94,27 @@ public partial class ClienteForm : Form
         // 
         // BotonBuscar
         // 
-        BotonBuscar.BackColor = SystemColors.GradientActiveCaption;
-        BotonBuscar.Font = new Font("Segoe UI", 10F);
+        BotonBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        BotonBuscar.BackColor = Color.DodgerBlue;
+        BotonBuscar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+        BotonBuscar.ForeColor = SystemColors.ControlLightLight;
         BotonBuscar.Location = new Point(360, 104);
+        BotonBuscar.MaximumSize = new Size(150, 30);
         BotonBuscar.Name = "BotonBuscar";
         BotonBuscar.Size = new Size(150, 30);
         BotonBuscar.TabIndex = 3;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
         BotonBuscar.Click += BotonBuscar_Click;
+        BotonBuscar.MouseEnter += Boton_MouseEnter;
+        BotonBuscar.MouseLeave += Boton_MouseLeave;
         // 
         // textBoxCliente
         // 
+        textBoxCliente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        textBoxCliente.BorderStyle = BorderStyle.None;
         textBoxCliente.Location = new Point(310, 45);
+        textBoxCliente.MaximumSize = new Size(200, 40);
         textBoxCliente.Multiline = true;
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
@@ -103,6 +124,8 @@ public partial class ClienteForm : Form
         // 
         // dgvCliente
         // 
+        dgvCliente.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        dgvCliente.BackgroundColor = Color.MidnightBlue;
         dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvCliente.Location = new Point(12, 155);
         dgvCliente.MultiSelect = false;
@@ -115,7 +138,7 @@ public partial class ClienteForm : Form
         // 
         // ClienteForm
         // 
-        BackgroundImage = Properties.Resources.Free_Powerpoint_Backgrounds_Template_Green_and_White;
+        BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(832, 392);
         Controls.Add(dgvCliente);
@@ -124,8 +147,7 @@ public partial class ClienteForm : Form
         Controls.Add(labelNombreCliente);
         Controls.Add(BotonMenosC);
         Controls.Add(BotonMasC);
-        FormBorderStyle = FormBorderStyle.FixedSingle;
-        MaximizeBox = false;
+        MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
         StartPosition = FormStartPosition.CenterScreen;
         Load += ClienteForm_Load;
@@ -205,6 +227,25 @@ public partial class ClienteForm : Form
                 }
                 buscarClientes(textBoxCliente.Text);
             }
+        }
+    }
+
+    private void Boton_MouseEnter(object sender, EventArgs e)
+    {
+        Button btn = sender as Button;
+        if (btn != null)
+        {
+            btn.BackColor = Color.LightSkyBlue;
+            btn.ForeColor = Color.RoyalBlue;
+        }
+    }
+    private void Boton_MouseLeave(object sender, EventArgs e)
+    {
+        Button btn = sender as Button;
+        if (btn != null)
+        {
+            btn.BackColor = Color.DodgerBlue;
+            btn.ForeColor = SystemColors.ControlLightLight;
         }
     }
 }
