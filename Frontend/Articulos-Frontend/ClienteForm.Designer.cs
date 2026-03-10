@@ -26,5 +26,6 @@
         private Label labelNombreCliente;
         private Button BotonBuscar;
         private DataGridView dgvCliente;
+        private Button BotonHelpC;
     }
 }

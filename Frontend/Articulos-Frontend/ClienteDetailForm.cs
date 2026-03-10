@@ -43,7 +43,7 @@ public partial class ClienteDetailForm : Form
         textBoxDni.Name = "textBoxDni";
         textBoxDni.PlaceholderText = "Introduzca el dni";
         textBoxDni.Size = new Size(247, 23);
-        textBoxDni.TabIndex = 11;
+        textBoxDni.TabIndex = 0;
         // 
         // textBoxNombre
         // 
@@ -51,7 +51,7 @@ public partial class ClienteDetailForm : Form
         textBoxNombre.Name = "textBoxNombre";
         textBoxNombre.PlaceholderText = "Introduzca el nombre";
         textBoxNombre.Size = new Size(247, 23);
-        textBoxNombre.TabIndex = 10;
+        textBoxNombre.TabIndex = 1;
         // 
         // textBoxApellidos
         // 
@@ -59,7 +59,7 @@ public partial class ClienteDetailForm : Form
         textBoxApellidos.Name = "textBoxApellidos";
         textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
         textBoxApellidos.Size = new Size(247, 23);
-        textBoxApellidos.TabIndex = 9;
+        textBoxApellidos.TabIndex = 2;
         // 
         // textBoxEmail
         // 
@@ -67,7 +67,7 @@ public partial class ClienteDetailForm : Form
         textBoxEmail.Name = "textBoxEmail";
         textBoxEmail.PlaceholderText = "Introduzca el email";
         textBoxEmail.Size = new Size(247, 23);
-        textBoxEmail.TabIndex = 8;
+        textBoxEmail.TabIndex = 3;
         // 
         // LabelDni
         // 
@@ -126,7 +126,7 @@ public partial class ClienteDetailForm : Form
         BotonCrearC.Location = new Point(301, 227);
         BotonCrearC.Name = "BotonCrearC";
         BotonCrearC.Size = new Size(150, 30);
-        BotonCrearC.TabIndex = 12;
+        BotonCrearC.TabIndex = 4;
         BotonCrearC.Text = "Crear";
         BotonCrearC.UseVisualStyleBackColor = false;
         BotonCrearC.Click += BotonCrearC_Click;

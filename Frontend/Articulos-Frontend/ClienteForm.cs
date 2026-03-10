@@ -44,6 +44,7 @@ public partial class ClienteForm : Form
         BotonBuscar = new Button();
         textBoxCliente = new TextBox();
         dgvCliente = new DataGridView();
+        BotonHelpC = new Button();
         ((ISupportInitialize)dgvCliente).BeginInit();
         SuspendLayout();
         // 
@@ -57,7 +58,7 @@ public partial class ClienteForm : Form
         BotonMasC.Name = "BotonMasC";
         BotonMasC.Padding = new Padding(0, 0, 0, 4);
         BotonMasC.Size = new Size(60, 60);
-        BotonMasC.TabIndex = 0;
+        BotonMasC.TabIndex = 3;
         BotonMasC.Text = " +";
         BotonMasC.UseVisualStyleBackColor = false;
         BotonMasC.Click += BotonMasC_Click;
@@ -74,7 +75,7 @@ public partial class ClienteForm : Form
         BotonMenosC.Name = "BotonMenosC";
         BotonMenosC.Padding = new Padding(0, 0, 0, 4);
         BotonMenosC.Size = new Size(60, 60);
-        BotonMenosC.TabIndex = 1;
+        BotonMenosC.TabIndex = 4;
         BotonMenosC.Text = " -";
         BotonMenosC.UseVisualStyleBackColor = false;
         BotonMenosC.Click += BotonMenosC_Click;
@@ -102,7 +103,7 @@ public partial class ClienteForm : Form
         BotonBuscar.MaximumSize = new Size(150, 30);
         BotonBuscar.Name = "BotonBuscar";
         BotonBuscar.Size = new Size(150, 30);
-        BotonBuscar.TabIndex = 3;
+        BotonBuscar.TabIndex = 2;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
         BotonBuscar.Click += BotonBuscar_Click;
@@ -115,11 +116,12 @@ public partial class ClienteForm : Form
         textBoxCliente.BorderStyle = BorderStyle.None;
         textBoxCliente.Location = new Point(310, 45);
         textBoxCliente.MaximumSize = new Size(200, 40);
+        textBoxCliente.MaxLength = 60;
         textBoxCliente.Multiline = true;
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
         textBoxCliente.Size = new Size(200, 40);
-        textBoxCliente.TabIndex = 4;
+        textBoxCliente.TabIndex = 1;
         textBoxCliente.TextAlign = HorizontalAlignment.Center;
         // 
         // dgvCliente
@@ -136,11 +138,27 @@ public partial class ClienteForm : Form
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
         // 
+        // BotonHelpC
+        // 
+        BotonHelpC.BackColor = Color.DodgerBlue;
+        BotonHelpC.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        BotonHelpC.ForeColor = SystemColors.ControlLightLight;
+        BotonHelpC.Location = new Point(12, 23);
+        BotonHelpC.Name = "BotonHelpC";
+        BotonHelpC.Size = new Size(30, 30);
+        BotonHelpC.TabIndex = 0;
+        BotonHelpC.Text = "?";
+        BotonHelpC.UseVisualStyleBackColor = false;
+        BotonHelpC.Click += BotonHelpC_Click;
+        BotonHelpC.MouseEnter += Boton_MouseEnter;
+        BotonHelpC.MouseLeave += Boton_MouseLeave;
+        // 
         // ClienteForm
         // 
         BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(832, 392);
+        Controls.Add(BotonHelpC);
         Controls.Add(dgvCliente);
         Controls.Add(textBoxCliente);
         Controls.Add(BotonBuscar);
@@ -247,5 +265,10 @@ public partial class ClienteForm : Form
             btn.BackColor = Color.DodgerBlue;
             btn.ForeColor = SystemColors.ControlLightLight;
         }
+    }
+
+    private void BotonHelpC_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show("En esta sección puedes gestionar los clientes. Usa el botón '+' para agregar un nuevo cliente, el botón '-' para eliminar el cliente seleccionado, y haz doble clic en un cliente para editar su información.", "Ayuda - Gestión de Clientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 }

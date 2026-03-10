@@ -45,7 +45,7 @@ namespace Articulos_Frontend
             textBoxDni.Name = "textBoxDni";
             textBoxDni.PlaceholderText = "Introduzca el dni";
             textBoxDni.Size = new Size(247, 23);
-            textBoxDni.TabIndex = 11;
+            textBoxDni.TabIndex = 0;
             // 
             // textBoxNombre
             // 
@@ -53,7 +53,7 @@ namespace Articulos_Frontend
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.PlaceholderText = "Introduzca el nombre";
             textBoxNombre.Size = new Size(247, 23);
-            textBoxNombre.TabIndex = 10;
+            textBoxNombre.TabIndex = 1;
             // 
             // textBoxApellidos
             // 
@@ -61,7 +61,7 @@ namespace Articulos_Frontend
             textBoxApellidos.Name = "textBoxApellidos";
             textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
             textBoxApellidos.Size = new Size(247, 23);
-            textBoxApellidos.TabIndex = 9;
+            textBoxApellidos.TabIndex = 2;
             // 
             // textBoxEmail
             // 
@@ -69,7 +69,7 @@ namespace Articulos_Frontend
             textBoxEmail.Name = "textBoxEmail";
             textBoxEmail.PlaceholderText = "Introduzca el email";
             textBoxEmail.Size = new Size(247, 23);
-            textBoxEmail.TabIndex = 8;
+            textBoxEmail.TabIndex = 3;
             // 
             // LabelDni
             // 
@@ -124,7 +124,7 @@ namespace Articulos_Frontend
             BotonActualizarC.Location = new Point(301, 227);
             BotonActualizarC.Name = "BotonActualizarC";
             BotonActualizarC.Size = new Size(150, 30);
-            BotonActualizarC.TabIndex = 12;
+            BotonActualizarC.TabIndex = 4;
             BotonActualizarC.Text = "Actualizar";
             BotonActualizarC.UseVisualStyleBackColor = false;
             BotonActualizarC.Click += BotonActualizarC_Click;
