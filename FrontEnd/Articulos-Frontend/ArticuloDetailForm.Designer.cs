@@ -40,8 +40,10 @@
             // 
             // detalleNombre
             // 
+            detalleNombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            detalleNombre.BackColor = Color.Transparent;
             detalleNombre.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            detalleNombre.Location = new Point(174, 131);
+            detalleNombre.Location = new Point(68, 122);
             detalleNombre.Name = "detalleNombre";
             detalleNombre.Size = new Size(82, 28);
             detalleNombre.TabIndex = 0;
@@ -49,8 +51,10 @@
             // 
             // detallePrecio
             // 
+            detallePrecio.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            detallePrecio.BackColor = Color.Transparent;
             detallePrecio.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            detallePrecio.Location = new Point(186, 170);
+            detallePrecio.Location = new Point(80, 161);
             detallePrecio.Name = "detallePrecio";
             detallePrecio.Size = new Size(70, 28);
             detallePrecio.TabIndex = 1;
@@ -58,8 +62,10 @@
             // 
             // detalleCategoria
             // 
+            detalleCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            detalleCategoria.BackColor = Color.Transparent;
             detalleCategoria.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            detalleCategoria.Location = new Point(156, 209);
+            detalleCategoria.Location = new Point(50, 200);
             detalleCategoria.Name = "detalleCategoria";
             detalleCategoria.Size = new Size(100, 23);
             detalleCategoria.TabIndex = 2;
@@ -67,22 +73,25 @@
             // 
             // textBoxNombre
             // 
-            textBoxNombre.Location = new Point(253, 131);
+            textBoxNombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            textBoxNombre.Location = new Point(147, 122);
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.Size = new Size(131, 23);
             textBoxNombre.TabIndex = 3;
             // 
             // textBoxPrecio
             // 
-            textBoxPrecio.Location = new Point(253, 170);
+            textBoxPrecio.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            textBoxPrecio.Location = new Point(147, 161);
             textBoxPrecio.Name = "textBoxPrecio";
             textBoxPrecio.Size = new Size(131, 23);
             textBoxPrecio.TabIndex = 4;
             // 
             // detallesTitulo
             // 
+            detallesTitulo.BackColor = Color.Transparent;
             detallesTitulo.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            detallesTitulo.Location = new Point(26, 23);
+            detallesTitulo.Location = new Point(12, 38);
             detallesTitulo.Name = "detallesTitulo";
             detallesTitulo.Size = new Size(481, 52);
             detallesTitulo.TabIndex = 6;
@@ -90,8 +99,9 @@
             // 
             // botonConfirm
             // 
+            botonConfirm.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             botonConfirm.Font = new Font("Segoe UI", 20F);
-            botonConfirm.Location = new Point(443, 144);
+            botonConfirm.Location = new Point(371, 137);
             botonConfirm.Name = "botonConfirm";
             botonConfirm.Size = new Size(64, 61);
             botonConfirm.TabIndex = 7;
@@ -101,8 +111,9 @@
             // 
             // comboBoxCategoria
             // 
+            comboBoxCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             comboBoxCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxCategoria.Location = new Point(253, 209);
+            comboBoxCategoria.Location = new Point(147, 200);
             comboBoxCategoria.Name = "comboBoxCategoria";
             comboBoxCategoria.Size = new Size(131, 23);
             comboBoxCategoria.TabIndex = 0;
@@ -122,6 +133,7 @@
             Controls.Add(detalleCategoria);
             Controls.Add(detallePrecio);
             Controls.Add(detalleNombre);
+            MinimumSize = new Size(599, 382);
             Name = "ArticuloDetailForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ArticuloDetailForm";

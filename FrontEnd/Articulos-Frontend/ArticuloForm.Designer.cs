@@ -39,24 +39,29 @@
             // 
             // EtiquetaNombre
             // 
+            EtiquetaNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            EtiquetaNombre.BackColor = Color.Transparent;
             EtiquetaNombre.Font = new Font("Times New Roman", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            EtiquetaNombre.Location = new Point(174, 76);
+            EtiquetaNombre.Location = new Point(208, 75);
             EtiquetaNombre.Name = "EtiquetaNombre";
             EtiquetaNombre.Size = new Size(95, 28);
             EtiquetaNombre.TabIndex = 0;
             EtiquetaNombre.Text = "Nombre: ";
+            EtiquetaNombre.Click += EtiquetaNombre_Click;
             // 
             // TextoNombre
             // 
+            TextoNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             TextoNombre.Font = new Font("Segoe UI", 12F);
-            TextoNombre.Location = new Point(266, 75);
+            TextoNombre.Location = new Point(296, 75);
             TextoNombre.Name = "TextoNombre";
             TextoNombre.PlaceholderText = "Escribe aqui un articulo";
-            TextoNombre.Size = new Size(220, 29);
+            TextoNombre.Size = new Size(190, 29);
             TextoNombre.TabIndex = 1;
             // 
             // BotonAdd
             // 
+            BotonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BotonAdd.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             BotonAdd.Location = new Point(648, 28);
             BotonAdd.Name = "BotonAdd";
@@ -68,6 +73,7 @@
             // 
             // BotonDel
             // 
+            BotonDel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BotonDel.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             BotonDel.Location = new Point(648, 108);
             BotonDel.Name = "BotonDel";
@@ -79,6 +85,7 @@
             // 
             // BotonBuscar
             // 
+            BotonBuscar.Anchor = AnchorStyles.Top;
             BotonBuscar.Font = new Font("Segoe UI", 14F);
             BotonBuscar.Location = new Point(348, 127);
             BotonBuscar.Name = "BotonBuscar";
@@ -90,6 +97,7 @@
             // 
             // dataGridView1
             // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(12, 190);
             dataGridView1.Name = "dataGridView1";
@@ -110,8 +118,7 @@
             Controls.Add(BotonAdd);
             Controls.Add(TextoNombre);
             Controls.Add(EtiquetaNombre);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
+            MinimumSize = new Size(816, 489);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ArticuloForm";
