@@ -199,7 +199,7 @@ public partial class ClienteDetailForm : Form
                 existeDni = false;
             }
             if (existeDni) return;
-            Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
+            Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now, null);
             clienteApiClient.Crear(cliente);
             MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

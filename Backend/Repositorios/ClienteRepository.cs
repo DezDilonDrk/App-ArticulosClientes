@@ -17,7 +17,7 @@ public class ClienteRepository
     {
         using (var db = Connection)
         {
-            string sql = "SELECT Dni, Nombre, Apellidos, Email FROM Clientes";
+            string sql = "SELECT Dni, Nombre, Apellidos, Email, FechaCreacion, FechaModificacion FROM Clientes";
             return db.Query<Cliente>(sql).ToList();
         }
     }
@@ -33,7 +33,7 @@ public class ClienteRepository
     {
         using (var db = Connection)
         {
-            string sql = @"SELECT Dni, Nombre, Apellidos, Email
+            string sql = @"SELECT Dni, Nombre, Apellidos, Email, FechaCreacion, FechaModificacion
                                FROM Clientes
                                WHERE Nombre LIKE @Nombre";
 
@@ -44,8 +44,8 @@ public class ClienteRepository
     {
         using (var db = Connection)
         {
-            string sql = @"INSERT INTO Clientes (Dni, Nombre, Apellidos, Email)
-                           VALUES (@Dni, @Nombre, @Apellidos, @Email)";
+            string sql = @"INSERT INTO Clientes (Dni, Nombre, Apellidos, Email, FechaCreacion)
+                           VALUES (@Dni, @Nombre, @Apellidos, @Email, @FechaCreacion)";
             db.Execute(sql, cliente);
         }
     }
@@ -56,7 +56,8 @@ public class ClienteRepository
             string sql = @"UPDATE Clientes
                                SET Nombre = @Nombre,
                                    Apellidos = @Apellidos,
-                                   Email = @Email
+                                   Email = @Email,
+                                   FechaModificacion = @FechaModificacion    
                                WHERE Dni = @Dni";
 
             db.Execute(sql, cliente);

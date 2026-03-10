@@ -77,7 +77,7 @@ namespace Articulos_Frontend
             else
             {
                 _articulo.nombre = textBoxNombre.Text.Trim();
-                _articulo.precio = textPrecio;
+                _articulo.precio = (decimal) textPrecio;
                 _articulo.categoria = comboBoxCategoria.Text?.Trim();
                 var ok = await _client.Actualizar(_articulo.id, _articulo);
                 if (!ok)

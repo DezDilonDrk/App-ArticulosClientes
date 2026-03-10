@@ -1,4 +1,5 @@
 ﻿using Articulos_Backend.Repositorios;
+using Articulos_Frontend.Client;
 using ClientesASPNET;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Articulos_Frontend
 {
     public partial class ClienteUpdateForm : Form
     {
-        private ClienteRepository clienteRepository;
+        private ClienteApiClient clienteApiClient;
         public ClienteUpdateForm(Cliente cliente)
         {
             InitializeComponent();
@@ -23,7 +24,7 @@ namespace Articulos_Frontend
             textBoxEmail.Text = cliente.Email;
 
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-            clienteRepository = new ClienteRepository(connStr);
+            clienteApiClient = new ClienteApiClient();
         }
 
         private void InitializeComponent()
@@ -189,8 +190,8 @@ namespace Articulos_Frontend
             {
                 try
                 {
-                    Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text);
-                    clienteRepository.Actualizar(cliente);
+                    Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now,DateTime.Now);
+                    clienteApiClient.Actualizar(cliente.Dni,cliente);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
