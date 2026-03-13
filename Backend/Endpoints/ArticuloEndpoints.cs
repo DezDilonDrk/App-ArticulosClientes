@@ -23,43 +23,27 @@ public static class ArticuloEndpoints
         .Produces(StatusCodes.Status404NotFound);
         app.MapGet("/articulos", (string? nombre) =>
         {
-            if (string.IsNullOrWhiteSpace(nombre))
-                return Results.Ok(repo.ObtenerArticulos());
-
-            var articulo = repo.ObtenerPorNombre(nombre);
-            return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
+            if (string.IsNullOrWhiteSpace(nombre)) { return Results.Ok(repo.ObtenerArticulos()); }
+            var articulo = repo.ObtenerPorNombre(nombre) ?? throw new KeyNotFoundException("Artículo no encontrado");
+            return Results.Ok(articulo);
         })
         .Produces<List<Articulo>>(StatusCodes.Status200OK)
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
         app.MapPost("/articulos", (Articulo articulo) =>
         {
-            var articuloExistente = repo.ObtenerPorNombreExacto(articulo.nombre);
-            if (articuloExistente != null)
-            {
-                return Results.Conflict($"Ya existe un artículo con el nombre '{articulo.nombre}'.");
-            }
+            var existente = repo.ObtenerPorNombreExacto(articulo.nombre);
+            if (existente != null) { throw new InvalidOperationException($"Ya existe un artículo con nombre '{articulo.nombre}'"); }              
             repo.Insertar(articulo);
-            return Results.Created($"/Articulo/{articulo.id}", articulo);
+            return Results.Created($"/articulos/{articulo.id}", articulo);
         })
         .Produces<Articulo>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/articulos/{id:int}", (int id, Articulo updatedArticulo) =>
         {
-            var existing = repo.ObtenerPorId(id);
-            if (existing is null)
-            {
-                return Results.NotFound();
-            }
-
+            var existing = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             updatedArticulo.id = id;
-
-            var success = repo.Actualizar(updatedArticulo);
-            if (!success)
-            {
-                return Results.Conflict("No se pudo actualizar el artículo.");
-            }
-
+            repo.Actualizar(updatedArticulo);
             var refreshed = repo.ObtenerPorId(id) ?? updatedArticulo;
             return Results.Ok(refreshed);
         })
@@ -68,11 +52,7 @@ public static class ArticuloEndpoints
 .Produces(StatusCodes.Status409Conflict);
         app.MapDelete("/articulos/{id:int}", (int id) =>
         {
-            var articulo = repo.ObtenerPorId(id);
-            if (articulo is null)
-            {
-                return Results.NotFound();
-            }
+            var articulo = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             repo.Eliminar(id);
             return Results.NoContent();
         })
