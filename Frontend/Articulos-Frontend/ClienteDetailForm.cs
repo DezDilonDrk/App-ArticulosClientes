@@ -14,10 +14,11 @@ namespace Articulos_Frontend;
 public partial class ClienteDetailForm : Form
 {
     private ClienteApiClient clienteApiClient;
+    private Cliente cliente;
     public ClienteDetailForm(Cliente cliente)
     {
         InitializeComponent();
-
+        this.cliente = cliente;
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         clienteApiClient = new ClienteApiClient();
     }
@@ -35,8 +36,8 @@ public partial class ClienteDetailForm : Form
         LabelApellidos = new Label();
         LabelEmail = new Label();
         BotonCrearC = new Button();
-        checkSalir = new CheckBox();
         LabelTitulo = new Label();
+        button1 = new Button();
         SuspendLayout();
         // 
         // textBoxDni
@@ -135,18 +136,6 @@ public partial class ClienteDetailForm : Form
         BotonCrearC.MouseEnter += Boton_MouseEnter;
         BotonCrearC.MouseLeave += Boton_MouseLeave;
         // 
-        // checkSalir
-        // 
-        checkSalir.BackColor = Color.Transparent;
-        checkSalir.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-        checkSalir.Location = new Point(104, 246);
-        checkSalir.Name = "checkSalir";
-        checkSalir.Size = new Size(120, 20);
-        checkSalir.TabIndex = 4;
-        checkSalir.Text = "Salir al Crear";
-        checkSalir.TextAlign = ContentAlignment.MiddleCenter;
-        checkSalir.UseVisualStyleBackColor = false;
-        // 
         // LabelTitulo
         // 
         LabelTitulo.BackColor = Color.Transparent;
@@ -155,15 +144,28 @@ public partial class ClienteDetailForm : Form
         LabelTitulo.Name = "LabelTitulo";
         LabelTitulo.Size = new Size(316, 36);
         LabelTitulo.TabIndex = 0;
-        LabelTitulo.Text = "CREAR USUARIO";
+        LabelTitulo.Text = "CREAR CLIENTE";
         LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
+        // 
+        // button1
+        // 
+        button1.BackColor = Color.Chartreuse;
+        button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        button1.ForeColor = SystemColors.ActiveCaptionText;
+        button1.Location = new Point(104, 250);
+        button1.Name = "button1";
+        button1.Size = new Size(51, 23);
+        button1.TabIndex = 8;
+        button1.Text = "debug";
+        button1.UseVisualStyleBackColor = false;
+        button1.Click += button1_Click;
         // 
         // ClienteDetailForm
         // 
         BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
         ClientSize = new Size(580, 363);
+        Controls.Add(button1);
         Controls.Add(LabelTitulo);
-        Controls.Add(checkSalir);
         Controls.Add(BotonCrearC);
         Controls.Add(LabelEmail);
         Controls.Add(LabelApellidos);
@@ -176,6 +178,7 @@ public partial class ClienteDetailForm : Form
         FormBorderStyle = FormBorderStyle.FixedSingle;
         Name = "ClienteDetailForm";
         StartPosition = FormStartPosition.CenterParent;
+        Text = "Crear Cliente";
         ResumeLayout(false);
         PerformLayout();
 
@@ -187,21 +190,25 @@ public partial class ClienteDetailForm : Form
         try
         {
             bool existeDni = false;
-            try { 
+            try
+            {
                 Cliente comprobar = await clienteApiClient.ObtenerPorDni(textBoxDni.Text.ToUpper());
                 if (comprobar != null)
                 {
                     existeDni = true;
                     MessageBox.Show("El DNI introducido ya existe. Por favor, introduzca un DNI único.", "DNI duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-            } catch
+            }
+            catch (Exception ex)
             {
                 existeDni = false;
             }
             if (existeDni) return;
-            Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now, null);
+            Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
             MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
         catch (Exception ex)
         {
@@ -223,15 +230,12 @@ public partial class ClienteDetailForm : Form
         {
             var addr = new System.Net.Mail.MailAddress(email);
             return addr.Address == email;
+            this.Close();
         }
         catch
         {
             MessageBox.Show("Por favor, introduzca un email válido con el formato: {usuario}@{proveedor}.{dominio}", "Email no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
-        }
-        if(checkSalir.Checked)
-        {
-            this.Close();
         }
     }
     private bool ValidarDni(string dni)
@@ -263,6 +267,10 @@ public partial class ClienteDetailForm : Form
         }
         return true;
     }
+    public Cliente getCliente()
+    {
+        return this.cliente;
+    }
     private void Boton_MouseEnter(object sender, EventArgs e)
     {
         Button btn = sender as Button;
@@ -280,5 +288,12 @@ public partial class ClienteDetailForm : Form
             btn.BackColor = Color.DodgerBlue;
             btn.ForeColor = SystemColors.ControlLightLight;
         }
+    }
+    private void button1_Click(object sender, EventArgs e)
+    {
+        this.textBoxNombre.Text = "Federico";
+        this.textBoxApellidos.Text = "Pérez García";
+        this.textBoxDni.Text = "12345678Z";
+        this.textBoxEmail.Text = "federicogarcia@gmail.com";
     }
 }

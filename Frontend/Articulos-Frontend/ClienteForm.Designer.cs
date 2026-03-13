@@ -27,5 +27,12 @@
         private Button BotonBuscar;
         private DataGridView dgvCliente;
         private Button BotonHelpC;
+        private DateTimePicker FechaDesde;
+        private GroupBox FiltroFecha;
+        private DateTimePicker FechaHasta;
+        private Button Filtros;
+        private Panel panelFiltros;
+        private Label labelFechaMax;
+        private Label labelFechaMin;
     }
 }

@@ -38,7 +38,6 @@ namespace Articulos_Frontend
             LabelApellidos = new Label();
             LabelEmail = new Label();
             BotonActualizarC = new Button();
-            checkSalir = new CheckBox();
             LabelTitulo = new Label();
             SuspendLayout();
             // 
@@ -139,18 +138,6 @@ namespace Articulos_Frontend
             BotonActualizarC.MouseEnter += Boton_MouseEnter;
             BotonActualizarC.MouseLeave += Boton_MouseLeave;
             // 
-            // checkSalir
-            // 
-            checkSalir.BackColor = Color.Transparent;
-            checkSalir.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            checkSalir.Location = new Point(104, 251);
-            checkSalir.Name = "checkSalir";
-            checkSalir.Size = new Size(146, 20);
-            checkSalir.TabIndex = 4;
-            checkSalir.Text = "Salir al Actualizar";
-            checkSalir.TextAlign = ContentAlignment.MiddleCenter;
-            checkSalir.UseVisualStyleBackColor = false;
-            // 
             // LabelTitulo
             // 
             LabelTitulo.BackColor = Color.Transparent;
@@ -168,7 +155,6 @@ namespace Articulos_Frontend
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(580, 363);
             Controls.Add(LabelTitulo);
-            Controls.Add(checkSalir);
             Controls.Add(BotonActualizarC);
             Controls.Add(LabelEmail);
             Controls.Add(LabelApellidos);
@@ -179,11 +165,12 @@ namespace Articulos_Frontend
             Controls.Add(textBoxNombre);
             Controls.Add(textBoxDni);
             Name = "ClienteUpdateForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Actualizar Usuario";
             ResumeLayout(false);
             PerformLayout();
 
         }
-
         private void BotonActualizarC_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text))
@@ -203,10 +190,8 @@ namespace Articulos_Frontend
             {
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            if (checkSalir.Checked)
-            {
-                this.Close();
-            }
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
         private void Boton_MouseEnter(object sender, EventArgs e)
         {
