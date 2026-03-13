@@ -27,6 +27,7 @@ public class ArticuloRepository
 
     public Articulo ObtenerPorId(int id)
     {
+        
         using ( var db = Connection )
         {
             string sql = "SELECT * FROM Articulos WHERE Id = @Id";
@@ -59,13 +60,12 @@ public class ArticuloRepository
         }
     }
 
-    public bool Actualizar(Articulo articulo)
+    public void Actualizar(Articulo articulo)
     {
         using (var db = Connection)
         {
             string sql = "UPDATE Articulos SET Nombre = @Nombre, Precio = @Precio, Categoria = @Categoria, FechaActualizacion = @FechaActualizacion WHERE Id = @Id";
-            var filasAfectadas = db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, FechaActualizacion = DateTime.Now, Id = articulo.id });
-            return filasAfectadas > 0;
+            db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, FechaActualizacion = DateTime.Now, Id = articulo.id });
         }
     }
 

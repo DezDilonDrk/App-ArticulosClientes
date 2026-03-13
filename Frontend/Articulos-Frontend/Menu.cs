@@ -7,6 +7,7 @@ namespace Articulos_Frontend
         public Menu()
         {
             InitializeComponent();
+
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -19,6 +20,15 @@ namespace Articulos_Frontend
         {
             if(articuloForm == null || articuloForm.IsDisposed)
                 articuloForm = new ArticuloForm();
+            articuloForm.Width = this.Width - 20;
+            articuloForm.Height = this.Height - 140;
+            articuloForm.Shown += (s, ev) =>
+            {
+                articuloForm.Location = new Point(
+                    this.Left + (this.Width - articuloForm.Width) / 2,
+                    this.Top + (this.Height - articuloForm.Height) / 2
+                );
+            };
             articuloForm.Show();
             articuloForm.BringToFront();
         }
