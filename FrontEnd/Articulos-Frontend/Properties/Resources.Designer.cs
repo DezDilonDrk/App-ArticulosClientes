@@ -113,6 +113,16 @@ namespace Articulos_Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap rabbit_clock_meme {
+            get {
+                object obj = ResourceManager.GetObject("rabbit-clock-meme", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Yellow_Emoji_Face_meme_4 {
             get {
                 object obj = ResourceManager.GetObject("Yellow-Emoji-Face-meme-4", resourceCulture);

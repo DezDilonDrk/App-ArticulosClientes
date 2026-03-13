@@ -31,7 +31,7 @@ namespace Articulos_Frontend
             
         }
 
-        public async void botonConfirm_Click(object sender, EventArgs e)
+        private async void botonConfirm_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxNombre.Text))
             {
@@ -79,17 +79,12 @@ namespace Articulos_Frontend
                 _articulo.nombre = textBoxNombre.Text.Trim();
                 _articulo.precio = textPrecio;
                 _articulo.categoria = comboBoxCategoria.Text?.Trim();
-                var ok = await _client.Actualizar(_articulo.id, _articulo);
-                if (!ok)
-                {
-                    MessageBox.Show("No se pudo actualizar el artículo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                await _client.Actualizar(_articulo.id, _articulo);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             
         }
-        
+
     }
 }
