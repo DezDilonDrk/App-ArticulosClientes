@@ -28,9 +28,9 @@ namespace Articulos_Frontend.Theme
 
             if (control is TextBox txt)
             {
-                txt.BackColor = ColorPalette.TextPrimary;
-                txt.ForeColor = ColorPalette.TextDark;
-                txt.BorderStyle = BorderStyle.FixedSingle;
+                txt.BackColor = ColorPalette.TextBoxBackground;
+                txt.ForeColor = ColorPalette.TextPrimary;
+                txt.BorderStyle = BorderStyle.None;
                 txt.Font = new Font("Segoe UI", 10, FontStyle.Regular);
             }
 
