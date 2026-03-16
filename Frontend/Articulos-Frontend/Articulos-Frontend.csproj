@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Backend\Articulos-Backend.csproj" />
+    <ProjectReference Include="..\MTCore-AC\MTCore-AC.vbproj" />
   </ItemGroup>
 
   <ItemGroup>

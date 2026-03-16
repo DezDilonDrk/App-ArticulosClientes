@@ -15,6 +15,7 @@ public partial class ClienteDetailForm : Form
 {
     private ClienteApiClient clienteApiClient;
     private Cliente cliente;
+    public event Action<Cliente> ClienteCreadoCorrectamente;
     public ClienteDetailForm(Cliente cliente)
     {
         InitializeComponent();
@@ -207,7 +208,7 @@ public partial class ClienteDetailForm : Form
             Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
             MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.DialogResult = DialogResult.OK;
+            ClienteCreadoCorrectamente?.Invoke(cliente);
             this.Close();
         }
         catch (Exception ex)

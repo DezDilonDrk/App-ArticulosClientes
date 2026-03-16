@@ -19,5 +19,8 @@
     <Compile Update="Menu.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="PanelMT.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

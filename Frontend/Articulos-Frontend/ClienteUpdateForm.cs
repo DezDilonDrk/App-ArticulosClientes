@@ -14,6 +14,7 @@ namespace Articulos_Frontend
     public partial class ClienteUpdateForm : Form
     {
         private ClienteApiClient clienteApiClient;
+        public event Action<Cliente> ClienteActualizadoCorrectamente;
         public ClienteUpdateForm(Cliente cliente)
         {
             InitializeComponent();
@@ -180,6 +181,8 @@ namespace Articulos_Frontend
                     Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now,DateTime.Now);
                     clienteApiClient.Actualizar(cliente.Dni,cliente);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClienteActualizadoCorrectamente?.Invoke(cliente);
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
@@ -190,8 +193,6 @@ namespace Articulos_Frontend
             {
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
         private void Boton_MouseEnter(object sender, EventArgs e)
         {

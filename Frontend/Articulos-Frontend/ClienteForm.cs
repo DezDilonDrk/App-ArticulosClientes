@@ -38,6 +38,8 @@ public partial class ClienteForm : Form
 
     private void InitializeComponent()
     {
+        DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteForm));
         BotonMasC = new Button();
         BotonMenosC = new Button();
@@ -120,7 +122,7 @@ public partial class ClienteForm : Form
         // 
         // textBoxCliente
         // 
-        textBoxCliente.BackColor = Color.FromArgb(242, 242, 242);
+        textBoxCliente.BackColor = Color.FromArgb(42, 42, 42);
         textBoxCliente.BorderStyle = BorderStyle.None;
         textBoxCliente.ForeColor = Color.FromArgb(242, 242, 242);
         textBoxCliente.Location = new Point(79, 12);
@@ -135,12 +137,33 @@ public partial class ClienteForm : Form
         // 
         dgvCliente.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         dgvCliente.BackgroundColor = Color.FromArgb(42, 42, 42);
+        dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle1.BackColor = Color.FromArgb(60, 60, 60);
+        dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle1.ForeColor = Color.FromArgb(242, 242, 242);
+        dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(60, 60, 60);
+        dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+        dgvCliente.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
         dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvCliente.EnableHeadersVisualStyles = false;
         dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
         dgvCliente.Location = new Point(12, 122);
         dgvCliente.MultiSelect = false;
         dgvCliente.Name = "dgvCliente";
         dgvCliente.ReadOnly = true;
+        dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle2.BackColor = Color.FromArgb(60, 60, 60);
+        dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle2.ForeColor = Color.FromArgb(242, 242, 242);
+        dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
+        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        dgvCliente.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+        dgvCliente.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
+        dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
+        dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         dgvCliente.Size = new Size(808, 258);
         dgvCliente.TabIndex = 5;
@@ -252,7 +275,7 @@ public partial class ClienteForm : Form
         // 
         // ClienteForm
         // 
-        BackColor = Color.FromArgb(28, 28, 28);
+        BackColor = Color.WhiteSmoke;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(832, 392);
         Controls.Add(BotonHelpC);
@@ -264,6 +287,7 @@ public partial class ClienteForm : Form
         Controls.Add(labelNombreCliente);
         Controls.Add(BotonMenosC);
         Controls.Add(BotonMasC);
+        ForeColor = SystemColors.ControlLight;
         Icon = (Icon)resources.GetObject("$this.Icon");
         MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
@@ -352,21 +376,24 @@ public partial class ClienteForm : Form
     private async void BotonMasC_Click(object sender, EventArgs e)
     {
         Cliente nuevoCliente = new Cliente();
-        using (var form = new ClienteDetailForm(nuevoCliente))
+        var formNuevo = new ClienteDetailForm(nuevoCliente);
+
+        formNuevo.ClienteCreadoCorrectamente += async cliente =>
         {
-            if (form.ShowDialog() == DialogResult.OK)
+            if (!string.IsNullOrEmpty(cliente.Dni))
             {
                 buscarClientes(textBoxCliente.Text);
-                Cliente clienteCreado = form.getCliente();
-                using (var form2 = new ClienteUpdateForm(clienteCreado))
-                {
-                    if (form2.ShowDialog() == DialogResult.OK)
-                    {
-                        buscarClientes(textBoxCliente.Text);
-                    }
-                }
+
+                WindowManager.ShowForm(
+                    $"{cliente.Dni}_Actualizar",
+                    this,
+                    () => new ClienteUpdateForm(cliente));
             }
-        }
+        };
+        WindowManager.ShowForm(
+            "Cliente_Nuevo",
+            this,
+            () => formNuevo);
     }
 
     private async void BotonMenosC_Click(object sender, EventArgs e)
@@ -390,28 +417,20 @@ public partial class ClienteForm : Form
         {
             string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
             Cliente cliente = await ClienteApiClient.ObtenerPorDni(dni);
-            using (var form = new ClienteUpdateForm(cliente))
+            var formActualizado = new ClienteUpdateForm(cliente);
+
+            formActualizado.ClienteActualizadoCorrectamente += async cliente =>
             {
-                if (form.ShowDialog() == DialogResult.OK)
+                if (!string.IsNullOrEmpty(cliente.Dni) && !string.IsNullOrEmpty(cliente.Nombre) && !string.IsNullOrEmpty(cliente.Apellidos) && !string.IsNullOrEmpty(cliente.Email))
                 {
-                    await ClienteApiClient.Actualizar(dni, cliente);
+                    buscarClientes(textBoxCliente.Text);
                 }
-                buscarClientes(textBoxCliente.Text);
-                if (!string.IsNullOrEmpty(cliente.Dni))
-                {
-                    for (int i = 0; i < dgvCliente.Rows.Count; i++)
-                    {
-                        if (dgvCliente.Rows[i].Cells["Dni"].Value?.ToString() == cliente.Dni)
-                        {
-                            dgvCliente.ClearSelection();
-                            dgvCliente.Rows[i].Selected = true;
-                            dgvCliente.CurrentCell = dgvCliente.Rows[i].Cells[0];
-                            dgvCliente.FirstDisplayedScrollingRowIndex = i;
-                            break;
-                        }
-                    }
-                }
-            }
+            };
+            WindowManager.ShowForm(
+                    $"{dni}_Actualizar",
+                    this,
+                    () => formActualizado);
+            
         }
     }
     private async Task SeleccionarCliente(string dni)
@@ -434,7 +453,7 @@ public partial class ClienteForm : Form
         if (btn != null)
         {
             btn.BackColor = Color.FromArgb(255, 59, 48);
-            btn.ForeColor = Color.RoyalBlue;
+            btn.ForeColor = Color.White;
         }
     }
     private void Boton_MouseLeave(object sender, EventArgs e)
