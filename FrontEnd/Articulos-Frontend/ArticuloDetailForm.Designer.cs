@@ -122,7 +122,6 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.Yellow_Emoji_Face_meme_4;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(583, 343);
             Controls.Add(comboBoxCategoria);

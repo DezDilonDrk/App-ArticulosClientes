@@ -1,5 +1,6 @@
 ﻿using Articulos_Backend.Repositorios;
 using Articulos_Frontend.Client;
+using Articulos_Frontend.Theme;
 using ClientesASPNET;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -24,6 +25,7 @@ public partial class ClienteForm : Form
 
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         ClienteApiClient = new ClienteApiClient();
+        StyleManager.StyleForm(this);
     }
 
     private void textBox1_TextChanged(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using Articulos_Backend.Articulos;
 using Articulos_Backend.Repositorios;
+using Articulos_Frontend.Theme;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,8 @@ namespace Articulos_Frontend
                 textBoxPrecio.Text = articulo.precio.ToString();
                 comboBoxCategoria.Text = articulo.categoria;
             }
-            
+            StyleManager.StyleForm(this);
+
         }
 
         private async void botonConfirm_Click(object sender, EventArgs e)
