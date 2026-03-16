@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Articulos_Backend.Articulos;
+using Articulos_Frontend.Theme;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 //using Articulos_Backend.Repositorios;
 
@@ -22,6 +23,7 @@ public partial class ArticuloForm : Form
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         //repo = new ArticuloRepository(connStr);
         api = new ArticuloApiClient();
+        StyleManager.StyleForm(this);
     }
 
     private void ArticuloForm_Load(object sender, EventArgs e)

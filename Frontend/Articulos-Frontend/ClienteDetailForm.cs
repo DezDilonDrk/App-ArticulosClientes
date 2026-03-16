@@ -1,5 +1,6 @@
 ﻿using Articulos_Backend.Repositorios;
 using Articulos_Frontend.Client;
+using Articulos_Frontend.Theme;
 using ClientesASPNET;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ public partial class ClienteDetailForm : Form
         this.cliente = cliente;
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         clienteApiClient = new ClienteApiClient();
+        StyleManager.StyleForm(this);
     }
 
 
