@@ -146,13 +146,13 @@ public partial class ClienteForm : Form
         dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
         dgvCliente.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
         dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
         dgvCliente.EnableHeadersVisualStyles = false;
         dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
         dgvCliente.Location = new Point(12, 122);
         dgvCliente.MultiSelect = false;
         dgvCliente.Name = "dgvCliente";
         dgvCliente.ReadOnly = true;
-        dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
         dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle2.BackColor = Color.FromArgb(60, 60, 60);
         dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -275,7 +275,7 @@ public partial class ClienteForm : Form
         // 
         // ClienteForm
         // 
-        BackColor = Color.WhiteSmoke;
+        BackColor = Color.FromArgb(26, 26, 26);
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(832, 392);
         Controls.Add(BotonHelpC);
