@@ -59,8 +59,8 @@ namespace Articulos_Frontend.Theme
                 btn.BackColor = ColorPalette.ButtonBack;
                 btn.ForeColor = ColorPalette.ButtonText;
 
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.FlatAppearance.BorderSize = 0;
+                btn.FlatStyle = FlatStyle.Standard;
+                btn.FlatAppearance.BorderSize = 5;
 
                 btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
 
