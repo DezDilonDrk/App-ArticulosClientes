@@ -95,6 +95,8 @@ public partial class ArticuloForm : Form
         }
     }
 
+    
+
     private void EtiquetaNombre_Click(object sender, EventArgs e)
     {
 
