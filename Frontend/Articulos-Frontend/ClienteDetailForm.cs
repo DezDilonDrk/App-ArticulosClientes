@@ -124,6 +124,7 @@ public partial class ClienteDetailForm : Form
         // 
         // BotonCrearC
         // 
+        BotonCrearC.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         BotonCrearC.AutoSize = true;
         BotonCrearC.BackColor = SystemColors.MenuHighlight;
         BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -156,7 +157,7 @@ public partial class ClienteDetailForm : Form
         button1.ForeColor = SystemColors.ActiveCaptionText;
         button1.Location = new Point(104, 250);
         button1.Name = "button1";
-        button1.Size = new Size(51, 23);
+        button1.Size = new Size(90, 23);
         button1.TabIndex = 8;
         button1.Text = "debug";
         button1.UseVisualStyleBackColor = false;
@@ -177,6 +178,8 @@ public partial class ClienteDetailForm : Form
         Controls.Add(textBoxNombre);
         Controls.Add(textBoxDni);
         FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
+        MaximumSize = new Size(596, 402);
         MinimumSize = new Size(596, 402);
         Name = "ClienteDetailForm";
         StartPosition = FormStartPosition.CenterParent;

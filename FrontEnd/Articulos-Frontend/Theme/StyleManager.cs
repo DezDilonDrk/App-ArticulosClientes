@@ -23,38 +23,45 @@ namespace Articulos_Frontend.Theme
         }
     }
 
-    private static void ApplyStyle(Control control)
-    {
-        // LABELS
-        if (control is Label lbl)
+        private static void ApplyStyle(Control control)
         {
-            lbl.ForeColor = ColorPalette.TextPrimary;
-            lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
-        }
-        if (control is TextBox txt)
-        {
-            txt.BackColor = ColorPalette.TextBoxBackground;
-            txt.ForeColor = ColorPalette.TextPrimary;
-            txt.BorderStyle = BorderStyle.None;
-            txt.Font = new Font("Intercom", 9, FontStyle.Regular);
-        }
-        if (control is GroupBox gb)
-        {
-            gb.ForeColor = ColorPalette.TextPrimary;
-            gb.Font = new Font("Intercom", 8, FontStyle.Bold);
-        }
-        if (control is CheckBox chk) {
-            chk.ForeColor = ColorPalette.TextPrimary;
-            chk.Font = new Font("Intercom", 9, FontStyle.Regular);
-        }
-        if (control is DateTimePicker dtp) {
-            dtp.CalendarForeColor = ColorPalette.TextPrimary;
-            dtp.CalendarMonthBackground = ColorPalette.GridBackground;
-            dtp.CalendarTitleBackColor = ColorPalette.GridHeader;
-            dtp.CalendarTitleForeColor = ColorPalette.TextPrimary;
-            dtp.CalendarTrailingForeColor = ColorPalette.TextDark;
-            dtp.Font = new Font("Intercom", 9, FontStyle.Regular);
-        }
+            // LABELS
+            if (control is Label lbl)
+            {
+                if (lbl.Text.Equals("ACTUALIZAR CLIENTE") || lbl.Text.Equals("CREAR CLIENTE"))
+                {
+                    lbl.ForeColor = ColorPalette.TextPrimary;
+                    lbl.Font = new Font("Intercom", 18, FontStyle.Bold);
+                } else
+                {
+                    lbl.ForeColor = ColorPalette.TextPrimary;
+                    lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
+                }
+            }
+            if (control is TextBox txt)
+            {
+                txt.BackColor = ColorPalette.TextBoxBackground;
+                txt.ForeColor = ColorPalette.TextPrimary;
+                txt.BorderStyle = BorderStyle.None;
+                txt.Font = new Font("Intercom", 9, FontStyle.Regular);
+            }
+            if (control is GroupBox gb)
+            {
+                gb.ForeColor = ColorPalette.TextPrimary;
+                gb.Font = new Font("Intercom", 8, FontStyle.Bold);
+            }
+            if (control is CheckBox chk) {
+                chk.ForeColor = ColorPalette.TextPrimary;
+                chk.Font = new Font("Intercom", 9, FontStyle.Regular);
+            }
+            if (control is DateTimePicker dtp) {
+                dtp.CalendarForeColor = ColorPalette.TextPrimary;
+                dtp.CalendarMonthBackground = ColorPalette.GridBackground;
+                dtp.CalendarTitleBackColor = ColorPalette.GridHeader;
+                dtp.CalendarTitleForeColor = ColorPalette.TextPrimary;
+                dtp.CalendarTrailingForeColor = ColorPalette.TextDark;
+                dtp.Font = new Font("Intercom", 9, FontStyle.Regular);
+            }
 
         // BOTONES
         if (control is Button btn)
@@ -65,8 +72,8 @@ namespace Articulos_Frontend.Theme
             btn.FlatStyle = FlatStyle.Standard;
             btn.FlatAppearance.BorderSize = 5;
 
-            if (btn.Text.Trim() == "-" || btn.Text.Trim() == "+")
-            {
+                if (btn.Text.Trim().Equals("-") || btn.Text.Trim().Equals("+"))
+                {
 
                 btn.Font = new Font("Intercom", 12, FontStyle.Bold);
             }
