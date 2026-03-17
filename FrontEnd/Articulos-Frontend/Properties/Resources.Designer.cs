@@ -111,6 +111,16 @@ namespace Articulos_Frontend.Properties {
         }
         
         /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Byte[].
+        /// </summary>
+        internal static byte[] MT_Helmets_Logo_SinFondo {
+            get {
+                object obj = ResourceManager.GetObject("MT_Helmets_Logo_SinFondo", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap rabbit_clock_meme {
