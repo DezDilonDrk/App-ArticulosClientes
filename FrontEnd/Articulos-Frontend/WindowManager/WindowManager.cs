@@ -10,6 +10,26 @@ public static class WindowManager
 
     private static Dictionary<string, FormMT> _openWindows = new();
 
+    public static event Action OnWindowsChanged;
+
+    public static IReadOnlyDictionary<string, FormMT> OpenWindows => _openWindows;
+
+    public static void Activate(string key)
+    {
+        if(_openWindows.TryGetValue(key, out var form))
+        {
+            if (form.formularioHijo.WindowState == FormWindowState.Minimized)
+            {
+                form.formularioHijo.WindowState = FormWindowState.Normal;
+            }     
+            form.formularioHijo.BringToFront();
+            form.formularioHijo.Activate();
+
+            form.formularioHijo.TopMost = true;
+            form.formularioHijo.TopMost = false;
+        }
+    }
+
     public static void ShowForm<T>(string key, Form owner, Func<T> factory) where T : Form
     {
         if (_openWindows.ContainsKey(key))
@@ -28,9 +48,12 @@ public static class WindowManager
 
         _openWindows[key] = newForm;
 
+        OnWindowsChanged?.Invoke();
+
         newForm.formularioHijo.FormClosed += (s, e) =>
         {
             _openWindows.Remove(key);
+            OnWindowsChanged?.Invoke();
         };
         newForm.formularioHijo.Width = 900;
         newForm.formularioHijo.Height = 520;

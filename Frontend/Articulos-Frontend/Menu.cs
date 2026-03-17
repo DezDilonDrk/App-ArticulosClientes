@@ -10,6 +10,11 @@ namespace Articulos_Frontend
 
         }
 
+        public void Menu_Load(object sender, EventArgs e)
+        {
+            WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
+        }
+
         private void tabPage1_Click(object sender, EventArgs e)
         {
 
@@ -18,36 +23,67 @@ namespace Articulos_Frontend
 
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(articuloForm == null || articuloForm.IsDisposed)
-                articuloForm = new ArticuloForm();
-            articuloForm.Width = this.Width - 20;
-            articuloForm.Height = this.Height - 140;
-            articuloForm.Shown += (s, ev) =>
+            string key = "ArticuloForm";
+
+            WindowManager.ShowForm(key, this, () =>
             {
-                articuloForm.Location = new Point(
-                    this.Left + (this.Width - articuloForm.Width) / 2,
-                    this.Top + (this.Height - articuloForm.Height) / 2
-                );
-            };
-            articuloForm.Show();
-            articuloForm.BringToFront();
+                var form = new ArticuloForm();
+
+                form.Width = this.Width - 20;
+                form.Height = this.Height - 140;
+                form.Shown += (s, ev) =>
+                {
+                    form.Location = new Point(
+                        this.Left + (this.Width - form.Width) / 2,
+                        this.Top + (this.Height - form.Height) / 2
+                    );
+                };
+
+                return form;
+            });
         }
 
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (clienteForm == null || clienteForm.IsDisposed)
-                clienteForm = new ClienteForm();
-            clienteForm.Width = this.Width - 20;
-            clienteForm.Height = this.Height - 140;
-            clienteForm.Shown += (s, ev) =>
+            string key = "ClienteForm";
+
+            WindowManager.ShowForm(key, this, () =>
             {
-                clienteForm.Location = new Point(
-                    this.Left + (this.Width - clienteForm.Width) / 2,
-                    this.Top + (this.Height - clienteForm.Height) / 2
-                );
-            };
-            clienteForm.Show();
-            clienteForm.BringToFront();
+                var form = new ClienteForm();
+
+                form.Width = this.Width - 20;
+                form.Height = this.Height - 140;
+                form.Shown += (s, ev) =>
+                {
+                    form.Location = new Point(
+                        this.Left + (this.Width - form.Width) / 2,
+                        this.Top + (this.Height - form.Height) / 2
+                    );
+                };
+
+                return form;
+            });
+        }
+
+        private void ventanasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RefrescarMenuVentanas();
+        }
+
+        private void RefrescarMenuVentanas()
+        {
+            ventanasToolStripMenuItem.DropDownItems.Clear();
+            foreach(var kvp in WindowManager.OpenWindows)
+            {
+                var key = kvp.Key;
+                var form = kvp.Value.formularioHijo;
+                var item = new ToolStripMenuItem(form.Text);
+                item.Click += (s, e) => WindowManager.Activate(key);
+                var activeForm = Form.ActiveForm;
+                item.Checked = (form == activeForm);
+
+                ventanasToolStripMenuItem.DropDownItems.Add(item);
+            }
         }
     }
 }
