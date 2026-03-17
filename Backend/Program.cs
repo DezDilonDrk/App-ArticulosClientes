@@ -1,10 +1,7 @@
-using Articulos_Backend;
-using Articulos_Backend.Articulos;
+
 using Articulos_Backend.Endpoints;
 using Articulos_Backend.Middleware;
 using Articulos_Backend.Repositorios;
-using ClientesASPNET;
-using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://0.0.0.0:5000");

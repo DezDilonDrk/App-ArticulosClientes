@@ -1,10 +1,9 @@
 ﻿namespace Articulos_Backend.Repositorios;
 
-using Articulos_Backend.Articulos;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
-
+using MTCore_AC.Entidades;
 public class ArticuloRepository
 {
     private readonly string _connectionString;
@@ -12,6 +11,7 @@ public class ArticuloRepository
     public ArticuloRepository(string connectionString)
     {
         _connectionString = connectionString;
+        var x = new Cliente();
     }
 
     private IDbConnection Connection => new SqlConnection(_connectionString);

@@ -1,8 +1,7 @@
-﻿using Articulos_Backend.Repositorios;
+﻿
 using Articulos_Frontend.Client;
 using Articulos_Frontend.Theme;
-using ClientesASPNET;
-using Microsoft.IdentityModel.Tokens;
+using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -99,11 +98,11 @@ public partial class ClienteForm : Form
         // labelNombreCliente
         // 
         labelNombreCliente.BackColor = Color.Transparent;
-        labelNombreCliente.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        labelNombreCliente.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
         labelNombreCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        labelNombreCliente.Location = new Point(16, 12);
+        labelNombreCliente.Location = new Point(12, 13);
         labelNombreCliente.Name = "labelNombreCliente";
-        labelNombreCliente.Size = new Size(57, 15);
+        labelNombreCliente.Size = new Size(63, 15);
         labelNombreCliente.TabIndex = 2;
         labelNombreCliente.Text = "Nombre: ";
         // 
@@ -126,8 +125,9 @@ public partial class ClienteForm : Form
         // 
         textBoxCliente.BackColor = Color.FromArgb(42, 42, 42);
         textBoxCliente.BorderStyle = BorderStyle.None;
+        textBoxCliente.Font = new Font("Segoe UI", 9F);
         textBoxCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        textBoxCliente.Location = new Point(79, 12);
+        textBoxCliente.Location = new Point(81, 14);
         textBoxCliente.MaxLength = 60;
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
@@ -181,7 +181,7 @@ public partial class ClienteForm : Form
         BotonHelpC.Name = "BotonHelpC";
         BotonHelpC.Size = new Size(30, 30);
         BotonHelpC.TabIndex = 0;
-        BotonHelpC.Text = " ?";
+        BotonHelpC.Text = "?";
         BotonHelpC.UseVisualStyleBackColor = false;
         BotonHelpC.Click += BotonHelpC_Click;
         BotonHelpC.MouseEnter += Boton_MouseEnter;
@@ -361,12 +361,12 @@ public partial class ClienteForm : Form
         }
         if (dgvCliente.Columns["FechaCreacion"] != null)
         {
-            dgvCliente.Columns["FechaCreacion"].Width = 100;
+            dgvCliente.Columns["FechaCreacion"].Width = 120;
             dgvCliente.Columns["FechaCreacion"].Resizable = DataGridViewTriState.False;
         }
         if (dgvCliente.Columns["FechaModificacion"] != null)
         {
-            dgvCliente.Columns["FechaModificacion"].Width = 100;
+            dgvCliente.Columns["FechaModificacion"].Width = 130;
             dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
         }
     }

@@ -1,9 +1,4 @@
 <Solution>
-  <Project Path="../Backend/Articulos-Backend.csproj">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
+  <Project Path="../MTACCore/MTCore_AC.csproj" />
   <Project Path="Articulos-Frontend/Articulos-Frontend.csproj" />
-  <Project Path="MTCore-AC/MTCore-AC.vbproj" Id="0ed66487-facf-467d-8e23-af0a49396477">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
 </Solution>

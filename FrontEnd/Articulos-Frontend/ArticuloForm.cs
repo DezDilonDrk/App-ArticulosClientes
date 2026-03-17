@@ -5,10 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Articulos_Backend.Articulos;
 using Articulos_Frontend.Theme;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-//using Articulos_Backend.Repositorios;
+using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend;
 

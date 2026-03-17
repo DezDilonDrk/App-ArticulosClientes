@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
-using Articulos_Backend.Articulos;
-using Azure;
+using MTCore_AC.Entidades;
 
 public class ArticuloApiClient
 {

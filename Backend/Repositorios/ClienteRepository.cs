@@ -1,8 +1,8 @@
-﻿using ClientesASPNET;
+﻿
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
-
+using MTCore_AC.Entidades;
 namespace Articulos_Backend.Repositorios;
 
 public class ClienteRepository

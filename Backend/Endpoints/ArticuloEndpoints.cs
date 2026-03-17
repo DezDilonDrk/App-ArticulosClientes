@@ -1,6 +1,6 @@
-﻿using Articulos_Backend.Articulos;
+﻿
 using Articulos_Backend.Repositorios;
-using ClientesASPNET;
+using MTCore_AC.Entidades;
 
 namespace Articulos_Backend.Endpoints;
 public static class ArticuloEndpoints

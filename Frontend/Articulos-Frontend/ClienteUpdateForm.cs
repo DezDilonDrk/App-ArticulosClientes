@@ -1,6 +1,6 @@
-﻿using Articulos_Backend.Repositorios;
+﻿
 using Articulos_Frontend.Client;
-using ClientesASPNET;
+using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

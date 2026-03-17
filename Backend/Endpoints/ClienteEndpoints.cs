@@ -1,5 +1,5 @@
 ﻿using Articulos_Backend.Repositorios;
-using ClientesASPNET;
+using MTCore_AC.Entidades;
 using System.Runtime.CompilerServices;
 
 namespace Articulos_Backend.Endpoints;

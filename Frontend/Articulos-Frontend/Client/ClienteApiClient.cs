@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Http;
 using System.Net.Http.Json;
-using ClientesASPNET;
+
 
 using static System.Net.WebRequestMethods;
+using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend.Client
 {
