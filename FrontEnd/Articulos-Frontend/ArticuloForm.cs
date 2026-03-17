@@ -34,7 +34,11 @@ public partial class ArticuloForm : Form
         WindowManager.ShowForm(
         "Articulo_Nuevo",
         this,
-        () => new ArticuloDetailForm(api, null)
+        () => { var form = new ArticuloDetailForm(api, null);
+            form.FormClosed += (s, e) => cargarArticulos(null);
+            return form;
+        }
+   
     );
     }
 
@@ -89,7 +93,11 @@ public partial class ArticuloForm : Form
                 WindowManager.ShowForm(
                     $"{nameof(ArticuloForm)}_{articulo.id}",
                     this,
-                    () => new ArticuloDetailForm(api, articulo)
+                    () => {
+                        var form = new ArticuloDetailForm(api, articulo);
+                        form.FormClosed += (s, e) => cargarArticulos(null);
+                        return form;
+                    }
                 );
             }
         }

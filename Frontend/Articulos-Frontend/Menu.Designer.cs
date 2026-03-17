@@ -28,22 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
+            menuStripAC = new MenuStrip();
             artículosToolStripMenuItem = new ToolStripMenuItem();
             clientesToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip1.SuspendLayout();
+            ventanasToolStripMenuItem = new ToolStripMenuItem();
+            menuStripAC.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // menuStripAC
             // 
-            menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { artículosToolStripMenuItem, clientesToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(5, 2, 0, 2);
-            menuStrip1.Size = new Size(700, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
+            menuStripAC.ImageScalingSize = new Size(20, 20);
+            menuStripAC.Items.AddRange(new ToolStripItem[] { artículosToolStripMenuItem, clientesToolStripMenuItem, ventanasToolStripMenuItem });
+            menuStripAC.Location = new Point(0, 0);
+            menuStripAC.Name = "menuStripAC";
+            menuStripAC.Padding = new Padding(4, 2, 0, 2);
+            menuStripAC.Size = new Size(918, 24);
+            menuStripAC.TabIndex = 0;
+            menuStripAC.Text = "menuStrip1";
             // 
             // artículosToolStripMenuItem
             // 
@@ -59,28 +60,36 @@
             clientesToolStripMenuItem.Text = "Clientes";
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
+            // ventanasToolStripMenuItem
+            // 
+            ventanasToolStripMenuItem.Name = "ventanasToolStripMenuItem";
+            ventanasToolStripMenuItem.Size = new Size(66, 20);
+            ventanasToolStripMenuItem.Text = "Ventanas";
+            ventanasToolStripMenuItem.Click += ventanasToolStripMenuItem_Click;
+            // 
             // Menu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
             BackgroundImage = Properties.Resources._8a027296c847ff9188483471a1830469;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(700, 338);
-            Controls.Add(menuStrip1);
+            ClientSize = new Size(918, 490);
+            Controls.Add(menuStripAC);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Menu";
             Text = "MenúPrácticas";
             WindowState = FormWindowState.Maximized;
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStripAC.ResumeLayout(false);
+            menuStripAC.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStripAC;
         private ToolStripMenuItem artículosToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
+        private ToolStripMenuItem ventanasToolStripMenuItem;
     }
 }
