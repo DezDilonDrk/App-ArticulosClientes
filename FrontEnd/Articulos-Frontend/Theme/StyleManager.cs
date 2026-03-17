@@ -17,11 +17,11 @@ namespace Articulos_Frontend.Theme
             form.StartPosition = FormStartPosition.CenterParent;
             form.ResumeLayout(false);
 
-        foreach (Control control in form.Controls)
-        {
-            ApplyStyle(control);
+            foreach (Control control in form.Controls)
+            {
+                ApplyStyle(control);
+            }
         }
-    }
 
         private static void ApplyStyle(Control control)
         {
@@ -32,7 +32,8 @@ namespace Articulos_Frontend.Theme
                 {
                     lbl.ForeColor = ColorPalette.TextPrimary;
                     lbl.Font = new Font("Intercom", 18, FontStyle.Bold);
-                } else
+                }
+                else
                 {
                     lbl.ForeColor = ColorPalette.TextPrimary;
                     lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
@@ -50,11 +51,13 @@ namespace Articulos_Frontend.Theme
                 gb.ForeColor = ColorPalette.TextPrimary;
                 gb.Font = new Font("Intercom", 8, FontStyle.Bold);
             }
-            if (control is CheckBox chk) {
+            if (control is CheckBox chk)
+            {
                 chk.ForeColor = ColorPalette.TextPrimary;
                 chk.Font = new Font("Intercom", 9, FontStyle.Regular);
             }
-            if (control is DateTimePicker dtp) {
+            if (control is DateTimePicker dtp)
+            {
                 dtp.CalendarForeColor = ColorPalette.TextPrimary;
                 dtp.CalendarMonthBackground = ColorPalette.GridBackground;
                 dtp.CalendarTitleBackColor = ColorPalette.GridHeader;
@@ -63,71 +66,71 @@ namespace Articulos_Frontend.Theme
                 dtp.Font = new Font("Intercom", 9, FontStyle.Regular);
             }
 
-        // BOTONES
-        if (control is Button btn)
-        {
-            btn.BackColor = ColorPalette.ButtonBackground;
-            btn.ForeColor = ColorPalette.ButtonText;
+            // BOTONES
+            if (control is Button btn)
+            {
+                btn.BackColor = ColorPalette.ButtonBackground;
+                btn.ForeColor = ColorPalette.ButtonText;
 
-            btn.FlatStyle = FlatStyle.Standard;
-            btn.FlatAppearance.BorderSize = 5;
+                btn.FlatStyle = FlatStyle.Standard;
+                btn.FlatAppearance.BorderSize = 5;
 
                 if (btn.Text.Trim().Equals("-") || btn.Text.Trim().Equals("+"))
                 {
 
-                btn.Font = new Font("Intercom", 12, FontStyle.Bold);
+                    btn.Font = new Font("Intercom", 12, FontStyle.Bold);
+                }
+                else
+                {
+                    btn.Font = new Font("Intercom", 9, FontStyle.Bold);
+
+                }
+
+                btn.MouseEnter += (s, e) =>
+                    btn.BackColor = ColorPalette.ButtonEnter;
+
+                btn.MouseLeave += (s, e) =>
+                    btn.BackColor = ColorPalette.ButtonLeave;
             }
-            else
+
+            // DATAGRIDVIEW
+            if (control is DataGridView grid)
             {
-                btn.Font = new Font("Intercom", 9, FontStyle.Bold);
+                grid.BackgroundColor = ColorPalette.GridBackground;
+                grid.BorderStyle = BorderStyle.None;
 
+                grid.EnableHeadersVisualStyles = false;
+
+                // Cabecera
+                grid.ColumnHeadersDefaultCellStyle.BackColor = ColorPalette.GridHeader;
+                grid.ColumnHeadersDefaultCellStyle.ForeColor = ColorPalette.TextPrimary;
+                grid.ColumnHeadersDefaultCellStyle.Font = new Font("Intercom", 9, FontStyle.Bold);
+
+                grid.DefaultCellStyle.Font = new Font("Intercom", 9, FontStyle.Regular);
+
+                // Celdas
+                grid.DefaultCellStyle.BackColor = ColorPalette.GridBackground;
+                grid.DefaultCellStyle.ForeColor = ColorPalette.TextPrimary;
+                grid.DefaultCellStyle.SelectionBackColor = ColorPalette.Primary;
+                grid.DefaultCellStyle.SelectionForeColor = ColorPalette.TextPrimary;
+
+                // Apariencia
+                grid.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+                grid.AllowUserToResizeRows = false;
+                grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+                grid.GridColor = ColorPalette.GridHeader;
+                grid.RowHeadersDefaultCellStyle.BackColor = ColorPalette.GridHeader;
+
+
+                grid.RowTemplate.Height = 30;
             }
 
-            btn.MouseEnter += (s, e) =>
-                btn.BackColor = ColorPalette.ButtonEnter;
-
-            btn.MouseLeave += (s, e) =>
-                btn.BackColor = ColorPalette.ButtonLeave;
-        }
-
-        // DATAGRIDVIEW
-        if (control is DataGridView grid)
-        {
-            grid.BackgroundColor = ColorPalette.GridBackground;
-            grid.BorderStyle = BorderStyle.None;
-
-            grid.EnableHeadersVisualStyles = false;
-
-            // Cabecera
-            grid.ColumnHeadersDefaultCellStyle.BackColor = ColorPalette.GridHeader;
-            grid.ColumnHeadersDefaultCellStyle.ForeColor = ColorPalette.TextPrimary;
-            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Intercom", 9, FontStyle.Bold);
-
-            grid.DefaultCellStyle.Font = new Font("Intercom", 9, FontStyle.Regular);
-
-            // Celdas
-            grid.DefaultCellStyle.BackColor = ColorPalette.GridBackground;
-            grid.DefaultCellStyle.ForeColor = ColorPalette.TextPrimary;
-            grid.DefaultCellStyle.SelectionBackColor = ColorPalette.Primary;
-            grid.DefaultCellStyle.SelectionForeColor = ColorPalette.TextPrimary;
-
-            // Apariencia
-            grid.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            grid.AllowUserToResizeRows = false;
-            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            grid.GridColor = ColorPalette.GridHeader;
-            grid.RowHeadersDefaultCellStyle.BackColor = ColorPalette.GridHeader;
-
-
-            grid.RowTemplate.Height = 30;
-        }
-
-        // Aplicar también a controles hijos
-        foreach (Control child in control.Controls)
-        {
-            ApplyStyle(child);
+            // Aplicar también a controles hijos
+            foreach (Control child in control.Controls)
+            {
+                ApplyStyle(child);
+            }
         }
     }
-
 }

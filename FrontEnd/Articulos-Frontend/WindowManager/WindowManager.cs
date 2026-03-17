@@ -55,8 +55,8 @@ public static class WindowManager
             _openWindows.Remove(key);
             OnWindowsChanged?.Invoke();
         };
-        newForm.formularioHijo.Width = 900;
-        newForm.formularioHijo.Height = 520;
+        newForm.formularioHijo.Width = newForm.formularioPadre.Width - 40;
+        newForm.formularioHijo.Height = newForm.formularioPadre.Height - 140;
         newForm.formularioHijo.Shown += (s, e) =>
         {
             if (owner != null)
