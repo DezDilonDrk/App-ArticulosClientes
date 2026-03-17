@@ -37,7 +37,15 @@ namespace Articulos_Frontend
         {
             if (clienteForm == null || clienteForm.IsDisposed)
                 clienteForm = new ClienteForm();
-
+            clienteForm.Width = this.Width - 20;
+            clienteForm.Height = this.Height - 140;
+            clienteForm.Shown += (s, ev) =>
+            {
+                clienteForm.Location = new Point(
+                    this.Left + (this.Width - clienteForm.Width) / 2,
+                    this.Top + (this.Height - clienteForm.Height) / 2
+                );
+            };
             clienteForm.Show();
             clienteForm.BringToFront();
         }

@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Articulos_Frontend.Properties;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
+using Font = System.Drawing.Font;
 
 namespace Articulos_Frontend.Theme
 {
@@ -10,6 +13,8 @@ namespace Articulos_Frontend.Theme
         {
             form.BackColor = ColorPalette.Background;
             form.ForeColor = ColorPalette.TextDark;
+            form.StartPosition = FormStartPosition.CenterParent;
+            form.ResumeLayout(false);
 
             foreach (Control control in form.Controls)
             {

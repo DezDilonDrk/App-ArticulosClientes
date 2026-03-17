@@ -29,7 +29,6 @@ public partial class ClienteDetailForm : Form
 
     private void InitializeComponent()
     {
-        ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteDetailForm));
         textBoxDni = new TextBox();
         textBoxNombre = new TextBox();
         textBoxApellidos = new TextBox();
@@ -165,7 +164,6 @@ public partial class ClienteDetailForm : Form
         // 
         // ClienteDetailForm
         // 
-        BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
         ClientSize = new Size(580, 363);
         Controls.Add(button1);
         Controls.Add(LabelTitulo);
@@ -179,6 +177,7 @@ public partial class ClienteDetailForm : Form
         Controls.Add(textBoxNombre);
         Controls.Add(textBoxDni);
         FormBorderStyle = FormBorderStyle.FixedSingle;
+        MinimumSize = new Size(596, 402);
         Name = "ClienteDetailForm";
         StartPosition = FormStartPosition.CenterParent;
         Text = "Crear Cliente";

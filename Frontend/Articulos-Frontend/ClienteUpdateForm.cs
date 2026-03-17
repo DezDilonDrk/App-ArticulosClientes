@@ -1,5 +1,6 @@
 ﻿
 using Articulos_Frontend.Client;
+using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace Articulos_Frontend
             // 
             // textBoxDni
             // 
+            textBoxDni.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxDni.Enabled = false;
             textBoxDni.Location = new Point(204, 92);
             textBoxDni.Name = "textBoxDni";
@@ -53,6 +55,7 @@ namespace Articulos_Frontend
             // 
             // textBoxNombre
             // 
+            textBoxNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxNombre.Location = new Point(204, 121);
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.PlaceholderText = "Introduzca el nombre";
@@ -61,6 +64,7 @@ namespace Articulos_Frontend
             // 
             // textBoxApellidos
             // 
+            textBoxApellidos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxApellidos.Location = new Point(204, 150);
             textBoxApellidos.Name = "textBoxApellidos";
             textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
@@ -69,6 +73,7 @@ namespace Articulos_Frontend
             // 
             // textBoxEmail
             // 
+            textBoxEmail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxEmail.Location = new Point(204, 179);
             textBoxEmail.Name = "textBoxEmail";
             textBoxEmail.PlaceholderText = "Introduzca el email";
@@ -77,6 +82,7 @@ namespace Articulos_Frontend
             // 
             // LabelDni
             // 
+            LabelDni.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             LabelDni.AutoSize = true;
             LabelDni.BackColor = Color.Transparent;
             LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -89,6 +95,7 @@ namespace Articulos_Frontend
             // 
             // LabelNombre
             // 
+            LabelNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             LabelNombre.AutoSize = true;
             LabelNombre.BackColor = Color.Transparent;
             LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -101,6 +108,7 @@ namespace Articulos_Frontend
             // 
             // LabelApellidos
             // 
+            LabelApellidos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             LabelApellidos.AutoSize = true;
             LabelApellidos.BackColor = Color.Transparent;
             LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -113,6 +121,7 @@ namespace Articulos_Frontend
             // 
             // LabelEmail
             // 
+            LabelEmail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             LabelEmail.AutoSize = true;
             LabelEmail.BackColor = Color.Transparent;
             LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -141,6 +150,7 @@ namespace Articulos_Frontend
             // 
             // LabelTitulo
             // 
+            LabelTitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             LabelTitulo.BackColor = Color.Transparent;
             LabelTitulo.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             LabelTitulo.Location = new Point(135, 18);
@@ -152,7 +162,6 @@ namespace Articulos_Frontend
             // 
             // ClienteUpdateForm
             // 
-            BackgroundImage = Properties.Resources.hinh_nen_powerpoint_don_gian_11;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(580, 363);
             Controls.Add(LabelTitulo);
@@ -165,6 +174,7 @@ namespace Articulos_Frontend
             Controls.Add(textBoxApellidos);
             Controls.Add(textBoxNombre);
             Controls.Add(textBoxDni);
+            MinimumSize = new Size(596, 402);
             Name = "ClienteUpdateForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Actualizar Usuario";
