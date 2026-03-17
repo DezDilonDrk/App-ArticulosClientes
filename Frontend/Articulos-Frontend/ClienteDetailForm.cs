@@ -178,6 +178,7 @@ public partial class ClienteDetailForm : Form
         Controls.Add(textBoxNombre);
         Controls.Add(textBoxDni);
         FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
         MaximumSize = new Size(596, 402);
         MinimumSize = new Size(596, 402);
         Name = "ClienteDetailForm";
