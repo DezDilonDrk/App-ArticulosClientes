@@ -147,7 +147,8 @@ public partial class ClienteForm : Form
         dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
         dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
         dgvCliente.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-        dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+        dgvCliente.ColumnHeadersHeight = 40;
         dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
         dgvCliente.EnableHeadersVisualStyles = false;
         dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
@@ -162,6 +163,7 @@ public partial class ClienteForm : Form
         dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
         dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        dgvCliente.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dgvCliente.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dgvCliente.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
@@ -251,11 +253,10 @@ public partial class ClienteForm : Form
         // 
         // Filtros
         // 
-        Filtros.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         Filtros.BackColor = Color.FromArgb(225, 6, 0);
         Filtros.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         Filtros.ForeColor = Color.White;
-        Filtros.Location = new Point(522, 71);
+        Filtros.Location = new Point(241, 71);
         Filtros.Name = "Filtros";
         Filtros.Size = new Size(150, 45);
         Filtros.TabIndex = 8;
@@ -265,11 +266,11 @@ public partial class ClienteForm : Form
         // 
         // panelFiltros
         // 
-        panelFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        panelFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         panelFiltros.AutoScroll = true;
         panelFiltros.BackColor = Color.FromArgb(58, 58, 58);
         panelFiltros.Controls.Add(FiltroFecha);
-        panelFiltros.Location = new Point(420, 122);
+        panelFiltros.Location = new Point(182, 122);
         panelFiltros.Name = "panelFiltros";
         panelFiltros.Size = new Size(252, 238);
         panelFiltros.TabIndex = 9;

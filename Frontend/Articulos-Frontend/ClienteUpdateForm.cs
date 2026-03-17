@@ -27,6 +27,7 @@ namespace Articulos_Frontend
 
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             clienteApiClient = new ClienteApiClient();
+            StyleManager.StyleForm(this);
         }
 
         private void InitializeComponent()
@@ -157,7 +158,7 @@ namespace Articulos_Frontend
             LabelTitulo.Name = "LabelTitulo";
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
-            LabelTitulo.Text = "ACTUALIZAR USUARIO";
+            LabelTitulo.Text = "ACTUALIZAR CLIENTE";
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ClienteUpdateForm
@@ -174,6 +175,9 @@ namespace Articulos_Frontend
             Controls.Add(textBoxApellidos);
             Controls.Add(textBoxNombre);
             Controls.Add(textBoxDni);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MaximumSize = new Size(596, 402);
             MinimumSize = new Size(596, 402);
             Name = "ClienteUpdateForm";
             StartPosition = FormStartPosition.CenterParent;

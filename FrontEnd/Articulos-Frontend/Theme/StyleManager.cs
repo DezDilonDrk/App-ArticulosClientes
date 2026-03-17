@@ -27,8 +27,15 @@ namespace Articulos_Frontend.Theme
             // LABELS
             if (control is Label lbl)
             {
-                lbl.ForeColor = ColorPalette.TextPrimary;
-                lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
+                if (lbl.Text.Equals("ACTUALIZAR CLIENTE") || lbl.Text.Equals("CREAR CLIENTE"))
+                {
+                    lbl.ForeColor = ColorPalette.TextPrimary;
+                    lbl.Font = new Font("Intercom", 18, FontStyle.Bold);
+                } else
+                {
+                    lbl.ForeColor = ColorPalette.TextPrimary;
+                    lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
+                }
             }
             if (control is TextBox txt)
             {
@@ -64,7 +71,7 @@ namespace Articulos_Frontend.Theme
                 btn.FlatStyle = FlatStyle.Standard;
                 btn.FlatAppearance.BorderSize = 5;
 
-                if (btn.Text.Trim() == "-" || btn.Text.Trim() == "+")
+                if (btn.Text.Trim().Equals("-") || btn.Text.Trim().Equals("+"))
                 {
 
                     btn.Font = new Font("Intercom", 12, FontStyle.Bold);
