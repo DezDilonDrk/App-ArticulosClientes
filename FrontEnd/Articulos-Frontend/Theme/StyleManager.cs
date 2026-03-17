@@ -1,15 +1,23 @@
-﻿using System;
+﻿using Articulos_Frontend.Properties;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Articulos_Frontend.Theme
 {
     public static class StyleManager
     {
+        
         public static void StyleForm(Form form)
         {
+
             form.BackColor = ColorPalette.Background;
             form.ForeColor = ColorPalette.TextDark;
+            using (MemoryStream ms = new MemoryStream(Properties.Resources.MT_Helmets_Logo_SinFondo))
+            {
+                form.Icon = new Icon(ms);
+            }
 
             foreach (Control control in form.Controls)
             {
