@@ -56,9 +56,15 @@ public partial class ClienteForm : Form
         FechaHasta = new DateTimePicker();
         Filtros = new Button();
         panelFiltros = new Panel();
+        panel1 = new Panel();
+        PNR = new Panel();
+        panelV = new Panel();
+        panel2 = new Panel();
         ((ISupportInitialize)dgvCliente).BeginInit();
         FiltroFecha.SuspendLayout();
         panelFiltros.SuspendLayout();
+        panel1.SuspendLayout();
+        PNR.SuspendLayout();
         SuspendLayout();
         // 
         // BotonMasC
@@ -147,8 +153,8 @@ public partial class ClienteForm : Form
         dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
         dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
         dgvCliente.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-        dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
         dgvCliente.ColumnHeadersHeight = 40;
+        dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
         dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
         dgvCliente.EnableHeadersVisualStyles = false;
         dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
@@ -163,7 +169,6 @@ public partial class ClienteForm : Form
         dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
         dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-        dgvCliente.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dgvCliente.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
         dgvCliente.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
@@ -276,11 +281,50 @@ public partial class ClienteForm : Form
         panelFiltros.TabIndex = 9;
         panelFiltros.Visible = false;
         // 
+        // panel1
+        // 
+        panel1.Controls.Add(PNR);
+        panel1.Controls.Add(panelV);
+        panel1.Dock = DockStyle.Left;
+        panel1.Location = new Point(0, 0);
+        panel1.Name = "panel1";
+        panel1.Size = new Size(235, 392);
+        panel1.TabIndex = 10;
+        // 
+        // PNR
+        // 
+        PNR.BackColor = Color.Red;
+        PNR.Controls.Add(panel2);
+        PNR.Dock = DockStyle.Fill;
+        PNR.Location = new Point(0, 100);
+        PNR.Name = "PNR";
+        PNR.Size = new Size(235, 292);
+        PNR.TabIndex = 0;
+        // 
+        // panelV
+        // 
+        panelV.BackColor = Color.FromArgb(128, 255, 128);
+        panelV.Dock = DockStyle.Top;
+        panelV.Location = new Point(0, 0);
+        panelV.Name = "panelV";
+        panelV.Size = new Size(235, 100);
+        panelV.TabIndex = 0;
+        // 
+        // panel2
+        // 
+        panel2.BackColor = Color.LightGray;
+        panel2.Dock = DockStyle.Top;
+        panel2.Location = new Point(0, 0);
+        panel2.Name = "panel2";
+        panel2.Size = new Size(235, 70);
+        panel2.TabIndex = 0;
+        // 
         // ClienteForm
         // 
         BackColor = Color.FromArgb(26, 26, 26);
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(832, 392);
+        Controls.Add(panel1);
         Controls.Add(BotonHelpC);
         Controls.Add(panelFiltros);
         Controls.Add(Filtros);
@@ -301,6 +345,8 @@ public partial class ClienteForm : Form
         FiltroFecha.ResumeLayout(false);
         FiltroFecha.PerformLayout();
         panelFiltros.ResumeLayout(false);
+        panel1.ResumeLayout(false);
+        PNR.ResumeLayout(false);
         ResumeLayout(false);
         PerformLayout();
 

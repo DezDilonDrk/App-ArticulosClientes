@@ -80,10 +80,14 @@ namespace Articulos_Frontend
                 var item = new ToolStripMenuItem(form.Text);
                 item.Click += (s, e) => WindowManager.Activate(key);
                 var activeForm = Form.ActiveForm;
-                item.Checked = (form == activeForm);
+               // item.Checked = (form == activeForm);
 
                 ventanasToolStripMenuItem.DropDownItems.Add(item);
             }
+        }
+
+        public int areaClienteHeigth() {
+            return (this.Height - this.menuStripAC.Height);
         }
     }
 }

@@ -55,15 +55,15 @@ public static class WindowManager
             _openWindows.Remove(key);
             OnWindowsChanged?.Invoke();
         };
-        newForm.formularioHijo.Width = newForm.formularioPadre.Width - 40;
-        newForm.formularioHijo.Height = newForm.formularioPadre.Height - 140;
+        newForm.formularioHijo.Width = newForm.formularioPadre.Width;
+        newForm.formularioHijo.Height = newForm.formularioPadre.Height - 40;
         newForm.formularioHijo.Shown += (s, e) =>
         {
             if (owner != null)
             {
                 newForm.formularioHijo.Location = new Point(
                     owner.Left + (owner.Width - newForm.formularioHijo.Width) / 2,
-                    owner.Top + (owner.Height - newForm.formularioHijo.Height) / 2
+                    owner.Top + ((owner.Height - newForm.formularioHijo.Height) / 2) + 40
                 );
             }
         };  

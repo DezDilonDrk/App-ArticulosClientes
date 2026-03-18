@@ -34,5 +34,9 @@
         private Panel panelFiltros;
         private Label labelFechaMax;
         private Label labelFechaMin;
+        private Panel panel1;
+        private Panel panelV;
+        private Panel PNR;
+        private Panel panel2;
     }
 }
