@@ -87,7 +87,7 @@ namespace Articulos_Frontend
         }
 
         public int areaClienteHeigth() {
-            return (this.Height - this.menuStripAC.Height);
+            return (this.menuStripAC.Height + SystemInformation.CaptionHeight/2);
         }
     }
 }

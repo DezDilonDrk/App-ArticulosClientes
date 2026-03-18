@@ -36,7 +36,7 @@ namespace Articulos_Frontend.Theme
                 else
                 {
                     lbl.ForeColor = ColorPalette.TextPrimary;
-                    lbl.Font = new Font("Webdings", 9, FontStyle.Regular);
+                    lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
                 }
             }
             if (control is TextBox txt)

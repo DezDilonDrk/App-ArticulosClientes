@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Articulos_Frontend;
 
@@ -18,23 +19,19 @@ public partial class ClienteForm : Form
     private ClienteApiClient ClienteApiClient;
     private ErrorProvider errorProvider;
     private List<Cliente> listaActual;
+
+    /*private System.Windows.Forms.Timer animTimer;
+    private bool animAbriendo;
+    private int panelObjetivo = 222;*/
     public ClienteForm()
     {
         InitializeComponent();
-
+        /*animTimer = new System.Windows.Forms.Timer();
+        animTimer.Interval = 1;
+        animTimer.Tick += AnimarPanel;*/
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         ClienteApiClient = new ClienteApiClient();
         StyleManager.StyleForm(this);
-    }
-
-    private void textBox1_TextChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label1_Click(object sender, EventArgs e)
-    {
-
     }
 
     private void InitializeComponent()
@@ -49,22 +46,18 @@ public partial class ClienteForm : Form
         textBoxCliente = new TextBox();
         dgvCliente = new DataGridView();
         BotonHelpC = new Button();
-        FechaDesde = new DateTimePicker();
+        Filtros = new Button();
+        panelFiltros = new Panel();
         FiltroFecha = new GroupBox();
         labelFechaMax = new Label();
         labelFechaMin = new Label();
         FechaHasta = new DateTimePicker();
-        Filtros = new Button();
-        panelFiltros = new Panel();
-        panel1 = new Panel();
-        PNR = new Panel();
-        panelV = new Panel();
-        panel2 = new Panel();
+        FechaDesde = new DateTimePicker();
+        panelMain = new Panel();
         ((ISupportInitialize)dgvCliente).BeginInit();
-        FiltroFecha.SuspendLayout();
         panelFiltros.SuspendLayout();
-        panel1.SuspendLayout();
-        PNR.SuspendLayout();
+        FiltroFecha.SuspendLayout();
+        panelMain.SuspendLayout();
         SuspendLayout();
         // 
         // BotonMasC
@@ -73,7 +66,7 @@ public partial class ClienteForm : Form
         BotonMasC.BackColor = Color.FromArgb(225, 6, 0);
         BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         BotonMasC.ForeColor = Color.White;
-        BotonMasC.Location = new Point(697, 71);
+        BotonMasC.Location = new Point(698, 71);
         BotonMasC.Margin = new Padding(0);
         BotonMasC.Name = "BotonMasC";
         BotonMasC.Size = new Size(60, 45);
@@ -90,7 +83,7 @@ public partial class ClienteForm : Form
         BotonMenosC.BackColor = Color.FromArgb(225, 6, 0);
         BotonMenosC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         BotonMenosC.ForeColor = Color.White;
-        BotonMenosC.Location = new Point(760, 71);
+        BotonMenosC.Location = new Point(761, 71);
         BotonMenosC.Name = "BotonMenosC";
         BotonMenosC.Padding = new Padding(0, 0, 0, 4);
         BotonMenosC.Size = new Size(60, 45);
@@ -106,7 +99,7 @@ public partial class ClienteForm : Form
         labelNombreCliente.BackColor = Color.Transparent;
         labelNombreCliente.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
         labelNombreCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        labelNombreCliente.Location = new Point(12, 13);
+        labelNombreCliente.Location = new Point(112, 11);
         labelNombreCliente.Name = "labelNombreCliente";
         labelNombreCliente.Size = new Size(63, 15);
         labelNombreCliente.TabIndex = 2;
@@ -117,7 +110,7 @@ public partial class ClienteForm : Form
         BotonBuscar.BackColor = Color.FromArgb(225, 6, 0);
         BotonBuscar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         BotonBuscar.ForeColor = Color.White;
-        BotonBuscar.Location = new Point(12, 71);
+        BotonBuscar.Location = new Point(112, 71);
         BotonBuscar.Name = "BotonBuscar";
         BotonBuscar.Size = new Size(200, 45);
         BotonBuscar.TabIndex = 2;
@@ -133,7 +126,7 @@ public partial class ClienteForm : Form
         textBoxCliente.BorderStyle = BorderStyle.None;
         textBoxCliente.Font = new Font("Segoe UI", 9F);
         textBoxCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        textBoxCliente.Location = new Point(81, 14);
+        textBoxCliente.Location = new Point(181, 12);
         textBoxCliente.MaxLength = 60;
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
@@ -174,7 +167,7 @@ public partial class ClienteForm : Form
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
         dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvCliente.Size = new Size(808, 258);
+        dgvCliente.Size = new Size(809, 258);
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
         // 
@@ -184,7 +177,7 @@ public partial class ClienteForm : Form
         BotonHelpC.BackColor = Color.FromArgb(225, 6, 0);
         BotonHelpC.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
         BotonHelpC.ForeColor = Color.White;
-        BotonHelpC.Location = new Point(790, 12);
+        BotonHelpC.Location = new Point(791, 12);
         BotonHelpC.Name = "BotonHelpC";
         BotonHelpC.Size = new Size(30, 30);
         BotonHelpC.TabIndex = 0;
@@ -194,19 +187,31 @@ public partial class ClienteForm : Form
         BotonHelpC.MouseEnter += Boton_MouseEnter;
         BotonHelpC.MouseLeave += Boton_MouseLeave;
         // 
-        // FechaDesde
+        // Filtros
         // 
-        FechaDesde.AllowDrop = true;
-        FechaDesde.CalendarForeColor = Color.Black;
-        FechaDesde.CalendarMonthBackground = SystemColors.GrayText;
-        FechaDesde.CalendarTitleForeColor = Color.Black;
-        FechaDesde.Format = DateTimePickerFormat.Short;
-        FechaDesde.Location = new Point(99, 22);
-        FechaDesde.Name = "FechaDesde";
-        FechaDesde.Size = new Size(97, 23);
-        FechaDesde.TabIndex = 6;
-        FechaDesde.Value = new DateTime(1979, 8, 10, 0, 0, 0, 0);
-        FechaDesde.ValueChanged += FiltrarPorFecha;
+        Filtros.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        Filtros.BackColor = Color.FromArgb(225, 6, 0);
+        Filtros.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        Filtros.ForeColor = Color.White;
+        Filtros.Location = new Point(539, 71);
+        Filtros.Name = "Filtros";
+        Filtros.Size = new Size(150, 45);
+        Filtros.TabIndex = 8;
+        Filtros.Text = "▼  Abrir Filtros";
+        Filtros.UseVisualStyleBackColor = false;
+        Filtros.Click += Filtros_Click;
+        // 
+        // panelFiltros
+        // 
+        panelFiltros.AutoScroll = true;
+        panelFiltros.BackColor = Color.FromArgb(58, 58, 58);
+        panelFiltros.Controls.Add(FiltroFecha);
+        panelFiltros.Dock = DockStyle.Left;
+        panelFiltros.Location = new Point(0, 0);
+        panelFiltros.Name = "panelFiltros";
+        panelFiltros.Size = new Size(222, 392);
+        panelFiltros.TabIndex = 10;
+        panelFiltros.Visible = false;
         // 
         // FiltroFecha
         // 
@@ -254,86 +259,43 @@ public partial class ClienteForm : Form
         FechaHasta.Size = new Size(97, 23);
         FechaHasta.TabIndex = 7;
         FechaHasta.Value = new DateTime(2099, 12, 31, 0, 0, 0, 0);
-        FechaHasta.ValueChanged += FiltrarPorFecha;
         // 
-        // Filtros
+        // FechaDesde
         // 
-        Filtros.BackColor = Color.FromArgb(225, 6, 0);
-        Filtros.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        Filtros.ForeColor = Color.White;
-        Filtros.Location = new Point(241, 71);
-        Filtros.Name = "Filtros";
-        Filtros.Size = new Size(150, 45);
-        Filtros.TabIndex = 8;
-        Filtros.Text = " Abrir Filtros ▶";
-        Filtros.UseVisualStyleBackColor = false;
-        Filtros.Click += Filtros_Click;
+        FechaDesde.AllowDrop = true;
+        FechaDesde.CalendarForeColor = Color.Black;
+        FechaDesde.CalendarMonthBackground = SystemColors.GrayText;
+        FechaDesde.CalendarTitleForeColor = Color.Black;
+        FechaDesde.Format = DateTimePickerFormat.Short;
+        FechaDesde.Location = new Point(99, 22);
+        FechaDesde.Name = "FechaDesde";
+        FechaDesde.Size = new Size(97, 23);
+        FechaDesde.TabIndex = 6;
+        FechaDesde.Value = new DateTime(1979, 8, 10, 0, 0, 0, 0);
         // 
-        // panelFiltros
+        // panelMain
         // 
-        panelFiltros.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        panelFiltros.AutoScroll = true;
-        panelFiltros.BackColor = Color.FromArgb(58, 58, 58);
-        panelFiltros.Controls.Add(FiltroFecha);
-        panelFiltros.Location = new Point(182, 122);
-        panelFiltros.Name = "panelFiltros";
-        panelFiltros.Size = new Size(252, 238);
-        panelFiltros.TabIndex = 9;
-        panelFiltros.Visible = false;
-        // 
-        // panel1
-        // 
-        panel1.Controls.Add(PNR);
-        panel1.Controls.Add(panelV);
-        panel1.Dock = DockStyle.Left;
-        panel1.Location = new Point(0, 0);
-        panel1.Name = "panel1";
-        panel1.Size = new Size(235, 392);
-        panel1.TabIndex = 10;
-        // 
-        // PNR
-        // 
-        PNR.BackColor = Color.Red;
-        PNR.Controls.Add(panel2);
-        PNR.Dock = DockStyle.Fill;
-        PNR.Location = new Point(0, 100);
-        PNR.Name = "PNR";
-        PNR.Size = new Size(235, 292);
-        PNR.TabIndex = 0;
-        // 
-        // panelV
-        // 
-        panelV.BackColor = Color.FromArgb(128, 255, 128);
-        panelV.Dock = DockStyle.Top;
-        panelV.Location = new Point(0, 0);
-        panelV.Name = "panelV";
-        panelV.Size = new Size(235, 100);
-        panelV.TabIndex = 0;
-        // 
-        // panel2
-        // 
-        panel2.BackColor = Color.LightGray;
-        panel2.Dock = DockStyle.Top;
-        panel2.Location = new Point(0, 0);
-        panel2.Name = "panel2";
-        panel2.Size = new Size(235, 70);
-        panel2.TabIndex = 0;
+        panelMain.Controls.Add(dgvCliente);
+        panelMain.Controls.Add(labelNombreCliente);
+        panelMain.Controls.Add(BotonMasC);
+        panelMain.Controls.Add(BotonMenosC);
+        panelMain.Controls.Add(BotonBuscar);
+        panelMain.Controls.Add(textBoxCliente);
+        panelMain.Controls.Add(Filtros);
+        panelMain.Controls.Add(BotonHelpC);
+        panelMain.Dock = DockStyle.Fill;
+        panelMain.Location = new Point(0, 0);
+        panelMain.Name = "panelMain";
+        panelMain.Size = new Size(832, 392);
+        panelMain.TabIndex = 8;
         // 
         // ClienteForm
         // 
         BackColor = Color.FromArgb(26, 26, 26);
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(832, 392);
-        Controls.Add(panel1);
-        Controls.Add(BotonHelpC);
         Controls.Add(panelFiltros);
-        Controls.Add(Filtros);
-        Controls.Add(dgvCliente);
-        Controls.Add(textBoxCliente);
-        Controls.Add(BotonBuscar);
-        Controls.Add(labelNombreCliente);
-        Controls.Add(BotonMenosC);
-        Controls.Add(BotonMasC);
+        Controls.Add(panelMain);
         ForeColor = SystemColors.ControlLight;
         Icon = (Icon)resources.GetObject("$this.Icon");
         MinimumSize = new Size(848, 431);
@@ -342,18 +304,17 @@ public partial class ClienteForm : Form
         Text = "Sección Cliente";
         Load += ClienteForm_Load;
         ((ISupportInitialize)dgvCliente).EndInit();
+        panelFiltros.ResumeLayout(false);
         FiltroFecha.ResumeLayout(false);
         FiltroFecha.PerformLayout();
-        panelFiltros.ResumeLayout(false);
-        panel1.ResumeLayout(false);
-        PNR.ResumeLayout(false);
+        panelMain.ResumeLayout(false);
+        panelMain.PerformLayout();
         ResumeLayout(false);
-        PerformLayout();
-
     }
     private void ClienteForm_Load(object sender, EventArgs e)
     {
         buscarClientes(null);
+        RegistrarClicks(this);
     }
     private void FiltrarPorFecha(object sender, EventArgs e)
     {
@@ -521,14 +482,105 @@ public partial class ClienteForm : Form
 
     private void Filtros_Click(object sender, EventArgs e)
     {
-        panelFiltros.Visible = !panelFiltros.Visible;
-        if (panelFiltros.Visible)
+        /*if (!panelFiltros.Visible)
         {
-            Filtros.Text = "Cerrar Filtros ▼";
+            animAbriendo = true;
+            panelFiltros.Visible = true;
+            panelFiltros.Width = 0;
+            Filtros.Text = "◀ Cerrar Filtros";
+            animTimer.Start();
         }
         else
         {
-            Filtros.Text = " Abrir Filtros ▶";
+            animAbriendo = false;
+            Filtros.Text = "▼  Abrir Filtros";
+            animTimer.Start();
+        }
+
+        Filtros.Focus();*/
+        panelFiltros.Visible = !panelFiltros.Visible;
+
+        if (panelFiltros.Visible)
+            Filtros.Text = "◀ Cerrar Filtros";
+        else
+            Filtros.Text = "▼  Abrir Filtros";
+    }
+    private void RegistrarClicks(Control parent) {
+        /*foreach (Control c in parent.Controls)
+        {
+            if (c == panelFiltros || c == Filtros)
+                continue;
+            c.Click += CerrarPanelClickFuera;
+            if (c.HasChildren)
+                RegistrarClicks(c);
+        }
+        parent.Click += CerrarPanelClickFuera;*/
+        foreach (Control c in parent.Controls)
+        {
+            if (c == panelFiltros || c == Filtros)
+                continue;
+
+            c.Click += CerrarPanelClickFuera;
+
+            if (c.HasChildren)
+                RegistrarClicks(c);
+        }
+
+        parent.Click += CerrarPanelClickFuera;
+    }
+    private void CerrarPanelClickFuera(object sender, EventArgs e)
+    {
+        /*if (!panelFiltros.Visible)
+            return;
+
+        if (animTimer.Enabled)
+            return;
+
+        Point mousePos = this.PointToClient(Cursor.Position);
+
+        if (!panelFiltros.Bounds.Contains(mousePos))
+        {
+            animAbriendo = false;
+            animTimer.Start();
+            Filtros.Text = "▼  Abrir Filtros";
+        }*/
+        if (panelFiltros.Visible)
+        {
+            Point mousePos = this.PointToClient(Cursor.Position);
+
+            if (!panelFiltros.Bounds.Contains(mousePos))
+            {
+                panelFiltros.Visible = false;
+                Filtros.Text = "▼  Abrir Filtros";
+            }
         }
     }
+    /*private void AnimarPanel(object sender, EventArgs e)
+    {
+        if (animAbriendo)
+        {
+            if (panelFiltros.Width < panelObjetivo)
+            {
+                panelFiltros.Width += 10;
+            }
+            else
+            {
+                panelFiltros.Width = panelObjetivo;
+                animTimer.Stop();
+            }
+        }
+        else
+        {
+            if (panelFiltros.Width > 0)
+            {
+                panelFiltros.Width -= 10;
+            }
+            else
+            {
+                panelFiltros.Width = 0;
+                panelFiltros.Visible = false;
+                animTimer.Stop();
+            }
+        }
+    }*/
 }

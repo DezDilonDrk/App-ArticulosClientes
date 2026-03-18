@@ -55,6 +55,12 @@ public static class WindowManager
             _openWindows.Remove(key);
             OnWindowsChanged?.Invoke();
         };
+        int desplazamiento = 0;
+        if (owner is Menu m)
+        {
+            desplazamiento = m.areaClienteHeigth();
+        }
+
         newForm.formularioHijo.Width = newForm.formularioPadre.Width;
         newForm.formularioHijo.Height = newForm.formularioPadre.Height - 40;
         newForm.formularioHijo.Shown += (s, e) =>
@@ -63,7 +69,7 @@ public static class WindowManager
             {
                 newForm.formularioHijo.Location = new Point(
                     owner.Left + (owner.Width - newForm.formularioHijo.Width) / 2,
-                    owner.Top + ((owner.Height - newForm.formularioHijo.Height) / 2) + 40
+                    owner.Top + ((owner.Height - newForm.formularioHijo.Height) / 2) + desplazamiento
                 );
             }
         };  
