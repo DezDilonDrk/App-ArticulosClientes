@@ -76,6 +76,7 @@ public partial class ClienteForm : Form
         BotonMasC.Click += BotonMasC_Click;
         BotonMasC.MouseEnter += Boton_MouseEnter;
         BotonMasC.MouseLeave += Boton_MouseLeave;
+        BotonMasC.Tag = "modButton";
         // 
         // BotonMenosC
         // 
@@ -93,6 +94,7 @@ public partial class ClienteForm : Form
         BotonMenosC.Click += BotonMenosC_Click;
         BotonMenosC.MouseEnter += Boton_MouseEnter;
         BotonMenosC.MouseLeave += Boton_MouseLeave;
+        BotonMenosC.Tag = "modButton";
         // 
         // labelNombreCliente
         // 

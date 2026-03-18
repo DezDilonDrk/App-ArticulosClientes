@@ -26,7 +26,7 @@ namespace Articulos_Frontend.Theme
         private static void ApplyStyle(Control control)
         {
             // LABELS
-            if (control is Label lbl)
+            /*if (control is Label lbl)
             {
                 if (lbl.Text.Equals("ACTUALIZAR CLIENTE") || lbl.Text.Equals("CREAR CLIENTE"))
                 {
@@ -38,6 +38,11 @@ namespace Articulos_Frontend.Theme
                     lbl.ForeColor = ColorPalette.TextPrimary;
                     lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
                 }
+            }*/
+            if (control is Label lbl)
+            {
+                lbl.ForeColor = ColorPalette.TextPrimary;
+                lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
             }
             if (control is TextBox txt)
             {
@@ -65,7 +70,6 @@ namespace Articulos_Frontend.Theme
                 dtp.CalendarTrailingForeColor = ColorPalette.TextDark;
                 dtp.Font = new Font("Intercom", 9, FontStyle.Regular);
             }
-
             // BOTONES
             if (control is Button btn)
             {
@@ -126,6 +130,30 @@ namespace Articulos_Frontend.Theme
                 grid.RowTemplate.Height = 30;
             }
 
+            if (control.Tag is string tag)
+            {
+                switch (tag)
+                {
+                    case "title":
+                        if (control is Label lbl2)
+                            lbl2.Font = new Font("Intercom", 20, FontStyle.Bold);
+                        break;
+                    case "normalText":
+                        if (control is Label lbl3)
+                            lbl3.Font = new Font("Intercom", 9, FontStyle.Bold);
+                        break;
+                    case "modButton":
+                        if (control is Button btn3)
+                        {
+                            btn3.Font = new Font("Intercom", 20, FontStyle.Bold);
+                        }
+                        break;
+                    default:
+                        if (control is TextBox txt2)
+                            txt2.Font = new Font("Intercom", 9, FontStyle.Regular);
+                        break;
+                }
+            }
             // Aplicar también a controles hijos
             foreach (Control child in control.Controls)
             {

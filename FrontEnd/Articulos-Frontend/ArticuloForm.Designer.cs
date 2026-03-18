@@ -30,6 +30,7 @@ namespace Articulos_Frontend
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticuloForm));
             EtiquetaNombre = new Label();
             TextoNombre = new TextBox();
             BotonAdd = new Button();
@@ -191,6 +192,7 @@ namespace Articulos_Frontend
             Controls.Add(BotonAdd);
             Controls.Add(TextoNombre);
             Controls.Add(EtiquetaNombre);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(816, 489);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;

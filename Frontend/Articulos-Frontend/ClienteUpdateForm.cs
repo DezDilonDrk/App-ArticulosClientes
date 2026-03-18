@@ -32,6 +32,7 @@ namespace Articulos_Frontend
 
         private void InitializeComponent()
         {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteUpdateForm));
             textBoxDni = new TextBox();
             textBoxNombre = new TextBox();
             textBoxApellidos = new TextBox();
@@ -91,6 +92,7 @@ namespace Articulos_Frontend
             LabelDni.Name = "LabelDni";
             LabelDni.Size = new Size(45, 21);
             LabelDni.TabIndex = 4;
+            LabelDni.Tag = "normalText";
             LabelDni.Text = "Dni: ";
             LabelDni.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -104,6 +106,7 @@ namespace Articulos_Frontend
             LabelNombre.Name = "LabelNombre";
             LabelNombre.Size = new Size(81, 21);
             LabelNombre.TabIndex = 5;
+            LabelNombre.Tag = "normalText";
             LabelNombre.Text = "Nombre: ";
             LabelNombre.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -117,6 +120,7 @@ namespace Articulos_Frontend
             LabelApellidos.Name = "LabelApellidos";
             LabelApellidos.Size = new Size(90, 21);
             LabelApellidos.TabIndex = 6;
+            LabelApellidos.Tag = "normalText";
             LabelApellidos.Text = "Apellidos: ";
             LabelApellidos.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -130,6 +134,7 @@ namespace Articulos_Frontend
             LabelEmail.Name = "LabelEmail";
             LabelEmail.Size = new Size(61, 21);
             LabelEmail.TabIndex = 7;
+            LabelEmail.Tag = "normalText";
             LabelEmail.Text = "Email: ";
             LabelEmail.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -158,7 +163,8 @@ namespace Articulos_Frontend
             LabelTitulo.Name = "LabelTitulo";
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
-            LabelTitulo.Text = "ACTUALIZAR CLIENTE";
+            LabelTitulo.Tag = "title";
+            LabelTitulo.Text = "Actualizar Cliente";
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ClienteUpdateForm
@@ -176,6 +182,7 @@ namespace Articulos_Frontend
             Controls.Add(textBoxNombre);
             Controls.Add(textBoxDni);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MaximumSize = new Size(596, 402);
             MinimumSize = new Size(596, 402);

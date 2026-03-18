@@ -29,6 +29,7 @@ public partial class ClienteDetailForm : Form
 
     private void InitializeComponent()
     {
+        ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteDetailForm));
         textBoxDni = new TextBox();
         textBoxNombre = new TextBox();
         textBoxApellidos = new TextBox();
@@ -147,7 +148,8 @@ public partial class ClienteDetailForm : Form
         LabelTitulo.Name = "LabelTitulo";
         LabelTitulo.Size = new Size(316, 36);
         LabelTitulo.TabIndex = 0;
-        LabelTitulo.Text = "CREAR CLIENTE";
+        LabelTitulo.Tag = "title";
+        LabelTitulo.Text = "Crear Cliente";
         LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // button1
@@ -178,6 +180,7 @@ public partial class ClienteDetailForm : Form
         Controls.Add(textBoxNombre);
         Controls.Add(textBoxDni);
         FormBorderStyle = FormBorderStyle.FixedSingle;
+        Icon = (Icon)resources.GetObject("$this.Icon");
         MaximizeBox = false;
         MaximumSize = new Size(596, 402);
         MinimumSize = new Size(596, 402);

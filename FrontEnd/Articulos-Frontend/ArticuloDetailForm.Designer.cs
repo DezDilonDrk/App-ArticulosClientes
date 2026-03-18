@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticuloDetailForm));
             detalleNombre = new Label();
             detallePrecio = new Label();
             detalleCategoria = new Label();
@@ -132,6 +133,7 @@
             Controls.Add(detalleCategoria);
             Controls.Add(detallePrecio);
             Controls.Add(detalleNombre);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(599, 382);
             Name = "ArticuloDetailForm";
             StartPosition = FormStartPosition.CenterParent;
