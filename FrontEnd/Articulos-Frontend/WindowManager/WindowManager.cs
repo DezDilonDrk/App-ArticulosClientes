@@ -24,9 +24,6 @@ public static class WindowManager
             }     
             form.formularioHijo.BringToFront();
             form.formularioHijo.Activate();
-
-            form.formularioHijo.TopMost = true;
-            form.formularioHijo.TopMost = false;
         }
     }
 
@@ -45,6 +42,8 @@ public static class WindowManager
         }
 
         var newForm = new FormMT(owner, factory());
+        
+        newForm.formularioHijo.Owner = owner;
 
         _openWindows[key] = newForm;
 
