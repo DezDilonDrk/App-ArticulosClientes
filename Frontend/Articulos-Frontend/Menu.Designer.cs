@@ -66,7 +66,7 @@
             ventanasToolStripMenuItem.Name = "ventanasToolStripMenuItem";
             ventanasToolStripMenuItem.Size = new Size(66, 20);
             ventanasToolStripMenuItem.Text = "Ventanas";
-            ventanasToolStripMenuItem.Click += ventanasToolStripMenuItem_Click;
+            ventanasToolStripMenuItem.DropDownOpening += ventanasToolStripMenuItem_DropDownOpening;
             // 
             // Menu
             // 
