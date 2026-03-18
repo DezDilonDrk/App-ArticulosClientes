@@ -148,6 +148,14 @@ namespace Articulos_Frontend.Theme
                             btn3.Font = new Font("Intercom", 20, FontStyle.Bold);
                         }
                         break;
+                    case "menuStrip":
+                        if (control is MenuStrip ms)
+                        {
+                            ms.BackColor = ColorPalette.GridHeader;
+                            ms.ForeColor = ColorPalette.TextPrimary;
+                            ms.Font = new Font("Intercom", 9, FontStyle.Regular);
+                        }
+                        break;
                     default:
                         if (control is TextBox txt2)
                             txt2.Font = new Font("Intercom", 9, FontStyle.Regular);

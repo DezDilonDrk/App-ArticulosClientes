@@ -43,9 +43,10 @@
             menuStripAC.Location = new Point(0, 0);
             menuStripAC.Name = "menuStripAC";
             menuStripAC.Padding = new Padding(4, 2, 0, 2);
-            menuStripAC.Size = new Size(918, 24);
+            menuStripAC.Size = new Size(914, 24);
             menuStripAC.TabIndex = 0;
-            menuStripAC.Text = "menuStrip1";
+            menuStripAC.Tag = "menuStrip";
+            menuStripAC.Text = "menuStrip";
             // 
             // artículosToolStripMenuItem
             // 
@@ -72,12 +73,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources._8a027296c847ff9188483471a1830469;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(918, 490);
+            ClientSize = new Size(914, 491);
             Controls.Add(menuStripAC);
+            DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
+            MinimumSize = new Size(930, 530);
             Name = "Menu";
             Text = "MenúPrácticas";
             WindowState = FormWindowState.Maximized;

@@ -48,6 +48,7 @@
             detalleNombre.Name = "detalleNombre";
             detalleNombre.Size = new Size(82, 28);
             detalleNombre.TabIndex = 0;
+            detalleNombre.Tag = "normalText";
             detalleNombre.Text = "Nombre";
             // 
             // detallePrecio
@@ -59,6 +60,7 @@
             detallePrecio.Name = "detallePrecio";
             detallePrecio.Size = new Size(70, 28);
             detallePrecio.TabIndex = 1;
+            detallePrecio.Tag = "normalText";
             detallePrecio.Text = "Precio";
             // 
             // detalleCategoria
@@ -70,6 +72,7 @@
             detalleCategoria.Name = "detalleCategoria";
             detalleCategoria.Size = new Size(100, 23);
             detalleCategoria.TabIndex = 2;
+            detalleCategoria.Tag = "normalText";
             detalleCategoria.Text = "Categoria";
             // 
             // textBoxNombre
@@ -96,6 +99,7 @@
             detallesTitulo.Name = "detallesTitulo";
             detallesTitulo.Size = new Size(481, 52);
             detallesTitulo.TabIndex = 6;
+            detallesTitulo.Tag = "title";
             detallesTitulo.Text = "Detalles del articulo";
             // 
             // botonConfirm
@@ -134,6 +138,7 @@
             Controls.Add(detallePrecio);
             Controls.Add(detalleNombre);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximumSize = new Size(599, 382);
             MinimumSize = new Size(599, 382);
             Name = "ArticuloDetailForm";
             StartPosition = FormStartPosition.CenterParent;

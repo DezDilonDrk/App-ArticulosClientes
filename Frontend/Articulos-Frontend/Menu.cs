@@ -1,3 +1,5 @@
+using Articulos_Frontend.Theme;
+
 namespace Articulos_Frontend
 {
     public partial class Menu : Form
@@ -7,7 +9,7 @@ namespace Articulos_Frontend
         public Menu()
         {
             InitializeComponent();
-
+            StyleManager.StyleForm(this);
         }
 
         public void Menu_Load(object sender, EventArgs e)
