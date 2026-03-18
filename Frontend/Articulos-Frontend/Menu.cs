@@ -15,6 +15,8 @@ namespace Articulos_Frontend
         public void Menu_Load(object sender, EventArgs e)
         {
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
+            RefrescarMenuVentanas();
+
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -67,7 +69,7 @@ namespace Articulos_Frontend
             });
         }
 
-        private void ventanasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ventanasToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             RefrescarMenuVentanas();
         }
@@ -75,14 +77,19 @@ namespace Articulos_Frontend
         private void RefrescarMenuVentanas()
         {
             ventanasToolStripMenuItem.DropDownItems.Clear();
-            foreach(var kvp in WindowManager.OpenWindows)
+            if (WindowManager.OpenWindows.Count == 0)
+            {
+                ventanasToolStripMenuItem.DropDownItems.Add(
+                    new ToolStripMenuItem("(Sin ventanas)") { Enabled = false }
+                );
+                return;
+            }
+            foreach (var kvp in WindowManager.OpenWindows)
             {
                 var key = kvp.Key;
                 var form = kvp.Value.formularioHijo;
                 var item = new ToolStripMenuItem(form.Text);
                 item.Click += (s, e) => WindowManager.Activate(key);
-                var activeForm = Form.ActiveForm;
-               // item.Checked = (form == activeForm);
 
                 ventanasToolStripMenuItem.DropDownItems.Add(item);
             }

@@ -22,11 +22,16 @@ public partial class ArticuloForm : Form
         //repo = new ArticuloRepository(connStr);
         api = new ArticuloApiClient();
         StyleManager.StyleForm(this);
+        var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
+        comboBoxCategoria.DataSource = categorias.ToList();
+        comboBoxCategoria.SelectedIndex = -1;
     }
 
     private void ArticuloForm_Load(object sender, EventArgs e)
     {
         cargarArticulos(null);
+        panelFiltros.Visible = false;
+        MinimumSize = new Size((MinimumSize.Width - panelFiltros.Width), MinimumSize.Height);
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
@@ -34,11 +39,13 @@ public partial class ArticuloForm : Form
         WindowManager.ShowForm(
         "Articulo_Nuevo",
         this,
-        () => { var form = new ArticuloDetailForm(api, null);
+        () =>
+        {
+            var form = new ArticuloDetailForm(api, null);
             form.FormClosed += (s, e) => cargarArticulos(null);
             return form;
         }
-   
+
     );
     }
 
@@ -53,6 +60,26 @@ public partial class ArticuloForm : Form
         var articulos = await api.ObtenerArticulos();
         var dateDesde = fechaDesde.Value.Date;
         var dateHasta = fechaHasta.Value.Date.AddDays(1);
+        var categoria = comboBoxCategoria.SelectedItem as string;
+        var espacio = " ";
+        if (textBoxMinimo.Text == "" || textBoxMinimo.Text.Contains(espacio))
+        {
+            textBoxMinimo.Text = "0";
+        }
+        if (textBoxMaximo.Text == "" || textBoxMaximo.Text.Contains(espacio))
+        {
+            textBoxMaximo.Text = "1000000";
+        }
+        if (!decimal.TryParse(textBoxMinimo.Text, out var PrecioMin) || PrecioMin < 0)
+        {
+            MessageBox.Show("Precio mínimo inválido (no es un número o no es negativo)");
+            return;
+        }
+        if (!decimal.TryParse(textBoxMaximo.Text, out var PrecioMax) || PrecioMax < 0)
+        {
+            MessageBox.Show("Precio máximo inválido (no es un número o no es negativo)");
+            return;
+        }
 
         if (!string.IsNullOrWhiteSpace(nombre))
         {
@@ -60,18 +87,33 @@ public partial class ArticuloForm : Form
                 .Where(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
-        if (checkBoxDesde.Checked)
+        if (panelFiltros.Visible)
         {
+            if (checkBoxDesde.Checked)
+            {
+                articulos = articulos
+                .Where(a => a.FechaCreacion >= dateDesde)
+                .ToList();
+            }
+            if (checkBoxHasta.Checked)
+            {
+                articulos = articulos
+                .Where(a => a.FechaCreacion < dateHasta)
+                .ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(categoria))
+            {
+                articulos = articulos
+                    .Where(a => a.categoria == categoria)
+                    .ToList();
+            }
+
             articulos = articulos
-            .Where(a => a.FechaCreacion >= dateDesde)
+            .Where(a => a.precio >= PrecioMin)
+            .Where(a => a.precio <= PrecioMax)
             .ToList();
         }
-        if (checkBoxHasta.Checked)
-        {
-            articulos = articulos
-            .Where(a => a.FechaCreacion < dateHasta)
-            .ToList();
-        }
+
 
         dataGridView1.DataSource = articulos;
 
@@ -93,7 +135,8 @@ public partial class ArticuloForm : Form
                 WindowManager.ShowForm(
                     $"{nameof(ArticuloForm)}_{articulo.id}",
                     this,
-                    () => {
+                    () =>
+                    {
                         var form = new ArticuloDetailForm(api, articulo);
                         form.FormClosed += (s, e) => cargarArticulos(null);
                         return form;
@@ -103,7 +146,7 @@ public partial class ArticuloForm : Form
         }
     }
 
-    
+
 
     private void EtiquetaNombre_Click(object sender, EventArgs e)
     {
@@ -134,4 +177,25 @@ public partial class ArticuloForm : Form
 
     }
 
+    private void BotonFiltros_Click(object sender, EventArgs e)
+    {
+        if (panelFiltros.Visible)
+        {
+            panelFiltros.Visible = false;
+            MinimumSize = new Size((MinimumSize.Width - panelFiltros.Width), MinimumSize.Height);
+
+            BotonFiltros.Text = "Mostrar filtros";
+        }
+        else
+        {
+            panelFiltros.Visible = true;
+            MinimumSize = new Size((MinimumSize.Width + panelFiltros.Width), MinimumSize.Height);
+            BotonFiltros.Text = "Ocultar filtros";
+        }
+    }
+
+    private void comboBoxCategoria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
