@@ -86,6 +86,7 @@ public partial class ClienteDetailForm : Form
         LabelDni.TabIndex = 4;
         LabelDni.Text = "Dni: ";
         LabelDni.TextAlign = ContentAlignment.MiddleRight;
+        LabelDni.Tag = "normalText";
         // 
         // LabelNombre
         // 
@@ -98,6 +99,7 @@ public partial class ClienteDetailForm : Form
         LabelNombre.TabIndex = 5;
         LabelNombre.Text = "Nombre: ";
         LabelNombre.TextAlign = ContentAlignment.MiddleRight;
+        LabelNombre.Tag = "normalText";
         // 
         // LabelApellidos
         // 
@@ -110,6 +112,7 @@ public partial class ClienteDetailForm : Form
         LabelApellidos.TabIndex = 6;
         LabelApellidos.Text = "Apellidos: ";
         LabelApellidos.TextAlign = ContentAlignment.MiddleRight;
+        LabelApellidos.Tag = "normalText";
         // 
         // LabelEmail
         // 
@@ -122,6 +125,7 @@ public partial class ClienteDetailForm : Form
         LabelEmail.TabIndex = 7;
         LabelEmail.Text = "Email: ";
         LabelEmail.TextAlign = ContentAlignment.MiddleRight;
+        LabelEmail.Tag = "normalText";
         // 
         // BotonCrearC
         // 
