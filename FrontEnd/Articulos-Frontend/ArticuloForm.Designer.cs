@@ -314,7 +314,6 @@ namespace Articulos_Frontend
             MinimumSize = new Size(1498, 559);
             Controls.Add(EtiquetaNombre);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(816, 489);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ArticuloForm";
