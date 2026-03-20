@@ -360,18 +360,21 @@ public partial class ClienteForm : Form
         }
         if (dgvCliente.Columns["Nombre"] != null)
             //dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        dgvCliente.Columns["Nombre"].FillWeight = 30;
-        dgvCliente.Columns["Nombre"].MinimumWidth = 100;
+            dgvCliente.Columns["Nombre"].FillWeight = 30;
+            dgvCliente.Columns["Nombre"].MinimumWidth = 100;
         if (dgvCliente.Columns["Apellidos"] != null)
             //dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        dgvCliente.Columns["Apellidos"].FillWeight = 30;
-        dgvCliente.Columns["Apellidos"].MinimumWidth = 120;
+            dgvCliente.Columns["Apellidos"].FillWeight = 30;
+            dgvCliente.Columns["Apellidos"].MinimumWidth = 120;
         if (dgvCliente.Columns["Email"] != null)
         {
             //dgvCliente.Columns["Email"].Width = 250;
             //dgvCliente.Columns["Email"].Resizable = DataGridViewTriState.False;
+            dgvCliente.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgvCliente.Columns["Email"].FillWeight = 40;
             dgvCliente.Columns["Email"].MinimumWidth = 150;
