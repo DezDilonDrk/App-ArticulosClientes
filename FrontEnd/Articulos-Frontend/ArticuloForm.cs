@@ -198,4 +198,16 @@ public partial class ArticuloForm : Form
     {
 
     }
+
+    private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+    {
+        if (dataGridView1.Columns.Count == 0) return;
+
+        dataGridView1.Columns[0].Width = 40;
+        dataGridView1.Columns[1].Width = 120;
+        dataGridView1.Columns[2].Width = 80;
+        dataGridView1.Columns[3].Width = 80;
+        dataGridView1.Columns[4].Width = 110;
+        dataGridView1.Columns[5].Width = 140;
+    }
 }

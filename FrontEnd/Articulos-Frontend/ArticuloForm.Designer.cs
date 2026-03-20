@@ -86,7 +86,7 @@ namespace Articulos_Frontend
             BotonAdd.Location = new Point(1378, 26);
             BotonAdd.Name = "BotonAdd";
             BotonAdd.Size = new Size(62, 61);
-            BotonAdd.TabIndex = 2;
+            BotonAdd.TabIndex = 11;
             BotonAdd.Text = "+";
             BotonAdd.UseVisualStyleBackColor = true;
             BotonAdd.Click += botonAdd_Click;
@@ -98,7 +98,7 @@ namespace Articulos_Frontend
             BotonDel.Location = new Point(1378, 106);
             BotonDel.Name = "BotonDel";
             BotonDel.Size = new Size(62, 61);
-            BotonDel.TabIndex = 3;
+            BotonDel.TabIndex = 12;
             BotonDel.Text = "-";
             BotonDel.UseVisualStyleBackColor = true;
             BotonDel.Click += botonDel_Click;
@@ -109,7 +109,7 @@ namespace Articulos_Frontend
             BotonBuscar.Location = new Point(179, 115);
             BotonBuscar.Name = "BotonBuscar";
             BotonBuscar.Size = new Size(138, 33);
-            BotonBuscar.TabIndex = 4;
+            BotonBuscar.TabIndex = 3;
             BotonBuscar.Text = "Buscar";
             BotonBuscar.UseVisualStyleBackColor = true;
             BotonBuscar.Click += BotonBuscar_Click;
@@ -119,7 +119,6 @@ namespace Articulos_Frontend
             dataGridView1.AllowUserToResizeColumns = false;
             dataGridView1.AllowUserToResizeRows = false;
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllHeaders;
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -130,10 +129,11 @@ namespace Articulos_Frontend
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(1437, 318);
             dataGridView1.StandardTab = true;
-            dataGridView1.TabIndex = 5;
+            dataGridView1.TabIndex = 13;
             dataGridView1.VirtualMode = true;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            dataGridView1.DataBindingComplete += dataGridView1_DataBindingComplete;
             // 
             // fechaDesde
             // 
@@ -141,7 +141,7 @@ namespace Articulos_Frontend
             fechaDesde.Location = new Point(124, 43);
             fechaDesde.Name = "fechaDesde";
             fechaDesde.Size = new Size(157, 34);
-            fechaDesde.TabIndex = 8;
+            fechaDesde.TabIndex = 5;
             // 
             // fechaHasta
             // 
@@ -149,7 +149,7 @@ namespace Articulos_Frontend
             fechaHasta.Location = new Point(122, 90);
             fechaHasta.Name = "fechaHasta";
             fechaHasta.Size = new Size(159, 34);
-            fechaHasta.TabIndex = 9;
+            fechaHasta.TabIndex = 7;
             // 
             // checkBoxDesde
             // 
@@ -159,7 +159,7 @@ namespace Articulos_Frontend
             checkBoxDesde.Location = new Point(21, 39);
             checkBoxDesde.Name = "checkBoxDesde";
             checkBoxDesde.Size = new Size(95, 31);
-            checkBoxDesde.TabIndex = 10;
+            checkBoxDesde.TabIndex = 4;
             checkBoxDesde.Text = "Desde:";
             checkBoxDesde.UseVisualStyleBackColor = false;
             checkBoxDesde.CheckedChanged += checkBoxHasta_CheckedChanged;
@@ -172,7 +172,7 @@ namespace Articulos_Frontend
             checkBoxHasta.Location = new Point(21, 86);
             checkBoxHasta.Name = "checkBoxHasta";
             checkBoxHasta.Size = new Size(94, 31);
-            checkBoxHasta.TabIndex = 11;
+            checkBoxHasta.TabIndex = 6;
             checkBoxHasta.Text = "Hasta:";
             checkBoxHasta.UseVisualStyleBackColor = false;
             // 
@@ -197,7 +197,7 @@ namespace Articulos_Frontend
             BotonFiltros.Location = new Point(360, 49);
             BotonFiltros.Name = "BotonFiltros";
             BotonFiltros.Size = new Size(138, 37);
-            BotonFiltros.TabIndex = 13;
+            BotonFiltros.TabIndex = 2;
             BotonFiltros.Text = "Mostrar filtros";
             BotonFiltros.UseVisualStyleBackColor = true;
             BotonFiltros.Click += BotonFiltros_Click;
@@ -234,7 +234,7 @@ namespace Articulos_Frontend
             comboBoxCategoria.Location = new Point(106, 54);
             comboBoxCategoria.Name = "comboBoxCategoria";
             comboBoxCategoria.Size = new Size(131, 35);
-            comboBoxCategoria.TabIndex = 15;
+            comboBoxCategoria.TabIndex = 10;
             comboBoxCategoria.SelectedIndexChanged += comboBoxCategoria_SelectedIndexChanged;
             // 
             // label2
@@ -266,7 +266,7 @@ namespace Articulos_Frontend
             textBoxMaximo.Location = new Point(110, 81);
             textBoxMaximo.Name = "textBoxMaximo";
             textBoxMaximo.Size = new Size(100, 34);
-            textBoxMaximo.TabIndex = 3;
+            textBoxMaximo.TabIndex = 9;
             textBoxMaximo.Text = "1000000";
             textBoxMaximo.TextAlign = HorizontalAlignment.Right;
             // 
@@ -275,7 +275,7 @@ namespace Articulos_Frontend
             textBoxMinimo.Location = new Point(110, 37);
             textBoxMinimo.Name = "textBoxMinimo";
             textBoxMinimo.Size = new Size(100, 34);
-            textBoxMinimo.TabIndex = 2;
+            textBoxMinimo.TabIndex = 8;
             textBoxMinimo.Text = "0";
             textBoxMinimo.TextAlign = HorizontalAlignment.Right;
             // 
@@ -303,7 +303,6 @@ namespace Articulos_Frontend
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1482, 520);
-            Controls.Add(EtiquetaNombre);
             Controls.Add(BotonFiltros);
             Controls.Add(dataGridView1);
             Controls.Add(BotonBuscar);
@@ -311,9 +310,9 @@ namespace Articulos_Frontend
             Controls.Add(BotonAdd);
             Controls.Add(TextoNombre);
             Controls.Add(panelFiltros);
-            MinimumSize = new Size(1498, 559);
             Controls.Add(EtiquetaNombre);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MinimumSize = new Size(1498, 559);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ArticuloForm";
