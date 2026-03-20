@@ -48,10 +48,10 @@ namespace Articulos_Frontend
             // textBoxDni
             // 
             textBoxDni.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxDni.Enabled = false;
             textBoxDni.Location = new Point(204, 92);
             textBoxDni.Name = "textBoxDni";
             textBoxDni.PlaceholderText = "Introduzca el dni";
+            textBoxDni.ReadOnly = true;
             textBoxDni.Size = new Size(247, 23);
             textBoxDni.TabIndex = 0;
             // 
