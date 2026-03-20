@@ -26,7 +26,6 @@
         private Label labelNombreCliente;
         private Button BotonBuscar;
         private DataGridView dgvCliente;
-        private Button BotonHelpC;
         private Button Filtros;
         private Panel panelFiltros;
         private GroupBox FiltroFecha;
@@ -35,5 +34,7 @@
         private DateTimePicker FechaHasta;
         private DateTimePicker FechaDesde;
         private Panel panelMain;
+        private Panel panelDGV;
+        private Panel panel1;
     }
 }

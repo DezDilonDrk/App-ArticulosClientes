@@ -57,18 +57,24 @@ public static class WindowManager
         int desplazamiento = 0;
         if (owner is Menu m)
         {
-            desplazamiento = m.areaClienteHeigth();
+            desplazamiento = m.getMenuStripHeigth(); //(owner.Height - owner.ClientSize.Height) + m.getMenuStripHeigth();
         }
 
         newForm.formularioHijo.Width = newForm.formularioPadre.Width;
-        newForm.formularioHijo.Height = newForm.formularioPadre.Height - 40;
-        newForm.formularioHijo.Shown += (s, e) =>
+        newForm.formularioHijo.Height = newForm.formularioPadre.Height;
+        newForm.formularioHijo.Load += (s, e) =>
         {
-            if (owner != null)
+            if (owner is  Menu m)
             {
+                newForm.formularioHijo.Width = owner.Width;
+                newForm.formularioHijo.Height = owner.ClientSize.Height - m.getMenuStripHeigth();
+
+                int x = owner.Left;
+                int y = owner.Top;
+
                 newForm.formularioHijo.Location = new Point(
-                    owner.Left + (owner.Width - newForm.formularioHijo.Width) / 2,
-                    owner.Top + ((owner.Height - newForm.formularioHijo.Height) / 2) + desplazamiento
+                    m.Left + (m.Width - newForm.formularioHijo.Width) / 2,
+                    m.Top + ((m.Height - newForm.formularioHijo.Height) / 2) + m.getMenuStripHeigth()
                 );
             }
         };  

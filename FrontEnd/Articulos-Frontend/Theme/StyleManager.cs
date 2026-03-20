@@ -42,6 +42,7 @@ namespace Articulos_Frontend.Theme
             if (control is Label lbl)
             {
                 lbl.ForeColor = ColorPalette.TextPrimary;
+                lbl.BackColor = ColorPalette.Background;
                 lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
             }
             if (control is TextBox txt)
@@ -92,11 +93,11 @@ namespace Articulos_Frontend.Theme
 
                 btn.MouseEnter += (s, e) =>
                     btn.BackColor = ColorPalette.ButtonEnter;
-
+                    btn.ForeColor = Color.White;
                 btn.MouseLeave += (s, e) =>
                     btn.BackColor = ColorPalette.ButtonLeave;
+                    btn.ForeColor = SystemColors.ControlLightLight;
             }
-
             // DATAGRIDVIEW
             if (control is DataGridView grid)
             {

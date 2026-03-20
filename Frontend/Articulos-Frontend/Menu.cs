@@ -53,19 +53,7 @@ namespace Articulos_Frontend
 
             WindowManager.ShowForm(key, this, () =>
             {
-                var form = new ClienteForm();
-
-                form.Width = this.Width - 20;
-                form.Height = this.Height - 140;
-                form.Shown += (s, ev) =>
-                {
-                    form.Location = new Point(
-                        this.Left + (this.Width - form.Width) / 2,
-                        this.Top + (this.Height - form.Height) / 2
-                    );
-                };
-
-                return form;
+                return new ClienteForm();
             });
         }
 
@@ -73,7 +61,6 @@ namespace Articulos_Frontend
         {
             RefrescarMenuVentanas();
         }
-
         private void RefrescarMenuVentanas()
         {
             ventanasToolStripMenuItem.DropDownItems.Clear();
@@ -95,8 +82,12 @@ namespace Articulos_Frontend
             }
         }
 
-        public int areaClienteHeigth() {
-            return (this.menuStripAC.Height + SystemInformation.CaptionHeight/2);
+        public int getMenuStripHeigth() {
+            return this.menuStripAC.Height;
+        }
+        public int getMenuStripAbsoluteY()
+        {
+            return this.menuStripAC.PointToScreen(Point.Empty).Y;
         }
     }
 }
