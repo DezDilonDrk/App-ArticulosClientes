@@ -68,6 +68,7 @@ public static class WindowManager
             {
                 newForm.formularioHijo.Width = owner.Width;
                 newForm.formularioHijo.Height = owner.ClientSize.Height - m.getMenuStripHeigth();
+                // MessageBox.Show($"{Taskbar.GetTaskbarSize}");
 
                 int x = owner.Left;
                 int y = owner.Top;

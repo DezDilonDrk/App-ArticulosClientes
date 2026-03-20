@@ -31,25 +31,13 @@ namespace Articulos_Frontend
 
             WindowManager.ShowForm(key, this, () =>
             {
-                var form = new ArticuloForm();
-
-                form.Width = this.Width - 20;
-                form.Height = this.Height - 140;
-                form.Shown += (s, ev) =>
-                {
-                    form.Location = new Point(
-                        this.Left + (this.Width - form.Width) / 2,
-                        this.Top + (this.Height - form.Height) / 2
-                    );
-                };
-
-                return form;
+                return new ClienteForm();
             });
         }
 
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string key = "ClienteForm";
+            string key = "ArticuloForm";
 
             WindowManager.ShowForm(key, this, () =>
             {
