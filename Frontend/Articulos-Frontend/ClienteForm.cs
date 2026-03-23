@@ -55,21 +55,22 @@ public partial class ClienteForm : Form
         panelMain = new Panel();
         panelDGV = new Panel();
         panel1 = new Panel();
+        BuscarNombre = new GroupBox();
         ((ISupportInitialize)dgvCliente).BeginInit();
         panelFiltros.SuspendLayout();
         FiltroFecha.SuspendLayout();
         panelMain.SuspendLayout();
         panelDGV.SuspendLayout();
         panel1.SuspendLayout();
+        BuscarNombre.SuspendLayout();
         SuspendLayout();
         // 
         // BotonMasC
         // 
         BotonMasC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         BotonMasC.BackColor = Color.FromArgb(225, 6, 0);
-        BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         BotonMasC.ForeColor = Color.White;
-        BotonMasC.Location = new Point(486, 71);
+        BotonMasC.Location = new Point(524, 71);
         BotonMasC.Margin = new Padding(0);
         BotonMasC.Name = "BotonMasC";
         BotonMasC.Size = new Size(60, 45);
@@ -85,9 +86,8 @@ public partial class ClienteForm : Form
         // 
         BotonMenosC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         BotonMenosC.BackColor = Color.FromArgb(225, 6, 0);
-        BotonMenosC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         BotonMenosC.ForeColor = Color.White;
-        BotonMenosC.Location = new Point(549, 71);
+        BotonMenosC.Location = new Point(587, 71);
         BotonMenosC.Name = "BotonMenosC";
         BotonMenosC.Padding = new Padding(0, 0, 0, 4);
         BotonMenosC.Size = new Size(60, 45);
@@ -101,22 +101,22 @@ public partial class ClienteForm : Form
         // 
         // labelNombreCliente
         // 
+        labelNombreCliente.Anchor = AnchorStyles.None;
         labelNombreCliente.BackColor = Color.Transparent;
-        labelNombreCliente.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
         labelNombreCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        labelNombreCliente.Location = new Point(149, 11);
+        labelNombreCliente.Location = new Point(16, 19);
         labelNombreCliente.Name = "labelNombreCliente";
         labelNombreCliente.Size = new Size(63, 15);
         labelNombreCliente.TabIndex = 2;
         labelNombreCliente.Text = "Nombre: ";
+        labelNombreCliente.Tag = "normalText";
         // 
         // BotonBuscar
         // 
-        BotonBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        BotonBuscar.Anchor = AnchorStyles.None;
         BotonBuscar.BackColor = Color.FromArgb(225, 6, 0);
-        BotonBuscar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         BotonBuscar.ForeColor = Color.White;
-        BotonBuscar.Location = new Point(218, 71);
+        BotonBuscar.Location = new Point(85, 63);
         BotonBuscar.MaximumSize = new Size(200, 45);
         BotonBuscar.Name = "BotonBuscar";
         BotonBuscar.Size = new Size(200, 45);
@@ -129,11 +129,11 @@ public partial class ClienteForm : Form
         // 
         // textBoxCliente
         // 
+        textBoxCliente.Anchor = AnchorStyles.None;
         textBoxCliente.BackColor = Color.FromArgb(42, 42, 42);
         textBoxCliente.BorderStyle = BorderStyle.None;
-        textBoxCliente.Font = new Font("Segoe UI", 9F);
         textBoxCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        textBoxCliente.Location = new Point(218, 12);
+        textBoxCliente.Location = new Point(85, 18);
         textBoxCliente.MaxLength = 60;
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
@@ -146,7 +146,6 @@ public partial class ClienteForm : Form
         dgvCliente.BackgroundColor = Color.FromArgb(42, 42, 42);
         dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle1.BackColor = Color.FromArgb(60, 60, 60);
-        dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
         dataGridViewCellStyle1.ForeColor = Color.FromArgb(242, 242, 242);
         dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(60, 60, 60);
         dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -164,7 +163,6 @@ public partial class ClienteForm : Form
         dgvCliente.ReadOnly = true;
         dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle2.BackColor = Color.FromArgb(60, 60, 60);
-        dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
         dataGridViewCellStyle2.ForeColor = Color.FromArgb(242, 242, 242);
         dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -174,7 +172,7 @@ public partial class ClienteForm : Form
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
         dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvCliente.Size = new Size(610, 267);
+        dgvCliente.Size = new Size(648, 267);
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
         // 
@@ -270,7 +268,7 @@ public partial class ClienteForm : Form
         panelMain.Dock = DockStyle.Fill;
         panelMain.Location = new Point(222, 0);
         panelMain.Name = "panelMain";
-        panelMain.Size = new Size(610, 392);
+        panelMain.Size = new Size(648, 392);
         panelMain.TabIndex = 8;
         // 
         // panelDGV
@@ -279,28 +277,38 @@ public partial class ClienteForm : Form
         panelDGV.Dock = DockStyle.Fill;
         panelDGV.Location = new Point(0, 125);
         panelDGV.Name = "panelDGV";
-        panelDGV.Size = new Size(610, 267);
+        panelDGV.Size = new Size(648, 267);
         panelDGV.TabIndex = 9;
         // 
         // panel1
         // 
+        panel1.Controls.Add(BuscarNombre);
         panel1.Controls.Add(Filtros);
-        panel1.Controls.Add(textBoxCliente);
-        panel1.Controls.Add(BotonBuscar);
         panel1.Controls.Add(BotonMenosC);
         panel1.Controls.Add(BotonMasC);
-        panel1.Controls.Add(labelNombreCliente);
         panel1.Dock = DockStyle.Top;
         panel1.Location = new Point(0, 0);
         panel1.Name = "panel1";
-        panel1.Size = new Size(610, 125);
+        panel1.Size = new Size(648, 125);
         panel1.TabIndex = 10;
+        // 
+        // BuscarNombre
+        // 
+        BuscarNombre.Controls.Add(labelNombreCliente);
+        BuscarNombre.Controls.Add(BotonBuscar);
+        BuscarNombre.Controls.Add(textBoxCliente);
+        BuscarNombre.Location = new Point(156, 8);
+        BuscarNombre.Name = "BuscarNombre";
+        BuscarNombre.Size = new Size(350, 108);
+        BuscarNombre.TabIndex = 9;
+        BuscarNombre.TabStop = false;
+        BuscarNombre.Text = "Búsqueda por Nombre";
         // 
         // ClienteForm
         // 
         BackColor = Color.FromArgb(26, 26, 26);
         BackgroundImageLayout = ImageLayout.Stretch;
-        ClientSize = new Size(832, 392);
+        ClientSize = new Size(870, 392);
         Controls.Add(panelMain);
         Controls.Add(panelFiltros);
         ForeColor = SystemColors.ControlLight;
@@ -308,7 +316,7 @@ public partial class ClienteForm : Form
         MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "Sección Cliente";
+        Text = "Lista de Clientes";
         Load += ClienteForm_Load;
         ((ISupportInitialize)dgvCliente).EndInit();
         panelFiltros.ResumeLayout(false);
@@ -317,7 +325,8 @@ public partial class ClienteForm : Form
         panelMain.ResumeLayout(false);
         panelDGV.ResumeLayout(false);
         panel1.ResumeLayout(false);
-        panel1.PerformLayout();
+        BuscarNombre.ResumeLayout(false);
+        BuscarNombre.PerformLayout();
         ResumeLayout(false);
     }
     private void ClienteForm_Load(object sender, EventArgs e)

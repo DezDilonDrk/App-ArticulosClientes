@@ -11,20 +11,12 @@ namespace Articulos_Frontend
             InitializeComponent();
             StyleManager.StyleForm(this);
         }
-
         public void Menu_Load(object sender, EventArgs e)
         {
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
             RefrescarMenuVentanas();
 
         }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string key = "ArticuloForm";
@@ -34,7 +26,6 @@ namespace Articulos_Frontend
                 return new ArticuloForm();
             });
         }
-
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string key = "ClienteForm";
@@ -44,7 +35,6 @@ namespace Articulos_Frontend
                 return new ClienteForm();
             });
         }
-
         private void ventanasToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             RefrescarMenuVentanas();
@@ -69,7 +59,6 @@ namespace Articulos_Frontend
                 ventanasToolStripMenuItem.DropDownItems.Add(item);
             }
         }
-
         public int getMenuStripHeigth() {
             return this.menuStripAC.Height;
         }

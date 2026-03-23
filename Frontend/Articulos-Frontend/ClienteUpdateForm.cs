@@ -151,8 +151,6 @@ namespace Articulos_Frontend
             BotonActualizarC.Text = "Actualizar";
             BotonActualizarC.UseVisualStyleBackColor = false;
             BotonActualizarC.Click += BotonActualizarC_Click;
-            BotonActualizarC.MouseEnter += Boton_MouseEnter;
-            BotonActualizarC.MouseLeave += Boton_MouseLeave;
             // 
             // LabelTitulo
             // 
@@ -188,7 +186,7 @@ namespace Articulos_Frontend
             MinimumSize = new Size(596, 402);
             Name = "ClienteUpdateForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Actualizar Usuario";
+            Text = "Actualizar Cliente";
             ResumeLayout(false);
             PerformLayout();
 
@@ -213,24 +211,6 @@ namespace Articulos_Frontend
             else
             {
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-        private void Boton_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null)
-            {
-                btn.BackColor = Color.LightSkyBlue;
-                btn.ForeColor = Color.RoyalBlue;
-            }
-        }
-        private void Boton_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null)
-            {
-                btn.BackColor = Color.DodgerBlue;
-                btn.ForeColor = SystemColors.ControlLightLight;
             }
         }
     }

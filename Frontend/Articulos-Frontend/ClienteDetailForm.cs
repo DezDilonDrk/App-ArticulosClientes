@@ -141,8 +141,6 @@ public partial class ClienteDetailForm : Form
         BotonCrearC.Text = "Crear";
         BotonCrearC.UseVisualStyleBackColor = false;
         BotonCrearC.Click += BotonCrearC_Click;
-        BotonCrearC.MouseEnter += Boton_MouseEnter;
-        BotonCrearC.MouseLeave += Boton_MouseLeave;
         // 
         // LabelTitulo
         // 
@@ -188,7 +186,7 @@ public partial class ClienteDetailForm : Form
         MaximizeBox = false;
         MaximumSize = new Size(596, 402);
         MinimumSize = new Size(596, 402);
-        Name = "ClienteDetailForm";
+        Name = "Crear Cliente";
         StartPosition = FormStartPosition.CenterParent;
         Text = "Crear Cliente";
         ResumeLayout(false);
@@ -282,24 +280,6 @@ public partial class ClienteDetailForm : Form
     public Cliente getCliente()
     {
         return this.cliente;
-    }
-    private void Boton_MouseEnter(object sender, EventArgs e)
-    {
-        Button btn = sender as Button;
-        if (btn != null)
-        {
-            btn.BackColor = Color.LightSkyBlue;
-            btn.ForeColor = Color.RoyalBlue;
-        }
-    }
-    private void Boton_MouseLeave(object sender, EventArgs e)
-    {
-        Button btn = sender as Button;
-        if (btn != null)
-        {
-            btn.BackColor = Color.DodgerBlue;
-            btn.ForeColor = SystemColors.ControlLightLight;
-        }
     }
     private void button1_Click(object sender, EventArgs e)
     {

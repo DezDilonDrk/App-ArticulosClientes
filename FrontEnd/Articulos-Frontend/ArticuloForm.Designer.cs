@@ -69,6 +69,7 @@ namespace Articulos_Frontend
             EtiquetaNombre.TabIndex = 0;
             EtiquetaNombre.Text = "Nombre: ";
             EtiquetaNombre.Click += EtiquetaNombre_Click;
+            EtiquetaNombre.Tag = "normalText";
             // 
             // TextoNombre
             // 
@@ -90,6 +91,7 @@ namespace Articulos_Frontend
             BotonAdd.Text = "+";
             BotonAdd.UseVisualStyleBackColor = true;
             BotonAdd.Click += botonAdd_Click;
+            BotonAdd.Tag = "modButton";
             // 
             // BotonDel
             // 
@@ -102,6 +104,7 @@ namespace Articulos_Frontend
             BotonDel.Text = "-";
             BotonDel.UseVisualStyleBackColor = true;
             BotonDel.Click += botonDel_Click;
+            BotonDel.Tag = "modButton";
             // 
             // BotonBuscar
             // 
