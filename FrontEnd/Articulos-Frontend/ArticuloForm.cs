@@ -31,7 +31,23 @@ public partial class ArticuloForm : Form
     {
         cargarArticulos(null);
         panelFiltros.Visible = false;
-        MinimumSize = new Size((MinimumSize.Width - panelFiltros.Width), MinimumSize.Height);
+        try
+        {
+            var Size = new Size((MinimumSize.Width - panelFiltros.Width), MinimumSize.Height);
+            var Min = new Size(848, 431);
+            if (Size.Width < Min.Width || Size.Height < Min.Height)
+            {
+                MinimumSize = Min;
+            }
+            else
+            {
+                MinimumSize = Size;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al ajustar el tamaño mínimo del formulario: {ex.Message}");
+        }
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
