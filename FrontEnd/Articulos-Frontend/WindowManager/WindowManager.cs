@@ -24,7 +24,6 @@ public static class WindowManager
             }     
 
             form.formularioHijo.BringToFront();
-            form.formularioHijo.Activate();
         }
     }
 
@@ -38,7 +37,6 @@ public static class WindowManager
                 form.formularioHijo.WindowState = FormWindowState.Normal;
 
             form.formularioHijo.BringToFront();
-            form.formularioHijo.Activate();
             return;
         }
 

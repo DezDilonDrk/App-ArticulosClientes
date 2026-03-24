@@ -35,14 +35,14 @@ namespace Articulos_Frontend
             menuStripAC = new MenuStrip();
             artículosToolStripMenuItem = new ToolStripMenuItem();
             clientesToolStripMenuItem = new ToolStripMenuItem();
-            ventanasToolStripMenuItem = new ToolStripMenuItem();
+            mnuVentanas = new ToolStripMenuItem();
             menuStripAC.SuspendLayout();
             SuspendLayout();
             // 
             // menuStripAC
             // 
             menuStripAC.ImageScalingSize = new Size(20, 20);
-            menuStripAC.Items.AddRange(new ToolStripItem[] { artículosToolStripMenuItem, clientesToolStripMenuItem, ventanasToolStripMenuItem });
+            menuStripAC.Items.AddRange(new ToolStripItem[] { artículosToolStripMenuItem, clientesToolStripMenuItem, mnuVentanas });
             menuStripAC.Location = new Point(0, 0);
             menuStripAC.Name = "menuStripAC";
             menuStripAC.Padding = new Padding(4, 2, 0, 2);
@@ -65,14 +65,14 @@ namespace Articulos_Frontend
             clientesToolStripMenuItem.Text = "Clientes";
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
-            // ventanasToolStripMenuItem
+            // mnuVentanas
             // 
-            ventanasToolStripMenuItem.Name = "ventanasToolStripMenuItem";
-            ventanasToolStripMenuItem.Size = new Size(66, 20);
-            ventanasToolStripMenuItem.Text = "Ventanas";
-            ventanasToolStripMenuItem.DropDownOpening += ventanasToolStripMenuItem_DropDownOpening;
+            mnuVentanas.Name = "mnuVentanas";
+            mnuVentanas.Size = new Size(66, 20);
+            mnuVentanas.Text = "Ventanas";
+            mnuVentanas.Click += mnuVentanas_Click;
             // 
-            // Menu
+            // MenuS
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -85,7 +85,6 @@ namespace Articulos_Frontend
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(930, 530);
             Name = "Menu";
-            Text = stringValuesSP.menu;
             WindowState = FormWindowState.Maximized;
             menuStripAC.ResumeLayout(false);
             menuStripAC.PerformLayout();
@@ -98,6 +97,6 @@ namespace Articulos_Frontend
         private MenuStrip menuStripAC;
         private ToolStripMenuItem artículosToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
-        private ToolStripMenuItem ventanasToolStripMenuItem;
+        private ToolStripMenuItem mnuVentanas;
     }
 }

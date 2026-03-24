@@ -39,16 +39,40 @@ namespace Articulos_Frontend
                 return new ClienteForm();
             });
         }
-        private void ventanasToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+
+        private void mnuVentanas_Click(object sender, EventArgs e)
         {
-            RefrescarMenuVentanas();
+            var dropDown = new ContextMenuStrip();
+
+            if (WindowManager.OpenWindows.Count == 0)
+            {
+                dropDown.Items.Add("(Sin ventanas)").Enabled = false;
+            }
+            else
+            {
+                foreach (var kvp in WindowManager.OpenWindows)
+                {
+                    var key = kvp.Key;
+                    var form = kvp.Value.formularioHijo;
+
+                    var item = new ToolStripMenuItem(form.Text);
+                    item.Click += (s, ev) => WindowManager.Activate(key);
+
+                    dropDown.Items.Add(item);
+                }
+            }
+
+            var parent = mnuVentanas.GetCurrentParent();
+            var bounds = mnuVentanas.Bounds;
+
+            dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
         private void RefrescarMenuVentanas()
         {
-            ventanasToolStripMenuItem.DropDownItems.Clear();
+            mnuVentanas.DropDownItems.Clear();
             if (WindowManager.OpenWindows.Count == 0)
             {
-                ventanasToolStripMenuItem.DropDownItems.Add(
+                mnuVentanas.DropDownItems.Add(
                     new ToolStripMenuItem("(Sin ventanas)") { Enabled = false }
                 );
                 return;
@@ -60,7 +84,7 @@ namespace Articulos_Frontend
                 var item = new ToolStripMenuItem(form.Text);
                 item.Click += (s, e) => WindowManager.Activate(key);
 
-                ventanasToolStripMenuItem.DropDownItems.Add(item);
+                mnuVentanas.DropDownItems.Add(item);
             }
         }
         public int getMenuStripHeigth() {
