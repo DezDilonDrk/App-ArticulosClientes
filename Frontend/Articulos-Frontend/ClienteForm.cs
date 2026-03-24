@@ -34,6 +34,7 @@ public partial class ClienteForm : Form
         ClienteApiClient = new ClienteApiClient();
         StyleManager.StyleForm(this);
         this.ActiveControl = textBoxCliente;
+        Log.Log.Info("Formulario de clientes iniciado.");
     }
 
     private void InitializeComponent()
@@ -333,6 +334,7 @@ public partial class ClienteForm : Form
     }
     private void ClienteForm_Load(object sender, EventArgs e)
     {
+        Log.Log.Info("Cargando clientes en el formulario.");
         buscarClientes(null);
         RegistrarClicks(this);
     }
@@ -351,6 +353,7 @@ public partial class ClienteForm : Form
     }
     private async void buscarClientes(string nombreFiltro)
     {
+        Log.Log.Info($"Buscando clientes: '{nombreFiltro}'");
         IEnumerable<Cliente> clientes;
         if (string.IsNullOrWhiteSpace(nombreFiltro))
         {
@@ -412,6 +415,7 @@ public partial class ClienteForm : Form
 
     private async void BotonMasC_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Abriendo formulario para crear un nuevo cliente.");
         Cliente nuevoCliente = new Cliente();
         var formNuevo = new ClienteDetailForm(nuevoCliente);
 
@@ -435,6 +439,7 @@ public partial class ClienteForm : Form
 
     private async void BotonMenosC_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Pulsa el botón de eliminar");
         DialogResult resultado = MessageBox.Show(
         "¿Está seguro de que desea eliminar este cliente?",
         "Confirmar eliminación",
@@ -443,13 +448,17 @@ public partial class ClienteForm : Form
 
         if (resultado == DialogResult.Yes)
         {
+            Log.Log.Info($"Eliminando cliente con DNI: {dgvCliente.CurrentRow.Cells["Dni"].Value.ToString()}");
             await ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+        } else {             
+            Log.Log.Info("Eliminación cancelada por el usuario.");
         }
         buscarClientes(textBoxCliente.Text);
     }
 
     private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
+        Log.Log.Info("Doble clic en cliente para editar la información.");
         if (e.RowIndex >= 0)
         {
             string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
@@ -535,9 +544,14 @@ public partial class ClienteForm : Form
         panelFiltros.Visible = !panelFiltros.Visible;
 
         if (panelFiltros.Visible)
+        {
+            Log.Log.Info("Abriendo panel de filtros.");
             Filtros.Text = "◀ Cerrar Filtros";
-        else
+        }
+        else {
+            Log.Log.Info("Cerrando panel de filtros.");
             Filtros.Text = "▼  Abrir Filtros";
+        }
     }
     private void RegistrarClicks(Control parent) {
         /*foreach (Control c in parent.Controls)
@@ -585,6 +599,7 @@ public partial class ClienteForm : Form
             if (!panelFiltros.Bounds.Contains(mousePos))
             {
                 panelFiltros.Visible = false;
+                Log.Log.Info("Cerrando panel de filtros al hacer clic fuera del panel.");
                 Filtros.Text = "▼  Abrir Filtros";
             }
         }

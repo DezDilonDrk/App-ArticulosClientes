@@ -10,6 +10,7 @@ namespace Articulos_Frontend
         {
             InitializeComponent();
             StyleManager.StyleForm(this);
+            Log.Log.Info("Menú principal iniciado.");
         }
         public void Menu_Load(object sender, EventArgs e)
         {
@@ -19,6 +20,7 @@ namespace Articulos_Frontend
         }
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Log.Log.Info("Abriendo formulario de artículos.");
             string key = "ArticuloForm";
 
             WindowManager.ShowForm(key, this, () =>
@@ -28,6 +30,7 @@ namespace Articulos_Frontend
         }
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Log.Log.Info("Abriendo formulario de clientes.");
             string key = "ClienteForm";
 
             WindowManager.ShowForm(key, this, () =>

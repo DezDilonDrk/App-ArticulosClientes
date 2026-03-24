@@ -203,6 +203,7 @@ public partial class ClienteDetailForm : Form
                 if (comprobar != null)
                 {
                     existeDni = true;
+                    Log.Log.Warn($"Intento de crear cliente con DNI duplicado: {textBoxDni.Text.ToUpper()}.");
                     MessageBox.Show("El DNI introducido ya existe. Por favor, introduzca un DNI único.", "DNI duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
@@ -220,6 +221,7 @@ public partial class ClienteDetailForm : Form
         catch (Exception ex)
         {
             MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Log.Log.Error($"Error al crear el cliente: {ex.Message}", ex);
         }
     }
     private bool validarCamposLlenos()
@@ -228,6 +230,7 @@ public partial class ClienteDetailForm : Form
         {
             return true;
         }
+        Log.Log.Warn("Intento de crear cliente con campos incompletos.");
         MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         return false;
     }
@@ -241,6 +244,7 @@ public partial class ClienteDetailForm : Form
         }
         catch
         {
+            Log.Log.Warn($"Intento de crear cliente con email no válido: {email}.");
             MessageBox.Show("Por favor, introduzca un email válido con el formato: {usuario}@{proveedor}.{dominio}", "Email no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
@@ -249,11 +253,13 @@ public partial class ClienteDetailForm : Form
     {
         if (textBoxDni.Text.Length != 9)
         {
+            Log.Log.Warn($"Intento de crear cliente con DNI de longitud incorrecta: {dni}.");
             MessageBox.Show("El DNI debe tener 9 caracteres, 8 números y una letra mayúscula al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
         if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
         {
+            Log.Log.Warn($"Intento de crear cliente con DNI con formato incorrecto: {dni}.");
             MessageBox.Show("El DNI debe tener 9 caracteres, 8 números y una letra mayúscula al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
@@ -263,12 +269,14 @@ public partial class ClienteDetailForm : Form
         { numero = int.Parse(dni.Substring(0, 8)); }
         catch
         {
+            Log.Log.Warn($"Intento de crear cliente con DNI cuyos primeros 8 caracteres no son numéricos: {dni}.");
             MessageBox.Show("Los primeros 8 caracteres del DNI deben ser números. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
         char letraCalculada = letras[numero % 23];
         if (char.ToUpper(dni[8]) != letraCalculada)
         {
+            Log.Log.Warn($"Intento de crear cliente con DNI cuya letra ({letraCalculada}) no coincide con el número: {dni}.");
             MessageBox.Show("La letra del DNI no es correcta. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
@@ -280,6 +288,7 @@ public partial class ClienteDetailForm : Form
     }
     private void button1_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Rellenando campos de cliente con la opción debug.");
         this.textBoxNombre.Text = "Federico";
         this.textBoxApellidos.Text = "Pérez García";
         this.textBoxDni.Text = "12345678Z";

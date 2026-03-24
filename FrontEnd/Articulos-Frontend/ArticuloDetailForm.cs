@@ -31,18 +31,21 @@ namespace Articulos_Frontend
         {
             if (string.IsNullOrWhiteSpace(textBoxNombre.Text))
             {
+                Log.Log.Warn("Intento de guardar artículo sin nombre.");
                 MessageBox.Show("Nombre obligatorio");
                 return;
             }
 
             if (!decimal.TryParse(textBoxPrecio.Text, out var textPrecio) || textPrecio < 0)
             {
+                Log.Log.Warn("Intento de guardar artículo con precio inválido: " + textBoxPrecio.Text);
                 MessageBox.Show("Precio inválido (no negativo)");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(comboBoxCategoria.Text))
             {
+                Log.Log.Warn("Intento de guardar artículo sin categoría seleccionada.");
                 MessageBox.Show("Categoria obligatoria");
                 return;
             }
@@ -61,12 +64,13 @@ namespace Articulos_Frontend
                 {
                     await _client.Crear(articulo);
                     this.DialogResult = DialogResult.OK;
+                    Log.Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
                     this.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    
+                    Log.Log.Error("Error al guardar artículo: " + ex.Message, ex);
                 }
                 return;
             }
@@ -76,6 +80,7 @@ namespace Articulos_Frontend
                 _articulo.precio = (decimal) textPrecio;
                 _articulo.categoria = comboBoxCategoria.Text?.Trim();
                 await _client.Actualizar(_articulo.id, _articulo);
+                Log.Log.Info($"Artículo actualizado: {_articulo.nombre} (ID: {_articulo.id})");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
