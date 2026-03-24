@@ -48,15 +48,15 @@ namespace Articulos_Frontend
             textBoxMinimo = new TextBox();
             label1 = new Label();
             labelMin = new Label();
-            groupBox1 = new GroupBox();
-            comboBoxCategoria = new ComboBox();
-            label2 = new Label();
-            panelFiltros = new Panel();
+            panelTodo = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBoxFecha.SuspendLayout();
             groupBoxPrecio.SuspendLayout();
             groupBox1.SuspendLayout();
             panelFiltros.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBoxPrecio.SuspendLayout();
+            panelTodo.SuspendLayout();
             SuspendLayout();
             // 
             // EtiquetaNombre
@@ -84,7 +84,7 @@ namespace Articulos_Frontend
             // 
             BotonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BotonAdd.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BotonAdd.Location = new Point(1378, 26);
+            BotonAdd.Location = new Point(540, 26);
             BotonAdd.Name = "BotonAdd";
             BotonAdd.Size = new Size(62, 61);
             BotonAdd.TabIndex = 11;
@@ -97,7 +97,7 @@ namespace Articulos_Frontend
             // 
             BotonDel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BotonDel.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BotonDel.Location = new Point(1378, 106);
+            BotonDel.Location = new Point(540, 106);
             BotonDel.Name = "BotonDel";
             BotonDel.Size = new Size(62, 61);
             BotonDel.TabIndex = 12;
@@ -130,7 +130,7 @@ namespace Articulos_Frontend
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1437, 318);
+            dataGridView1.Size = new Size(599, 318);
             dataGridView1.StandardTab = true;
             dataGridView1.TabIndex = 13;
             dataGridView1.VirtualMode = true;
@@ -205,6 +205,88 @@ namespace Articulos_Frontend
             checkBoxDesde.UseVisualStyleBackColor = false;
             checkBoxDesde.CheckedChanged += checkBoxHasta_CheckedChanged;
             // 
+            // checkBoxHasta
+            // 
+            checkBoxHasta.AutoSize = true;
+            checkBoxHasta.BackColor = Color.Transparent;
+            checkBoxHasta.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            checkBoxHasta.Location = new Point(21, 86);
+            checkBoxHasta.Name = "checkBoxHasta";
+            checkBoxHasta.Size = new Size(94, 31);
+            checkBoxHasta.TabIndex = 6;
+            checkBoxHasta.Text = "Hasta:";
+            checkBoxHasta.UseVisualStyleBackColor = false;
+            // 
+            // groupBoxFecha
+            // 
+            groupBoxFecha.BackColor = Color.Transparent;
+            groupBoxFecha.Controls.Add(fechaDesde);
+            groupBoxFecha.Controls.Add(checkBoxHasta);
+            groupBoxFecha.Controls.Add(fechaHasta);
+            groupBoxFecha.Controls.Add(checkBoxDesde);
+            groupBoxFecha.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            groupBoxFecha.Location = new Point(3, 5);
+            groupBoxFecha.Name = "groupBoxFecha";
+            groupBoxFecha.Size = new Size(304, 136);
+            groupBoxFecha.TabIndex = 12;
+            groupBoxFecha.TabStop = false;
+            groupBoxFecha.Text = "Fecha de creacion";
+            // 
+            // BotonFiltros
+            // 
+            BotonFiltros.Font = new Font("Segoe UI", 14F);
+            BotonFiltros.Location = new Point(360, 49);
+            BotonFiltros.Name = "BotonFiltros";
+            BotonFiltros.Size = new Size(138, 37);
+            BotonFiltros.TabIndex = 2;
+            BotonFiltros.Text = "Mostrar filtros";
+            BotonFiltros.UseVisualStyleBackColor = true;
+            BotonFiltros.Click += BotonFiltros_Click;
+            // 
+            // panelFiltros
+            // 
+            panelFiltros.BackColor = Color.Transparent;
+            panelFiltros.Controls.Add(groupBox1);
+            panelFiltros.Controls.Add(groupBoxPrecio);
+            panelFiltros.Controls.Add(groupBoxFecha);
+            panelFiltros.Dock = DockStyle.Left;
+            panelFiltros.Location = new Point(0, 0);
+            panelFiltros.Name = "panelFiltros";
+            panelFiltros.Size = new Size(324, 520);
+            panelFiltros.TabIndex = 14;
+            // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = Color.Transparent;
+            groupBox1.Controls.Add(comboBoxCategoria);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            groupBox1.Location = new Point(12, 310);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(257, 136);
+            groupBox1.TabIndex = 14;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Categoria";
+            // 
+            // comboBoxCategoria
+            // 
+            comboBoxCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            comboBoxCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCategoria.Location = new Point(106, 54);
+            comboBoxCategoria.Name = "comboBoxCategoria";
+            comboBoxCategoria.Size = new Size(131, 35);
+            comboBoxCategoria.TabIndex = 10;
+            comboBoxCategoria.SelectedIndexChanged += comboBoxCategoria_SelectedIndexChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(6, 57);
+            label2.Name = "label2";
+            label2.Size = new Size(94, 27);
+            label2.TabIndex = 1;
+            label2.Text = "Mostrar:";
+            // 
             // groupBoxPrecio
             // 
             groupBoxPrecio.BackColor = Color.Transparent;
@@ -213,7 +295,7 @@ namespace Articulos_Frontend
             groupBoxPrecio.Controls.Add(label1);
             groupBoxPrecio.Controls.Add(labelMin);
             groupBoxPrecio.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxPrecio.Location = new Point(315, 5);
+            groupBoxPrecio.Location = new Point(12, 154);
             groupBoxPrecio.Name = "groupBoxPrecio";
             groupBoxPrecio.Size = new Size(232, 136);
             groupBoxPrecio.TabIndex = 13;
@@ -256,69 +338,34 @@ namespace Articulos_Frontend
             labelMin.TabIndex = 0;
             labelMin.Text = "Mínimo:";
             // 
-            // groupBox1
+            // panelTodo
             // 
-            groupBox1.BackColor = Color.Transparent;
-            groupBox1.Controls.Add(comboBoxCategoria);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox1.Location = new Point(553, 5);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(257, 136);
-            groupBox1.TabIndex = 14;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Categoria";
-            // 
-            // comboBoxCategoria
-            // 
-            comboBoxCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            comboBoxCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxCategoria.Location = new Point(106, 54);
-            comboBoxCategoria.Name = "comboBoxCategoria";
-            comboBoxCategoria.Size = new Size(131, 35);
-            comboBoxCategoria.TabIndex = 10;
-            comboBoxCategoria.SelectedIndexChanged += comboBoxCategoria_SelectedIndexChanged;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(6, 57);
-            label2.Name = "label2";
-            label2.Size = new Size(94, 27);
-            label2.TabIndex = 1;
-            label2.Text = "Mostrar:";
-            // 
-            // panelFiltros
-            // 
-            panelFiltros.Anchor = AnchorStyles.Top;
-            panelFiltros.BackColor = Color.Transparent;
-            panelFiltros.Controls.Add(groupBox1);
-            panelFiltros.Controls.Add(groupBoxPrecio);
-            panelFiltros.Controls.Add(groupBoxFecha);
-            panelFiltros.Location = new Point(504, 26);
-            panelFiltros.Name = "panelFiltros";
-            panelFiltros.Size = new Size(851, 158);
-            panelFiltros.TabIndex = 14;
+            panelTodo.Controls.Add(EtiquetaNombre);
+            panelTodo.Controls.Add(TextoNombre);
+            panelTodo.Controls.Add(BotonAdd);
+            panelTodo.Controls.Add(BotonDel);
+            panelTodo.Controls.Add(BotonBuscar);
+            panelTodo.Controls.Add(dataGridView1);
+            panelTodo.Controls.Add(BotonFiltros);
+            panelTodo.Dock = DockStyle.Fill;
+            panelTodo.Location = new Point(324, 0);
+            panelTodo.Name = "panelTodo";
+            panelTodo.Size = new Size(644, 520);
+            panelTodo.TabIndex = 15;
             // 
             // ArticuloForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1482, 520);
-            Controls.Add(BotonFiltros);
-            Controls.Add(dataGridView1);
-            Controls.Add(BotonBuscar);
-            Controls.Add(BotonDel);
-            Controls.Add(BotonAdd);
-            Controls.Add(TextoNombre);
+            ClientSize = new Size(968, 520);
+            Controls.Add(panelTodo);
             Controls.Add(panelFiltros);
-            Controls.Add(EtiquetaNombre);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(1498, 559);
+            MinimumSize = new Size(984, 559);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = stringValuesSP.listaArticulos;
+            Text = "Sección Articulo";
             Load += ArticuloForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBoxFecha.ResumeLayout(false);
@@ -327,9 +374,11 @@ namespace Articulos_Frontend
             groupBoxPrecio.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            panelFiltros.ResumeLayout(false);
+            groupBoxPrecio.ResumeLayout(false);
+            groupBoxPrecio.PerformLayout();
+            panelTodo.ResumeLayout(false);
+            panelTodo.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -354,6 +403,7 @@ namespace Articulos_Frontend
         private GroupBox groupBox1;
         private ComboBox comboBoxCategoria;
         private Label label2;
-        private Panel panelFiltros;
+        private ComboBox comboBoxCategoria;
+        private Panel panelTodo;
     }
 }

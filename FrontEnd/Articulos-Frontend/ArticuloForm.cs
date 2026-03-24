@@ -35,23 +35,6 @@ public partial class ArticuloForm : Form
         Log.Info("Cargando artículos en el formulario.");
         cargarArticulos(null);
         panelFiltros.Visible = false;
-        try
-        {
-            var Size = new Size((MinimumSize.Width - panelFiltros.Width), MinimumSize.Height);
-            var Min = new Size(848, 431);
-            if (Size.Width < Min.Width || Size.Height < Min.Height)
-            {
-                MinimumSize = Min;
-            }
-            else
-            {
-                MinimumSize = Size;
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error al ajustar el tamaño mínimo del formulario: {ex.Message}");
-        }
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
@@ -74,6 +57,12 @@ public partial class ArticuloForm : Form
     {
         Log.Info($"Eliminando artículo con ID {dataGridView1.CurrentRow?.Cells["Id"].Value}.");
         await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+        Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este artículo?"));
+        alerta.ShowDialog();
+        if (alerta.resultado)
+        {
+            await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+        }
         cargarArticulos(null);
     }
 
@@ -225,6 +214,10 @@ public partial class ArticuloForm : Form
 
     private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
     {
+        if (dataGridView1.Columns.Contains("colVacia"))
+        {
+            dataGridView1.Columns.Remove("colVacia");
+        }
         if (dataGridView1.Columns.Count == 0) return;
 
         dataGridView1.Columns[0].Width = 40;
@@ -233,5 +226,10 @@ public partial class ArticuloForm : Form
         dataGridView1.Columns[3].Width = 80;
         dataGridView1.Columns[4].Width = 110;
         dataGridView1.Columns[5].Width = 140;
+        DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
+        col.Name = "colVacia";
+        col.HeaderText = "";
+        dataGridView1.Columns.Add(col);
+        dataGridView1.Columns["colVacia"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 }
