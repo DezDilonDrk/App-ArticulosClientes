@@ -52,10 +52,7 @@ namespace Articulos_Frontend
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBoxFecha.SuspendLayout();
             groupBoxPrecio.SuspendLayout();
-            groupBox1.SuspendLayout();
             panelFiltros.SuspendLayout();
-            groupBox1.SuspendLayout();
-            groupBoxPrecio.SuspendLayout();
             panelTodo.SuspendLayout();
             SuspendLayout();
             // 
@@ -403,7 +400,7 @@ namespace Articulos_Frontend
         private GroupBox groupBox1;
         private ComboBox comboBoxCategoria;
         private Label label2;
-        private ComboBox comboBoxCategoria;
+        private Panel panelFiltros;
         private Panel panelTodo;
     }
 }
