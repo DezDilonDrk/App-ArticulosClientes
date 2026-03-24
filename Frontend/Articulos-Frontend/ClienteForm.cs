@@ -441,17 +441,15 @@ public partial class ClienteForm : Form
     private async void BotonMenosC_Click(object sender, EventArgs e)
     {
         Log.Info("Pulsa el botón de eliminar");
-        DialogResult resultado = MessageBox.Show(
-        "¿Está seguro de que desea eliminar este cliente?",
-        "Confirmar eliminación",
-        MessageBoxButtons.YesNo,
-        MessageBoxIcon.Warning);
-
-        if (resultado == DialogResult.Yes)
+        Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este cliente?"));
+        alerta.ShowDialog();
+        if (alerta.resultado)
         {
             Log.Info($"Eliminando cliente con DNI: {dgvCliente.CurrentRow.Cells["Dni"].Value.ToString()}");
             await ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
-        } else {             
+        }
+        else
+        {
             Log.Info("Eliminación cancelada por el usuario.");
         }
         buscarClientes(textBoxCliente.Text);

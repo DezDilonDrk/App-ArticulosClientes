@@ -205,7 +205,16 @@ public partial class ClienteDetailForm : Form
                 {
                     existeDni = true;
                     Log.Warn($"Intento de crear cliente con DNI duplicado: {textBoxDni.Text.ToUpper()}.");
-                    MessageBox.Show("El DNI introducido ya existe. Por favor, introduzca un DNI único.", "DNI duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Alerta alertaa = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Cliente duplicado"));
+                    alertaa.ShowDialog();
+                    if (alertaa.resultado)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
             catch (Exception ex)
@@ -215,14 +224,32 @@ public partial class ClienteDetailForm : Form
             if (existeDni) return;
             Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
-            MessageBox.Show("Cliente creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
+            alerta.ShowDialog();
+            if (alerta.resultado)
+            {
+                this.Close();
+            }
+            else
+            {
+                this.Close();
+            }
             ClienteCreadoCorrectamente?.Invoke(cliente);
-            this.Close();
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Log.Error($"Error al crear el cliente: {ex.Message}", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
+            if (alerta.resultado)
+            {
+                return;
+            }
+            else
+            {
+                return;
+            }
+            
         }
     }
     private bool validarCamposLlenos()
@@ -232,7 +259,12 @@ public partial class ClienteDetailForm : Form
             return true;
         }
         Log.Warn("Intento de crear cliente con campos incompletos.");
-        MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Campos sin rellenar"));
+        alerta.ShowDialog();
+        if (alerta.resultado)
+        {
+            return false;
+        }
         return false;
     }
     private bool ValidarEmail(string email)
@@ -246,7 +278,12 @@ public partial class ClienteDetailForm : Form
         catch
         {
             Log.Warn($"Intento de crear cliente con email no válido: {email}.");
-            MessageBox.Show("Por favor, introduzca un email válido con el formato: {usuario}@{proveedor}.{dominio}", "Email no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Formato {usuario}@{proveedor}.{dominio} erroneo\", \"Email no válido"));
+            alerta.ShowDialog();
+            if (alerta.resultado)
+            {
+                return false;
+            }
             return false;
         }
     }
