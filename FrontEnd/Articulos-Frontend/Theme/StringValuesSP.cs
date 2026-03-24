@@ -12,6 +12,7 @@ namespace Articulos_Frontend.Theme
         public string crearCliente = "Crear Cliente";
         public string actualizarCliente = "Actualizar Cliente";
         public string detallesArticulo = "Detalles del Artículo";
+        public string terminal = "Terminal";
 
         public StringValuesSP() { 
         }
