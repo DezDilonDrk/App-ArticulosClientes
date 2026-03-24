@@ -1,3 +1,4 @@
+using Articulos_Frontend.LogConfig;
 using System.Reflection;
 
 namespace Articulos_Frontend
@@ -13,9 +14,9 @@ namespace Articulos_Frontend
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Log.Log.Info("---- Iniciando aplicación con versión: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Log.Info("---- Iniciando aplicación con versión: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
             Application.Run(new Menu());
-            Log.Log.Info("---- Aplicación finalizada");
+            Log.Info("---- Aplicación finalizada");
         }
     }
 }

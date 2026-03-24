@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 
@@ -26,12 +27,12 @@ public partial class ArticuloForm : Form
         var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
         comboBoxCategoria.DataSource = categorias.ToList();
         comboBoxCategoria.SelectedIndex = -1;
-        Log.Log.Info("Formulario de artículos iniciado.");
+        Log.Info("Formulario de artículos iniciado.");
     }
 
     private void ArticuloForm_Load(object sender, EventArgs e)
     {
-        Log.Log.Info("Cargando artículos en el formulario.");
+        Log.Info("Cargando artículos en el formulario.");
         cargarArticulos(null);
         panelFiltros.Visible = false;
         try
@@ -55,7 +56,7 @@ public partial class ArticuloForm : Form
 
     private void botonAdd_Click(object sender, EventArgs e)
     {
-        Log.Log.Info("Abriendo formulario de detalle para nuevo artículo.");
+        Log.Info("Abriendo formulario de detalle para nuevo artículo.");
         WindowManager.ShowForm(
         "Articulo_Nuevo",
         this,
@@ -71,7 +72,7 @@ public partial class ArticuloForm : Form
 
     private async void botonDel_Click(object sender, EventArgs e)
     {
-        Log.Log.Info($"Eliminando artículo con ID {dataGridView1.CurrentRow?.Cells["Id"].Value}.");
+        Log.Info($"Eliminando artículo con ID {dataGridView1.CurrentRow?.Cells["Id"].Value}.");
         await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
         cargarArticulos(null);
     }
@@ -142,7 +143,7 @@ public partial class ArticuloForm : Form
 
     private void BotonBuscar_Click(object sender, EventArgs e)
     {
-        Log.Log.Info("Realizando búsqueda de artículos: " + TextoNombre.Text);   
+        Log.Info("Realizando búsqueda de artículos: " + TextoNombre.Text);   
         cargarArticulos(TextoNombre.Text);
     }
 
@@ -154,7 +155,7 @@ public partial class ArticuloForm : Form
 
             if (articulo != null)
             {
-                Log.Log.Info($"Abriendo formulario de detalle para artículo ID {articulo.id}.");
+                Log.Info($"Abriendo formulario de detalle para artículo ID {articulo.id}.");
                 WindowManager.ShowForm(
                     $"{nameof(ArticuloForm)}_{articulo.id}",
                     this,

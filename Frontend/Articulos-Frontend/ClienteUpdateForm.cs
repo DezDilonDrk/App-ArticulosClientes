@@ -1,5 +1,6 @@
 ﻿
 using Articulos_Frontend.Client;
+using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using System;
@@ -29,7 +30,7 @@ namespace Articulos_Frontend
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             clienteApiClient = new ClienteApiClient();
             StyleManager.StyleForm(this);
-            Log.Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
+            Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
         }
 
         private void InitializeComponent()
@@ -193,25 +194,25 @@ namespace Articulos_Frontend
         {
             if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text))
             {
-                Log.Log.Info("Intento de actualización de cliente con DNI: " + textBoxDni.Text);
+                Log.Info("Intento de actualización de cliente con DNI: " + textBoxDni.Text);
                 try
                 {
                     Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now,DateTime.Now);
                     clienteApiClient.Actualizar(cliente.Dni,cliente);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClienteActualizadoCorrectamente?.Invoke(cliente);
-                    Log.Log.Info("Cliente actualizado correctamente: " + cliente.Dni);
+                    Log.Info("Cliente actualizado correctamente: " + cliente.Dni);
                     this.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Log.Log.Error("Error al actualizar el cliente: " + ex.Message);
+                    Log.Error("Error al actualizar el cliente: " + ex.Message);
                 }
             }
             else
             {
-                Log.Log.Warn("Intento de actualizar cliente con campos incompletos.");
+                Log.Warn("Intento de actualizar cliente con campos incompletos.");
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
