@@ -9,6 +9,7 @@ namespace Articulos_Frontend
     {
         private ArticuloApiClient _client;
         private Articulo _articulo;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
         public ArticuloDetailForm(ArticuloApiClient client, Articulo articulo)
         {
             InitializeComponent();
@@ -42,9 +43,17 @@ namespace Articulos_Frontend
                     return;
                 }
             }
+                Log.Log.Warn("Intento de guardar artículo sin nombre.");
+                MessageBox.Show("Nombre obligatorio");
+                return;
+            }
 
             if (!decimal.TryParse(textBoxPrecio.Text, out var textPrecio) || textPrecio < 0)
             {
+                Log.Log.Warn("Intento de guardar artículo con precio inválido: " + textBoxPrecio.Text);
+                MessageBox.Show("Precio inválido (no negativo)");
+                return;
+            }
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new FormatException("Número decimal incorrecto o número negativo"));
                 alerta.ShowDialog();
                 if (alerta.resultado)
@@ -59,6 +68,10 @@ namespace Articulos_Frontend
 
             if (string.IsNullOrWhiteSpace(comboBoxCategoria.Text))
             {
+                Log.Log.Warn("Intento de guardar artículo sin categoría seleccionada.");
+                MessageBox.Show("Categoria obligatoria");
+                return;
+            }
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Categoria no seleccionada"));
                 alerta.ShowDialog();
                 if (alerta.resultado)
@@ -86,6 +99,9 @@ namespace Articulos_Frontend
                     var articulo = new Articulo(id, nombre, precio, categoria, fechaCreacion, fechaActualizacion);
                     await _client.Crear(articulo);
                     this.DialogResult = DialogResult.OK;
+                    Log.Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
+                    this.Close();
+                }
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
                     alerta.ShowDialog();
                     if (alerta.resultado)
@@ -100,6 +116,8 @@ namespace Articulos_Frontend
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Log.Log.Error("Error al guardar artículo: " + ex.Message, ex);
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                     alerta.ShowDialog();
                     if (alerta.resultado)
@@ -120,6 +138,7 @@ namespace Articulos_Frontend
                 _articulo.precio = (decimal) textPrecio;
                 _articulo.categoria = comboBoxCategoria.Text?.Trim();
                 await _client.Actualizar(_articulo.id, _articulo);
+                Log.Log.Info($"Artículo actualizado: {_articulo.nombre} (ID: {_articulo.id})");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

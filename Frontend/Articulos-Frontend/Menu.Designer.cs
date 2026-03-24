@@ -1,4 +1,6 @@
-﻿namespace Articulos_Frontend
+﻿using Articulos_Frontend.Theme;
+
+namespace Articulos_Frontend
 {
     partial class Menu
     {
@@ -6,6 +8,7 @@
         ///  Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
 
         /// <summary>
         ///  Clean up any resources being used.
@@ -82,7 +85,7 @@
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(930, 530);
             Name = "Menu";
-            Text = "MenúPrácticas";
+            Text = stringValuesSP.menu;
             WindowState = FormWindowState.Maximized;
             menuStripAC.ResumeLayout(false);
             menuStripAC.PerformLayout();

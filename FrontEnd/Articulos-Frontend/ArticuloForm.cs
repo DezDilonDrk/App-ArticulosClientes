@@ -14,6 +14,7 @@ public partial class ArticuloForm : Form
 {
     //private ArticuloRepository repo;
     private ArticuloApiClient api;
+    private StringValuesSP stringValuesSP = new StringValuesSP();
 
     public ArticuloForm()
     {
@@ -25,16 +26,19 @@ public partial class ArticuloForm : Form
         var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
         comboBoxCategoria.DataSource = categorias.ToList();
         comboBoxCategoria.SelectedIndex = -1;
+        Log.Log.Info("Formulario de artículos iniciado.");
     }
 
     private void ArticuloForm_Load(object sender, EventArgs e)
     {
+        Log.Log.Info("Cargando artículos en el formulario.");
         cargarArticulos(null);
         panelFiltros.Visible = false;
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Abriendo formulario de detalle para nuevo artículo.");
         WindowManager.ShowForm(
         "Articulo_Nuevo",
         this,
@@ -50,6 +54,8 @@ public partial class ArticuloForm : Form
 
     private async void botonDel_Click(object sender, EventArgs e)
     {
+        Log.Log.Info($"Eliminando artículo con ID {dataGridView1.CurrentRow?.Cells["Id"].Value}.");
+        await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
         Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este artículo?"));
         alerta.ShowDialog();
         if (alerta.resultado)
@@ -125,6 +131,7 @@ public partial class ArticuloForm : Form
 
     private void BotonBuscar_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Realizando búsqueda de artículos: " + TextoNombre.Text);   
         cargarArticulos(TextoNombre.Text);
     }
 
@@ -136,6 +143,7 @@ public partial class ArticuloForm : Form
 
             if (articulo != null)
             {
+                Log.Log.Info($"Abriendo formulario de detalle para artículo ID {articulo.id}.");
                 WindowManager.ShowForm(
                     $"{nameof(ArticuloForm)}_{articulo.id}",
                     this,

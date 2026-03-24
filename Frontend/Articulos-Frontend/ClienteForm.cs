@@ -19,6 +19,7 @@ public partial class ClienteForm : Form
     private ClienteApiClient ClienteApiClient;
     private ErrorProvider errorProvider;
     private List<Cliente> listaActual;
+    private StringValuesSP stringValuesSP = new StringValuesSP();
 
     /*private System.Windows.Forms.Timer animTimer;
     private bool animAbriendo;
@@ -32,6 +33,8 @@ public partial class ClienteForm : Form
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         ClienteApiClient = new ClienteApiClient();
         StyleManager.StyleForm(this);
+        this.ActiveControl = textBoxCliente;
+        Log.Log.Info("Formulario de clientes iniciado.");
     }
 
     private void InitializeComponent()
@@ -55,21 +58,22 @@ public partial class ClienteForm : Form
         panelMain = new Panel();
         panelDGV = new Panel();
         panel1 = new Panel();
+        BuscarNombre = new GroupBox();
         ((ISupportInitialize)dgvCliente).BeginInit();
         panelFiltros.SuspendLayout();
         FiltroFecha.SuspendLayout();
         panelMain.SuspendLayout();
         panelDGV.SuspendLayout();
         panel1.SuspendLayout();
+        BuscarNombre.SuspendLayout();
         SuspendLayout();
         // 
         // BotonMasC
         // 
         BotonMasC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         BotonMasC.BackColor = Color.FromArgb(225, 6, 0);
-        BotonMasC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         BotonMasC.ForeColor = Color.White;
-        BotonMasC.Location = new Point(486, 71);
+        BotonMasC.Location = new Point(524, 71);
         BotonMasC.Margin = new Padding(0);
         BotonMasC.Name = "BotonMasC";
         BotonMasC.Size = new Size(60, 45);
@@ -85,9 +89,8 @@ public partial class ClienteForm : Form
         // 
         BotonMenosC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         BotonMenosC.BackColor = Color.FromArgb(225, 6, 0);
-        BotonMenosC.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         BotonMenosC.ForeColor = Color.White;
-        BotonMenosC.Location = new Point(549, 71);
+        BotonMenosC.Location = new Point(587, 71);
         BotonMenosC.Name = "BotonMenosC";
         BotonMenosC.Padding = new Padding(0, 0, 0, 4);
         BotonMenosC.Size = new Size(60, 45);
@@ -101,26 +104,26 @@ public partial class ClienteForm : Form
         // 
         // labelNombreCliente
         // 
+        labelNombreCliente.Anchor = AnchorStyles.None;
         labelNombreCliente.BackColor = Color.Transparent;
-        labelNombreCliente.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
         labelNombreCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        labelNombreCliente.Location = new Point(149, 11);
+        labelNombreCliente.Location = new Point(16, 19);
         labelNombreCliente.Name = "labelNombreCliente";
         labelNombreCliente.Size = new Size(63, 15);
         labelNombreCliente.TabIndex = 2;
+        labelNombreCliente.Tag = "normalText";
         labelNombreCliente.Text = "Nombre: ";
         // 
         // BotonBuscar
         // 
-        BotonBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        BotonBuscar.Anchor = AnchorStyles.None;
         BotonBuscar.BackColor = Color.FromArgb(225, 6, 0);
-        BotonBuscar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         BotonBuscar.ForeColor = Color.White;
-        BotonBuscar.Location = new Point(218, 71);
+        BotonBuscar.Location = new Point(85, 63);
         BotonBuscar.MaximumSize = new Size(200, 45);
         BotonBuscar.Name = "BotonBuscar";
         BotonBuscar.Size = new Size(200, 45);
-        BotonBuscar.TabIndex = 2;
+        BotonBuscar.TabIndex = 1;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
         BotonBuscar.Click += BotonBuscar_Click;
@@ -129,24 +132,23 @@ public partial class ClienteForm : Form
         // 
         // textBoxCliente
         // 
+        textBoxCliente.Anchor = AnchorStyles.None;
         textBoxCliente.BackColor = Color.FromArgb(42, 42, 42);
         textBoxCliente.BorderStyle = BorderStyle.None;
-        textBoxCliente.Font = new Font("Segoe UI", 9F);
         textBoxCliente.ForeColor = Color.FromArgb(242, 242, 242);
-        textBoxCliente.Location = new Point(218, 12);
+        textBoxCliente.Location = new Point(85, 18);
         textBoxCliente.MaxLength = 60;
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
         textBoxCliente.Size = new Size(200, 16);
-        textBoxCliente.TabIndex = 1;
-        textBoxCliente.TextAlign = HorizontalAlignment.Center;
+        textBoxCliente.TabIndex = 0;
+        textBoxCliente.KeyDown += textBoxNombreCliente_EnterClick;
         // 
         // dgvCliente
         // 
         dgvCliente.BackgroundColor = Color.FromArgb(42, 42, 42);
         dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle1.BackColor = Color.FromArgb(60, 60, 60);
-        dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
         dataGridViewCellStyle1.ForeColor = Color.FromArgb(242, 242, 242);
         dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(60, 60, 60);
         dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -164,7 +166,6 @@ public partial class ClienteForm : Form
         dgvCliente.ReadOnly = true;
         dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle2.BackColor = Color.FromArgb(60, 60, 60);
-        dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
         dataGridViewCellStyle2.ForeColor = Color.FromArgb(242, 242, 242);
         dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -173,8 +174,8 @@ public partial class ClienteForm : Form
         dgvCliente.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
         dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
-        dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvCliente.Size = new Size(610, 267);
+        dgvCliente.SelectionMode = DataGridViewSelectionMode.CellSelect;
+        dgvCliente.Size = new Size(648, 267);
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
         // 
@@ -186,7 +187,7 @@ public partial class ClienteForm : Form
         Filtros.Location = new Point(0, 71);
         Filtros.Name = "Filtros";
         Filtros.Size = new Size(150, 45);
-        Filtros.TabIndex = 8;
+        Filtros.TabIndex = 2;
         Filtros.Text = "▼  Abrir Filtros";
         Filtros.UseVisualStyleBackColor = false;
         Filtros.Click += Filtros_Click;
@@ -270,7 +271,7 @@ public partial class ClienteForm : Form
         panelMain.Dock = DockStyle.Fill;
         panelMain.Location = new Point(222, 0);
         panelMain.Name = "panelMain";
-        panelMain.Size = new Size(610, 392);
+        panelMain.Size = new Size(648, 392);
         panelMain.TabIndex = 8;
         // 
         // panelDGV
@@ -279,28 +280,38 @@ public partial class ClienteForm : Form
         panelDGV.Dock = DockStyle.Fill;
         panelDGV.Location = new Point(0, 125);
         panelDGV.Name = "panelDGV";
-        panelDGV.Size = new Size(610, 267);
+        panelDGV.Size = new Size(648, 267);
         panelDGV.TabIndex = 9;
         // 
         // panel1
         // 
+        panel1.Controls.Add(BuscarNombre);
         panel1.Controls.Add(Filtros);
-        panel1.Controls.Add(textBoxCliente);
-        panel1.Controls.Add(BotonBuscar);
         panel1.Controls.Add(BotonMenosC);
         panel1.Controls.Add(BotonMasC);
-        panel1.Controls.Add(labelNombreCliente);
         panel1.Dock = DockStyle.Top;
         panel1.Location = new Point(0, 0);
         panel1.Name = "panel1";
-        panel1.Size = new Size(610, 125);
+        panel1.Size = new Size(648, 125);
         panel1.TabIndex = 10;
+        // 
+        // BuscarNombre
+        // 
+        BuscarNombre.Controls.Add(labelNombreCliente);
+        BuscarNombre.Controls.Add(BotonBuscar);
+        BuscarNombre.Controls.Add(textBoxCliente);
+        BuscarNombre.Location = new Point(156, 8);
+        BuscarNombre.Name = "BuscarNombre";
+        BuscarNombre.Size = new Size(350, 108);
+        BuscarNombre.TabIndex = 9;
+        BuscarNombre.TabStop = false;
+        BuscarNombre.Text = "Búsqueda por Nombre";
         // 
         // ClienteForm
         // 
         BackColor = Color.FromArgb(26, 26, 26);
         BackgroundImageLayout = ImageLayout.Stretch;
-        ClientSize = new Size(832, 392);
+        ClientSize = new Size(870, 392);
         Controls.Add(panelMain);
         Controls.Add(panelFiltros);
         ForeColor = SystemColors.ControlLight;
@@ -308,7 +319,7 @@ public partial class ClienteForm : Form
         MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "Sección Cliente";
+        Text = stringValuesSP.listaClientes;
         Load += ClienteForm_Load;
         ((ISupportInitialize)dgvCliente).EndInit();
         panelFiltros.ResumeLayout(false);
@@ -317,11 +328,13 @@ public partial class ClienteForm : Form
         panelMain.ResumeLayout(false);
         panelDGV.ResumeLayout(false);
         panel1.ResumeLayout(false);
-        panel1.PerformLayout();
+        BuscarNombre.ResumeLayout(false);
+        BuscarNombre.PerformLayout();
         ResumeLayout(false);
     }
     private void ClienteForm_Load(object sender, EventArgs e)
     {
+        Log.Log.Info("Cargando clientes en el formulario.");
         buscarClientes(null);
         RegistrarClicks(this);
     }
@@ -340,6 +353,7 @@ public partial class ClienteForm : Form
     }
     private async void buscarClientes(string nombreFiltro)
     {
+        Log.Log.Info($"Buscando clientes: '{nombreFiltro}'");
         IEnumerable<Cliente> clientes;
         if (string.IsNullOrWhiteSpace(nombreFiltro))
         {
@@ -359,17 +373,21 @@ public partial class ClienteForm : Form
             dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
         }
         if (dgvCliente.Columns["Nombre"] != null)
+        {
             //dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgvCliente.Columns["Nombre"].FillWeight = 30;
             dgvCliente.Columns["Nombre"].MinimumWidth = 100;
+        }
         if (dgvCliente.Columns["Apellidos"] != null)
+        {
             //dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgvCliente.Columns["Apellidos"].FillWeight = 30;
             dgvCliente.Columns["Apellidos"].MinimumWidth = 120;
+        }
         if (dgvCliente.Columns["Email"] != null)
         {
             //dgvCliente.Columns["Email"].Width = 250;
@@ -397,6 +415,7 @@ public partial class ClienteForm : Form
 
     private async void BotonMasC_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Abriendo formulario para crear un nuevo cliente.");
         Cliente nuevoCliente = new Cliente();
         var formNuevo = new ClienteDetailForm(nuevoCliente);
 
@@ -420,6 +439,7 @@ public partial class ClienteForm : Form
 
     private async void BotonMenosC_Click(object sender, EventArgs e)
     {
+        Log.Log.Info("Pulsa el botón de eliminar");
         DialogResult resultado = MessageBox.Show(
         "¿Está seguro de que desea eliminar este cliente?",
         "Confirmar eliminación",
@@ -428,13 +448,17 @@ public partial class ClienteForm : Form
 
         if (resultado == DialogResult.Yes)
         {
+            Log.Log.Info($"Eliminando cliente con DNI: {dgvCliente.CurrentRow.Cells["Dni"].Value.ToString()}");
             await ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+        } else {             
+            Log.Log.Info("Eliminación cancelada por el usuario.");
         }
         buscarClientes(textBoxCliente.Text);
     }
 
     private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
+        Log.Log.Info("Doble clic en cliente para editar la información.");
         if (e.RowIndex >= 0)
         {
             string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
@@ -487,6 +511,13 @@ public partial class ClienteForm : Form
             btn.ForeColor = SystemColors.ControlLightLight;
         }
     }
+    private void textBoxNombreCliente_EnterClick(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            buscarClientes(textBoxCliente.Text);
+        }
+    }
     private void BotonHelpC_Click(object sender, EventArgs e)
     {
         MessageBox.Show("En esta sección puedes gestionar los clientes. Usa el botón '+' para agregar un nuevo cliente, el botón '-' para eliminar el cliente seleccionado, y haz doble clic en un cliente para editar su información.", "Ayuda - Gestión de Clientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -513,9 +544,14 @@ public partial class ClienteForm : Form
         panelFiltros.Visible = !panelFiltros.Visible;
 
         if (panelFiltros.Visible)
+        {
+            Log.Log.Info("Abriendo panel de filtros.");
             Filtros.Text = "◀ Cerrar Filtros";
-        else
+        }
+        else {
+            Log.Log.Info("Cerrando panel de filtros.");
             Filtros.Text = "▼  Abrir Filtros";
+        }
     }
     private void RegistrarClicks(Control parent) {
         /*foreach (Control c in parent.Controls)
@@ -563,6 +599,7 @@ public partial class ClienteForm : Form
             if (!panelFiltros.Bounds.Contains(mousePos))
             {
                 panelFiltros.Visible = false;
+                Log.Log.Info("Cerrando panel de filtros al hacer clic fuera del panel.");
                 Filtros.Text = "▼  Abrir Filtros";
             }
         }

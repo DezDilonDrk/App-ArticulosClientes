@@ -97,10 +97,11 @@
             detallesTitulo.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             detallesTitulo.Location = new Point(12, 38);
             detallesTitulo.Name = "detallesTitulo";
-            detallesTitulo.Size = new Size(481, 52);
+            detallesTitulo.Size = new Size(559, 52);
             detallesTitulo.TabIndex = 6;
             detallesTitulo.Tag = "title";
             detallesTitulo.Text = "Detalles del articulo";
+            detallesTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // botonConfirm
             // 
@@ -142,7 +143,7 @@
             MinimumSize = new Size(599, 382);
             Name = "ArticuloDetailForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "ArticuloDetailForm";
+            Text = stringValuesSP.detallesArticulo;
             ResumeLayout(false);
             PerformLayout();
         }
