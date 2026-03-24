@@ -17,6 +17,7 @@ public partial class ClienteDetailForm : Form
     private ClienteApiClient clienteApiClient;
     private Cliente cliente;
     public event Action<Cliente> ClienteCreadoCorrectamente;
+    private StringValuesSP stringValuesSP = new StringValuesSP();
     public ClienteDetailForm(Cliente cliente)
     {
         InitializeComponent();
@@ -77,55 +78,51 @@ public partial class ClienteDetailForm : Form
         // 
         // LabelDni
         // 
-        LabelDni.AutoSize = true;
         LabelDni.BackColor = Color.Transparent;
         LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-        LabelDni.Location = new Point(149, 92);
+        LabelDni.Location = new Point(104, 92);
         LabelDni.Name = "LabelDni";
-        LabelDni.Size = new Size(45, 21);
+        LabelDni.Size = new Size(90, 21);
         LabelDni.TabIndex = 4;
-        LabelDni.Text = "Dni: ";
-        LabelDni.TextAlign = ContentAlignment.MiddleRight;
         LabelDni.Tag = "normalText";
+        LabelDni.Text = "Dni: ";
+        LabelDni.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // LabelNombre
         // 
-        LabelNombre.AutoSize = true;
         LabelNombre.BackColor = Color.Transparent;
         LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-        LabelNombre.Location = new Point(115, 121);
+        LabelNombre.Location = new Point(104, 121);
         LabelNombre.Name = "LabelNombre";
-        LabelNombre.Size = new Size(81, 21);
+        LabelNombre.Size = new Size(90, 21);
         LabelNombre.TabIndex = 5;
-        LabelNombre.Text = "Nombre: ";
-        LabelNombre.TextAlign = ContentAlignment.MiddleRight;
         LabelNombre.Tag = "normalText";
+        LabelNombre.Text = "Nombre: ";
+        LabelNombre.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // LabelApellidos
         // 
-        LabelApellidos.AutoSize = true;
         LabelApellidos.BackColor = Color.Transparent;
         LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
         LabelApellidos.Location = new Point(104, 150);
         LabelApellidos.Name = "LabelApellidos";
-        LabelApellidos.Size = new Size(90, 21);
+        LabelApellidos.Size = new Size(94, 21);
         LabelApellidos.TabIndex = 6;
-        LabelApellidos.Text = "Apellidos: ";
-        LabelApellidos.TextAlign = ContentAlignment.MiddleRight;
         LabelApellidos.Tag = "normalText";
+        LabelApellidos.Text = "Apellidos: ";
+        LabelApellidos.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // LabelEmail
         // 
-        LabelEmail.AutoSize = true;
         LabelEmail.BackColor = Color.Transparent;
         LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-        LabelEmail.Location = new Point(135, 179);
+        LabelEmail.Location = new Point(104, 179);
         LabelEmail.Name = "LabelEmail";
-        LabelEmail.Size = new Size(61, 21);
+        LabelEmail.Size = new Size(94, 21);
         LabelEmail.TabIndex = 7;
-        LabelEmail.Text = "Email: ";
-        LabelEmail.TextAlign = ContentAlignment.MiddleRight;
         LabelEmail.Tag = "normalText";
+        LabelEmail.Text = "Email: ";
+        LabelEmail.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // BotonCrearC
         // 
@@ -134,7 +131,7 @@ public partial class ClienteDetailForm : Form
         BotonCrearC.BackColor = SystemColors.MenuHighlight;
         BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         BotonCrearC.ForeColor = SystemColors.ControlLightLight;
-        BotonCrearC.Location = new Point(301, 246);
+        BotonCrearC.Location = new Point(301, 247);
         BotonCrearC.Name = "BotonCrearC";
         BotonCrearC.Size = new Size(150, 30);
         BotonCrearC.TabIndex = 5;
@@ -151,7 +148,7 @@ public partial class ClienteDetailForm : Form
         LabelTitulo.Size = new Size(316, 36);
         LabelTitulo.TabIndex = 0;
         LabelTitulo.Tag = "title";
-        LabelTitulo.Text = "Crear Cliente";
+        LabelTitulo.Text = stringValuesSP.crearCliente;
         LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // button1
@@ -159,7 +156,7 @@ public partial class ClienteDetailForm : Form
         button1.BackColor = Color.Chartreuse;
         button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         button1.ForeColor = SystemColors.ActiveCaptionText;
-        button1.Location = new Point(104, 250);
+        button1.Location = new Point(104, 251);
         button1.Name = "button1";
         button1.Size = new Size(90, 23);
         button1.TabIndex = 8;
@@ -186,9 +183,9 @@ public partial class ClienteDetailForm : Form
         MaximizeBox = false;
         MaximumSize = new Size(596, 402);
         MinimumSize = new Size(596, 402);
-        Name = "Crear Cliente";
+        Name = "ClienteDetailForm";
         StartPosition = FormStartPosition.CenterParent;
-        Text = "Crear Cliente";
+        Text = stringValuesSP.crearCliente;
         ResumeLayout(false);
         PerformLayout();
 

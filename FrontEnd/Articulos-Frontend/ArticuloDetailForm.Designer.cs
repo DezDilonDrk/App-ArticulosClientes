@@ -143,7 +143,7 @@
             MinimumSize = new Size(599, 382);
             Name = "ArticuloDetailForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "ArticuloDetailForm";
+            Text = stringValuesSP.detallesArticulo;
             ResumeLayout(false);
             PerformLayout();
         }

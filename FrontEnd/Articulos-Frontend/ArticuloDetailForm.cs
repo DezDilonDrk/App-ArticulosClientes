@@ -8,6 +8,7 @@ namespace Articulos_Frontend
     {
         private ArticuloApiClient _client;
         private Articulo _articulo;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
         public ArticuloDetailForm(ArticuloApiClient client, Articulo articulo)
         {
             InitializeComponent();

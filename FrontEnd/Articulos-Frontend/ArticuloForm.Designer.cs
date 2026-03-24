@@ -67,9 +67,9 @@ namespace Articulos_Frontend
             EtiquetaNombre.Name = "EtiquetaNombre";
             EtiquetaNombre.Size = new Size(95, 28);
             EtiquetaNombre.TabIndex = 0;
+            EtiquetaNombre.Tag = "normalText";
             EtiquetaNombre.Text = "Nombre: ";
             EtiquetaNombre.Click += EtiquetaNombre_Click;
-            EtiquetaNombre.Tag = "normalText";
             // 
             // TextoNombre
             // 
@@ -88,10 +88,10 @@ namespace Articulos_Frontend
             BotonAdd.Name = "BotonAdd";
             BotonAdd.Size = new Size(62, 61);
             BotonAdd.TabIndex = 11;
+            BotonAdd.Tag = "modButton";
             BotonAdd.Text = "+";
             BotonAdd.UseVisualStyleBackColor = true;
             BotonAdd.Click += botonAdd_Click;
-            BotonAdd.Tag = "modButton";
             // 
             // BotonDel
             // 
@@ -101,10 +101,10 @@ namespace Articulos_Frontend
             BotonDel.Name = "BotonDel";
             BotonDel.Size = new Size(62, 61);
             BotonDel.TabIndex = 12;
+            BotonDel.Tag = "modButton";
             BotonDel.Text = "-";
             BotonDel.UseVisualStyleBackColor = true;
             BotonDel.Click += botonDel_Click;
-            BotonDel.Tag = "modButton";
             // 
             // BotonBuscar
             // 
@@ -318,7 +318,7 @@ namespace Articulos_Frontend
             MinimumSize = new Size(1498, 559);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ArticuloForm";
+            Text = stringValuesSP.listaArticulos;
             Load += ArticuloForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBoxFecha.ResumeLayout(false);

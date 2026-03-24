@@ -19,6 +19,7 @@ public partial class ClienteForm : Form
     private ClienteApiClient ClienteApiClient;
     private ErrorProvider errorProvider;
     private List<Cliente> listaActual;
+    private StringValuesSP stringValuesSP = new StringValuesSP();
 
     /*private System.Windows.Forms.Timer animTimer;
     private bool animAbriendo;
@@ -32,6 +33,7 @@ public partial class ClienteForm : Form
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         ClienteApiClient = new ClienteApiClient();
         StyleManager.StyleForm(this);
+        this.ActiveControl = textBoxCliente;
     }
 
     private void InitializeComponent()
@@ -108,8 +110,8 @@ public partial class ClienteForm : Form
         labelNombreCliente.Name = "labelNombreCliente";
         labelNombreCliente.Size = new Size(63, 15);
         labelNombreCliente.TabIndex = 2;
-        labelNombreCliente.Text = "Nombre: ";
         labelNombreCliente.Tag = "normalText";
+        labelNombreCliente.Text = "Nombre: ";
         // 
         // BotonBuscar
         // 
@@ -120,7 +122,7 @@ public partial class ClienteForm : Form
         BotonBuscar.MaximumSize = new Size(200, 45);
         BotonBuscar.Name = "BotonBuscar";
         BotonBuscar.Size = new Size(200, 45);
-        BotonBuscar.TabIndex = 2;
+        BotonBuscar.TabIndex = 1;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
         BotonBuscar.Click += BotonBuscar_Click;
@@ -138,8 +140,8 @@ public partial class ClienteForm : Form
         textBoxCliente.Name = "textBoxCliente";
         textBoxCliente.PlaceholderText = "Busque aquí por nombre";
         textBoxCliente.Size = new Size(200, 16);
-        textBoxCliente.TabIndex = 1;
-        textBoxCliente.TextAlign = HorizontalAlignment.Center;
+        textBoxCliente.TabIndex = 0;
+        textBoxCliente.KeyDown += textBoxNombreCliente_EnterClick;
         // 
         // dgvCliente
         // 
@@ -171,7 +173,7 @@ public partial class ClienteForm : Form
         dgvCliente.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
         dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
-        dgvCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dgvCliente.SelectionMode = DataGridViewSelectionMode.CellSelect;
         dgvCliente.Size = new Size(648, 267);
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
@@ -184,7 +186,7 @@ public partial class ClienteForm : Form
         Filtros.Location = new Point(0, 71);
         Filtros.Name = "Filtros";
         Filtros.Size = new Size(150, 45);
-        Filtros.TabIndex = 8;
+        Filtros.TabIndex = 2;
         Filtros.Text = "▼  Abrir Filtros";
         Filtros.UseVisualStyleBackColor = false;
         Filtros.Click += Filtros_Click;
@@ -316,7 +318,7 @@ public partial class ClienteForm : Form
         MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "Lista de Clientes";
+        Text = stringValuesSP.listaClientes;
         Load += ClienteForm_Load;
         ((ISupportInitialize)dgvCliente).EndInit();
         panelFiltros.ResumeLayout(false);
@@ -368,17 +370,21 @@ public partial class ClienteForm : Form
             dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
         }
         if (dgvCliente.Columns["Nombre"] != null)
+        {
             //dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgvCliente.Columns["Nombre"].FillWeight = 30;
             dgvCliente.Columns["Nombre"].MinimumWidth = 100;
+        }
         if (dgvCliente.Columns["Apellidos"] != null)
+        {
             //dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgvCliente.Columns["Apellidos"].FillWeight = 30;
             dgvCliente.Columns["Apellidos"].MinimumWidth = 120;
+        }
         if (dgvCliente.Columns["Email"] != null)
         {
             //dgvCliente.Columns["Email"].Width = 250;
@@ -494,6 +500,13 @@ public partial class ClienteForm : Form
         {
             btn.BackColor = Color.FromArgb(225, 6, 0);
             btn.ForeColor = SystemColors.ControlLightLight;
+        }
+    }
+    private void textBoxNombreCliente_EnterClick(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            buscarClientes(textBoxCliente.Text);
         }
     }
     private void BotonHelpC_Click(object sender, EventArgs e)
