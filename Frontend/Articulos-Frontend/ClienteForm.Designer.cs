@@ -36,5 +36,6 @@
         private Panel panelMain;
         private Panel panelDGV;
         private Panel panel1;
+        private GroupBox BuscarNombre;
     }
 }

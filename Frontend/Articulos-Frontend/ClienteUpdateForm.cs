@@ -1,5 +1,6 @@
 ﻿
 using Articulos_Frontend.Client;
+using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using System;
@@ -16,6 +17,7 @@ namespace Articulos_Frontend
     {
         private ClienteApiClient clienteApiClient;
         public event Action<Cliente> ClienteActualizadoCorrectamente;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
         public ClienteUpdateForm(Cliente cliente)
         {
             InitializeComponent();
@@ -28,6 +30,7 @@ namespace Articulos_Frontend
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             clienteApiClient = new ClienteApiClient();
             StyleManager.StyleForm(this);
+            Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
         }
 
         private void InitializeComponent()
@@ -48,7 +51,7 @@ namespace Articulos_Frontend
             // textBoxDni
             // 
             textBoxDni.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxDni.Location = new Point(204, 92);
+            textBoxDni.Location = new Point(204, 93);
             textBoxDni.Name = "textBoxDni";
             textBoxDni.PlaceholderText = "Introduzca el dni";
             textBoxDni.ReadOnly = true;
@@ -58,7 +61,7 @@ namespace Articulos_Frontend
             // textBoxNombre
             // 
             textBoxNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxNombre.Location = new Point(204, 121);
+            textBoxNombre.Location = new Point(204, 122);
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.PlaceholderText = "Introduzca el nombre";
             textBoxNombre.Size = new Size(247, 23);
@@ -67,7 +70,7 @@ namespace Articulos_Frontend
             // textBoxApellidos
             // 
             textBoxApellidos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxApellidos.Location = new Point(204, 150);
+            textBoxApellidos.Location = new Point(204, 151);
             textBoxApellidos.Name = "textBoxApellidos";
             textBoxApellidos.PlaceholderText = "Introduzca el/los apellidos";
             textBoxApellidos.Size = new Size(247, 23);
@@ -76,7 +79,7 @@ namespace Articulos_Frontend
             // textBoxEmail
             // 
             textBoxEmail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxEmail.Location = new Point(204, 179);
+            textBoxEmail.Location = new Point(204, 180);
             textBoxEmail.Name = "textBoxEmail";
             textBoxEmail.PlaceholderText = "Introduzca el email";
             textBoxEmail.Size = new Size(247, 23);
@@ -85,58 +88,54 @@ namespace Articulos_Frontend
             // LabelDni
             // 
             LabelDni.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            LabelDni.AutoSize = true;
             LabelDni.BackColor = Color.Transparent;
             LabelDni.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDni.Location = new Point(149, 92);
+            LabelDni.Location = new Point(104, 93);
             LabelDni.Name = "LabelDni";
-            LabelDni.Size = new Size(45, 21);
+            LabelDni.Size = new Size(90, 21);
             LabelDni.TabIndex = 4;
             LabelDni.Tag = "normalText";
             LabelDni.Text = "Dni: ";
-            LabelDni.TextAlign = ContentAlignment.MiddleRight;
+            LabelDni.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // LabelNombre
             // 
             LabelNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            LabelNombre.AutoSize = true;
             LabelNombre.BackColor = Color.Transparent;
             LabelNombre.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelNombre.Location = new Point(115, 121);
+            LabelNombre.Location = new Point(104, 122);
             LabelNombre.Name = "LabelNombre";
-            LabelNombre.Size = new Size(81, 21);
+            LabelNombre.Size = new Size(90, 21);
             LabelNombre.TabIndex = 5;
             LabelNombre.Tag = "normalText";
             LabelNombre.Text = "Nombre: ";
-            LabelNombre.TextAlign = ContentAlignment.MiddleRight;
+            LabelNombre.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // LabelApellidos
             // 
             LabelApellidos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            LabelApellidos.AutoSize = true;
             LabelApellidos.BackColor = Color.Transparent;
             LabelApellidos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelApellidos.Location = new Point(104, 150);
+            LabelApellidos.Location = new Point(104, 151);
             LabelApellidos.Name = "LabelApellidos";
             LabelApellidos.Size = new Size(90, 21);
             LabelApellidos.TabIndex = 6;
             LabelApellidos.Tag = "normalText";
             LabelApellidos.Text = "Apellidos: ";
-            LabelApellidos.TextAlign = ContentAlignment.MiddleRight;
+            LabelApellidos.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // LabelEmail
             // 
             LabelEmail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            LabelEmail.AutoSize = true;
             LabelEmail.BackColor = Color.Transparent;
             LabelEmail.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelEmail.Location = new Point(135, 179);
+            LabelEmail.Location = new Point(104, 180);
             LabelEmail.Name = "LabelEmail";
-            LabelEmail.Size = new Size(61, 21);
+            LabelEmail.Size = new Size(90, 21);
             LabelEmail.TabIndex = 7;
             LabelEmail.Tag = "normalText";
             LabelEmail.Text = "Email: ";
-            LabelEmail.TextAlign = ContentAlignment.MiddleRight;
+            LabelEmail.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // BotonActualizarC
             // 
@@ -144,15 +143,13 @@ namespace Articulos_Frontend
             BotonActualizarC.BackColor = Color.DodgerBlue;
             BotonActualizarC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             BotonActualizarC.ForeColor = SystemColors.ControlLightLight;
-            BotonActualizarC.Location = new Point(301, 246);
+            BotonActualizarC.Location = new Point(301, 248);
             BotonActualizarC.Name = "BotonActualizarC";
             BotonActualizarC.Size = new Size(150, 30);
             BotonActualizarC.TabIndex = 5;
             BotonActualizarC.Text = "Actualizar";
             BotonActualizarC.UseVisualStyleBackColor = false;
             BotonActualizarC.Click += BotonActualizarC_Click;
-            BotonActualizarC.MouseEnter += Boton_MouseEnter;
-            BotonActualizarC.MouseLeave += Boton_MouseLeave;
             // 
             // LabelTitulo
             // 
@@ -164,7 +161,7 @@ namespace Articulos_Frontend
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
-            LabelTitulo.Text = "Actualizar Cliente";
+            LabelTitulo.Text = stringValuesSP.actualizarCliente;
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ClienteUpdateForm
@@ -188,7 +185,7 @@ namespace Articulos_Frontend
             MinimumSize = new Size(596, 402);
             Name = "ClienteUpdateForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Actualizar Usuario";
+            Text = stringValuesSP.actualizarCliente;
             ResumeLayout(false);
             PerformLayout();
 
@@ -197,40 +194,26 @@ namespace Articulos_Frontend
         {
             if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text))
             {
+                Log.Info("Intento de actualización de cliente con DNI: " + textBoxDni.Text);
                 try
                 {
                     Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now,DateTime.Now);
                     clienteApiClient.Actualizar(cliente.Dni,cliente);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClienteActualizadoCorrectamente?.Invoke(cliente);
+                    Log.Info("Cliente actualizado correctamente: " + cliente.Dni);
                     this.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Log.Error("Error al actualizar el cliente: " + ex.Message);
                 }
             }
             else
             {
+                Log.Warn("Intento de actualizar cliente con campos incompletos.");
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-        private void Boton_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null)
-            {
-                btn.BackColor = Color.LightSkyBlue;
-                btn.ForeColor = Color.RoyalBlue;
-            }
-        }
-        private void Boton_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null)
-            {
-                btn.BackColor = Color.DodgerBlue;
-                btn.ForeColor = SystemColors.ControlLightLight;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿
+using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using System.Drawing.Text;
@@ -9,6 +10,7 @@ namespace Articulos_Frontend
     {
         private ArticuloApiClient _client;
         private Articulo _articulo;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
         public ArticuloDetailForm(ArticuloApiClient client, Articulo articulo)
         {
             InitializeComponent();
@@ -31,6 +33,7 @@ namespace Articulos_Frontend
         {
             if (string.IsNullOrWhiteSpace(textBoxNombre.Text))
             {
+                Log.Warn("Intento de guardar artículo sin nombre.");
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Nombre en blanco"));
                 alerta.ShowDialog();
                 if (alerta.resultado)
@@ -45,8 +48,9 @@ namespace Articulos_Frontend
 
             if (!decimal.TryParse(textBoxPrecio.Text, out var textPrecio) || textPrecio < 0)
             {
+                Log.Warn("Intento de guardar artículo con precio inválido: " + textBoxPrecio.Text);
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new FormatException("Número decimal incorrecto o número negativo"));
-                alerta.ShowDialog();
+                 alerta.ShowDialog();
                 if (alerta.resultado)
                 {
                     return;
@@ -59,6 +63,7 @@ namespace Articulos_Frontend
 
             if (string.IsNullOrWhiteSpace(comboBoxCategoria.Text))
             {
+                Log.Warn("Intento de guardar artículo sin categoría seleccionada.");
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Categoria no seleccionada"));
                 alerta.ShowDialog();
                 if (alerta.resultado)
@@ -86,6 +91,7 @@ namespace Articulos_Frontend
                     var articulo = new Articulo(id, nombre, precio, categoria, fechaCreacion, fechaActualizacion);
                     await _client.Crear(articulo);
                     this.DialogResult = DialogResult.OK;
+                    Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
                     alerta.ShowDialog();
                     if (alerta.resultado)
@@ -100,6 +106,8 @@ namespace Articulos_Frontend
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Log.Error("Error al guardar artículo: " + ex.Message, ex);
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                     alerta.ShowDialog();
                     if (alerta.resultado)
@@ -120,6 +128,7 @@ namespace Articulos_Frontend
                 _articulo.precio = (decimal) textPrecio;
                 _articulo.categoria = comboBoxCategoria.Text?.Trim();
                 await _client.Actualizar(_articulo.id, _articulo);
+                Log.Info($"Artículo actualizado: {_articulo.nombre} (ID: {_articulo.id})");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
