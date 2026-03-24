@@ -1,0 +1,12 @@
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\bin\Debug\net10.0\MTCore_AC.deps.json
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\bin\Debug\net10.0\MTCore_AC.dll
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\bin\Debug\net10.0\MTCore_AC.pdb
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.AssemblyInfoInputs.cache
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.AssemblyInfo.cs
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.csproj.CoreCompileInputs.cache
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.sourcelink.json
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.dll
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\refint\MTCore_AC.dll
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\MTCore_AC.pdb
+C:\Users\emilio.martinez\source\repos\Articulos-Backend\MTACCore\obj\Debug\net10.0\ref\MTCore_AC.dll
