@@ -160,6 +160,17 @@ public static class StyleManager
                         ms.Font = new Font("Intercom", 9, FontStyle.Regular);
                     }
                     break;
+                case "titleTerminal":
+                    if (control is Label lbl4)
+                        lbl4.Font = new Font("Intercom", 30, FontStyle.Bold);
+                    break;
+                case "terminal":
+                    if (control is Panel panel)
+                    {
+                        panel.ForeColor = ColorPalette.TextPrimary;
+                        panel.BackColor = ColorPalette.GridBackground;
+                    }
+                    break;
                 default:
                     if (control is TextBox txt2)
                         txt2.Font = new Font("Intercom", 9, FontStyle.Regular);
