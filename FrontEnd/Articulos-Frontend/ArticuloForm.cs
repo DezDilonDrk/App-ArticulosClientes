@@ -56,7 +56,6 @@ public partial class ArticuloForm : Form
     private async void botonDel_Click(object sender, EventArgs e)
     {
         Log.Info($"Eliminando artículo con ID {dataGridView1.CurrentRow?.Cells["Id"].Value}.");
-        await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
         Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este artículo?"));
         alerta.ShowDialog();
         if (alerta.resultado)
