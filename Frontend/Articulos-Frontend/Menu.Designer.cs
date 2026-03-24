@@ -36,6 +36,8 @@ namespace Articulos_Frontend
             artículosToolStripMenuItem = new ToolStripMenuItem();
             clientesToolStripMenuItem = new ToolStripMenuItem();
             mnuVentanas = new ToolStripMenuItem();
+            ventanasToolStripMenuItem = new ToolStripMenuItem();
+            buttonTerminal = new Button();
             menuStripAC.SuspendLayout();
             SuspendLayout();
             // 
@@ -72,13 +74,25 @@ namespace Articulos_Frontend
             mnuVentanas.Text = "Ventanas";
             mnuVentanas.Click += mnuVentanas_Click;
             // 
-            // MenuS
+            // buttonTerminal
+            // 
+            buttonTerminal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonTerminal.Location = new Point(806, 387);
+            buttonTerminal.Name = "buttonTerminal";
+            buttonTerminal.Size = new Size(75, 23);
+            buttonTerminal.TabIndex = 1;
+            buttonTerminal.Text = "Terminal";
+            buttonTerminal.UseVisualStyleBackColor = true;
+            buttonTerminal.Click += buttonTerminal_Click;
+            // 
+            // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
+            Controls.Add(buttonTerminal);
             Controls.Add(menuStripAC);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -97,6 +111,8 @@ namespace Articulos_Frontend
         private MenuStrip menuStripAC;
         private ToolStripMenuItem artículosToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
+        private ToolStripMenuItem ventanasToolStripMenuItem;
+        private Button buttonTerminal;
         private ToolStripMenuItem mnuVentanas;
     }
 }

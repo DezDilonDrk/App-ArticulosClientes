@@ -87,12 +87,22 @@ namespace Articulos_Frontend
                 mnuVentanas.DropDownItems.Add(item);
             }
         }
-        public int getMenuStripHeigth() {
+        public int getMenuStripHeigth()
+        {
             return this.menuStripAC.Height;
         }
         public int getMenuStripAbsoluteY()
         {
             return this.menuStripAC.PointToScreen(Point.Empty).Y;
+        }
+
+        private void buttonTerminal_Click(object sender, EventArgs e)
+        {
+            Log.Info("Abriendo terminal.");
+            WindowManager.ShowForm("TerminalForm", this, () =>
+            {
+                return new ShowTerminal();
+            });
         }
     }
 }

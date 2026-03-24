@@ -25,5 +25,8 @@
     <Compile Update="PanelMT.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="ShowTerminal.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
