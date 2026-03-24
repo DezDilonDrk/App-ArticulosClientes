@@ -31,7 +31,6 @@ public partial class ArticuloForm : Form
     {
         cargarArticulos(null);
         panelFiltros.Visible = false;
-        MinimumSize = new Size((MinimumSize.Width - panelFiltros.Width), MinimumSize.Height);
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
@@ -51,7 +50,12 @@ public partial class ArticuloForm : Form
 
     private async void botonDel_Click(object sender, EventArgs e)
     {
-        await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+        Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este artículo?"));
+        alerta.ShowDialog();
+        if (alerta.resultado)
+        {
+            await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+        }
         cargarArticulos(null);
     }
 
@@ -201,6 +205,10 @@ public partial class ArticuloForm : Form
 
     private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
     {
+        if (dataGridView1.Columns.Contains("colVacia"))
+        {
+            dataGridView1.Columns.Remove("colVacia");
+        }
         if (dataGridView1.Columns.Count == 0) return;
 
         dataGridView1.Columns[0].Width = 40;
@@ -209,5 +217,10 @@ public partial class ArticuloForm : Form
         dataGridView1.Columns[3].Width = 80;
         dataGridView1.Columns[4].Width = 110;
         dataGridView1.Columns[5].Width = 140;
+        DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
+        col.Name = "colVacia";
+        col.HeaderText = "";
+        dataGridView1.Columns.Add(col);
+        dataGridView1.Columns["colVacia"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 }

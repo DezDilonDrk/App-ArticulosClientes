@@ -63,6 +63,16 @@ namespace Articulos_Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _6a34ad6fa56d91529822911a0b8021ab {
+            get {
+                object obj = ResourceManager.GetObject("6a34ad6fa56d91529822911a0b8021ab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _8a027296c847ff9188483471a1830469 {
             get {
                 object obj = ResourceManager.GetObject("8a027296c847ff9188483471a1830469", resourceCulture);

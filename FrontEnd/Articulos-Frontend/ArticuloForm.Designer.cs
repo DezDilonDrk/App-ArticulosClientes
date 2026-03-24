@@ -52,11 +52,13 @@ namespace Articulos_Frontend
             textBoxMinimo = new TextBox();
             label1 = new Label();
             labelMin = new Label();
+            panelTodo = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBoxFecha.SuspendLayout();
             panelFiltros.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBoxPrecio.SuspendLayout();
+            panelTodo.SuspendLayout();
             SuspendLayout();
             // 
             // EtiquetaNombre
@@ -83,7 +85,7 @@ namespace Articulos_Frontend
             // 
             BotonAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BotonAdd.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BotonAdd.Location = new Point(1378, 26);
+            BotonAdd.Location = new Point(540, 26);
             BotonAdd.Name = "BotonAdd";
             BotonAdd.Size = new Size(62, 61);
             BotonAdd.TabIndex = 11;
@@ -95,7 +97,7 @@ namespace Articulos_Frontend
             // 
             BotonDel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BotonDel.Font = new Font("Segoe UI", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BotonDel.Location = new Point(1378, 106);
+            BotonDel.Location = new Point(540, 106);
             BotonDel.Name = "BotonDel";
             BotonDel.Size = new Size(62, 61);
             BotonDel.TabIndex = 12;
@@ -127,7 +129,7 @@ namespace Articulos_Frontend
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1437, 318);
+            dataGridView1.Size = new Size(599, 318);
             dataGridView1.StandardTab = true;
             dataGridView1.TabIndex = 13;
             dataGridView1.VirtualMode = true;
@@ -204,14 +206,14 @@ namespace Articulos_Frontend
             // 
             // panelFiltros
             // 
-            panelFiltros.Anchor = AnchorStyles.Top;
             panelFiltros.BackColor = Color.Transparent;
             panelFiltros.Controls.Add(groupBox1);
             panelFiltros.Controls.Add(groupBoxPrecio);
             panelFiltros.Controls.Add(groupBoxFecha);
-            panelFiltros.Location = new Point(504, 26);
+            panelFiltros.Dock = DockStyle.Left;
+            panelFiltros.Location = new Point(0, 0);
             panelFiltros.Name = "panelFiltros";
-            panelFiltros.Size = new Size(851, 158);
+            panelFiltros.Size = new Size(324, 520);
             panelFiltros.TabIndex = 14;
             // 
             // groupBox1
@@ -220,7 +222,7 @@ namespace Articulos_Frontend
             groupBox1.Controls.Add(comboBoxCategoria);
             groupBox1.Controls.Add(label2);
             groupBox1.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBox1.Location = new Point(553, 5);
+            groupBox1.Location = new Point(12, 310);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(257, 136);
             groupBox1.TabIndex = 14;
@@ -254,7 +256,7 @@ namespace Articulos_Frontend
             groupBoxPrecio.Controls.Add(label1);
             groupBoxPrecio.Controls.Add(labelMin);
             groupBoxPrecio.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxPrecio.Location = new Point(315, 5);
+            groupBoxPrecio.Location = new Point(12, 154);
             groupBoxPrecio.Name = "groupBoxPrecio";
             groupBoxPrecio.Size = new Size(232, 136);
             groupBoxPrecio.TabIndex = 13;
@@ -297,25 +299,34 @@ namespace Articulos_Frontend
             labelMin.TabIndex = 0;
             labelMin.Text = "Mínimo:";
             // 
+            // panelTodo
+            // 
+            panelTodo.Controls.Add(EtiquetaNombre);
+            panelTodo.Controls.Add(TextoNombre);
+            panelTodo.Controls.Add(BotonAdd);
+            panelTodo.Controls.Add(BotonDel);
+            panelTodo.Controls.Add(BotonBuscar);
+            panelTodo.Controls.Add(dataGridView1);
+            panelTodo.Controls.Add(BotonFiltros);
+            panelTodo.Dock = DockStyle.Fill;
+            panelTodo.Location = new Point(324, 0);
+            panelTodo.Name = "panelTodo";
+            panelTodo.Size = new Size(644, 520);
+            panelTodo.TabIndex = 15;
+            // 
             // ArticuloForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1482, 520);
-            Controls.Add(BotonFiltros);
-            Controls.Add(dataGridView1);
-            Controls.Add(BotonBuscar);
-            Controls.Add(BotonDel);
-            Controls.Add(BotonAdd);
-            Controls.Add(TextoNombre);
+            ClientSize = new Size(968, 520);
+            Controls.Add(panelTodo);
             Controls.Add(panelFiltros);
-            Controls.Add(EtiquetaNombre);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(1498, 559);
+            MinimumSize = new Size(984, 559);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ArticuloForm";
+            Text = "Sección Articulo";
             Load += ArticuloForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBoxFecha.ResumeLayout(false);
@@ -325,8 +336,9 @@ namespace Articulos_Frontend
             groupBox1.PerformLayout();
             groupBoxPrecio.ResumeLayout(false);
             groupBoxPrecio.PerformLayout();
+            panelTodo.ResumeLayout(false);
+            panelTodo.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -352,5 +364,6 @@ namespace Articulos_Frontend
         private GroupBox groupBox1;
         private Label label2;
         private ComboBox comboBoxCategoria;
+        private Panel panelTodo;
     }
 }
