@@ -224,6 +224,8 @@ public partial class ClienteDetailForm : Form
             if (existeDni) return;
             Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
+            EmailSender emailSender = new EmailSender();
+            emailSender.SendEmail(cliente.Email, "Bienvenido a nuestro servicio", $"Hola {cliente.Nombre},\n\nGracias por registrarte en nuestro servicio. Estamos encantados de tenerte con nosotros.\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
             alerta.ShowDialog();
             if (alerta.resultado)
