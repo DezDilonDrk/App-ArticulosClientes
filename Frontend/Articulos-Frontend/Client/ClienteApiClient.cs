@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MTCore_AC.Entidades;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-
-
+using System.Net.Sockets;
+using System.Text;
 using static System.Net.WebRequestMethods;
-using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend.Client
 {
@@ -15,8 +15,9 @@ namespace Articulos_Frontend.Client
         private readonly HttpClient httpClient;
         public ClienteApiClient()
         {
+            string ip = GetLocalIPAddress();
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://192.168.1.156:5000");
+            httpClient.BaseAddress = new Uri($"http://{ip}:5000");
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {
@@ -42,6 +43,21 @@ namespace Articulos_Frontend.Client
         public async Task Eliminar(string dni)
         {
             await httpClient.DeleteAsync($"/clientes/{dni}");
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+
+            throw new Exception("No se encontró una IP válida");
         }
     }
 }

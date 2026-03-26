@@ -1,6 +1,8 @@
-﻿using System.Net.Http;
+﻿using MTCore_AC.Entidades;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
-using MTCore_AC.Entidades;
+using System.Net.Sockets;
 
 public class ArticuloApiClient
 {
@@ -8,8 +10,9 @@ public class ArticuloApiClient
 
     public ArticuloApiClient()
     {
+        string ip = GetLocalIPAddress();
         httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri("http://192.168.1.157:5000");
+        httpClient.BaseAddress = new Uri($"http://{ip}:5000");
     }   
 
     public async Task<List<Articulo>> ObtenerArticulos()
@@ -51,5 +54,20 @@ public class ArticuloApiClient
     {
         var response = await httpClient.DeleteAsync($"/articulos/{id}");
         response.EnsureSuccessStatusCode();
+    }
+
+    public static string GetLocalIPAddress()
+    {
+        var host = Dns.GetHostEntry(Dns.GetHostName());
+
+        foreach (var ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                return ip.ToString();
+            }
+        }
+
+        throw new Exception("No se encontró una IP válida");
     }
 }
