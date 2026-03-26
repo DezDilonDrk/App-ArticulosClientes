@@ -32,27 +32,15 @@ namespace Articulos_Frontend
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowTerminal));
-            labelTerminalTitle = new Label();
             panelTerminalArea = new Panel();
             panelTerminal = new Panel();
+            rtextBoxTerminal = new RichTextBox();
             panel1 = new Panel();
+            labelTerminalTitle = new Label();
             panelTerminalArea.SuspendLayout();
+            panelTerminal.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // labelTerminalTitle
-            // 
-            labelTerminalTitle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            labelTerminalTitle.BackColor = Color.Transparent;
-            labelTerminalTitle.Font = new Font("Segoe UI", 14F);
-            labelTerminalTitle.ForeColor = SystemColors.ActiveCaptionText;
-            labelTerminalTitle.Location = new Point(265, 24);
-            labelTerminalTitle.Name = "labelTerminalTitle";
-            labelTerminalTitle.Size = new Size(270, 54);
-            labelTerminalTitle.TabIndex = 1;
-            labelTerminalTitle.Tag = "titleTerminal";
-            labelTerminalTitle.Text = stringValuesSP.terminal;
-            labelTerminalTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panelTerminalArea
             // 
@@ -67,12 +55,26 @@ namespace Articulos_Frontend
             // panelTerminal
             // 
             panelTerminal.BackColor = SystemColors.ActiveCaption;
+            panelTerminal.Controls.Add(rtextBoxTerminal);
             panelTerminal.Dock = DockStyle.Fill;
             panelTerminal.Location = new Point(30, 30);
             panelTerminal.Name = "panelTerminal";
             panelTerminal.Size = new Size(740, 290);
             panelTerminal.TabIndex = 0;
             panelTerminal.Tag = "terminal";
+            // 
+            // rtextBoxTerminal
+            // 
+            rtextBoxTerminal.AcceptsTab = true;
+            rtextBoxTerminal.BackColor = SystemColors.Window;
+            rtextBoxTerminal.Dock = DockStyle.Fill;
+            rtextBoxTerminal.Location = new Point(0, 0);
+            rtextBoxTerminal.Name = "rtextBoxTerminal";
+            rtextBoxTerminal.Size = new Size(740, 290);
+            rtextBoxTerminal.TabIndex = 0;
+            rtextBoxTerminal.Tag = "terminal";
+            rtextBoxTerminal.Text = "";
+            rtextBoxTerminal.WordWrap = false;
             // 
             // panel1
             // 
@@ -82,6 +84,20 @@ namespace Articulos_Frontend
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 100);
             panel1.TabIndex = 3;
+            // 
+            // labelTerminalTitle
+            // 
+            labelTerminalTitle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelTerminalTitle.BackColor = Color.Transparent;
+            labelTerminalTitle.Font = new Font("Segoe UI", 14F);
+            labelTerminalTitle.ForeColor = SystemColors.ActiveCaptionText;
+            labelTerminalTitle.Location = new Point(265, 27);
+            labelTerminalTitle.Name = "labelTerminalTitle";
+            labelTerminalTitle.Size = new Size(270, 54);
+            labelTerminalTitle.TabIndex = 1;
+            labelTerminalTitle.Tag = "titleTerminal";
+            labelTerminalTitle.Text = "Terminal";
+            labelTerminalTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ShowTerminal
             // 
@@ -94,15 +110,18 @@ namespace Articulos_Frontend
             Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(816, 489);
             Name = "ShowTerminal";
+            Text = "Terminal";
             panelTerminalArea.ResumeLayout(false);
+            panelTerminal.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-        private Label labelTerminalTitle;
         private Panel panelTerminalArea;
         private Panel panel1;
         private Panel panelTerminal;
+        private Label labelTerminalTitle;
+        private RichTextBox rtextBoxTerminal;
     }
 }

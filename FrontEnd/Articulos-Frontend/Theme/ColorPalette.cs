@@ -18,4 +18,8 @@ public static class ColorPalette
     public static Color ButtonLeave = Color.FromArgb(225, 6, 0);
     public static Color ButtonEnter = Color.FromArgb(255, 59, 48);
     public static Color ButtonText = Color.FromArgb(242, 242, 242);
+    public static Color InfoColor = Color.FromArgb(0, 115, 255);
+    public static Color DebugColor = Color.FromArgb(255, 120, 201);
+    public static Color WarnColor = Color.FromArgb(255, 227, 45);
+    public static Color ErrorColor = Color.FromArgb(255, 59, 48);
 }

@@ -17,7 +17,43 @@ namespace Articulos_Frontend
         {
             InitializeComponent();
             StyleManager.StyleForm(this);
+            Log.OnLog += AddLog;
+            foreach (var log in Log.GetLogHistory())
+            {
+                AddLog(log);
+            }
             Log.Info("El usuario ha abierto la terminal");
+        }
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            Log.OnLog -= AddLog;
+            base.OnFormClosed(e);
+        }
+        public void AddLog(string log)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(AddLog), log);
+                return;
+            }
+            Color color = Color.White;
+
+            if (log.Contains("INFO"))
+                color = ColorPalette.InfoColor;
+            else if (log.Contains("ERROR"))
+                color = ColorPalette.ErrorColor;
+            else if (log.Contains("WARN"))
+                color = ColorPalette.WarnColor;
+            else if (log.Contains("DEBUG"))
+                color = ColorPalette.DebugColor;
+
+            rtextBoxTerminal.SelectionStart = rtextBoxTerminal.TextLength;
+            rtextBoxTerminal.SelectionLength = 0;
+            rtextBoxTerminal.SelectionColor = color;
+
+            rtextBoxTerminal.AppendText(log + Environment.NewLine);
+
+            rtextBoxTerminal.SelectionColor = rtextBoxTerminal.ForeColor;
         }
     }
 }
