@@ -36,6 +36,7 @@ namespace Articulos_Frontend
             panelTerminal = new Panel();
             rtextBoxTerminal = new RichTextBox();
             panel1 = new Panel();
+            buttonRefresh = new Button();
             labelTerminalTitle = new Label();
             panelTerminalArea.SuspendLayout();
             panelTerminal.SuspendLayout();
@@ -78,12 +79,24 @@ namespace Articulos_Frontend
             // 
             // panel1
             // 
+            panel1.Controls.Add(buttonRefresh);
             panel1.Controls.Add(labelTerminalTitle);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 100);
             panel1.TabIndex = 3;
+            // 
+            // buttonRefresh
+            // 
+            buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonRefresh.ForeColor = SystemColors.ActiveCaptionText;
+            buttonRefresh.Location = new Point(730, 27);
+            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.Size = new Size(40, 40);
+            buttonRefresh.TabIndex = 2;
+            buttonRefresh.Text = "↻";
+            buttonRefresh.UseVisualStyleBackColor = true;
             // 
             // labelTerminalTitle
             // 
@@ -123,5 +136,6 @@ namespace Articulos_Frontend
         private Panel panelTerminal;
         private Label labelTerminalTitle;
         private RichTextBox rtextBoxTerminal;
+        private Button buttonRefresh;
     }
 }
