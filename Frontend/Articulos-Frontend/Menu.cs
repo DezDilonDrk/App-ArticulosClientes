@@ -7,7 +7,7 @@ namespace Articulos_Frontend
     {
         private ArticuloForm articuloForm;
         private ClienteForm clienteForm;
-        ShowTerminal terminal = new ShowTerminal();
+        ShowTerminal terminal;
         public Menu()
         {
             InitializeComponent();
@@ -106,7 +106,8 @@ namespace Articulos_Frontend
             Log.Info("Abriendo terminal.");
             WindowManager.ShowForm("TerminalForm", this, () =>
             {
-                return new ShowTerminal();
+                terminal = new ShowTerminal();
+                return terminal;
             });
         }
     }

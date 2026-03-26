@@ -17,25 +17,24 @@ namespace Articulos_Frontend
         {
             InitializeComponent();
             StyleManager.StyleForm(this);
-            Log.OnLog += AddLog;
+            refreshList();
+            Log.Info("El usuario ha abierto la terminal");
+        }
+        public void refreshList()
+        {
             foreach (var log in Log.GetLogHistory())
             {
                 AddLog(log);
             }
-            Log.Info("El usuario ha abierto la terminal");
         }
-        protected override void OnFormClosed(FormClosedEventArgs e)
+        protected override void OnActivated(EventArgs e)
         {
-            Log.OnLog -= AddLog;
-            base.OnFormClosed(e);
+            rtextBoxTerminal.Clear();
+            refreshList();
+            base.OnActivated(e);
         }
         public void AddLog(string log)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new Action<string>(AddLog), log);
-                return;
-            }
             Color color = Color.White;
 
             if (log.Contains("INFO"))
