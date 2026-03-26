@@ -169,6 +169,11 @@ public static class StyleManager
                     {
                         panel.ForeColor = ColorPalette.TextPrimary;
                         panel.BackColor = ColorPalette.GridBackground;
+                    } else if (control is RichTextBox rTxt)
+                    {
+                        rTxt.BackColor = ColorPalette.GridBackground;
+                        rTxt.ForeColor = ColorPalette.TextPrimary;
+                        rTxt.Font = new Font("Intercom", 10, FontStyle.Bold);
                     }
                     break;
                 default:

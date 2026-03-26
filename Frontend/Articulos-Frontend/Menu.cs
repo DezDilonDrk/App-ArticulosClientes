@@ -7,6 +7,7 @@ namespace Articulos_Frontend
     {
         private ArticuloForm articuloForm;
         private ClienteForm clienteForm;
+        ShowTerminal terminal = new ShowTerminal();
         public Menu()
         {
             InitializeComponent();
@@ -38,6 +39,10 @@ namespace Articulos_Frontend
             {
                 return new ClienteForm();
             });
+            Log.Info("Prueba Info");
+            Log.Debug("Prueba Debug");
+            Log.Warn("Prueba Warn");
+            Log.Error("Prueba Error");
         }
 
         private void mnuVentanas_Click(object sender, EventArgs e)
