@@ -15,9 +15,8 @@ namespace Articulos_Frontend.Client
         private readonly HttpClient httpClient;
         public ClienteApiClient()
         {
-            string ip = GetLocalIPAddress();
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri($"http://{ip}:5000");
+            httpClient.BaseAddress = new Uri("http://PT-0057:5000");
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {
@@ -43,21 +42,6 @@ namespace Articulos_Frontend.Client
         public async Task Eliminar(string dni)
         {
             await httpClient.DeleteAsync($"/clientes/{dni}");
-        }
-
-        public static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-
-            throw new Exception("No se encontró una IP válida");
         }
     }
 }

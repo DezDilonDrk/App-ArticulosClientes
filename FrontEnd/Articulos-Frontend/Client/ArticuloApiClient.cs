@@ -10,9 +10,8 @@ public class ArticuloApiClient
 
     public ArticuloApiClient()
     {
-        string ip = GetLocalIPAddress();
         httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri($"http://{ip}:5000");
+        httpClient.BaseAddress = new Uri("http://PT-0041:5000");
     }   
 
     public async Task<List<Articulo>> ObtenerArticulos()
@@ -54,20 +53,5 @@ public class ArticuloApiClient
     {
         var response = await httpClient.DeleteAsync($"/articulos/{id}");
         response.EnsureSuccessStatusCode();
-    }
-
-    public static string GetLocalIPAddress()
-    {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-
-        foreach (var ip in host.AddressList)
-        {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
-            {
-                return ip.ToString();
-            }
-        }
-
-        throw new Exception("No se encontró una IP válida");
     }
 }
