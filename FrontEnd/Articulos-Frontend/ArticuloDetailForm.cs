@@ -82,6 +82,7 @@ namespace Articulos_Frontend
 
                 try
                 {
+                    EmailSender emailSender = new EmailSender();
                     var id = 0;
                     var nombre = textBoxNombre.Text.Trim();
                     var precio = textPrecio;
@@ -92,6 +93,7 @@ namespace Articulos_Frontend
                     await _client.Crear(articulo);
                     this.DialogResult = DialogResult.OK;
                     Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
+                    emailSender.SendEmail("emilio.martinez@mthelmets.com", "Nuevo artículo creado", $"Se ha creado el artículo '{articulo.nombre}' con ID {articulo.id}, con un costo de {articulo.precio} euros y de la categoria {articulo.categoria} en {articulo.FechaCreacion}.");
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
                     alerta.ShowDialog();
                     if (alerta.resultado)
