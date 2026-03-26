@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MTCore_AC.Entidades;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-
-
+using System.Net.Sockets;
+using System.Text;
 using static System.Net.WebRequestMethods;
-using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend.Client
 {
@@ -16,7 +16,7 @@ namespace Articulos_Frontend.Client
         public ClienteApiClient()
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://192.168.1.156:5000");
+            httpClient.BaseAddress = new Uri("http://PT-0057:5000");
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {

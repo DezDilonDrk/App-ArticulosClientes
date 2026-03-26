@@ -1,6 +1,8 @@
-﻿using System.Net.Http;
+﻿using MTCore_AC.Entidades;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
-using MTCore_AC.Entidades;
+using System.Net.Sockets;
 
 public class ArticuloApiClient
 {
@@ -9,7 +11,7 @@ public class ArticuloApiClient
     public ArticuloApiClient()
     {
         httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri("http://192.168.1.157:5000");
+        httpClient.BaseAddress = new Uri("http://PT-0041:5000");
     }   
 
     public async Task<List<Articulo>> ObtenerArticulos()
