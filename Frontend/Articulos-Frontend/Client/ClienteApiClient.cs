@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using Articulos_Frontend.LogConfig;
 using System.Net.Sockets;
 using System.Text;
 using static System.Net.WebRequestMethods;
@@ -15,33 +16,89 @@ namespace Articulos_Frontend.Client
         private readonly HttpClient httpClient;
         public ClienteApiClient()
         {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://PT-0057:5000");
+            try
+            {
+                httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri("http://PT-0057:5000");
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {
-            return await httpClient.GetFromJsonAsync<List<Cliente>>("/clientes");
+            try
+            {
+                return await httpClient.GetFromJsonAsync<List<Cliente>>("/clientes");
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
         public async Task<List<Cliente>> BuscarPorNombre(string nombre)
         {
-            return await httpClient.GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
+            try
+            {
+                return await httpClient.GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
         public async Task<Cliente?> ObtenerPorDni(string dni)
         {
-            return await httpClient.GetFromJsonAsync<Cliente>($"/clientes/{dni}");
+            try
+            {
+                return await httpClient.GetFromJsonAsync<Cliente>($"/clientes/{dni}");
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
         public async Task Crear(Cliente cliente)
         {
-            await httpClient.PostAsJsonAsync("/clientes", cliente);
+            try
+            {
+                await httpClient.PostAsJsonAsync("/clientes", cliente);
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
         public async Task<bool> Actualizar(string dni, Cliente cliente)
         {
-            var response = await httpClient.PutAsJsonAsync($"/clientes/{dni}", cliente);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await httpClient.PutAsJsonAsync($"/clientes/{dni}", cliente);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
         public async Task Eliminar(string dni)
         {
-            await httpClient.DeleteAsync($"/clientes/{dni}");
+            try
+            {
+                await httpClient.DeleteAsync($"/clientes/{dni}");
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
         }
     }
 }

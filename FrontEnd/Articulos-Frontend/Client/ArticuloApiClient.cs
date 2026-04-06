@@ -1,4 +1,5 @@
-﻿using MTCore_AC.Entidades;
+﻿using Articulos_Frontend.LogConfig;
+using MTCore_AC.Entidades;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -10,48 +11,90 @@ public class ArticuloApiClient
 
     public ArticuloApiClient()
     {
-        httpClient = new HttpClient();
-        httpClient.BaseAddress = new Uri("http://PT-0041:5000");
-    }   
-
+        try {
+            httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("http://PT-0041:5000");
+        } catch { 
+            Log.Error("No se pudo conectar al servidor API.");
+             throw new Exception("Error al conectar con el servidor API.");
+        }
+    }
     public async Task<List<Articulo>> ObtenerArticulos()
     {
-        var response = await httpClient.GetAsync("/articulos");
+        try {
+            var response = await httpClient.GetAsync("/articulos");
 
-        if (!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener artículos: {response.StatusCode}");
+                throw new Exception($"Error APIIII: {response.StatusCode}");
+            }
+
+            return await response.Content.ReadFromJsonAsync<List<Articulo>>() ?? new List<Articulo>();
+        } catch
         {
-            throw new Exception($"Error API: {response.StatusCode}");
+            Log.Error("No se pudo conectar al servidor API.");
+            throw new Exception("Error al conectar con el servidor API.");
         }
-
-        return await response.Content.ReadFromJsonAsync<List<Articulo>>() ?? new List<Articulo>();
     }
-
     public async Task<Articulo?> ObtenerPorId(int id)
     {
-        var response = await httpClient.GetAsync($"/articulos/{id}");
+        try
+        {
+            var response = await httpClient.GetAsync($"/articulos/{id}");
 
-        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-            return null;
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
 
-        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-        return await response.Content.ReadFromJsonAsync<Articulo>();
+            return await response.Content.ReadFromJsonAsync<Articulo>();
+        }
+        catch
+        {
+            Log.Error("No se pudo conectar al servidor API.");
+            throw new Exception("Error al conectar con el servidor API.");
+        }
     }
     public async Task Crear(Articulo articulo)
     {
-        var response = await httpClient.PostAsJsonAsync("/articulos", articulo);
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("/articulos", articulo);
+            response.EnsureSuccessStatusCode();
+        }
+        catch
+        {
+            Log.Error("No se pudo conectar al servidor API.");
+            throw new Exception("Error al conectar con el servidor API.");
+        }
     }
 
     public async Task Actualizar(int id, Articulo articulo)
     {
-        var response = await httpClient.PutAsJsonAsync($"/articulos/{id}", articulo);
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync($"/articulos/{id}", articulo);
+            response.EnsureSuccessStatusCode();
+        }
+        catch
+        {
+            Log.Error("No se pudo conectar al servidor API.");
+            throw new Exception("Error al conectar con el servidor API.");
+        }
     }
 
     public async Task Eliminar(int id)
     {
-        var response = await httpClient.DeleteAsync($"/articulos/{id}");
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await httpClient.DeleteAsync($"/articulos/{id}");
+            response.EnsureSuccessStatusCode();
+        }
+        catch
+        {
+            Log.Error("No se pudo conectar al servidor API.");
+            throw new Exception("Error al conectar con el servidor API.");
+        }
     }
 }

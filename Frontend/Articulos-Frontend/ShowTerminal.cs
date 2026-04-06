@@ -27,12 +27,12 @@ namespace Articulos_Frontend
                 AddLog(log);
             }
         }
-        protected override void OnActivated(EventArgs e)
+        /* protected override void OnActivated(EventArgs e)
         {
             rtextBoxTerminal.Clear();
             refreshList();
             base.OnActivated(e);
-        }
+        } */
         public void AddLog(string log)
         {
             Color color = Color.White;
