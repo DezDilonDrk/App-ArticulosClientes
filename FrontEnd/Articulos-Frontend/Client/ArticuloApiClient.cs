@@ -27,7 +27,7 @@ public class ArticuloApiClient
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener artículos: {response.StatusCode}");
-                throw new Exception($"Error APIIII: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
             }
 
             return await response.Content.ReadFromJsonAsync<List<Articulo>>() ?? new List<Articulo>();
