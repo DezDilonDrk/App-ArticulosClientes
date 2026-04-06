@@ -15,7 +15,7 @@ public static class UsuarioEndpoints
         .Produces<IEnumerable<Usuario>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapGet("/usuarios/correo/{correo:string}", (string correo) =>
+        app.MapGet("/usuarios/correo/{correo}", (string correo) =>
         {
             var usuarios = repo.ObtenerPorCorreo(correo);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
@@ -23,7 +23,7 @@ public static class UsuarioEndpoints
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapGet("/usuarios/nombre/{nombre:string}", (string nombre) =>
+        app.MapGet("/usuarios/nombre/{nombre}", (string nombre) =>
         {
             var usuarios = repo.ObtenerPorNombre(nombre);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
@@ -47,7 +47,7 @@ public static class UsuarioEndpoints
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapDelete("/usuarios/correo/{correo:string}", (string correo) =>
+        app.MapDelete("/usuarios/correo/{correo}", (string correo) =>
         {
             repo.Eliminar(correo);
             return Results.NoContent();

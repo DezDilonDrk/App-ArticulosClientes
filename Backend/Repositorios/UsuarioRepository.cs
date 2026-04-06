@@ -47,16 +47,16 @@ namespace Articulos_Backend.Repositorios
         {
             using (var db = Connection)
             {
-                string sql = "INSERT INTO Usuarios (Correo, NombreUsuario, Contraseña) VALUES (@Correo, @NombreUsuario, @Contraseña)";
-                db.Execute(sql, new { Correo = usuario.Correo, NombreUsuario = usuario.Nombre, Contraseña = usuario.Contrasena});
+                string sql = "INSERT INTO Usuarios (Correo, NombreUsuario, Contrasena) VALUES (@Correo, @NombreUsuario, @Contrasena)";
+                db.Execute(sql, new { Correo = usuario.Correo, NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena});
             }
         }
 
         public void Update(Usuario usuario) {
             using (var db = Connection)
             {
-                string sql = "UPDATE Usuarios SET NombreUsuario = @NombreUsuario, Contraseña = @Contraseña WHERE Correo = @Correo";
-                db.Execute(sql, new { NombreUsuario = usuario.Nombre, Contraseña = usuario.Contrasena, Correo = usuario.Correo});
+                string sql = "UPDATE Usuarios SET NombreUsuario = @NombreUsuario, Contrasena = @Contrasena WHERE Correo = @Correo";
+                db.Execute(sql, new { NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena, Correo = usuario.Correo});
             }
         }
 
