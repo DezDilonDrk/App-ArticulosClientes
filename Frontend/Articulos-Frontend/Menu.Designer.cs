@@ -74,6 +74,11 @@ namespace Articulos_Frontend
             mnuVentanas.Text = "Ventanas";
             mnuVentanas.Click += mnuVentanas_Click;
             // 
+            // ventanasToolStripMenuItem
+            // 
+            ventanasToolStripMenuItem.Name = "ventanasToolStripMenuItem";
+            ventanasToolStripMenuItem.Size = new Size(32, 19);
+            // 
             // buttonTerminal
             // 
             buttonTerminal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -89,7 +94,7 @@ namespace Articulos_Frontend
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
             Controls.Add(buttonTerminal);
@@ -99,6 +104,7 @@ namespace Articulos_Frontend
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(930, 530);
             Name = "Menu";
+            Text = stringValuesSP.menu;
             WindowState = FormWindowState.Maximized;
             menuStripAC.ResumeLayout(false);
             menuStripAC.PerformLayout();
