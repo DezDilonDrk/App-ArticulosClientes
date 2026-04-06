@@ -54,5 +54,11 @@ namespace Articulos_Frontend
 
             rtextBoxTerminal.SelectionColor = rtextBoxTerminal.ForeColor;
         }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            rtextBoxTerminal.Clear();
+            refreshList();
+        }
     }
 }

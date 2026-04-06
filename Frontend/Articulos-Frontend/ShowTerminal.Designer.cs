@@ -97,6 +97,7 @@ namespace Articulos_Frontend
             buttonRefresh.TabIndex = 2;
             buttonRefresh.Text = "↻";
             buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += buttonRefresh_Click;
             // 
             // labelTerminalTitle
             // 
