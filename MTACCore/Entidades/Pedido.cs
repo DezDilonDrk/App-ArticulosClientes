@@ -10,12 +10,13 @@ namespace MTCore_AC.Entidades
         public string DniCliente { get; set; }
         public string MetodoPago { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public DateTime? FechaRectificación { get; set; }
+        public DateTime? FechaRectificacion { get; set; }
         public enum EstadoPedido { Abierto, Cerrado, Cancelado }
         public string Estado { get; set; }
-        public int PorcentajeImpuestos { get; set; }
+        public double PorcentajeImpuestos { get; set; }
         public List<PedidoArticulos> articulos { get; set; }
-        public Pedido(int idPedido, string DniCliente, string MetodoPago, DateTime FechaCreacion, int PorcentajeImpuestos, List<PedidoArticulos> articulos)
+        public Pedido() { }
+        public Pedido(int idPedido, string DniCliente, string MetodoPago, DateTime FechaCreacion, double PorcentajeImpuestos, List<PedidoArticulos> articulos)
         {
             this.IdPedido = idPedido;
             this.FechaCreacion = DateTime.Now;

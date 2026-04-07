@@ -1,4 +1,4 @@
-﻿/*using Articulos_Frontend.Theme;
+﻿using Articulos_Frontend.Theme;
 using System.ComponentModel;
 
 namespace Articulos_Frontend
@@ -330,7 +330,7 @@ namespace Articulos_Frontend
             Name = "ClienteForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = stringValuesSP.listaClientes;
-            Load += ClienteForm_Load;
+            Load += PedidosForm_Load;
             ((ISupportInitialize)dgvCliente).EndInit();
             panelFiltros.ResumeLayout(false);
             FiltroFecha.ResumeLayout(false);
@@ -345,6 +345,4 @@ namespace Articulos_Frontend
     }
 
         #endregion
-    }
 }
-*/

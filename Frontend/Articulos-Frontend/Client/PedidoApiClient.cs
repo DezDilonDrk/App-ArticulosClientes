@@ -24,23 +24,23 @@ namespace Articulos_Frontend.Client
                 throw new Exception("Error al conectar con el servidor API.");
             }
         }
-        public async Task<List<Pedido>> ObtenerClientes()
+        public async Task<List<Pedido>> ObtenerPedidos()
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<List<Pedido>>("/clientes");
+                return await httpClient.GetFromJsonAsync<List<Pedido>>("/pedidos");
             }
-            catch
+            catch (Exception ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
             }
         }
-        public async Task<List<Pedido>> BuscarPorIdPedido(int id)
+        public async Task<Pedido> BuscarPorIdPedido(int id)
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<List<Pedido>>($"/pedidos/?id_pedido={id}");
+                return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/?id_pedido={id}");
             }
             catch
             {
@@ -52,7 +52,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/cliente{dni}");
+                return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/cliente?dni={dni}");
             }
             catch
             {

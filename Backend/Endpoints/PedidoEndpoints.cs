@@ -7,6 +7,9 @@ public static class PedidoEndpoints
 {
     public static WebApplication MapPedidoEndpoints(this WebApplication app, PedidoRepository repo)
     {
+        app.MapGet("/pedidos", () => {
+            return repo.ObtenerPedidos();
+        }).Produces<List<Pedido>>(StatusCodes.Status200OK);
         app.MapGet("/pedidos/{id_pedido}", (int id) =>
         {
             var pedido = repo.ObtenerPorId(id);
