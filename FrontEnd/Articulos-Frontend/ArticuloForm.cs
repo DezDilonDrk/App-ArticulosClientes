@@ -15,7 +15,6 @@ public partial class ArticuloForm : Form
 {
     //private ArticuloRepository repo;
     private ArticuloApiClient api;
-    private StringValuesSP stringValuesSP = new StringValuesSP();
 
     public ArticuloForm()
     {

@@ -8,6 +8,7 @@ namespace Articulos_Frontend
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
 
         /// <summary>
         /// Clean up any resources being used.
@@ -325,7 +326,7 @@ namespace Articulos_Frontend
             MinimumSize = new Size(984, 559);
             Name = "ArticuloForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Sección Articulo";
+            Text = stringValuesSP.listaArticulos;
             Load += ArticuloForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBoxFecha.ResumeLayout(false);
