@@ -51,13 +51,17 @@ public class ArticuloRepository
             return db.QueryFirstOrDefault<Articulo>(sql, new { Nombre = nombre });
         }
     }
-    public void Insertar(Articulo articulo)
+    public int Insertar(Articulo articulo)
     {
-        using ( var db = Connection )
+        using var db = Connection;
+        string sql = @"INSERT INTO Articulos (Nombre, Precio, Categoria, FechaCreacion) VALUES (@Nombre, @Precio, @Categoria, @FechaCreacion); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        return db.QuerySingle<int>(sql, new
         {
-            string sql = "INSERT INTO Articulos (Nombre, Precio, Categoria, FechaCreacion) VALUES (@Nombre, @Precio, @Categoria, @FechaCreacion)";
-            db.Execute(sql, new { Nombre = articulo.nombre, Precio = articulo.precio, Categoria = articulo.categoria, FechaCreacion = DateTime.Now});
-        }
+            Nombre = articulo.nombre,
+            Precio = articulo.precio,
+            Categoria = articulo.categoria,
+            FechaCreacion = DateTime.Now
+        });
     }
 
     public void Actualizar(Articulo articulo)

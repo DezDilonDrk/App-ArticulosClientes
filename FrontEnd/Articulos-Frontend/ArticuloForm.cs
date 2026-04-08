@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
@@ -15,15 +16,19 @@ public partial class ArticuloForm : Form
 {
     //private ArticuloRepository repo;
     private ArticuloApiClient api;
-    private StringValuesSP stringValuesSP = new StringValuesSP();
+    private ArticuloUsuarioApiClient api2;
+    private Usuario user;
 
-    public ArticuloForm()
+    public ArticuloForm(Usuario usuario)
     {
         InitializeComponent();
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         //repo = new ArticuloRepository(connStr);
         api = new ArticuloApiClient();
+        api2 = new ArticuloUsuarioApiClient();
         StyleManager.StyleForm(this);
+        user = usuario;
+        usuarioActual.Text = $"Usuario: {user.Correo}";
         var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
         comboBoxCategoria.DataSource = categorias.ToList();
         comboBoxCategoria.SelectedIndex = -1;
@@ -45,10 +50,11 @@ public partial class ArticuloForm : Form
         this,
         () =>
         {
-            var form = new ArticuloDetailForm(api, null);
+            var form = new ArticuloDetailForm(api, api2, null, user);
             form.FormClosed += (s, e) => cargarArticulos(null);
             return form;
         }
+        
 
     );
     }
@@ -61,6 +67,7 @@ public partial class ArticuloForm : Form
         if (alerta.resultado)
         {
             await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+            await api2.EliminarArticuloUsuario(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
         }
         cargarArticulos(null);
     }
@@ -68,6 +75,7 @@ public partial class ArticuloForm : Form
     private async void cargarArticulos(string nombre)
     {
         var articulos = await api.ObtenerArticulos();
+        var articulosUsuario = await api2.ObtenerArticuloUsuario();
         var dateDesde = fechaDesde.Value.Date;
         var dateHasta = fechaHasta.Value.Date.AddDays(1);
         var categoria = comboBoxCategoria.SelectedItem as string;
@@ -91,10 +99,19 @@ public partial class ArticuloForm : Form
             return;
         }
 
+
         if (!string.IsNullOrWhiteSpace(nombre))
         {
             articulos = articulos
                 .Where(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+        if (articulosUsuario != null)
+        {
+            articulosUsuario = articulosUsuario
+                .Where(au => au.UsuarioEmail == user.Correo)
+                .ToList();
+            articulos = articulos.Where(a => articulosUsuario.Any(au => au.ArticuloId == a.id))
                 .ToList();
         }
         if (panelFiltros.Visible)
@@ -149,7 +166,7 @@ public partial class ArticuloForm : Form
                     this,
                     () =>
                     {
-                        var form = new ArticuloDetailForm(api, articulo);
+                        var form = new ArticuloDetailForm(api, api2, articulo, user);
                         form.FormClosed += (s, e) => cargarArticulos(null);
                         return form;
                     }

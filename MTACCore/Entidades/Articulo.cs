@@ -27,6 +27,14 @@ public class Articulo
         this.FechaCreacion = fechaCreacion;
         this.FechaActualizacion = fechaActualizacion;
     }
+    public Articulo(String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
+    {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.categoria = categoria;
+        this.FechaCreacion = fechaCreacion;
+        this.FechaActualizacion = fechaActualizacion;
+    }
 
     public Articulo()
     {

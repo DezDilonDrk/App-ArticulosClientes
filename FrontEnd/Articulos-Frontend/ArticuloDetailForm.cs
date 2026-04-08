@@ -1,4 +1,5 @@
 ﻿
+using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
@@ -9,13 +10,17 @@ namespace Articulos_Frontend
     public partial class ArticuloDetailForm : Form
     {
         private ArticuloApiClient _client;
+        private ArticuloUsuarioApiClient _api2;
         private Articulo _articulo;
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public ArticuloDetailForm(ArticuloApiClient client, Articulo articulo)
+        private Usuario user;
+        public ArticuloDetailForm(ArticuloApiClient client, ArticuloUsuarioApiClient api2, Articulo articulo, Usuario usuario)
         {
             InitializeComponent();
             _client = client;
+            _api2 = api2;
             _articulo = articulo;
+            user = usuario;
             var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
             comboBoxCategoria.DataSource = categorias.ToList();
             comboBoxCategoria.SelectedIndex = -1;
@@ -83,14 +88,17 @@ namespace Articulos_Frontend
                 try
                 {
                     EmailSender emailSender = new EmailSender();
-                    var id = 0;
                     var nombre = textBoxNombre.Text.Trim();
                     var precio = textPrecio;
                     var categoria = comboBoxCategoria.Text?.Trim();
                     var fechaCreacion = DateTime.Now;
                     var fechaActualizacion = (DateTime?)null;
-                    var articulo = new Articulo(id, nombre, precio, categoria, fechaCreacion, fechaActualizacion);
-                    await _client.Crear(articulo);
+                    var articulo = new Articulo(nombre, precio, categoria, fechaCreacion, fechaActualizacion);
+                    var creado = await _client.Crear(articulo);
+                    if(creado == null) throw new Exception("No se ha podido crear el artículo");
+                    int articuloId = creado.id;
+                    var articuloUsuario = new ArticuloUsuario(articuloId, user.Correo);
+                    await _api2.Crear(articuloUsuario);
                     this.DialogResult = DialogResult.OK;
                     Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
                     emailSender.SendEmail("emilio.martinez@mthelmets.com", "Nuevo artículo creado", $"Se ha creado el artículo '{articulo.nombre}' con ID {articulo.id}, con un costo de {articulo.precio} euros y de la categoria {articulo.categoria} en {articulo.FechaCreacion}.");
@@ -108,7 +116,6 @@ namespace Articulos_Frontend
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Log.Error("Error al guardar artículo: " + ex.Message, ex);
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                     alerta.ShowDialog();

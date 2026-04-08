@@ -15,7 +15,7 @@ namespace Articulos_Frontend
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Log.Info("---- Iniciando aplicación con versión: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            Application.Run(new Menu());
+            Application.Run(new LoginForm());
             Log.Info("---- Aplicación finalizada");
         }
     }

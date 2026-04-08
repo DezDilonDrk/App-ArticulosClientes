@@ -37,11 +37,11 @@ public static class ArticulosUsuariosEndpoints
         .Produces<ArticuloUsuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
 
-        app.MapDelete("/articulos-usuarios/{articuloId:int}/{email}", (int articuloId, string email) =>
+        app.MapDelete("/articulos-usuarios/{articuloId:int}", (int articuloId) =>
         {
-            var existente = repo.ObtenerPorArticuloYUsuario(articuloId, email);
+            var existente = repo.ObtenerPorArticulo(articuloId);
             if (existente is null) return Results.NotFound();
-            repo.Eliminar(articuloId, email);
+            repo.Eliminar(articuloId);
             return Results.NoContent();
         })
         .Produces(StatusCodes.Status204NoContent)

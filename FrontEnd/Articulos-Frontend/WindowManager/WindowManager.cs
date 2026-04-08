@@ -56,7 +56,7 @@ public static class WindowManager
         int desplazamiento = 0;
         if (owner is Menu m)
         {
-            desplazamiento = m.getMenuStripHeigth(); //(owner.Height - owner.ClientSize.Height) + m.getMenuStripHeigth();
+            desplazamiento = m.getMenuStripHeigth();
         }
 
         newForm.formularioHijo.Width = newForm.formularioPadre.Width;
@@ -67,7 +67,6 @@ public static class WindowManager
             {
                 newForm.formularioHijo.Width = owner.Width;
                 newForm.formularioHijo.Height = owner.ClientSize.Height - m.getMenuStripHeigth();
-                // MessageBox.Show($"{Taskbar.GetTaskbarSize}");
 
                 int x = owner.Left;
                 int y = owner.Top;

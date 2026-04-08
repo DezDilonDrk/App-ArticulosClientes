@@ -79,12 +79,12 @@ public class ArticulosUsuariosRepository
         }
     }
 
-    public void Eliminar(int articuloId, string usuarioEmail)
+    public void Eliminar(int articuloId)
     {
         using (var db = Connection)
         {
-            string sql = "DELETE FROM Articulos_Usuarios WHERE articulo_id = @ArticuloId AND usuario_email = @UsuarioEmail";
-            db.Execute(sql, new { ArticuloId = articuloId, UsuarioEmail = usuarioEmail });
+            string sql = "DELETE FROM Articulos_Usuarios WHERE articulo_id = @ArticuloId";
+            db.Execute(sql, new { ArticuloId = articuloId});
         }
     }
 }

@@ -21,5 +21,11 @@ namespace MTCore_AC.Entidades
             this.Rol = rol;
         }
 
+        public Usuario(string correo, string contrasena)
+        {
+            this.Correo = correo;
+            this.Contrasena = contrasena;
+        }
+
     }
 }

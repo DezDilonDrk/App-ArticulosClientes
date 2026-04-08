@@ -51,8 +51,10 @@ namespace Articulos_Frontend
             comboBoxCategoria = new ComboBox();
             panelTodo = new Panel();
             panelFiltros = new Panel();
-            labelCategoria = new Label();
             CategoriaGroupBox = new GroupBox();
+            labelCategoria = new Label();
+            usuarioLabel = new Label();
+            usuarioActual = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBoxFecha.SuspendLayout();
             groupBoxPrecio.SuspendLayout();
@@ -267,6 +269,8 @@ namespace Articulos_Frontend
             // 
             // panelTodo
             // 
+            panelTodo.Controls.Add(usuarioActual);
+            panelTodo.Controls.Add(usuarioLabel);
             panelTodo.Controls.Add(EtiquetaNombre);
             panelTodo.Controls.Add(TextoNombre);
             panelTodo.Controls.Add(BotonAdd);
@@ -291,6 +295,17 @@ namespace Articulos_Frontend
             panelFiltros.Size = new Size(300, 520);
             panelFiltros.TabIndex = 14;
             // 
+            // CategoriaGroupBox
+            // 
+            CategoriaGroupBox.Controls.Add(comboBoxCategoria);
+            CategoriaGroupBox.Controls.Add(labelCategoria);
+            CategoriaGroupBox.Location = new Point(12, 316);
+            CategoriaGroupBox.Name = "CategoriaGroupBox";
+            CategoriaGroupBox.Size = new Size(232, 88);
+            CategoriaGroupBox.TabIndex = 16;
+            CategoriaGroupBox.TabStop = false;
+            CategoriaGroupBox.Text = "Categoría";
+            // 
             // labelCategoria
             // 
             labelCategoria.AutoSize = true;
@@ -302,16 +317,23 @@ namespace Articulos_Frontend
             labelCategoria.Tag = "normalText";
             labelCategoria.Text = "Categoría";
             // 
-            // CategoriaGroupBox
+            // usuarioLabel
             // 
-            CategoriaGroupBox.Controls.Add(comboBoxCategoria);
-            CategoriaGroupBox.Controls.Add(labelCategoria);
-            CategoriaGroupBox.Location = new Point(12, 316);
-            CategoriaGroupBox.Name = "CategoriaGroupBox";
-            CategoriaGroupBox.Size = new Size(232, 88);
-            CategoriaGroupBox.TabIndex = 16;
-            CategoriaGroupBox.TabStop = false;
-            CategoriaGroupBox.Text = "Categoría";
+            usuarioLabel.AutoSize = true;
+            usuarioLabel.Location = new Point(13, 9);
+            usuarioLabel.Name = "usuarioLabel";
+            usuarioLabel.Size = new Size(53, 15);
+            usuarioLabel.TabIndex = 14;
+            usuarioLabel.Text = "Usuario: ";
+            // 
+            // usuarioActual
+            // 
+            usuarioActual.AutoSize = true;
+            usuarioActual.Location = new Point(72, 9);
+            usuarioActual.Name = "usuarioActual";
+            usuarioActual.Size = new Size(80, 15);
+            usuarioActual.TabIndex = 15;
+            usuarioActual.Text = "usuarioActual";
             // 
             // ArticuloForm
             // 
@@ -364,5 +386,7 @@ namespace Articulos_Frontend
         private Label labelCategoria;
         private Panel panelFiltros;
         private Panel panelTodo;
+        private Label usuarioActual;
+        private Label usuarioLabel;
     }
 }

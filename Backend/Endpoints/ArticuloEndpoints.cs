@@ -34,7 +34,8 @@ public static class ArticuloEndpoints
         {
             var existente = repo.ObtenerPorNombreExacto(articulo.nombre);
             if (existente != null) { throw new InvalidOperationException($"Ya existe un artículo con nombre '{articulo.nombre}'"); }              
-            repo.Insertar(articulo);
+            int id = repo.Insertar(articulo);
+            articulo.id = id;
             return Results.Created($"/articulos/{articulo.id}", articulo);
         })
         .Produces<Articulo>(StatusCodes.Status201Created)

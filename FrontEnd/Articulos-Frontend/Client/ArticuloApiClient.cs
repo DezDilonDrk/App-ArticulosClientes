@@ -27,7 +27,7 @@ public class ArticuloApiClient
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener artículos: {response.StatusCode}");
-                throw new Exception($"Error APIIII: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
             }
 
             return await response.Content.ReadFromJsonAsync<List<Articulo>>() ?? new List<Articulo>();
@@ -56,12 +56,13 @@ public class ArticuloApiClient
             throw new Exception("Error al conectar con el servidor API.");
         }
     }
-    public async Task Crear(Articulo articulo)
+    public async Task<Articulo?> Crear(Articulo articulo)
     {
         try
         {
             var response = await httpClient.PostAsJsonAsync("/articulos", articulo);
             response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Articulo>();
         }
         catch
         {

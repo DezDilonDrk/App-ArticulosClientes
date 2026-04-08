@@ -38,6 +38,7 @@ namespace Articulos_Frontend
             mnuVentanas = new ToolStripMenuItem();
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             buttonTerminal = new Button();
+            buttonLogout = new Button();
             menuStripAC.SuspendLayout();
             SuspendLayout();
             // 
@@ -90,6 +91,17 @@ namespace Articulos_Frontend
             buttonTerminal.UseVisualStyleBackColor = true;
             buttonTerminal.Click += buttonTerminal_Click;
             // 
+            // buttonLogout
+            // 
+            buttonLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonLogout.Location = new Point(28, 421);
+            buttonLogout.Name = "buttonLogout";
+            buttonLogout.Size = new Size(105, 23);
+            buttonLogout.TabIndex = 2;
+            buttonLogout.Text = "Cerrar sesión";
+            buttonLogout.UseVisualStyleBackColor = true;
+            buttonLogout.Click += buttonLogout_Click;
+            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -97,6 +109,7 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
+            Controls.Add(buttonLogout);
             Controls.Add(buttonTerminal);
             Controls.Add(menuStripAC);
             DoubleBuffered = true;
@@ -104,7 +117,6 @@ namespace Articulos_Frontend
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(930, 530);
             Name = "Menu";
-            Text = stringValuesSP.menu;
             WindowState = FormWindowState.Maximized;
             menuStripAC.ResumeLayout(false);
             menuStripAC.PerformLayout();
@@ -120,5 +132,6 @@ namespace Articulos_Frontend
         private ToolStripMenuItem ventanasToolStripMenuItem;
         private Button buttonTerminal;
         private ToolStripMenuItem mnuVentanas;
+        private Button buttonLogout;
     }
 }

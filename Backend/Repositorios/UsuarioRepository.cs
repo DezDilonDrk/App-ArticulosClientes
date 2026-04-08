@@ -16,12 +16,12 @@ namespace Articulos_Backend.Repositorios
 
         private IDbConnection Connection => new SqlConnection(_connectionString);
 
-        public IEnumerable<string> ObtenerUsuarios()
+        public IEnumerable<Usuario> ObtenerUsuarios()
         {
             using (var db = Connection)
             {
-                string sql = "SELECT NombreUsuario FROM Usuarios";
-                return db.Query<string>(sql).ToList();
+                string sql = "SELECT CorreoElectronico AS correo, NombreUsuario AS nombre, Contrasena, Rol FROM Usuarios";
+                return db.Query<Usuario>(sql).ToList();
             }
         }
 

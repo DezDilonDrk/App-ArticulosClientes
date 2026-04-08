@@ -1,5 +1,7 @@
+using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
+using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend
 {
@@ -8,11 +10,16 @@ namespace Articulos_Frontend
         private ArticuloForm articuloForm;
         private ClienteForm clienteForm;
         ShowTerminal terminal;
-        public Menu()
+        private Usuario user;
+        private ArticuloUsuarioApiClient api2;
+        private ArticuloUsuario artistuario;
+        public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
+            api2 = new ArticuloUsuarioApiClient();
             StyleManager.StyleForm(this);
             Log.Info("Menú principal iniciado.");
+            user = usuario;
         }
         public void Menu_Load(object sender, EventArgs e)
         {
@@ -27,7 +34,7 @@ namespace Articulos_Frontend
 
             WindowManager.ShowForm(key, this, () =>
             {
-                return new ArticuloForm();
+                return new ArticuloForm(user);
             });
         }
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -109,6 +116,20 @@ namespace Articulos_Frontend
                 terminal = new ShowTerminal();
                 return terminal;
             });
+        }
+
+        private void buttonLogout_Click(object sender, EventArgs e)
+        {
+            WindowManager.ShowForm("LoginForm", this, () => new LoginForm());
+
+            var abiertos = WindowManager.OpenWindows.Values.ToList();
+            foreach (var entry in abiertos)
+            {
+                try { entry.formularioHijo.Close(); }
+                catch { }
+            }
+
+            this.Close();
         }
     }
 }
