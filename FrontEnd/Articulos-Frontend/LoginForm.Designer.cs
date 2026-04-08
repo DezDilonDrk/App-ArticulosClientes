@@ -58,8 +58,10 @@
             // 
             contrasenaText.Location = new Point(348, 256);
             contrasenaText.Name = "contrasenaText";
+            contrasenaText.PasswordChar = '*';
             contrasenaText.Size = new Size(201, 23);
             contrasenaText.TabIndex = 2;
+            contrasenaText.UseSystemPasswordChar = true;
             // 
             // emailLabel
             // 

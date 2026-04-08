@@ -50,11 +50,10 @@ namespace Articulos_Frontend
             labelMin = new Label();
             comboBoxCategoria = new ComboBox();
             panelTodo = new Panel();
+            usuarioActual = new Label();
             panelFiltros = new Panel();
             CategoriaGroupBox = new GroupBox();
             labelCategoria = new Label();
-            usuarioLabel = new Label();
-            usuarioActual = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBoxFecha.SuspendLayout();
             groupBoxPrecio.SuspendLayout();
@@ -270,7 +269,6 @@ namespace Articulos_Frontend
             // panelTodo
             // 
             panelTodo.Controls.Add(usuarioActual);
-            panelTodo.Controls.Add(usuarioLabel);
             panelTodo.Controls.Add(EtiquetaNombre);
             panelTodo.Controls.Add(TextoNombre);
             panelTodo.Controls.Add(BotonAdd);
@@ -283,6 +281,15 @@ namespace Articulos_Frontend
             panelTodo.Name = "panelTodo";
             panelTodo.Size = new Size(668, 520);
             panelTodo.TabIndex = 15;
+            // 
+            // usuarioActual
+            // 
+            usuarioActual.AutoSize = true;
+            usuarioActual.Location = new Point(13, 9);
+            usuarioActual.Name = "usuarioActual";
+            usuarioActual.Size = new Size(80, 15);
+            usuarioActual.TabIndex = 15;
+            usuarioActual.Text = "usuarioActual";
             // 
             // panelFiltros
             // 
@@ -316,24 +323,6 @@ namespace Articulos_Frontend
             labelCategoria.TabIndex = 15;
             labelCategoria.Tag = "normalText";
             labelCategoria.Text = "Categoría";
-            // 
-            // usuarioLabel
-            // 
-            usuarioLabel.AutoSize = true;
-            usuarioLabel.Location = new Point(13, 9);
-            usuarioLabel.Name = "usuarioLabel";
-            usuarioLabel.Size = new Size(53, 15);
-            usuarioLabel.TabIndex = 14;
-            usuarioLabel.Text = "Usuario: ";
-            // 
-            // usuarioActual
-            // 
-            usuarioActual.AutoSize = true;
-            usuarioActual.Location = new Point(72, 9);
-            usuarioActual.Name = "usuarioActual";
-            usuarioActual.Size = new Size(80, 15);
-            usuarioActual.TabIndex = 15;
-            usuarioActual.Text = "usuarioActual";
             // 
             // ArticuloForm
             // 
@@ -387,6 +376,5 @@ namespace Articulos_Frontend
         private Panel panelFiltros;
         private Panel panelTodo;
         private Label usuarioActual;
-        private Label usuarioLabel;
     }
 }

@@ -20,7 +20,7 @@ namespace Articulos_Backend.Repositorios
         {
             using (var db = Connection)
             {
-                string sql = "SELECT CorreoElectronico AS correo, NombreUsuario AS nombre, Contrasena, Rol FROM Usuarios";
+                string sql = "SELECT CorreoElectronico AS Correo, NombreUsuario AS Nombre, Contrasena AS Contrasena FROM Usuarios";
                 return db.Query<Usuario>(sql).ToList();
             }
         }
