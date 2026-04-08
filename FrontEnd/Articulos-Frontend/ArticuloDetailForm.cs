@@ -10,15 +10,13 @@ namespace Articulos_Frontend
     public partial class ArticuloDetailForm : Form
     {
         private ArticuloApiClient _client;
-        private ArticuloUsuarioApiClient _api2;
         private Articulo _articulo;
         private StringValuesSP stringValuesSP = new StringValuesSP();
         private Usuario user;
-        public ArticuloDetailForm(ArticuloApiClient client, ArticuloUsuarioApiClient api2, Articulo articulo, Usuario usuario)
+        public ArticuloDetailForm(ArticuloApiClient client, Articulo articulo, Usuario usuario)
         {
             InitializeComponent();
             _client = client;
-            _api2 = api2;
             _articulo = articulo;
             user = usuario;
             var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
@@ -97,8 +95,6 @@ namespace Articulos_Frontend
                     var creado = await _client.Crear(articulo);
                     if(creado == null) throw new Exception("No se ha podido crear el artículo");
                     int articuloId = creado.id;
-                    var articuloUsuario = new ArticuloUsuario(articuloId, user.Correo);
-                    await _api2.Crear(articuloUsuario);
                     this.DialogResult = DialogResult.OK;
                     Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
                     emailSender.SendEmail("emilio.martinez@mthelmets.com", "Nuevo artículo creado", $"Se ha creado el artículo '{articulo.nombre}' con ID {articulo.id}, con un costo de {articulo.precio} euros y de la categoria {articulo.categoria} en {articulo.FechaCreacion}.");

@@ -11,12 +11,9 @@ namespace Articulos_Frontend
         private ClienteForm clienteForm;
         ShowTerminal terminal;
         private Usuario user;
-        private ArticuloUsuarioApiClient api2;
-        private ArticuloUsuario artistuario;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
-            api2 = new ArticuloUsuarioApiClient();
             StyleManager.StyleForm(this);
             Log.Info("Menú principal iniciado.");
             user = usuario;

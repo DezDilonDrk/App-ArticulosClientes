@@ -10,7 +10,6 @@ builder.Services.AddSwaggerGen();
 var repositorioCliente = new ClienteRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioArticulo = new ArticuloRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioUsuario = new UsuarioRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
-var repositorioArticulosUsuarios = new ArticulosUsuariosRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
@@ -22,5 +21,4 @@ if (app.Environment.IsDevelopment())
 app.MapClienteEndpoints(repositorioCliente);
 app.MapArticuloEndpoints(repositorioArticulo);
 app.MapUsuarioEndpoints(repositorioUsuario);
-app.MapArticulosUsuariosEndpoints(repositorioArticulosUsuarios);
 app.Run();
