@@ -17,6 +17,7 @@ public partial class ArticuloForm : Form
     //private ArticuloRepository repo;
     private ArticuloApiClient api;
     private Usuario user;
+    private bool admin = true;
 
     public ArticuloForm(Usuario usuario)
     {
@@ -38,6 +39,16 @@ public partial class ArticuloForm : Form
         Log.Info("Cargando artículos en el formulario.");
         cargarArticulos(null);
         panelFiltros.Visible = false;
+        if (!AppState.Roles.Contains("ADMIN_ARTICULOS"))
+        {
+            BotonAdd.Enabled = false;
+            BotonDel.Enabled = false;
+            admin = false;
+
+        }else
+        {
+            admin = true;
+        }
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
@@ -142,6 +153,11 @@ public partial class ArticuloForm : Form
 
     private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
+        if (!admin)
+        {
+            MessageBox.Show("No tienes permisos para editar artículos.");
+            return;
+        }
         if (e.RowIndex >= 0)
         {
             var articulo = dataGridView1.Rows[e.RowIndex].DataBoundItem as Articulo;

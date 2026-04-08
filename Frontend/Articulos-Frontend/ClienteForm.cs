@@ -21,6 +21,7 @@ public partial class ClienteForm : Form
     private ErrorProvider errorProvider;
     private List<Cliente> listaActual;
     private StringValuesSP stringValuesSP = new StringValuesSP();
+    private bool admin = true;
 
     /*private System.Windows.Forms.Timer animTimer;
     private bool animAbriendo;
@@ -338,6 +339,15 @@ public partial class ClienteForm : Form
         Log.Info("Cargando clientes en el formulario.");
         buscarClientes(null);
         RegistrarClicks(this);
+        if(!AppState.Roles.Contains("ADMIN_CLIENTES"))
+        {
+            BotonMasC.Enabled = false;
+            BotonMenosC.Enabled = false;
+            admin = false;
+        } else
+        {
+            admin = true;
+        }
     }
     private void FiltrarPorFecha(object sender, EventArgs e)
     {
@@ -458,6 +468,11 @@ public partial class ClienteForm : Form
     private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
         Log.Info("Doble clic en cliente para editar la información.");
+        if (!admin)
+        {
+            MessageBox.Show("No tienes permisos para editar clientes.");
+            return;
+        }
         if (e.RowIndex >= 0)
         {
             string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();

@@ -55,12 +55,13 @@ public static class UsuarioEndpoints
             if (usuario.Contrasena.Trim() != request.Password.Trim())
                 return Results.Unauthorized();
 
-            var token = jwtService.GenerateToken(usuario.CorreoElectronico);
+            var roles = repo.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
+            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles);
 
             return Results.Ok(new LoginResponse
             {
                 Token = token,
-                Roles = new List<string>(),
+                Roles = roles,
                 Usuario = usuario
             });
         });
