@@ -1,4 +1,5 @@
-﻿using Articulos_Frontend.LogConfig;
+﻿using Articulos_Frontend;
+using Articulos_Frontend.LogConfig;
 using MTCore_AC.Entidades;
 using System.Net;
 using System.Net.Http;
@@ -22,6 +23,8 @@ public class ArticuloApiClient
     public async Task<List<Articulo>> ObtenerArticulos()
     {
         try {
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
+
             var response = await httpClient.GetAsync("/articulos");
 
             if (!response.IsSuccessStatusCode)

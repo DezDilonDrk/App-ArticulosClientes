@@ -6,22 +6,24 @@ namespace MTCore_AC.Entidades
 {
     public class Usuario
     {
-        public string Correo { get; set; }
+        public string CorreoElectronico { get; set; }
         public string Nombre { get; set; }
         public string Contrasena { get; set; }
 
+        public List<UsuarioRol> UsuarioRoles { get; set; }
+
         public Usuario() { }
 
-        public Usuario(string correo, string nombre, string contrasena)
+        public Usuario(string correoElectronico, string nombre, string contrasena)
         {
-            this.Correo = correo;
+            this.CorreoElectronico = correoElectronico;
             this.Nombre = nombre;
             this.Contrasena = contrasena;
         }
 
-        public Usuario(string correo, string contrasena)
+        public Usuario(string correoElectronico, string contrasena)
         {
-            this.Correo = correo;
+            this.CorreoElectronico = correoElectronico;
             this.Contrasena = contrasena;
         }
 

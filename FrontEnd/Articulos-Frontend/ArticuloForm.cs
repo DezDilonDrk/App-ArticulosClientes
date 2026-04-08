@@ -26,7 +26,7 @@ public partial class ArticuloForm : Form
         api = new ArticuloApiClient();
         StyleManager.StyleForm(this);
         user = usuario;
-        usuarioActual.Text = $"Usuario: {user.Correo}";
+        usuarioActual.Text = $"Usuario: {user.CorreoElectronico}";
         var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
         comboBoxCategoria.DataSource = categorias.ToList();
         comboBoxCategoria.SelectedIndex = -1;

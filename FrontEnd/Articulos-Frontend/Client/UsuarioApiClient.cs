@@ -1,9 +1,11 @@
 ﻿using Articulos_Frontend.LogConfig;
+using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
-using System.Net.Http.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Json;
 using System.Text;
+using static MTCore_AC.DTO.LoginDtos;
 
 namespace Articulos_Frontend.Client;
 
@@ -23,6 +25,17 @@ public class UsuarioApiClient
             Log.Error("No se pudo conectar al servidor API.");
             throw new Exception("Error al conectar con el servidor API.");
         }
+    }
+
+    public async Task<LoginResponse> LoginAsync(LoginRequest request)
+    {
+        var response = await httpClient.PostAsJsonAsync("usuarios/login", request);
+
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+        return loginResponse;
     }
 
     public async Task<List<Usuario>> ObtenerUsuarios()

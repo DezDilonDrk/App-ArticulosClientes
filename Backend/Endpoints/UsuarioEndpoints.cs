@@ -1,5 +1,9 @@
-﻿using Articulos_Backend.Repositorios;
+﻿using Articulos_Backend.JWT;
+using Articulos_Backend.Repositorios;
+using Microsoft.AspNetCore.Identity.Data;
 using MTCore_AC.Entidades;
+using MTCore_AC.DTO;
+using static MTCore_AC.DTO.LoginDtos;
 
 namespace Articulos_Backend.Endpoints;
 
@@ -15,9 +19,9 @@ public static class UsuarioEndpoints
         .Produces<IEnumerable<Usuario>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapGet("/usuarios/correo/{correo}", (string correo) =>
+        app.MapGet("/usuarios/correo/{correoElectronico}", (string correoElectronico) =>
         {
-            var usuarios = repo.ObtenerPorCorreo(correo);
+            var usuarios = repo.ObtenerPorCorreo(correoElectronico);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
         })
         .Produces<Usuario>(StatusCodes.Status200OK)
@@ -34,10 +38,32 @@ public static class UsuarioEndpoints
         app.MapPost("/usuarios", (Usuario usuario) =>
         {
             repo.Insertar(usuario);
-            return Results.Created($"/usuarios/correo/{usuario.Correo}", usuario);
+            return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
         })
         .Produces<Usuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
+
+        app.MapPost("/usuarios/login", (MTCore_AC.DTO.LoginDtos.LoginRequest request) =>
+        {
+            var jwtService = app.Services.GetRequiredService<JwtService>();
+
+            var usuario = repo.ObtenerPorCorreo(request.Email);
+
+            if (usuario == null)
+                return Results.Unauthorized();
+
+            if (usuario.Contrasena.Trim() != request.Password.Trim())
+                return Results.Unauthorized();
+
+            var token = jwtService.GenerateToken(usuario.CorreoElectronico);
+
+            return Results.Ok(new LoginResponse
+            {
+                Token = token,
+                Roles = new List<string>(),
+                Usuario = usuario
+            });
+        });
 
         app.MapPut("/usuarios", (Usuario usuario) =>
         {
@@ -47,9 +73,9 @@ public static class UsuarioEndpoints
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapDelete("/usuarios/correo/{correo}", (string correo) =>
+        app.MapDelete("/usuarios/correo/{correoElectronico}", (string correoElectronico) =>
         {
-            repo.Eliminar(correo);
+            repo.Eliminar(correoElectronico);
             return Results.NoContent();
         })
         .Produces(StatusCodes.Status204NoContent)

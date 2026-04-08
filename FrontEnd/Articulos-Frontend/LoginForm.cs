@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows.Forms;
+using static MTCore_AC.DTO.LoginDtos;
+using MTCore_AC.DTO;
 
 namespace Articulos_Frontend
 {
@@ -28,6 +31,7 @@ namespace Articulos_Frontend
         {
             string email = emailText.Text;
             string contrasena = contrasenaText.Text;
+
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
             {
                 Log.Warn("Intento de login con campos vacíos.");
@@ -35,31 +39,34 @@ namespace Articulos_Frontend
                 alerta.ShowDialog();
                 return;
             }
+
             try
             {
-                var usuario = new Usuario(email, contrasena);
-                var usuarios = await api.ObtenerUsuarios();
-                if (usuario != null)
+                // Creamos el request
+                var loginRequest = new LoginRequest { Email = email, Password = contrasena };
+
+                // Llamamos al backend
+                var loginResponse = await api.LoginAsync(loginRequest); // Método nuevo en UsuarioApiClient
+
+                if (loginResponse != null)
                 {
-                    foreach (Usuario u in usuarios)
-                    {
-                        if (u.Correo == email && u.Contrasena == contrasena)
-                        {
-                            usuario = u;
-                            break;
-                        }
-                    }
+                    // Guardar token y roles globalmente
+                    AppState.Token = loginResponse.Token;
+                    AppState.Roles = loginResponse.Roles;
+
                     Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
+
                     WindowManager.ShowForm(
                         "MainForm",
                         this,
                         () =>
                         {
-                            var form = new Menu(api, usuario);
+                            var form = new Menu(api, loginResponse.Usuario);
                             form.FormClosed += (s, args) => this.Show();
                             return form;
                         }
                     );
+
                     this.Hide();
                 }
                 else
@@ -68,6 +75,7 @@ namespace Articulos_Frontend
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("Credenciales incorrectas."));
                     alerta.ShowDialog();
                 }
+
                 emailText.Text = "";
                 contrasenaText.Text = "";
             }
@@ -79,5 +87,7 @@ namespace Articulos_Frontend
             }
 
         }
+
+        
     }
-    }
+}

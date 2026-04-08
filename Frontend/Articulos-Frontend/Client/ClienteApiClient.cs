@@ -31,6 +31,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
                 return await httpClient.GetFromJsonAsync<List<Cliente>>("/clientes");
             }
             catch

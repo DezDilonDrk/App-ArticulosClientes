@@ -25,12 +25,12 @@ namespace Articulos_Backend.Repositorios
             }
         }
 
-        public Usuario ObtenerPorCorreo(string correo)
+        public Usuario ObtenerPorCorreo(string correoElectronico)
         {
             using (var db = Connection)
             {
-                string sql = "SELECT * FROM Usuarios WHERE Correo = @Correo";
-                return db.QueryFirstOrDefault<Usuario>(sql, new { Correo = correo });
+                string sql = "SELECT CorreoElectronico AS CorreoElectronico, NombreUsuario AS Nombre, Contrasena AS Contrasena FROM Usuarios WHERE CorreoElectronico = @CorreoElectronico";
+                return db.QueryFirstOrDefault<Usuario>(sql, new { CorreoElectronico = correoElectronico });
             }
         }
 
@@ -38,37 +38,45 @@ namespace Articulos_Backend.Repositorios
         {
             using (var db = Connection)
             {
-                string sql = "SELECT * FROM Usuarios WHERE NombreUsuario = @Nombre";
+                string sql = "SELECT CorreoElectronico AS CorreoElectronico, NombreUsuario AS Nombre, Contrasena AS Contrasena FROM Usuarios WHERE NombreUsuario = @Nombre";
                 return db.QueryFirstOrDefault<Usuario>(sql, new { Nombre = nombre });
             }
+        }
+
+        public List<string> ObtenerRolesPorUsuario(string correoElectronico)
+        {
+            using var db = Connection;
+
+            string sql = @"SELECT r.Nombre FROM Roles r INNER JOIN UsuarioRoles ur ON ur.RolId = r.Id WHERE ur.UsuarioEmail = @Correo";
+
+            return db.Query<string>(sql, new { Correo = correoElectronico }).ToList();
         }
 
         public void Insertar(Usuario usuario)
         {
             using (var db = Connection)
             {
-                string sql = "INSERT INTO Usuarios (Correo, NombreUsuario, Contrasena) VALUES (@Correo, @NombreUsuario, @Contrasena)";
-                db.Execute(sql, new { Correo = usuario.Correo, NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena});
+                string sql = "INSERT INTO Usuarios (CorreoElectronico, NombreUsuario, Contrasena) VALUES (@CorreoElectronico, @NombreUsuario, @Contrasena)";
+                db.Execute(sql, new { CorreoElectronico = usuario.CorreoElectronico, NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena});
             }
         }
 
         public void Update(Usuario usuario) {
             using (var db = Connection)
             {
-                string sql = "UPDATE Usuarios SET NombreUsuario = @NombreUsuario, Contrasena = @Contrasena WHERE Correo = @Correo";
-                db.Execute(sql, new { NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena, Correo = usuario.Correo});
+                string sql = "UPDATE Usuarios SET NombreUsuario = @NombreUsuario, Contrasena = @Contrasena WHERE CorreoElectronico = @CorreoElectronico";
+                db.Execute(sql, new { NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena, CorreoElectronico = usuario.CorreoElectronico});
             }
         }
 
-        public void Eliminar(string correo)
+        public void Eliminar(string correoElectronico)
         {
             using (var db = Connection)
             {
-                string sql = "DELETE FROM Usuarios WHERE Correo = @Correo";
-                db.Execute(sql, new { Correo = correo });
+                string sql = "DELETE FROM Usuarios WHERE CorreoElectronico = @CorreoElectronico";
+                db.Execute(sql, new { CorreoElectronico = correoElectronico });
             }
         }
-
 
     }
 }
