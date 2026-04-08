@@ -168,6 +168,9 @@ namespace Articulos_Frontend
                         $"{id}_Actualizar",
                         this,
                        () => formActualizado);
+                formActualizado.PedidoActualizadoCorrectamente += async p => {
+                    buscarPedidos(textBoxCliente.Text);
+                };
             }
         }
         private void Boton_MouseEnter(object sender, EventArgs e)

@@ -190,7 +190,7 @@ namespace Articulos_Frontend
             PerformLayout();
 
         }
-        private void BotonActualizarC_Click(object sender, EventArgs e)
+        private async void BotonActualizarC_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text))
             {
@@ -198,7 +198,7 @@ namespace Articulos_Frontend
                 try
                 {
                     Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now,DateTime.Now);
-                    clienteApiClient.Actualizar(cliente.Dni,cliente);
+                    await clienteApiClient.Actualizar(cliente.Dni,cliente);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClienteActualizadoCorrectamente?.Invoke(cliente);
                     Log.Info("Cliente actualizado correctamente: " + cliente.Dni);
