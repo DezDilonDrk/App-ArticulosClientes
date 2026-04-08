@@ -25,18 +25,19 @@ namespace Articulos_Frontend
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             pedidoApiClient = new PedidoApiClient();
             StyleManager.StyleForm(this);
-
+            var estados = new[] { "Abierto", "Cerrado", "Cancelado" };
+            comboBoxEstado.DataSource = estados.ToList();
+            comboBoxEstado.SelectedIndex = -1;
             textBoxId.Text = pedido.id_pedido.ToString();
             textBoxDniCliente.Text = pedido.dni_cliente;
             textBoxMetodoPago.Text = pedido.metodo_pago;
-            textBoxEstado.Text = pedido.estado;
+            comboBoxEstado.Text = pedido.estado;
             textBoxImpuestos.Text = pedido.porcentaje_impuestos.ToString();
         }
         private void InitializeComponent()
         {
             textBoxDniCliente = new TextBox();
             textBoxMetodoPago = new TextBox();
-            textBoxEstado = new TextBox();
             textBoxImpuestos = new TextBox();
             LabelIdPedido = new Label();
             LabelDniCliente = new Label();
@@ -44,12 +45,12 @@ namespace Articulos_Frontend
             LabelEstado = new Label();
             BotonCrearC = new Button();
             LabelTitulo = new Label();
-            button1 = new Button();
             textBoxId = new TextBox();
             LabelImpuestos = new Label();
+            comboBoxEstado = new ComboBox();
             SuspendLayout();
             // 
-            // textBoxDni
+            // textBoxDniCliente
             // 
             textBoxDniCliente.Location = new Point(237, 116);
             textBoxDniCliente.Name = "textBoxDniCliente";
@@ -57,7 +58,7 @@ namespace Articulos_Frontend
             textBoxDniCliente.Size = new Size(247, 23);
             textBoxDniCliente.TabIndex = 0;
             // 
-            // textBoxNombre
+            // textBoxMetodoPago
             // 
             textBoxMetodoPago.Location = new Point(237, 145);
             textBoxMetodoPago.Name = "textBoxMetodoPago";
@@ -65,15 +66,7 @@ namespace Articulos_Frontend
             textBoxMetodoPago.Size = new Size(247, 23);
             textBoxMetodoPago.TabIndex = 1;
             // 
-            // textBoxApellidos
-            // 
-            textBoxEstado.Location = new Point(237, 174);
-            textBoxEstado.Name = "textBoxEstado";
-            textBoxEstado.PlaceholderText = "Introduzca el estado";
-            textBoxEstado.Size = new Size(247, 23);
-            textBoxEstado.TabIndex = 2;
-            // 
-            // textBoxEmail
+            // textBoxImpuestos
             // 
             textBoxImpuestos.Location = new Point(237, 203);
             textBoxImpuestos.Name = "textBoxImpuestos";
@@ -81,7 +74,7 @@ namespace Articulos_Frontend
             textBoxImpuestos.Size = new Size(247, 23);
             textBoxImpuestos.TabIndex = 3;
             // 
-            // LabelDni
+            // LabelIdPedido
             // 
             LabelIdPedido.BackColor = Color.Transparent;
             LabelIdPedido.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -93,7 +86,7 @@ namespace Articulos_Frontend
             LabelIdPedido.Text = "Id del Pedido: ";
             LabelIdPedido.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // LabelNombre
+            // LabelDniCliente
             // 
             LabelDniCliente.BackColor = Color.Transparent;
             LabelDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -105,7 +98,7 @@ namespace Articulos_Frontend
             LabelDniCliente.Text = "Dni del Cliente: ";
             LabelDniCliente.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // LabelApellidos
+            // LabelMetodoPago
             // 
             LabelMetodoPago.BackColor = Color.Transparent;
             LabelMetodoPago.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -117,7 +110,7 @@ namespace Articulos_Frontend
             LabelMetodoPago.Text = "Método de Pago: ";
             LabelMetodoPago.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // LabelEmail
+            // LabelEstado
             // 
             LabelEstado.BackColor = Color.Transparent;
             LabelEstado.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -153,18 +146,19 @@ namespace Articulos_Frontend
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
-            LabelTitulo.Text = stringValuesSP.actualizarPedido;
+            LabelTitulo.Text = "ActualizarPedido";
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // textBox2
+            // textBoxId
             // 
             textBoxId.Location = new Point(237, 87);
             textBoxId.Name = "textBoxId";
             textBoxId.PlaceholderText = "Introduzca el id";
+            textBoxId.ReadOnly = true;
             textBoxId.Size = new Size(247, 23);
             textBoxId.TabIndex = 10;
             // 
-            // label1
+            // LabelImpuestos
             // 
             LabelImpuestos.BackColor = Color.Transparent;
             LabelImpuestos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -176,12 +170,22 @@ namespace Articulos_Frontend
             LabelImpuestos.Text = "Impuestos (%): ";
             LabelImpuestos.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // PedidoDetailForm
+            // comboBoxMetodo
+            // 
+            comboBoxEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxEstado.FormattingEnabled = true;
+            comboBoxEstado.Location = new Point(237, 174);
+            comboBoxEstado.Name = "comboBoxEstado";
+            comboBoxEstado.Size = new Size(247, 23);
+            comboBoxEstado.TabIndex = 12;
+            comboBoxEstado.Tag = "comboBox";
+            // 
+            // PedidoUpdateForm
             // 
             ClientSize = new Size(580, 363);
+            Controls.Add(comboBoxEstado);
             Controls.Add(LabelImpuestos);
             Controls.Add(textBoxId);
-            Controls.Add(button1);
             Controls.Add(LabelTitulo);
             Controls.Add(BotonCrearC);
             Controls.Add(LabelEstado);
@@ -189,14 +193,13 @@ namespace Articulos_Frontend
             Controls.Add(LabelDniCliente);
             Controls.Add(LabelIdPedido);
             Controls.Add(textBoxImpuestos);
-            Controls.Add(textBoxEstado);
             Controls.Add(textBoxMetodoPago);
             Controls.Add(textBoxDniCliente);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MaximumSize = new Size(596, 402);
             MinimumSize = new Size(596, 402);
-            Name = "PedidoDetailForm";
+            Name = "PedidoUpdateForm";
             StartPosition = FormStartPosition.CenterParent;
             ResumeLayout(false);
             PerformLayout();
@@ -205,12 +208,12 @@ namespace Articulos_Frontend
 
         private async void BotonActualizarC_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxEstado.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text) && ValidarDni(textBoxDniCliente.Text))
+            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text) && ValidarDni(textBoxDniCliente.Text))
             {
                 Log.Info("Intento de actualización de pedido con Id: " + textBoxId.Text);
                 try
                 {
-                    pedido.ActualizarPedido(textBoxDniCliente.Text,textBoxMetodoPago.Text,double.Parse(textBoxImpuestos.Text), textBoxEstado.Text,pedido.articulos);
+                    pedido.ActualizarPedido(textBoxDniCliente.Text,textBoxMetodoPago.Text,double.Parse(textBoxImpuestos.Text), comboBoxEstado.Text,pedido.articulos);
                     await pedidoApiClient.Actualizar(pedido.id_pedido, pedido);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     PedidoActualizadoCorrectamente?.Invoke(pedido);

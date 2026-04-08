@@ -38,7 +38,8 @@
         private Label LabelImpuestos;
         private Button BotonCrearC;
         private Label LabelTitulo;
-        private Button button1;
         #endregion
+
+        private ComboBox comboBoxEstado;
     }
 }

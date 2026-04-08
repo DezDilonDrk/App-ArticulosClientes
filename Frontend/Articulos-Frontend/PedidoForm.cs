@@ -71,40 +71,57 @@ namespace Articulos_Frontend
                 dgvCliente.Columns["dni_cliente"].Width = 80;
                 dgvCliente.Columns["dni_cliente"].Resizable = DataGridViewTriState.False;
             }
-            if (dgvCliente.Columns["Nombre"] != null)
+            if (dgvCliente.Columns["porcentaje_impuestos"] != null)
             {
-                //dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvCliente.Columns["Nombre"].FillWeight = 30;
-                dgvCliente.Columns["Nombre"].MinimumWidth = 100;
+                //dgvCliente.Columns["porcentaje"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgvCliente.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgvCliente.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dgvCliente.Columns["porcentaje"].FillWeight = 30;
+                dgvCliente.Columns["porcentaje_impuestos"].MinimumWidth = 100;
+                dgvCliente.Columns["porcentaje_impuestos"].HeaderText = "Porcentaje de Impuestos";
             }
-            if (dgvCliente.Columns["Apellidos"] != null)
+            if (dgvCliente.Columns["id_pedido"] != null)
             {
-                //dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvCliente.Columns["Apellidos"].FillWeight = 30;
-                dgvCliente.Columns["Apellidos"].MinimumWidth = 120;
+                //dgvCliente.Columns["id_pedido"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dgvCliente.Columns["id_pedido"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dgvCliente.Columns["id_pedido"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dgvCliente.Columns["id_pedido"].FillWeight = 30;
+                dgvCliente.Columns["id_pedido"].Resizable = DataGridViewTriState.False;
+                dgvCliente.Columns["id_pedido"].MinimumWidth = 120;
+                dgvCliente.Columns["id_pedido"].HeaderText = "Id del Pedido";
             }
-            if (dgvCliente.Columns["Email"] != null)
+            if (dgvCliente.Columns["estado"] != null)
             {
-                //dgvCliente.Columns["Email"].Width = 250;
-                //dgvCliente.Columns["Email"].Resizable = DataGridViewTriState.False;
-                dgvCliente.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvCliente.Columns["Email"].FillWeight = 40;
-                dgvCliente.Columns["Email"].MinimumWidth = 150;
+                //dgvCliente.Columns["estado"].Width = 250;
+                //dgvCliente.Columns["estado"].Resizable = DataGridViewTriState.False;
+                //dgvCliente.Columns["estado"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dgvCliente.Columns["estado"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dgvCliente.Columns["estado"].FillWeight = 40;
+                dgvCliente.Columns["estado"].Width = 150;
+                dgvCliente.Columns["estado"].HeaderText = "Estado";
+                dgvCliente.Columns["estado"].Resizable = DataGridViewTriState.False;
             }
-            if (dgvCliente.Columns["FechaCreacion"] != null)
+            if (dgvCliente.Columns["metodo_pago"] != null)
             {
-                dgvCliente.Columns["FechaCreacion"].Width = 120;
-                dgvCliente.Columns["FechaCreacion"].Resizable = DataGridViewTriState.False;
+                //dgvCliente.Columns["metodo_pago"].Width = 250;
+                //dgvCliente.Columns["metodo_pago"].Resizable = DataGridViewTriState.False;
+                //dgvCliente.Columns["metodo_pago"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dgvCliente.Columns["metodo_pago"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dgvCliente.Columns["metodo_pago"].FillWeight = 40;
+                dgvCliente.Columns["metodo_pago"].Width = 150;
+                dgvCliente.Columns["metodo_pago"].Resizable = DataGridViewTriState.False;
+                dgvCliente.Columns["metodo_pago"].HeaderText = "Método de Pago";
             }
-            if (dgvCliente.Columns["FechaModificacion"] != null)
+                if (dgvCliente.Columns["fecha_creacion"] != null)
             {
-                dgvCliente.Columns["FechaRectificacion"].Width = 130;
-                dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
+                dgvCliente.Columns["fecha_creacion"].Width = 120;
+                dgvCliente.Columns["fecha_creacion"].Resizable = DataGridViewTriState.False;
+                dgvCliente.Columns["fecha_creacion"].HeaderText = "Fecha de Creación";
+            }
+            if (dgvCliente.Columns["fecha_rectificacion"] != null) {
+                dgvCliente.Columns["fecha_rectificacion"].Width = 130;
+                dgvCliente.Columns["fecha_rectificacion"].Resizable = DataGridViewTriState.False;
+                dgvCliente.Columns["fecha_rectificacion"].HeaderText = "Fecha de Rectififcación";
             }
         }
         private void BotonBuscar_Click(object sender, EventArgs e)

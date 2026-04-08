@@ -439,8 +439,6 @@ public partial class ClienteForm : Form
                         buscarClientes(textBoxCliente.Text);
                     }
                 };
-
-
             }
         };
         WindowManager.ShowForm(
