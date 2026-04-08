@@ -1,6 +1,6 @@
 ﻿namespace Articulos_Frontend
 {
-    partial class PedidoDetailForm
+    partial class PedidoUpdateForm
     {
         /// <summary>
         /// Required designer variable.
@@ -26,27 +26,19 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        /*private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "PedidoDetailForm";
-        }*/
         private TextBox textBoxDniCliente;
         private TextBox textBoxId;
         private TextBox textBoxMetodoPago;
+        private TextBox textBoxEstado;
         private TextBox textBoxImpuestos;
         private Label LabelIdPedido;
         private Label LabelDniCliente;
         private Label LabelMetodoPago;
+        private Label LabelEstado;
         private Label LabelImpuestos;
         private Button BotonCrearC;
         private Label LabelTitulo;
         private Button button1;
-
         #endregion
-        
-        
     }
 }

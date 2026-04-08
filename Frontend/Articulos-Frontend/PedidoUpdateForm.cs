@@ -1,6 +1,6 @@
 ﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.Theme;
 using Articulos_Frontend.LogConfig;
+using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
@@ -12,30 +12,36 @@ using System.Windows.Forms;
 
 namespace Articulos_Frontend
 {
-    public partial class PedidoDetailForm : Form
+    public partial class PedidoUpdateForm : Form
     {
         private PedidoApiClient pedidoApiClient;
         private Pedido pedido;
-        public event Action<Pedido> PedidoCreadoCorrectamente;
+        public event Action<Pedido> PedidoActualizadoCorrectamente;
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoDetailForm(Pedido pedido)
+        public PedidoUpdateForm(Pedido pedido)
         {
             InitializeComponent();
             this.pedido = pedido;
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             pedidoApiClient = new PedidoApiClient();
             StyleManager.StyleForm(this);
+
+            textBoxId.Text = pedido.id_pedido.ToString();
+            textBoxDniCliente.Text = pedido.dni_cliente;
+            textBoxMetodoPago.Text = pedido.metodo_pago;
+            textBoxEstado.Text = pedido.estado;
+            textBoxImpuestos.Text = pedido.porcentaje_impuestos.ToString();
         }
-
-
         private void InitializeComponent()
         {
             textBoxDniCliente = new TextBox();
             textBoxMetodoPago = new TextBox();
+            textBoxEstado = new TextBox();
             textBoxImpuestos = new TextBox();
             LabelIdPedido = new Label();
             LabelDniCliente = new Label();
             LabelMetodoPago = new Label();
+            LabelEstado = new Label();
             BotonCrearC = new Button();
             LabelTitulo = new Label();
             button1 = new Button();
@@ -43,35 +49,43 @@ namespace Articulos_Frontend
             LabelImpuestos = new Label();
             SuspendLayout();
             // 
-            // textBoxDniCliente
+            // textBoxDni
             // 
-            textBoxDniCliente.Location = new Point(247, 137);
+            textBoxDniCliente.Location = new Point(237, 116);
             textBoxDniCliente.Name = "textBoxDniCliente";
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(247, 23);
             textBoxDniCliente.TabIndex = 0;
             // 
-            // textBoxMetodoPago
+            // textBoxNombre
             // 
-            textBoxMetodoPago.Location = new Point(247, 166);
+            textBoxMetodoPago.Location = new Point(237, 145);
             textBoxMetodoPago.Name = "textBoxMetodoPago";
             textBoxMetodoPago.PlaceholderText = "Introduzca el método de pago";
             textBoxMetodoPago.Size = new Size(247, 23);
             textBoxMetodoPago.TabIndex = 1;
             // 
-            // textBoxImpuestos
+            // textBoxApellidos
             // 
-            textBoxImpuestos.Location = new Point(247, 195);
+            textBoxEstado.Location = new Point(237, 174);
+            textBoxEstado.Name = "textBoxEstado";
+            textBoxEstado.PlaceholderText = "Introduzca el estado";
+            textBoxEstado.Size = new Size(247, 23);
+            textBoxEstado.TabIndex = 2;
+            // 
+            // textBoxEmail
+            // 
+            textBoxImpuestos.Location = new Point(237, 203);
             textBoxImpuestos.Name = "textBoxImpuestos";
             textBoxImpuestos.PlaceholderText = "Introduzca el porcentaje de impuestos";
             textBoxImpuestos.Size = new Size(247, 23);
             textBoxImpuestos.TabIndex = 3;
             // 
-            // LabelIdPedido
+            // LabelDni
             // 
             LabelIdPedido.BackColor = Color.Transparent;
             LabelIdPedido.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelIdPedido.Location = new Point(79, 110);
+            LabelIdPedido.Location = new Point(69, 89);
             LabelIdPedido.Name = "LabelIdPedido";
             LabelIdPedido.Size = new Size(162, 21);
             LabelIdPedido.TabIndex = 4;
@@ -79,11 +93,11 @@ namespace Articulos_Frontend
             LabelIdPedido.Text = "Id del Pedido: ";
             LabelIdPedido.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // LabelDniCliente
+            // LabelNombre
             // 
             LabelDniCliente.BackColor = Color.Transparent;
             LabelDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDniCliente.Location = new Point(79, 139);
+            LabelDniCliente.Location = new Point(69, 118);
             LabelDniCliente.Name = "LabelDniCliente";
             LabelDniCliente.Size = new Size(162, 21);
             LabelDniCliente.TabIndex = 5;
@@ -91,17 +105,29 @@ namespace Articulos_Frontend
             LabelDniCliente.Text = "Dni del Cliente: ";
             LabelDniCliente.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // LabelMetodoPago
+            // LabelApellidos
             // 
             LabelMetodoPago.BackColor = Color.Transparent;
             LabelMetodoPago.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelMetodoPago.Location = new Point(79, 168);
+            LabelMetodoPago.Location = new Point(69, 147);
             LabelMetodoPago.Name = "LabelMetodoPago";
             LabelMetodoPago.Size = new Size(162, 21);
             LabelMetodoPago.TabIndex = 6;
             LabelMetodoPago.Tag = "normalText";
             LabelMetodoPago.Text = "Método de Pago: ";
             LabelMetodoPago.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // LabelEmail
+            // 
+            LabelEstado.BackColor = Color.Transparent;
+            LabelEstado.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            LabelEstado.Location = new Point(69, 176);
+            LabelEstado.Name = "LabelEstado";
+            LabelEstado.Size = new Size(162, 21);
+            LabelEstado.TabIndex = 7;
+            LabelEstado.Tag = "normalText";
+            LabelEstado.Text = "Estado: ";
+            LabelEstado.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // BotonCrearC
             // 
@@ -116,7 +142,7 @@ namespace Articulos_Frontend
             BotonCrearC.TabIndex = 5;
             BotonCrearC.Text = "Crear";
             BotonCrearC.UseVisualStyleBackColor = false;
-            BotonCrearC.Click += BotonCrearC_Click;
+            BotonCrearC.Click += BotonActualizarC_Click;
             // 
             // LabelTitulo
             // 
@@ -125,37 +151,24 @@ namespace Articulos_Frontend
             LabelTitulo.Location = new Point(135, 18);
             LabelTitulo.Name = "LabelTitulo";
             LabelTitulo.Size = new Size(316, 36);
-            LabelTitulo.Text = stringValuesSP.crearPedido;
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
+            LabelTitulo.Text = stringValuesSP.actualizarPedido;
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // textBox2
             // 
-            button1.BackColor = Color.Chartreuse;
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button1.ForeColor = SystemColors.ActiveCaptionText;
-            button1.Location = new Point(104, 251);
-            button1.Name = "button1";
-            button1.Size = new Size(90, 23);
-            button1.TabIndex = 8;
-            button1.Text = "debug";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
-            // 
-            // textBoxId
-            // 
-            textBoxId.Location = new Point(247, 108);
+            textBoxId.Location = new Point(237, 87);
             textBoxId.Name = "textBoxId";
             textBoxId.PlaceholderText = "Introduzca el id";
             textBoxId.Size = new Size(247, 23);
             textBoxId.TabIndex = 10;
             // 
-            // LabelImpuestos
+            // label1
             // 
             LabelImpuestos.BackColor = Color.Transparent;
             LabelImpuestos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelImpuestos.Location = new Point(79, 197);
+            LabelImpuestos.Location = new Point(69, 205);
             LabelImpuestos.Name = "LabelImpuestos";
             LabelImpuestos.Size = new Size(162, 21);
             LabelImpuestos.TabIndex = 11;
@@ -171,10 +184,12 @@ namespace Articulos_Frontend
             Controls.Add(button1);
             Controls.Add(LabelTitulo);
             Controls.Add(BotonCrearC);
+            Controls.Add(LabelEstado);
             Controls.Add(LabelMetodoPago);
             Controls.Add(LabelDniCliente);
             Controls.Add(LabelIdPedido);
             Controls.Add(textBoxImpuestos);
+            Controls.Add(textBoxEstado);
             Controls.Add(textBoxMetodoPago);
             Controls.Add(textBoxDniCliente);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -188,116 +203,31 @@ namespace Articulos_Frontend
 
         }
 
-        private async void BotonCrearC_Click(object sender, EventArgs e)
+        private async void BotonActualizarC_Click(object sender, EventArgs e)
         {
-            if (!validarCamposLlenos() || !ValidarDni(textBoxDniCliente.Text)) return;
-            try
+            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxEstado.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text) && ValidarDni(textBoxDniCliente.Text))
             {
-                bool existePedido = false;
-                int parsedId = 0;
-                double parsedImpuestos = 0;
+                Log.Info("Intento de actualización de pedido con Id: " + textBoxId.Text);
                 try
                 {
-                    try
-                    {
-                        parsedId = int.Parse(textBoxId.Text);
-                    } catch (FormatException)
-                    {
-                        Log.Warn($"Intento de crear pedido con Id no numérico: {textBoxId.Text.ToUpper()}.");
-                        MessageBox.Show("El Id del pedido debe ser un número entero. Ejemplo: 123", "Id no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    try
-                    {
-                        parsedImpuestos = double.Parse(textBoxImpuestos.Text);
-                        if (parsedImpuestos < 0 || parsedImpuestos > 100)
-                        {
-                            Log.Warn($"Intento de crear pedido con porcentaje de impuestos fuera de rango: {textBoxImpuestos.Text}.");
-                            MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                    }
-                    catch (FormatException)
-                    {
-                        Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {textBoxImpuestos.Text}.");
-                        MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    Pedido comprobar = await pedidoApiClient.BuscarPorIdPedido(parsedId);
-                    if (comprobar != null)
-                    {
-                        existePedido = true;
-                        Log.Warn($"Intento de crear pedido con Id duplicado: {textBoxId.Text.ToUpper()}.");
-                        Alerta alertaa = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Pedido duplicado"));
-                        alertaa.ShowDialog();
-                        if (alertaa.resultado)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
+                    pedido.ActualizarPedido(textBoxDniCliente.Text,textBoxMetodoPago.Text,double.Parse(textBoxImpuestos.Text), textBoxEstado.Text,pedido.articulos);
+                    await pedidoApiClient.Actualizar(pedido.id_pedido, pedido);
+                    MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PedidoActualizadoCorrectamente?.Invoke(pedido);
+                    Log.Info("Pedido actualizado correctamente: " + pedido.id_pedido);
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
-                    existePedido = false;
+                    MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Log.Error("Error al actualizar el cliente: " + ex.Message);
                 }
-                if (existePedido) return;
-
-                PedidoArticulos articulo1 = new PedidoArticulos(parsedId, 1, 1);
-                PedidoArticulos articulo2 = new PedidoArticulos(parsedId, 2, 1);
-                PedidoArticulos articulo3 = new PedidoArticulos(parsedId, 3, 1);
-                PedidoArticulos articulo4 = new PedidoArticulos(parsedId, 4, 1);
-                List<PedidoArticulos> articulos = new List<PedidoArticulos> { articulo1, articulo2, articulo3, articulo4 }; //Para probar, luego lo cambiare por una funcion que añada a una lista los productos, que se puedan seleccionar desde un combobox
-                Pedido pedido = new Pedido(parsedId, textBoxDniCliente.Text.ToUpper(), textBoxMetodoPago.Text, parsedImpuestos, articulos);
-                pedidoApiClient.Crear(pedido);
-                EmailSender emailSender = new EmailSender();
-                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo producto ha sido creado", $"Un nuevo pedido ha sido creado con el id: {parsedId}");
-                Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
-                alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    this.Close();
-                }
-                else
-                {
-                    this.Close();
-                }
-                PedidoCreadoCorrectamente?.Invoke(pedido);
             }
-            catch (Exception ex)
+            else
             {
-                Log.Error($"Error al crear el pedido: {ex.Message}", ex);
-                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
-                alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    return;
-                }
-                else
-                {
-                    return;
-                }
-
+                Log.Warn("Intento de actualizar cliente con campos incompletos.");
+                MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-        private bool validarCamposLlenos()
-        {
-            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text))
-            {
-                return true;
-            }
-            Log.Warn("Intento de crear pedido con campos incompletos.");
-            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Campos sin rellenar"));
-            alerta.ShowDialog();
-            if (alerta.resultado)
-            {
-                return false;
-            }
-            return false;
         }
         private bool ValidarDni(string dni)
         {
@@ -331,18 +261,6 @@ namespace Articulos_Frontend
                 return false;
             }
             return true;
-        }
-        public Pedido getPedido()
-        {
-            return this.pedido;
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Log.Info("Rellenando campos de cliente con la opción debug.");
-            this.textBoxId.Text = "11";
-            this.textBoxMetodoPago.Text = "PayPal";
-            this.textBoxDniCliente.Text = "12345678Z";
-            this.textBoxImpuestos.Text = "21";
         }
     }
 }

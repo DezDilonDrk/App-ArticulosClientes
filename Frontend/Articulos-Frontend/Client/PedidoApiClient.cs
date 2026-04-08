@@ -40,7 +40,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/?id_pedido={id}");
+                return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/{id}");
             }
             catch
             {
@@ -72,11 +72,11 @@ namespace Articulos_Frontend.Client
                 throw new Exception("Error al conectar con el servidor API.");
             }
         }
-        public async Task<bool> Actualizar(string dni, Pedido pedido)
+        public async Task<bool> Actualizar(int id, Pedido pedido)
         {
             try
             {
-                var response = await httpClient.PutAsJsonAsync($"/pedidos/{dni}", pedido);
+                var response = await httpClient.PutAsJsonAsync($"/pedidos/{id}", pedido);
                 return response.IsSuccessStatusCode;
             }
             catch

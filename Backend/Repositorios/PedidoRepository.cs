@@ -58,7 +58,7 @@ namespace Articulos_Backend.Repositorios
             using (var db = Connection)
             {
                 string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos)
-                           VALUES (@IdPedido, @DniCliente, @MetodoPago, @FechaCreacion, @Estado, @PorcentajeImpuestos)";
+                           VALUES (@id_pedido, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)";
                 db.Execute(sql, pedido);
             }
         }
@@ -67,12 +67,12 @@ namespace Articulos_Backend.Repositorios
             using (var db = Connection)
             {
                 string sql = @"UPDATE Pedidos
-                               SET dni_cliente = @DniCliente, 
-                               metodo_pago = @MetodoPago,
-                               fecha_rectificacion = @FechaRectificacion, 
-                               estado = @Estado, 
-                               porcentaje_impuestos = @PorcentajeImpuestos  
-                               WHERE id_pedido = @IdPedido";
+                               SET dni_cliente = @dni_cliente, 
+                               metodo_pago = @metodo_pago,
+                               fecha_rectificacion = @fecha_rectificacion, 
+                               estado = @estado, 
+                               porcentaje_impuestos = @porcentaje_impuestos  
+                               WHERE id_pedido = @id_pedido";
 
                 db.Execute(sql, pedido);
             }
@@ -81,9 +81,9 @@ namespace Articulos_Backend.Repositorios
         {
             using (var db = Connection)
             {
-                string sql = "DELETE FROM Pedidos WHERE id_pedido = @IdPedido";
+                string sql = $"DELETE FROM Pedidos WHERE id_pedido = {id}";
 
-                db.Execute(sql, new { IdPedido = id });
+                db.Execute(sql);
             }
         }
     }

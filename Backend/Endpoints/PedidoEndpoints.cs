@@ -10,7 +10,7 @@ public static class PedidoEndpoints
         app.MapGet("/pedidos", () => {
             return repo.ObtenerPedidos();
         }).Produces<List<Pedido>>(StatusCodes.Status200OK);
-        app.MapGet("/pedidos/{id_pedido}", (int id) =>
+        app.MapGet("/pedidos/{id}", (int id) =>
         {
             var pedido = repo.ObtenerPorId(id);
             return pedido is not null
@@ -31,13 +31,13 @@ public static class PedidoEndpoints
         }).Produces<List<Cliente>>(StatusCodes.Status200OK);
         app.MapPost("/pedidos", (Pedido pedido) =>
         {
-            var existente = repo.ObtenerPorId(pedido.IdPedido);
+            var existente = repo.ObtenerPorId(pedido.id_pedido);
             if (existente != null)
             {
-                return Results.Conflict($"Ya existe un pedido con id: {pedido.IdPedido}");
+                return Results.Conflict($"Ya existe un pedido con id: {pedido.id_pedido}");
             }
             repo.Insertar(pedido);
-            return Results.Created($"/pedidos/{pedido.IdPedido}", pedido);
+            return Results.Created($"/pedidos/{pedido.id_pedido}", pedido);
         })
         .Produces<Cliente>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
@@ -48,7 +48,7 @@ public static class PedidoEndpoints
             {
                 return Results.NotFound();
             }
-            pedidoActualizado.IdPedido = id;
+            pedidoActualizado.id_pedido = id;
             repo.Actualizar(pedidoActualizado);
             return Results.Ok(pedidoActualizado);
         })

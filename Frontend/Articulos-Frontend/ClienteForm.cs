@@ -426,10 +426,21 @@ public partial class ClienteForm : Form
             {
                 buscarClientes(textBoxCliente.Text);
 
+                var actualizarClienteForm = new ClienteDetailForm(cliente);
                 WindowManager.ShowForm(
                     $"{cliente.Dni}_Actualizar",
                     this,
-                    () => new ClienteUpdateForm(cliente));
+                    () => actualizarClienteForm);
+
+                actualizarClienteForm.ClienteCreadoCorrectamente += async updatedCliente =>
+                {
+                    if (!string.IsNullOrEmpty(updatedCliente.Dni) && !string.IsNullOrEmpty(updatedCliente.Nombre) && !string.IsNullOrEmpty(updatedCliente.Apellidos) && !string.IsNullOrEmpty(updatedCliente.Email))
+                    {
+                        buscarClientes(textBoxCliente.Text);
+                    }
+                };
+
+
             }
         };
         WindowManager.ShowForm(

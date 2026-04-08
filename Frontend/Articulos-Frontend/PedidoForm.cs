@@ -9,6 +9,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Articulos_Frontend
 {
@@ -36,14 +38,14 @@ namespace Articulos_Frontend
         private void FiltrarPorFecha(object sender, EventArgs e)
         {
             List<Pedido> pedidosFiltrados = listaActual;
-            pedidosFiltrados = pedidosFiltrados.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date).ToList();
+            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date).ToList();
             if (FechaHasta.Value.Date < FechaDesde.Value.Date)
             {
                 MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 FechaHasta.Value = FechaDesde.Value.Date;
                 return;
             }
-            pedidosFiltrados = pedidosFiltrados.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date).ToList();
+            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date).ToList();
             dgvCliente.DataSource = pedidosFiltrados;
         }
         private async void buscarPedidos(string nombreFiltro)
@@ -59,14 +61,15 @@ namespace Articulos_Frontend
                 // pedidos = await PedidoApiClient.BuscarPorNombre(nombreFiltro);
                 pedidos = await PedidoApiClient.ObtenerPedidos(); //esto deberá ser borrado, se puso aquí para que funcione todo en conjunto
             }
-            pedidos = pedidos.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date);
-            pedidos = pedidos.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
+            pedidos = pedidos.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date);
+            pedidos = pedidos.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date);
             dgvCliente.DataSource = pedidos.ToList();
             listaActual = pedidos.ToList();
-            if (dgvCliente.Columns["Dni"] != null)
+            if (dgvCliente.Columns["dni_cliente"] != null)
             {
-                dgvCliente.Columns["Dni"].Width = 80;
-                dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
+                dgvCliente.Columns["dni_cliente"].HeaderText = "DNI del Cliente";
+                dgvCliente.Columns["dni_cliente"].Width = 80;
+                dgvCliente.Columns["dni_cliente"].Resizable = DataGridViewTriState.False;
             }
             if (dgvCliente.Columns["Nombre"] != null)
             {
@@ -100,7 +103,7 @@ namespace Articulos_Frontend
             }
             if (dgvCliente.Columns["FechaModificacion"] != null)
             {
-                dgvCliente.Columns["FechaModificacion"].Width = 130;
+                dgvCliente.Columns["FechaRectificacion"].Width = 130;
                 dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
             }
         }
@@ -117,25 +120,23 @@ namespace Articulos_Frontend
 
             formNuevo.PedidoCreadoCorrectamente += async pedido =>
             {
-                if (pedido.IdPedido != null)
+                if (pedido.id_pedido != null)
                 {
-                    buscarPedidos(textBoxCliente.Text);
+                    var actualizarForm = new PedidoUpdateForm(pedido);
                     Log.Warn("Si entra por aquí");
                     WindowManager.ShowForm(
-                       "Pedido_Nuevo",
-                       this,
-                       () => formNuevo);
-                    /* WindowManager.ShowForm(
-                    $"{pedido.IdPedido}_Actualizar",
+                    $"{pedido.id_pedido}_Actualizar",
                     this,
-                    () => new PedidoUpdateForm(pedido)); */
-                    return; //Esto es para poder quitar lo de arriba y que funcione
+                    () => actualizarForm);
+                    actualizarForm.PedidoActualizadoCorrectamente += async p => {
+                        buscarPedidos(textBoxCliente.Text);
+                    };
                 }
             };
             WindowManager.ShowForm(
                 "Pedido_Nuevo",
                 this,
-                () => formNuevo);
+                () => new PedidoDetailForm(nuevopedido));
         }
 
         private async void BotonMenosC_Click(object sender, EventArgs e)
@@ -146,13 +147,13 @@ namespace Articulos_Frontend
             if (alerta.resultado)
             {
                 Log.Info($"Eliminando pedido con ID: {dgvCliente.CurrentRow.Cells["id_pedido"].Value.ToString()}");
-                //await ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+                await PedidoApiClient.Eliminar((int) dgvCliente.CurrentRow.Cells["id_pedido"].Value);
             }
             else
             {
                 Log.Info("Eliminación cancelada por el usuario.");
             }
-            //buscarClientes(textBoxCliente.Text);
+            buscarPedidos(textBoxCliente.Text);
         }
 
         private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -160,27 +161,18 @@ namespace Articulos_Frontend
             Log.Info("Doble clic en cliente para editar la información.");
             if (e.RowIndex >= 0)
             {
-                string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
-                Pedido pedido = await PedidoApiClient.ObtenerPorDniCliente(dni);
-                //var formActualizado = new ClienteUpdateForm(pedido);
-
-                /*formActualizado.ClienteActualizadoCorrectamente += async cliente =>
-                {
-                    if (!string.IsNullOrEmpty(cliente.Dni) && !string.IsNullOrEmpty(cliente.Nombre) && !string.IsNullOrEmpty(cliente.Apellidos) && !string.IsNullOrEmpty(cliente.Email))
-                    {
-                        //buscarClientes(textBoxCliente.Text);
-                    }
-                };*/
-                /*WindowManager.ShowForm(
-                        $"{dni}_Actualizar",
+                int id = int.Parse(dgvCliente.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString());
+                Pedido pedido = await PedidoApiClient.BuscarPorIdPedido(id);
+                var formActualizado = new PedidoUpdateForm(pedido);
+                WindowManager.ShowForm(
+                        $"{id}_Actualizar",
                         this,
                        () => formActualizado);
-                }*/
             }
         }
         private void Boton_MouseEnter(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
+            System.Windows.Forms.Button btn = sender as System.Windows.Forms.Button;
             if (btn != null)
             {
                 btn.BackColor = Color.FromArgb(255, 59, 48);
@@ -189,7 +181,7 @@ namespace Articulos_Frontend
         }
         private void Boton_MouseLeave(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
+            System.Windows.Forms.Button btn = sender as System.Windows.Forms.Button;
             if (btn != null)
             {
                 btn.BackColor = Color.FromArgb(225, 6, 0);

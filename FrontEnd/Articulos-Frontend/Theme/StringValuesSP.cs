@@ -19,6 +19,8 @@ namespace Articulos_Frontend.Theme
         public string pedidos = "Pedidos";
         public string ventanas = "Ventanas";
         public string buscar = "Buscar";
+        public string crearPedido = "Crear Pedido";
+        public string actualizarPedido = "Actualizar Pedido";
 
         public StringValuesSP() { 
         }
