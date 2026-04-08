@@ -28,6 +28,15 @@
     <Compile Update="PanelMT.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="PedidoDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PedidoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PedidoUpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="ShowTerminal.cs">
       <SubType>Form</SubType>
     </Compile>

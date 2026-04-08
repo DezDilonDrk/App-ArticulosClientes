@@ -176,6 +176,14 @@ public static class StyleManager
                         rTxt.Font = new Font("Intercom", 10, FontStyle.Bold);
                     }
                     break;
+                case "comboBox":
+                    if (control is ComboBox cb)
+                    {
+                        cb.BackColor = ColorPalette.TextBoxBackground;
+                        cb.ForeColor = ColorPalette.TextPrimary;
+                        cb.Font = new Font("Intercom", 9, FontStyle.Regular);
+                    }
+                    break;
                 default:
                     if (control is TextBox txt2)
                         txt2.Font = new Font("Intercom", 9, FontStyle.Regular);

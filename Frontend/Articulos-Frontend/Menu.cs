@@ -48,6 +48,15 @@ namespace Articulos_Frontend
             Log.Warn("Prueba Warn");
             Log.Error("Prueba Error");
         }
+        private void productosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string key = "PedidoForm";
+
+            WindowManager.ShowForm(key, this, () =>
+            {
+                return new PedidoForm();
+            });
+        }
 
         private void mnuVentanas_Click(object sender, EventArgs e)
         {

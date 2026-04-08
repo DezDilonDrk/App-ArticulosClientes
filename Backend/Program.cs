@@ -14,6 +14,7 @@ var repositorioArticulo = new ArticuloRepository(builder.Configuration.GetConnec
 var repositorioUsuario = new UsuarioRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioRol = new RolRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioUsuarioRol = new UsuarioRolRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
+var repositorioPedido = new PedidoRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
 app.MapClienteEndpoints(repositorioCliente);
 app.MapArticuloEndpoints(repositorioArticulo);
 app.MapUsuarioEndpoints(repositorioUsuario);
+app.MapPedidoEndpoints(repositorioPedido);
 app.MapRolEndpoints(repositorioRol);
 app.MapUsuarioRolEndpoints(repositorioUsuarioRol);
 app.Run();
