@@ -58,7 +58,7 @@ namespace Articulos_Backend.Repositorios
             using (var db = Connection)
             {
                 string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos)
-                           VALUES (@id_pedido, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)";
+                           VALUES (GEN_RANDOM_UUID(), @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)"; //REVISAR
                 db.Execute(sql, pedido);
             }
         }
