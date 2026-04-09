@@ -52,7 +52,7 @@ public static class UsuarioEndpoints
             if (usuario == null)
                 return Results.Unauthorized();
 
-            if (usuario.Contrasena.Trim() != request.Password.Trim())
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, usuario.Contrasena))
                 return Results.Unauthorized();
 
             var roles = repo.ObtenerRolesPorUsuario(usuario.CorreoElectronico);

@@ -56,6 +56,7 @@ namespace Articulos_Backend.Repositorios
         {
             using (var db = Connection)
             {
+                string hash = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
                 string sql = "INSERT INTO Usuarios (CorreoElectronico, NombreUsuario, Contrasena) VALUES (@CorreoElectronico, @NombreUsuario, @Contrasena)";
                 db.Execute(sql, new { CorreoElectronico = usuario.CorreoElectronico, NombreUsuario = usuario.Nombre, Contrasena = usuario.Contrasena});
             }
