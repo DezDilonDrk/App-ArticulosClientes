@@ -80,7 +80,7 @@ namespace Articulos_Frontend
             // 
             mnuVentanas.Name = "mnuVentanas";
             mnuVentanas.Size = new Size(66, 20);
-            mnuVentanas.Text = stringValuesSP.terminal;
+            mnuVentanas.Text = "Ventanas";
             mnuVentanas.Click += mnuVentanas_Click;
             // 
             // ventanasToolStripMenuItem
