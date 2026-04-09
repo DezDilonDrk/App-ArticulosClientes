@@ -36,7 +36,7 @@ namespace Articulos_Frontend.Client
                 throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
             }
         }
-        public async Task<Pedido> BuscarPorIdPedido(int id)
+        public async Task<Pedido> BuscarPorIdPedido(string id)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Articulos_Frontend.Client
                 throw new Exception("Error al conectar con el servidor API.");
             }
         }
-        public async Task<bool> Actualizar(int id, Pedido pedido)
+        public async Task<bool> Actualizar(string id, Pedido pedido)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace Articulos_Frontend.Client
                 throw new Exception("Error al conectar con el servidor API.");
             }
         }
-        public async Task Eliminar(int id)
+        public async Task Eliminar(string id)
         {
             try
             {

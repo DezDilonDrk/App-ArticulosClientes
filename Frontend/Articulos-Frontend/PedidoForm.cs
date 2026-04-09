@@ -164,7 +164,7 @@ namespace Articulos_Frontend
             if (alerta.resultado)
             {
                 Log.Info($"Eliminando pedido con ID: {dgvCliente.CurrentRow.Cells["id_pedido"].Value.ToString()}");
-                await PedidoApiClient.Eliminar((int) dgvCliente.CurrentRow.Cells["id_pedido"].Value);
+                await PedidoApiClient.Eliminar(dgvCliente.CurrentRow.Cells["id_pedido"].Value.ToString());
             }
             else
             {
@@ -178,7 +178,7 @@ namespace Articulos_Frontend
             Log.Info("Doble clic en cliente para editar la información.");
             if (e.RowIndex >= 0)
             {
-                int id = int.Parse(dgvCliente.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString());
+                string id = dgvCliente.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString();
                 Pedido pedido = await PedidoApiClient.BuscarPorIdPedido(id);
                 var formActualizado = new PedidoUpdateForm(pedido);
                 WindowManager.ShowForm(

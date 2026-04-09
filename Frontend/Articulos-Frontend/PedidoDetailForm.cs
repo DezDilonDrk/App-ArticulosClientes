@@ -50,6 +50,7 @@ namespace Articulos_Frontend
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(247, 23);
             textBoxDniCliente.TabIndex = 0;
+            textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick; 
             // 
             // textBoxMetodoPago
             // 
@@ -194,69 +195,36 @@ namespace Articulos_Frontend
             try
             {
                 bool existePedido = false;
-                int parsedId = 0;
                 double parsedImpuestos = 0;
                 try
                 {
-                    try
+                    parsedImpuestos = double.Parse(textBoxImpuestos.Text);
+                    if (parsedImpuestos < 0 || parsedImpuestos > 100)
                     {
-                        parsedId = int.Parse(textBoxId.Text);
-                    } catch (FormatException)
-                    {
-                        Log.Warn($"Intento de crear pedido con Id no numérico: {textBoxId.Text.ToUpper()}.");
-                        MessageBox.Show("El Id del pedido debe ser un número entero. Ejemplo: 123", "Id no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    try
-                    {
-                        parsedImpuestos = double.Parse(textBoxImpuestos.Text);
-                        if (parsedImpuestos < 0 || parsedImpuestos > 100)
-                        {
-                            Log.Warn($"Intento de crear pedido con porcentaje de impuestos fuera de rango: {textBoxImpuestos.Text}.");
-                            MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                    }
-                    catch (FormatException)
-                    {
-                        Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {textBoxImpuestos.Text}.");
+                        Log.Warn($"Intento de crear pedido con porcentaje de impuestos fuera de rango: {textBoxImpuestos.Text}.");
                         MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    Pedido comprobar = await pedidoApiClient.BuscarPorIdPedido(parsedId);
-                    if (comprobar != null)
-                    {
-                        existePedido = true;
-                        Log.Warn($"Intento de crear pedido con Id duplicado: {textBoxId.Text.ToUpper()}.");
-                        Alerta alertaa = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Pedido duplicado"));
-                        alertaa.ShowDialog();
-                        if (alertaa.resultado)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    existePedido = false;
-                }
-                if (existePedido) return;
 
-                PedidoArticulos articulo1 = new PedidoArticulos(parsedId, 1, 1);
-                PedidoArticulos articulo2 = new PedidoArticulos(parsedId, 2, 1);
-                PedidoArticulos articulo3 = new PedidoArticulos(parsedId, 3, 1);
-                PedidoArticulos articulo4 = new PedidoArticulos(parsedId, 4, 1);
+                }
+                catch (FormatException)
+                {
+                    Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {textBoxImpuestos.Text}.");
+                    MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                Pedido pedido = new Pedido(textBoxDniCliente.Text.ToUpper(), textBoxMetodoPago.Text, parsedImpuestos);
+                PedidoArticulos articulo1 = new PedidoArticulos(pedido.id_pedido, 1, 1);
+                PedidoArticulos articulo2 = new PedidoArticulos(pedido.id_pedido, 2, 1);
+                PedidoArticulos articulo3 = new PedidoArticulos(pedido.id_pedido, 3, 1);
+                PedidoArticulos articulo4 = new PedidoArticulos(pedido.id_pedido, 4, 1);
                 List<PedidoArticulos> articulos = new List<PedidoArticulos> { articulo1, articulo2, articulo3, articulo4 }; //Para probar, luego lo cambiare por una funcion que añada a una lista los productos, que se puedan seleccionar desde un combobox
-                Pedido pedido = new Pedido(parsedId, textBoxDniCliente.Text.ToUpper(), textBoxMetodoPago.Text, parsedImpuestos, articulos);
+                pedido.cambiarLista(articulos);
+
                 pedidoApiClient.Crear(pedido);
                 EmailSender emailSender = new EmailSender();
-                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo producto ha sido creado", $"Un nuevo pedido ha sido creado con el id: {parsedId}");
-                Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
+                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedido.id_pedido}");
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
                 alerta.ShowDialog();
                 if (alerta.resultado)
                 {
@@ -343,6 +311,25 @@ namespace Articulos_Frontend
             this.textBoxMetodoPago.Text = "PayPal";
             this.textBoxDniCliente.Text = "12345678Z";
             this.textBoxImpuestos.Text = "21";
+        }
+        private void textBoxDniCliente_DoubleClick(object sender, EventArgs e)
+        {
+            using (var form = new ClienteForm())
+            {
+                form.ModoInvocacion = "CrearPedido";
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    if (string.IsNullOrEmpty(form.DniSeleccionado))
+                    {
+                        Log.Warn("No se ha seleccionado ningún cliente para el pedido.");
+                        MessageBox.Show("No se ha seleccionado ningún cliente. Por favor, seleccione un cliente para continuar.", "Cliente no seleccionado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    Log.Info($"Cliente seleccionado para el pedido con Dni: {form.DniSeleccionado}");
+                    textBoxDniCliente.Text = form.DniSeleccionado.ToString();
+                    Log.Info($"Cliente seleccionado para pedido con Dni: {form.DniSeleccionado}");
+                }
+            }
         }
     }
 }

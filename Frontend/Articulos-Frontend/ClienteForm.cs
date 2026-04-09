@@ -22,7 +22,8 @@ public partial class ClienteForm : Form
     private List<Cliente> listaActual;
     private StringValuesSP stringValuesSP = new StringValuesSP();
     private bool admin = true;
-
+    public string DniSeleccionado;
+    public string ModoInvocacion;
     /*private System.Windows.Forms.Timer animTimer;
     private bool animAbriendo;
     private int panelObjetivo = 222;*/
@@ -476,14 +477,21 @@ public partial class ClienteForm : Form
 
     private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
-        Log.Info("Doble clic en cliente para editar la información.");
-        if (!admin)
-        {
-            MessageBox.Show("No tienes permisos para editar clientes.");
-            return;
-        }
+        Log.Info("Doble clic en cliente para acceder a la información.");
         if (e.RowIndex >= 0)
         {
+            if (ModoInvocacion == "CrearPedido")
+            {
+                DniSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+                return;
+            }
+            if (!admin)
+            {
+                MessageBox.Show("No tienes permisos para editar clientes.");
+                return;
+            }
             string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
             Cliente cliente = await ClienteApiClient.ObtenerPorDni(dni);
             var formActualizado = new ClienteUpdateForm(cliente);

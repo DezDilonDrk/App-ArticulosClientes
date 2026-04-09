@@ -21,7 +21,7 @@ namespace Articulos_Backend.Repositorios
                 return db.Query<Pedido>(sql).ToList();
             }
         }
-        public Pedido ObtenerPorId(int id)
+        public Pedido ObtenerPorId(string id)
         {
             using (var db = Connection)
             {
@@ -37,7 +37,7 @@ namespace Articulos_Backend.Repositorios
                 return db.Query<Pedido>(sql, new { DniCliente = dni }).ToList();
             }
         }
-        public Pedido ObtenerPorIdArticulo(int id)
+        public Pedido ObtenerPorIdArticulo(string id)
         {
             using (var db = Connection)
             {
@@ -58,7 +58,7 @@ namespace Articulos_Backend.Repositorios
             using (var db = Connection)
             {
                 string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos)
-                           VALUES (GEN_RANDOM_UUID(), @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)"; //REVISAR
+                           VALUES (NEWID(), @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)";
                 db.Execute(sql, pedido);
             }
         }
@@ -77,11 +77,11 @@ namespace Articulos_Backend.Repositorios
                 db.Execute(sql, pedido);
             }
         }
-        public void Eliminar(int id)
+        public void Eliminar(string id)
         {
             using (var db = Connection)
             {
-                string sql = $"DELETE FROM Pedidos WHERE id_pedido = {id}";
+                string sql = $"DELETE FROM Pedidos WHERE id_pedido = '{id}'";
 
                 db.Execute(sql);
             }

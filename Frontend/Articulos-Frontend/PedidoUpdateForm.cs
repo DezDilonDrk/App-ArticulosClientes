@@ -57,6 +57,7 @@ namespace Articulos_Frontend
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(247, 23);
             textBoxDniCliente.TabIndex = 0;
+            textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick;
             // 
             // textBoxMetodoPago
             // 
@@ -133,7 +134,7 @@ namespace Articulos_Frontend
             BotonCrearC.Name = "BotonCrearC";
             BotonCrearC.Size = new Size(150, 30);
             BotonCrearC.TabIndex = 5;
-            BotonCrearC.Text = "Crear";
+            BotonCrearC.Text = "Actualizar";//Es el "Crear" de este UpdateForm de Pedidos
             BotonCrearC.UseVisualStyleBackColor = false;
             BotonCrearC.Click += BotonActualizarC_Click;
             // 
@@ -146,7 +147,7 @@ namespace Articulos_Frontend
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
-            LabelTitulo.Text = "ActualizarPedido";
+            LabelTitulo.Text = stringValuesSP.actualizarPedido;
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // textBoxId
@@ -179,6 +180,7 @@ namespace Articulos_Frontend
             comboBoxEstado.Size = new Size(247, 23);
             comboBoxEstado.TabIndex = 12;
             comboBoxEstado.Tag = "comboBox";
+            comboBoxEstado.FlatStyle = FlatStyle.Flat;
             // 
             // PedidoUpdateForm
             // 
@@ -264,6 +266,18 @@ namespace Articulos_Frontend
                 return false;
             }
             return true;
+        }
+        private void textBoxDniCliente_DoubleClick(object sender, EventArgs e)
+        {
+           using (var form = new ClienteForm())
+            {
+                form.ModoInvocacion = "CrearPedido";
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    textBoxDniCliente.Text = form.DniSeleccionado;
+                    Log.Info($"Cliente seleccionado para pedido con Dni: {form.DniSeleccionado}");
+                }
+            }
         }
     }
 }
