@@ -40,6 +40,7 @@ namespace Articulos_Frontend
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             buttonTerminal = new Button();
             buttonLogout = new Button();
+            labelUser = new Label();
             menuStripAC.SuspendLayout();
             SuspendLayout();
             // 
@@ -58,29 +59,25 @@ namespace Articulos_Frontend
             // artículosToolStripMenuItem
             // 
             artículosToolStripMenuItem.Name = "artículosToolStripMenuItem";
-            artículosToolStripMenuItem.Size = new Size(66, 20);
-            artículosToolStripMenuItem.Text = stringValuesSP.articulos;
+            artículosToolStripMenuItem.Size = new Size(12, 20);
             artículosToolStripMenuItem.Click += artículosToolStripMenuItem_Click;
             // 
             // clientesToolStripMenuItem
             // 
             clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-            clientesToolStripMenuItem.Size = new Size(61, 20);
-            clientesToolStripMenuItem.Text = stringValuesSP.clientes;
+            clientesToolStripMenuItem.Size = new Size(12, 20);
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
             // productosToolStripMenuItem
             // 
             productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            productosToolStripMenuItem.Size = new Size(61, 20);
-            productosToolStripMenuItem.Text = stringValuesSP.pedidos;
+            productosToolStripMenuItem.Size = new Size(12, 20);
             productosToolStripMenuItem.Click += productosToolStripMenuItem_Click;
             // 
             // mnuVentanas
             // 
             mnuVentanas.Name = "mnuVentanas";
-            mnuVentanas.Size = new Size(66, 20);
-            mnuVentanas.Text = "Ventanas";
+            mnuVentanas.Size = new Size(12, 20);
             mnuVentanas.Click += mnuVentanas_Click;
             // 
             // ventanasToolStripMenuItem
@@ -95,7 +92,6 @@ namespace Articulos_Frontend
             buttonTerminal.Name = "buttonTerminal";
             buttonTerminal.Size = new Size(75, 23);
             buttonTerminal.TabIndex = 1;
-            buttonTerminal.Text = stringValuesSP.terminal;
             buttonTerminal.UseVisualStyleBackColor = true;
             buttonTerminal.Click += buttonTerminal_Click;
             // 
@@ -106,9 +102,17 @@ namespace Articulos_Frontend
             buttonLogout.Name = "buttonLogout";
             buttonLogout.Size = new Size(105, 23);
             buttonLogout.TabIndex = 2;
-            buttonLogout.Text = "Cerrar sesión";
             buttonLogout.UseVisualStyleBackColor = true;
             buttonLogout.Click += buttonLogout_Click;
+            // 
+            // labelUser
+            // 
+            labelUser.Font = new Font("Segoe UI", 14F);
+            labelUser.Location = new Point(28, 36);
+            labelUser.Name = "labelUser";
+            labelUser.Size = new Size(100, 23);
+            labelUser.TabIndex = 3;
+            labelUser.Text = "User";
             // 
             // Menu
             // 
@@ -117,6 +121,7 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
+            Controls.Add(labelUser);
             Controls.Add(buttonLogout);
             Controls.Add(buttonTerminal);
             Controls.Add(menuStripAC);
@@ -142,5 +147,6 @@ namespace Articulos_Frontend
         private Button buttonTerminal;
         private ToolStripMenuItem mnuVentanas;
         private Button buttonLogout;
+        private Label labelUser;
     }
 }

@@ -17,6 +17,13 @@ namespace Articulos_Frontend
             StyleManager.StyleForm(this);
             Log.Info("Menú principal iniciado.");
             user = usuario;
+            artículosToolStripMenuItem.Text = stringValuesSP.articulos;
+            clientesToolStripMenuItem.Text = stringValuesSP.clientes;
+            productosToolStripMenuItem.Text = stringValuesSP.pedidos;
+            mnuVentanas.Text = stringValuesSP.ventanas;
+            buttonLogout.Text = stringValuesSP.logout;
+            buttonTerminal.Text = stringValuesSP.terminal;
+            labelUser.Text = $"Usuario: {user.Nombre}";
         }
         public void Menu_Load(object sender, EventArgs e)
         {
