@@ -34,10 +34,8 @@
             this.Text = "PedidoDetailForm";
         }*/
         private TextBox textBoxDniCliente;
-        private TextBox textBoxId;
         private TextBox textBoxMetodoPago;
         private TextBox textBoxImpuestos;
-        private Label LabelIdPedido;
         private Label LabelDniCliente;
         private Label LabelMetodoPago;
         private Label LabelImpuestos;

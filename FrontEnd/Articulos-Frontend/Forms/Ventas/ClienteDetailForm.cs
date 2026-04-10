@@ -22,6 +22,8 @@ public partial class ClienteDetailForm : Form
     public ClienteDetailForm(Cliente cliente)
     {
         InitializeComponent();
+        Text = stringValuesSP.crearCliente;
+        LabelTitulo.Text = stringValuesSP.crearCliente;
         this.cliente = cliente;
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         clienteApiClient = new ClienteApiClient();
@@ -149,7 +151,6 @@ public partial class ClienteDetailForm : Form
         LabelTitulo.Size = new Size(316, 36);
         LabelTitulo.TabIndex = 0;
         LabelTitulo.Tag = "title";
-        LabelTitulo.Text = stringValuesSP.crearCliente;
         LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // button1
@@ -186,7 +187,6 @@ public partial class ClienteDetailForm : Form
         MinimumSize = new Size(596, 402);
         Name = "ClienteDetailForm";
         StartPosition = FormStartPosition.CenterParent;
-        Text = stringValuesSP.crearCliente;
         ResumeLayout(false);
         PerformLayout();
 
@@ -275,7 +275,6 @@ public partial class ClienteDetailForm : Form
         {
             var addr = new System.Net.Mail.MailAddress(email);
             return addr.Address == email;
-            this.Close();
         }
         catch
         {

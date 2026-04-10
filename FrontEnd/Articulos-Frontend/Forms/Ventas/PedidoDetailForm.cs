@@ -32,13 +32,11 @@ namespace Articulos_Frontend
             textBoxDniCliente = new TextBox();
             textBoxMetodoPago = new TextBox();
             textBoxImpuestos = new TextBox();
-            LabelIdPedido = new Label();
             LabelDniCliente = new Label();
             LabelMetodoPago = new Label();
             BotonCrearC = new Button();
             LabelTitulo = new Label();
             button1 = new Button();
-            textBoxId = new TextBox();
             LabelImpuestos = new Label();
             SuspendLayout();
             // 
@@ -49,7 +47,7 @@ namespace Articulos_Frontend
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(247, 23);
             textBoxDniCliente.TabIndex = 0;
-            textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick; 
+            textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick;
             // 
             // textBoxMetodoPago
             // 
@@ -66,18 +64,6 @@ namespace Articulos_Frontend
             textBoxImpuestos.PlaceholderText = "Introduzca el porcentaje de impuestos";
             textBoxImpuestos.Size = new Size(247, 23);
             textBoxImpuestos.TabIndex = 3;
-            // 
-            // LabelIdPedido
-            // 
-            LabelIdPedido.BackColor = Color.Transparent;
-            LabelIdPedido.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelIdPedido.Location = new Point(79, 110);
-            LabelIdPedido.Name = "LabelIdPedido";
-            LabelIdPedido.Size = new Size(162, 21);
-            LabelIdPedido.TabIndex = 4;
-            LabelIdPedido.Tag = "normalText";
-            LabelIdPedido.Text = "Id del Pedido: ";
-            LabelIdPedido.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // LabelDniCliente
             // 
@@ -125,7 +111,6 @@ namespace Articulos_Frontend
             LabelTitulo.Location = new Point(135, 18);
             LabelTitulo.Name = "LabelTitulo";
             LabelTitulo.Size = new Size(316, 36);
-            LabelTitulo.Text = stringValuesSP.crearPedido;
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
@@ -143,14 +128,6 @@ namespace Articulos_Frontend
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
-            // textBoxId
-            // 
-            textBoxId.Location = new Point(247, 108);
-            textBoxId.Name = "textBoxId";
-            textBoxId.PlaceholderText = "Introduzca el id";
-            textBoxId.Size = new Size(247, 23);
-            textBoxId.TabIndex = 10;
-            // 
             // LabelImpuestos
             // 
             LabelImpuestos.BackColor = Color.Transparent;
@@ -167,13 +144,11 @@ namespace Articulos_Frontend
             // 
             ClientSize = new Size(580, 363);
             Controls.Add(LabelImpuestos);
-            Controls.Add(textBoxId);
             Controls.Add(button1);
             Controls.Add(LabelTitulo);
             Controls.Add(BotonCrearC);
             Controls.Add(LabelMetodoPago);
             Controls.Add(LabelDniCliente);
-            Controls.Add(LabelIdPedido);
             Controls.Add(textBoxImpuestos);
             Controls.Add(textBoxMetodoPago);
             Controls.Add(textBoxDniCliente);
@@ -252,7 +227,7 @@ namespace Articulos_Frontend
         }
         private bool validarCamposLlenos()
         {
-            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text))
+            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text))
             {
                 return true;
             }
@@ -305,7 +280,6 @@ namespace Articulos_Frontend
         private void button1_Click(object sender, EventArgs e)
         {
             Log.Info("Rellenando campos de cliente con la opción debug.");
-            this.textBoxId.Text = "11";
             this.textBoxMetodoPago.Text = "PayPal";
             this.textBoxDniCliente.Text = "12345678Z";
             this.textBoxImpuestos.Text = "21";

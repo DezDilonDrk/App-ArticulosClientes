@@ -150,10 +150,15 @@ namespace Articulos_Frontend
                     };
                 }
             };
+            var pedidoDetailForm = new PedidoDetailForm();
             WindowManager.ShowForm(
                 "Pedido_Nuevo",
                 this,
-                () => new PedidoDetailForm());
+                () => pedidoDetailForm);
+                pedidoDetailForm.PedidoCreadoCorrectamente += async p =>
+                {
+                    buscarPedidos(textBoxCliente.Text); 
+                };
         }
 
         private async void BotonMenosC_Click(object sender, EventArgs e)
