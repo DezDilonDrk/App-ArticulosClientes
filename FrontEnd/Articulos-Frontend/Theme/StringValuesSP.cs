@@ -21,9 +21,9 @@ namespace Articulos_Frontend.Theme
         public string buscar = "Buscar";
         public string crearPedido = "Crear Pedido";
         public string actualizarPedido = "Actualizar Pedido";
+        public string login = "Iniciar Sesión";
         public string logout = "Cerrar Sesión";
 
-        public string login = "Iniciar Sesión";
         public StringValuesSP() { 
         }
     }

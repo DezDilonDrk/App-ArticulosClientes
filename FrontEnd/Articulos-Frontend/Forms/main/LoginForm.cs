@@ -18,6 +18,7 @@ namespace Articulos_Frontend;
 public partial class LoginForm : Form
 {
     private UsuarioApiClient api;
+    private StringValuesSP stringValuesSP = new StringValuesSP();
     public LoginForm()
     {
         InitializeComponent();
@@ -25,7 +26,7 @@ public partial class LoginForm : Form
         api = new UsuarioApiClient();
         StyleManager.StyleForm(this);
         Log.Info("Formulario de login iniciado.");
-
+        this.Text = stringValuesSP.login;
     }
     public async void loginButton_Click(object sender, EventArgs e)
     {
