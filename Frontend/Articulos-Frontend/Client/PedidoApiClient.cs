@@ -64,7 +64,12 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                await httpClient.PostAsJsonAsync("/pedidos", pedido);
+                var response = await httpClient.PostAsJsonAsync("/pedidos", pedido);
+                string contenido = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode){
+                    MessageBox.Show($"Error al crear el pedido: {contenido}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw new Exception("Error al crear el pedido en el servidor API.");
+                }
             }
             catch
             {
@@ -97,5 +102,20 @@ namespace Articulos_Frontend.Client
                 throw new Exception("Error al conectar con el servidor API.");
             }
         }
+        /*public async Task AgregarArticulos(List<PedidoArticulos> articulos)
+        {
+            try
+            {
+                for (int i = 0; i < articulos.ToArray().Length; i ++ ) 
+                { 
+                    PedidoArticulos articulo = articulos[i];
+                    await httpClient.PostAsJsonAsync("/pedidos/articulo", articulo); }
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
+        }*/
     }
 }

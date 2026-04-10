@@ -58,7 +58,7 @@ namespace Articulos_Backend.Repositorios
             using (var db = Connection)
             {
                 string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos)
-                           VALUES (NEWID(), @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)";
+                           VALUES (@id_pedido, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)";
                 db.Execute(sql, pedido);
             }
         }
@@ -81,9 +81,25 @@ namespace Articulos_Backend.Repositorios
         {
             using (var db = Connection)
             {
-                string sql = $"DELETE FROM Pedidos WHERE id_pedido = '{id}'";
+                string sql = $"DELETE FROM Pedidos WHERE id_pedido = @IdPedido";
 
-                db.Execute(sql);
+                db.Execute(sql, new {IdPedido = id});
+            }
+        }
+        public void AgregarArticulo(PedidoArticulos articulo)
+        {
+            using (var db = Connection)
+            {
+                string sql = $"INSERT INTO Pedido_Articulos (id_pedido, id_articulo) VALUES (@id_pedido,@id_articulo)";
+                db.Execute(sql, articulo);
+            }
+        }
+        public void EliminarArticulo(PedidoArticulos articulo)
+        {
+            using (var db = Connection)
+            {
+                string sql = $"DELETE FROM Pedido_Articulos WHERE id_pedido = @id_pedido AND id_articulo = @id_articulo";
+                db.Execute(sql, articulo);
             }
         }
     }

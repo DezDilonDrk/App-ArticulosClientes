@@ -17,6 +17,12 @@ namespace Articulos_Frontend
             StyleManager.StyleForm(this);
             Log.Info("Menú principal iniciado.");
             user = usuario;
+            this.Text = stringValuesSP.menu; 
+            this.productosToolStripMenuItem.Text = stringValuesSP.pedidos;
+            this.clientesToolStripMenuItem.Text = stringValuesSP.clientes;
+            this.articulosToolStripMenuItem.Text = stringValuesSP.articulos;
+            this.mnuVentanas.Text = stringValuesSP.ventanas;
+            this.buttonTerminal.Text = stringValuesSP.terminal;
         }
         public void Menu_Load(object sender, EventArgs e)
         {

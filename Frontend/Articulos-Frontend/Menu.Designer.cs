@@ -33,7 +33,7 @@ namespace Articulos_Frontend
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             menuStripAC = new MenuStrip();
-            artículosToolStripMenuItem = new ToolStripMenuItem();
+            articulosToolStripMenuItem = new ToolStripMenuItem();
             clientesToolStripMenuItem = new ToolStripMenuItem();
             productosToolStripMenuItem = new ToolStripMenuItem();
             mnuVentanas = new ToolStripMenuItem();
@@ -46,7 +46,7 @@ namespace Articulos_Frontend
             // menuStripAC
             // 
             menuStripAC.ImageScalingSize = new Size(20, 20);
-            menuStripAC.Items.AddRange(new ToolStripItem[] { artículosToolStripMenuItem, clientesToolStripMenuItem, productosToolStripMenuItem, mnuVentanas });
+            menuStripAC.Items.AddRange(new ToolStripItem[] { articulosToolStripMenuItem, clientesToolStripMenuItem, productosToolStripMenuItem, mnuVentanas });
             menuStripAC.Location = new Point(0, 0);
             menuStripAC.Name = "menuStripAC";
             menuStripAC.Padding = new Padding(4, 2, 0, 2);
@@ -57,30 +57,26 @@ namespace Articulos_Frontend
             // 
             // artículosToolStripMenuItem
             // 
-            artículosToolStripMenuItem.Name = "artículosToolStripMenuItem";
-            artículosToolStripMenuItem.Size = new Size(66, 20);
-            artículosToolStripMenuItem.Text = stringValuesSP.articulos;
-            artículosToolStripMenuItem.Click += artículosToolStripMenuItem_Click;
+            articulosToolStripMenuItem.Name = "articulosToolStripMenuItem";
+            articulosToolStripMenuItem.Size = new Size(249, 20);
+            articulosToolStripMenuItem.Click += artículosToolStripMenuItem_Click;
             // 
             // clientesToolStripMenuItem
             // 
             clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-            clientesToolStripMenuItem.Size = new Size(61, 20);
-            clientesToolStripMenuItem.Text = stringValuesSP.clientes;
+            clientesToolStripMenuItem.Size = new Size(12, 20);
             clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
             // 
             // productosToolStripMenuItem
             // 
             productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            productosToolStripMenuItem.Size = new Size(61, 20);
-            productosToolStripMenuItem.Text = stringValuesSP.pedidos;
+            productosToolStripMenuItem.Size = new Size(12, 20);
             productosToolStripMenuItem.Click += productosToolStripMenuItem_Click;
             // 
             // mnuVentanas
             // 
             mnuVentanas.Name = "mnuVentanas";
-            mnuVentanas.Size = new Size(66, 20);
-            mnuVentanas.Text = stringValuesSP.terminal;
+            mnuVentanas.Size = new Size(12, 20);
             mnuVentanas.Click += mnuVentanas_Click;
             // 
             // ventanasToolStripMenuItem
@@ -95,7 +91,6 @@ namespace Articulos_Frontend
             buttonTerminal.Name = "buttonTerminal";
             buttonTerminal.Size = new Size(75, 23);
             buttonTerminal.TabIndex = 1;
-            buttonTerminal.Text = stringValuesSP.terminal;
             buttonTerminal.UseVisualStyleBackColor = true;
             buttonTerminal.Click += buttonTerminal_Click;
             // 
@@ -135,7 +130,7 @@ namespace Articulos_Frontend
         #endregion
 
         private MenuStrip menuStripAC;
-        private ToolStripMenuItem artículosToolStripMenuItem;
+        private ToolStripMenuItem articulosToolStripMenuItem;
         private ToolStripMenuItem clientesToolStripMenuItem;
         private ToolStripMenuItem productosToolStripMenuItem;
         private ToolStripMenuItem ventanasToolStripMenuItem;

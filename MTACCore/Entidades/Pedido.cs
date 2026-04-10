@@ -14,8 +14,8 @@ namespace MTCore_AC.Entidades
         public enum EstadoPedido { Abierto, Cerrado, Cancelado }
         public string estado { get; set; }
         public double porcentaje_impuestos { get; set; }
-        public List<PedidoArticulos> articulos { get; set; }
-        public Pedido() { }
+        public List<PedidoArticulos> articulos { get; set; } = new List<PedidoArticulos>();
+        public Pedido() {}
         public Pedido(string DniCliente, string MetodoPago, double PorcentajeImpuestos)
         {
             this.id_pedido = Guid.NewGuid().ToString();

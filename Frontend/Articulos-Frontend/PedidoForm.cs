@@ -132,8 +132,8 @@ namespace Articulos_Frontend
         private async void BotonMasC_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario para crear un nuevo pedido.");
-            Pedido nuevopedido = new Pedido();
-            var formNuevo = new PedidoDetailForm(nuevopedido);
+            //Pedido nuevopedido = new Pedido();
+            var formNuevo = new PedidoDetailForm();
 
             formNuevo.PedidoCreadoCorrectamente += async pedido =>
             {
@@ -153,7 +153,7 @@ namespace Articulos_Frontend
             WindowManager.ShowForm(
                 "Pedido_Nuevo",
                 this,
-                () => new PedidoDetailForm(nuevopedido));
+                () => new PedidoDetailForm());
         }
 
         private async void BotonMenosC_Click(object sender, EventArgs e)

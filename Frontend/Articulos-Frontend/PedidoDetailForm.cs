@@ -15,13 +15,12 @@ namespace Articulos_Frontend
     public partial class PedidoDetailForm : Form
     {
         private PedidoApiClient pedidoApiClient;
-        private Pedido pedido;
+        private Pedido pedidoCreated;
         public event Action<Pedido> PedidoCreadoCorrectamente;
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoDetailForm(Pedido pedido)
+        public PedidoDetailForm()
         {
             InitializeComponent();
-            this.pedido = pedido;
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             pedidoApiClient = new PedidoApiClient();
             StyleManager.StyleForm(this);
@@ -213,17 +212,16 @@ namespace Articulos_Frontend
                     MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                Pedido pedido = new Pedido(textBoxDniCliente.Text.ToUpper(), textBoxMetodoPago.Text, parsedImpuestos);
-                PedidoArticulos articulo1 = new PedidoArticulos(pedido.id_pedido, 1, 1);
-                PedidoArticulos articulo2 = new PedidoArticulos(pedido.id_pedido, 2, 1);
-                PedidoArticulos articulo3 = new PedidoArticulos(pedido.id_pedido, 3, 1);
-                PedidoArticulos articulo4 = new PedidoArticulos(pedido.id_pedido, 4, 1);
+                pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), textBoxMetodoPago.Text, parsedImpuestos);
+                PedidoArticulos articulo1 = new PedidoArticulos(pedidoCreated.id_pedido, 1, 1, float.Parse("5.50"));
+                PedidoArticulos articulo2 = new PedidoArticulos(pedidoCreated.id_pedido, 2, 1, float.Parse("5.50"));
+                PedidoArticulos articulo3 = new PedidoArticulos(pedidoCreated.id_pedido, 3, 1, float.Parse("5.50"));
+                PedidoArticulos articulo4 = new PedidoArticulos(pedidoCreated.id_pedido, 4, 1, float.Parse("5.50"));
                 List<PedidoArticulos> articulos = new List<PedidoArticulos> { articulo1, articulo2, articulo3, articulo4 }; //Para probar, luego lo cambiare por una funcion que añada a una lista los productos, que se puedan seleccionar desde un combobox
-                pedido.cambiarLista(articulos);
-
-                pedidoApiClient.Crear(pedido);
+                pedidoCreated.cambiarLista(articulos);
+                await pedidoApiClient.Crear(pedidoCreated);
                 EmailSender emailSender = new EmailSender();
-                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedido.id_pedido}");
+                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
                 alerta.ShowDialog();
                 if (alerta.resultado)
@@ -234,7 +232,7 @@ namespace Articulos_Frontend
                 {
                     this.Close();
                 }
-                PedidoCreadoCorrectamente?.Invoke(pedido);
+                PedidoCreadoCorrectamente?.Invoke(pedidoCreated);
             }
             catch (Exception ex)
             {
@@ -302,7 +300,7 @@ namespace Articulos_Frontend
         }
         public Pedido getPedido()
         {
-            return this.pedido;
+            return this.pedidoCreated;
         }
         private void button1_Click(object sender, EventArgs e)
         {
