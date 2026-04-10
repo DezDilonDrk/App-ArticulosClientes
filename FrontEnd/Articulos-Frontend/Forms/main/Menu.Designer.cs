@@ -58,10 +58,10 @@ namespace Articulos_Frontend
             menuStripAC.Tag = "menuStrip";
             menuStripAC.Text = "menuStrip";
             // 
-            // artículosToolStripMenuItem
+            // articulosToolStripMenuItem
             // 
             articulosToolStripMenuItem.Name = "articulosToolStripMenuItem";
-            articulosToolStripMenuItem.Size = new Size(249, 20);
+            articulosToolStripMenuItem.Size = new Size(12, 20);
             articulosToolStripMenuItem.Click += artículosToolStripMenuItem_Click;
             // 
             // clientesToolStripMenuItem
@@ -100,7 +100,7 @@ namespace Articulos_Frontend
             // buttonLogout
             // 
             buttonLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonLogout.Location = new Point(28, 421);
+            buttonLogout.Location = new Point(12, 387);
             buttonLogout.Name = "buttonLogout";
             buttonLogout.Size = new Size(105, 23);
             buttonLogout.TabIndex = 2;
