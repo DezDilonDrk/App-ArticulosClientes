@@ -1,7 +1,7 @@
-using Articulos_Backend.Repositorios;
+using Articulos_Backend.Repositorios.Seguridad;
 using MTCore_AC.Entidades;
 
-namespace Articulos_Backend.Endpoints;
+namespace Articulos_Backend.Endpoints.Seguridad;
 
 public static class UsuarioRolEndpoints
 {

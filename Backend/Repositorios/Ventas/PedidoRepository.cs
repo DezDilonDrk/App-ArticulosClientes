@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using MTCore_AC.Entidades;
 using System.Data;
-namespace Articulos_Backend.Repositorios
+namespace Articulos_Backend.Repositorios.Ventas
 
 {
     public class PedidoRepository

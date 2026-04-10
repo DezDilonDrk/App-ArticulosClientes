@@ -40,8 +40,10 @@ namespace Articulos_Frontend
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             buttonTerminal = new Button();
             buttonLogout = new Button();
-            labelUser = new Label();
+            statusStripMenu = new StatusStrip();
+            toolStripStatusLabelUser = new ToolStripStatusLabel();
             menuStripAC.SuspendLayout();
+            statusStripMenu.SuspendLayout();
             SuspendLayout();
             // 
             // menuStripAC
@@ -105,14 +107,20 @@ namespace Articulos_Frontend
             buttonLogout.UseVisualStyleBackColor = true;
             buttonLogout.Click += buttonLogout_Click;
             // 
-            // labelUser
+            // statusStripMenu
             // 
-            labelUser.Font = new Font("Segoe UI", 14F);
-            labelUser.Location = new Point(28, 36);
-            labelUser.Name = "labelUser";
-            labelUser.Size = new Size(100, 23);
-            labelUser.TabIndex = 3;
-            labelUser.Text = "User";
+            statusStripMenu.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelUser });
+            statusStripMenu.Location = new Point(0, 469);
+            statusStripMenu.Name = "statusStripMenu";
+            statusStripMenu.Size = new Size(914, 22);
+            statusStripMenu.TabIndex = 4;
+            statusStripMenu.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelUser
+            // 
+            toolStripStatusLabelUser.Name = "toolStripStatusLabelUser";
+            toolStripStatusLabelUser.Size = new Size(50, 17);
+            toolStripStatusLabelUser.Text = "Usuario:";
             // 
             // Menu
             // 
@@ -121,7 +129,7 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
-            Controls.Add(labelUser);
+            Controls.Add(statusStripMenu);
             Controls.Add(buttonLogout);
             Controls.Add(buttonTerminal);
             Controls.Add(menuStripAC);
@@ -133,6 +141,8 @@ namespace Articulos_Frontend
             WindowState = FormWindowState.Maximized;
             menuStripAC.ResumeLayout(false);
             menuStripAC.PerformLayout();
+            statusStripMenu.ResumeLayout(false);
+            statusStripMenu.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -147,6 +157,7 @@ namespace Articulos_Frontend
         private Button buttonTerminal;
         private ToolStripMenuItem mnuVentanas;
         private Button buttonLogout;
-        private Label labelUser;
+        private StatusStrip statusStripMenu;
+        private ToolStripStatusLabel toolStripStatusLabelUser;
     }
 }

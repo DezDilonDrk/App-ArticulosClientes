@@ -1,4 +1,4 @@
-﻿namespace Articulos_Backend.Repositorios;
+﻿namespace Articulos_Backend.Repositorios.Almacen;
 
 using Dapper;
 using Microsoft.Data.SqlClient;

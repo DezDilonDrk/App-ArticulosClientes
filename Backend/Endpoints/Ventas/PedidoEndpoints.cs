@@ -1,7 +1,7 @@
-﻿using Articulos_Backend.Repositorios;
+﻿using Articulos_Backend.Repositorios.Ventas;
 using MTCore_AC.Entidades;
 
-namespace Articulos_Backend.Endpoints;
+namespace Articulos_Backend.Endpoints.Ventas;
 
 public static class PedidoEndpoints
 {

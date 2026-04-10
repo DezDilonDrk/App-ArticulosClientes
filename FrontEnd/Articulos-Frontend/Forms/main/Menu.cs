@@ -23,7 +23,7 @@ namespace Articulos_Frontend
             mnuVentanas.Text = stringValuesSP.ventanas;
             buttonLogout.Text = stringValuesSP.logout;
             buttonTerminal.Text = stringValuesSP.terminal;
-            labelUser.Text = $"Usuario: {user.Nombre}";
+            toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}";
         }
         public void Menu_Load(object sender, EventArgs e)
         {
