@@ -23,6 +23,7 @@ namespace Articulos_Frontend
             this.articulosToolStripMenuItem.Text = stringValuesSP.articulos;
             this.mnuVentanas.Text = stringValuesSP.ventanas;
             this.buttonTerminal.Text = stringValuesSP.terminal;
+            this.buttonLogout.Text = stringValuesSP.logout;
         }
         public void Menu_Load(object sender, EventArgs e)
         {
