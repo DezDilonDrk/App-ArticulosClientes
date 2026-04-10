@@ -69,7 +69,7 @@
             emailLabel.Location = new Point(282, 207);
             emailLabel.Name = "emailLabel";
             emailLabel.Size = new Size(60, 23);
-            emailLabel.TabIndex = 3;
+            emailLabel.TabIndex = 5;
             emailLabel.Text = "Email:";
             // 
             // contrasenaLabel
@@ -86,7 +86,7 @@
             loginButton.Location = new Point(316, 308);
             loginButton.Name = "loginButton";
             loginButton.Size = new Size(172, 40);
-            loginButton.TabIndex = 5;
+            loginButton.TabIndex = 3;
             loginButton.Text = "Iniciar sesión";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_Click;

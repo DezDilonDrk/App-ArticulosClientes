@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using MTCore_AC.Entidades;
 
-namespace Articulos_Backend.Repositorios
+namespace Articulos_Backend.Repositorios.Seguridad
 {
     public class UsuarioRepository
     {

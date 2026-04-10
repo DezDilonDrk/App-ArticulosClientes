@@ -1,8 +1,9 @@
-﻿
-using Articulos_Backend.Repositorios;
+﻿using Microsoft.Identity.Client;
 using MTCore_AC.Entidades;
+using Articulos_Backend.JWT;
+using Articulos_Backend.Repositorios.Almacen;
 
-namespace Articulos_Backend.Endpoints;
+namespace Articulos_Backend.Endpoints.Almacen;
 public static class ArticuloEndpoints
 {
     /* static List<Articulo> articulos = new List<Articulo>
@@ -18,7 +19,7 @@ public static class ArticuloEndpoints
         {
             var articulo = repo.ObtenerPorId(id);
             return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminArticulos, Roles.UserArticulos))
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
         app.MapGet("/articulos", (string? nombre) =>
@@ -26,7 +27,7 @@ public static class ArticuloEndpoints
             if (string.IsNullOrWhiteSpace(nombre)) { return Results.Ok(repo.ObtenerArticulos()); }
             var articulo = repo.ObtenerPorNombre(nombre) ?? throw new KeyNotFoundException("Artículo no encontrado");
             return Results.Ok(articulo);
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminArticulos, Roles.UserArticulos))
         .Produces<List<Articulo>>(StatusCodes.Status200OK)
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
@@ -37,7 +38,7 @@ public static class ArticuloEndpoints
             int id = repo.Insertar(articulo);
             articulo.id = id;
             return Results.Created($"/articulos/{articulo.id}", articulo);
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminArticulos))
         .Produces<Articulo>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/articulos/{id:int}", (int id, Articulo updatedArticulo) =>
@@ -47,7 +48,7 @@ public static class ArticuloEndpoints
             repo.Actualizar(updatedArticulo);
             var refreshed = repo.ObtenerPorId(id) ?? updatedArticulo;
             return Results.Ok(refreshed);
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminArticulos))
 .Produces<Articulo>(StatusCodes.Status200OK)
 .Produces(StatusCodes.Status404NotFound)
 .Produces(StatusCodes.Status409Conflict);
@@ -56,7 +57,7 @@ public static class ArticuloEndpoints
             var articulo = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             repo.Eliminar(id);
             return Results.NoContent();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminArticulos))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status404NotFound);
 

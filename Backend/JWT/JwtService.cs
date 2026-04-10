@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MTCore_AC.Entidades;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,6 +11,7 @@ namespace Articulos_Backend.JWT;
 public class JwtService
 {
     private readonly string _secretKey = "CLAVE_SECRETA_SECRETOSA_PORFAVOR_FUNCIONA_SOCORRO";
+
 
     public string GenerateToken(string correo, List<string> roles)
     {

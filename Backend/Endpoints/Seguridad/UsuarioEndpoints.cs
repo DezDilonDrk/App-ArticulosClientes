@@ -1,11 +1,11 @@
 ﻿using Articulos_Backend.JWT;
-using Articulos_Backend.Repositorios;
 using Microsoft.AspNetCore.Identity.Data;
 using MTCore_AC.Entidades;
 using MTCore_AC.DTO;
 using static MTCore_AC.DTO.LoginDtos;
+using Articulos_Backend.Repositorios.Seguridad;
 
-namespace Articulos_Backend.Endpoints;
+namespace Articulos_Backend.Endpoints.Seguridad;
 
 public static class UsuarioEndpoints
 {
@@ -15,7 +15,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = repo.ObtenerUsuarios();
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
         .Produces<IEnumerable<Usuario>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -23,7 +23,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = repo.ObtenerPorCorreo(correoElectronico);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -31,7 +31,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = repo.ObtenerPorNombre(nombre);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -39,7 +39,7 @@ public static class UsuarioEndpoints
         {
             repo.Insertar(usuario);
             return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
         .Produces<Usuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -70,7 +70,7 @@ public static class UsuarioEndpoints
         {
             repo.Update(usuario);
             return Results.NoContent();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -78,7 +78,7 @@ public static class UsuarioEndpoints
         {
             repo.Eliminar(correoElectronico);
             return Results.NoContent();
-        })
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
