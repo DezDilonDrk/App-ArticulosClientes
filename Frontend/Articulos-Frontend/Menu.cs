@@ -68,7 +68,7 @@ namespace Articulos_Frontend
         {
             var dropDown = new ContextMenuStrip();
 
-            if (WindowManager.OpenWindows.Count == 0)
+            if (WindowManager.OpenWindows.Count == 1)
             {
                 dropDown.Items.Add("(Sin ventanas)").Enabled = false;
             }
@@ -78,6 +78,9 @@ namespace Articulos_Frontend
                 {
                     var key = kvp.Key;
                     var form = kvp.Value.formularioHijo;
+                    if (!form.Visible) continue;
+                    if (form.GetType() == typeof(LoginForm)) continue;
+                    if (string.IsNullOrWhiteSpace(form.Text)) continue;
 
                     var item = new ToolStripMenuItem(form.Text);
                     item.Click += (s, ev) => WindowManager.Activate(key);
