@@ -34,8 +34,6 @@
             this.Text = "PedidoDetailForm";
         }*/
         private TextBox textBoxDniCliente;
-        private TextBox textBoxMetodoPago;
-        private TextBox textBoxImpuestos;
         private Label LabelDniCliente;
         private Label LabelMetodoPago;
         private Label LabelImpuestos;
@@ -44,7 +42,9 @@
         private Button button1;
 
         #endregion
-        
-        
+
+
+        private ComboBox comboBoxImpuestos;
+        private ComboBox comboBoxMetodoPago;
     }
 }

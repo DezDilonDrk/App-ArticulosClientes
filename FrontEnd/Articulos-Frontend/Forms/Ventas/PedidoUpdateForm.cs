@@ -15,6 +15,7 @@ namespace Articulos_Frontend
     public partial class PedidoUpdateForm : Form
     {
         private PedidoApiClient pedidoApiClient;
+        private ClienteApiClient clienteApiClient = new ClienteApiClient();
         private Pedido pedido;
         public event Action<Pedido> PedidoActualizadoCorrectamente;
         private StringValuesSP stringValuesSP = new StringValuesSP();
@@ -26,19 +27,23 @@ namespace Articulos_Frontend
             pedidoApiClient = new PedidoApiClient();
             StyleManager.StyleForm(this);
             var estados = new[] { "Abierto", "Cerrado", "Cancelado" };
+            var impuestos = new[] { "21", "10", "4", "0" };
+            var metodosPago = new List<string> { "Tarjeta de Crédito", "PayPal", "Transferencia Bancaria", "Contra Reembolso" };
             comboBoxEstado.DataSource = estados.ToList();
             comboBoxEstado.SelectedIndex = -1;
+            comboBoxImpuestos.DataSource = impuestos.ToList();
+            comboBoxImpuestos.SelectedIndex = -1;
+            comboBoxMetodoPago.DataSource = metodosPago;
+            comboBoxMetodoPago.SelectedIndex = -1;
             textBoxId.Text = pedido.id_pedido.ToString();
             textBoxDniCliente.Text = pedido.dni_cliente;
-            textBoxMetodoPago.Text = pedido.metodo_pago;
+            comboBoxMetodoPago.Text = pedido.metodo_pago;
             comboBoxEstado.Text = pedido.estado;
-            textBoxImpuestos.Text = pedido.porcentaje_impuestos.ToString();
+            comboBoxImpuestos.Text = pedido.porcentaje_impuestos.ToString();
         }
         private void InitializeComponent()
         {
             textBoxDniCliente = new TextBox();
-            textBoxMetodoPago = new TextBox();
-            textBoxImpuestos = new TextBox();
             LabelIdPedido = new Label();
             LabelDniCliente = new Label();
             LabelMetodoPago = new Label();
@@ -48,6 +53,8 @@ namespace Articulos_Frontend
             textBoxId = new TextBox();
             LabelImpuestos = new Label();
             comboBoxEstado = new ComboBox();
+            comboBoxImpuestos = new ComboBox();
+            comboBoxMetodoPago = new ComboBox();
             SuspendLayout();
             // 
             // textBoxDniCliente
@@ -58,22 +65,6 @@ namespace Articulos_Frontend
             textBoxDniCliente.Size = new Size(247, 23);
             textBoxDniCliente.TabIndex = 0;
             textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick;
-            // 
-            // textBoxMetodoPago
-            // 
-            textBoxMetodoPago.Location = new Point(237, 145);
-            textBoxMetodoPago.Name = "textBoxMetodoPago";
-            textBoxMetodoPago.PlaceholderText = "Introduzca el método de pago";
-            textBoxMetodoPago.Size = new Size(247, 23);
-            textBoxMetodoPago.TabIndex = 1;
-            // 
-            // textBoxImpuestos
-            // 
-            textBoxImpuestos.Location = new Point(237, 203);
-            textBoxImpuestos.Name = "textBoxImpuestos";
-            textBoxImpuestos.PlaceholderText = "Introduzca el porcentaje de impuestos";
-            textBoxImpuestos.Size = new Size(247, 23);
-            textBoxImpuestos.TabIndex = 3;
             // 
             // LabelIdPedido
             // 
@@ -134,7 +125,7 @@ namespace Articulos_Frontend
             BotonCrearC.Name = "BotonCrearC";
             BotonCrearC.Size = new Size(150, 30);
             BotonCrearC.TabIndex = 5;
-            BotonCrearC.Text = "Actualizar";//Es el "Crear" de este UpdateForm de Pedidos
+            BotonCrearC.Text = "Actualizar";
             BotonCrearC.UseVisualStyleBackColor = false;
             BotonCrearC.Click += BotonActualizarC_Click;
             // 
@@ -147,7 +138,6 @@ namespace Articulos_Frontend
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
-            LabelTitulo.Text = stringValuesSP.actualizarPedido;
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // textBoxId
@@ -171,20 +161,40 @@ namespace Articulos_Frontend
             LabelImpuestos.Text = "Impuestos (%): ";
             LabelImpuestos.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // comboBoxMetodo
+            // comboBoxEstado
             // 
             comboBoxEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxEstado.FlatStyle = FlatStyle.Flat;
             comboBoxEstado.FormattingEnabled = true;
             comboBoxEstado.Location = new Point(237, 174);
             comboBoxEstado.Name = "comboBoxEstado";
             comboBoxEstado.Size = new Size(247, 23);
             comboBoxEstado.TabIndex = 12;
             comboBoxEstado.Tag = "comboBox";
-            comboBoxEstado.FlatStyle = FlatStyle.Flat;
+            // 
+            // comboBoxImpuestos
+            // 
+            comboBoxImpuestos.FormattingEnabled = true;
+            comboBoxImpuestos.Location = new Point(237, 203);
+            comboBoxImpuestos.Name = "comboBoxImpuestos";
+            comboBoxImpuestos.Size = new Size(247, 23);
+            comboBoxImpuestos.TabIndex = 13;
+            comboBoxImpuestos.Tag = "comboBox";
+            // 
+            // comboBoxMetodoPago
+            // 
+            comboBoxMetodoPago.FormattingEnabled = true;
+            comboBoxMetodoPago.Location = new Point(237, 145);
+            comboBoxMetodoPago.Name = "comboBoxMetodoPago";
+            comboBoxMetodoPago.Size = new Size(247, 23);
+            comboBoxMetodoPago.TabIndex = 14;
+            comboBoxMetodoPago.Tag = "comboBox";
             // 
             // PedidoUpdateForm
             // 
             ClientSize = new Size(580, 363);
+            Controls.Add(comboBoxMetodoPago);
+            Controls.Add(comboBoxImpuestos);
             Controls.Add(comboBoxEstado);
             Controls.Add(LabelImpuestos);
             Controls.Add(textBoxId);
@@ -194,8 +204,6 @@ namespace Articulos_Frontend
             Controls.Add(LabelMetodoPago);
             Controls.Add(LabelDniCliente);
             Controls.Add(LabelIdPedido);
-            Controls.Add(textBoxImpuestos);
-            Controls.Add(textBoxMetodoPago);
             Controls.Add(textBoxDniCliente);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -210,12 +218,18 @@ namespace Articulos_Frontend
 
         private async void BotonActualizarC_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(textBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(textBoxMetodoPago.Text) && ValidarDni(textBoxDniCliente.Text))
+            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(comboBoxImpuestos.Text) && !string.IsNullOrEmpty(textBoxId.Text) && !string.IsNullOrEmpty(comboBoxMetodoPago.Text))
             {
                 Log.Info("Intento de actualización de pedido con Id: " + textBoxId.Text);
+                if (!await ValidarDni(textBoxDniCliente.Text))
+                {
+                    MessageBox.Show("El Dni introducido no corresponde a ningún cliente registrado. Por favor, introduzca un Dni válido o cree un nuevo cliente.", "Dni no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Log.Error($"No se encontró ningún cliente con Dni: {textBoxDniCliente.Text}. Id del pedido donde se produjo este error: {textBoxId.Text}");
+                    return;
+                }
                 try
                 {
-                    pedido.ActualizarPedido(textBoxDniCliente.Text,textBoxMetodoPago.Text,double.Parse(textBoxImpuestos.Text), comboBoxEstado.Text,pedido.articulos);
+                    pedido.ActualizarPedido(textBoxDniCliente.Text, comboBoxMetodoPago.Text,double.Parse(comboBoxImpuestos.Text), comboBoxEstado.Text,pedido.articulos);
                     await pedidoApiClient.Actualizar(pedido.id_pedido, pedido);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     PedidoActualizadoCorrectamente?.Invoke(pedido);
@@ -234,35 +248,13 @@ namespace Articulos_Frontend
                 MessageBox.Show("Por favor, rellene todos los campos para crear el cliente.", "Campos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private bool ValidarDni(string dni)
+        private async Task<bool> ValidarDni(string dni)
         {
-            if (textBoxDniCliente.Text.Length != 9)
+            IEnumerable<Cliente> clientes = await clienteApiClient.ObtenerClientes();
+            if (!clientes.Any(c => c.Dni == dni))
             {
-                Log.Warn($"Intento de crear cliente con DNI de longitud incorrecta: {dni}.");
-                MessageBox.Show("El DNI debe tener 9 caracteres, 8 números y una letra mayúscula al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (!System.Text.RegularExpressions.Regex.IsMatch(dni, @"^\d{8}[A-Za-z]$"))
-            {
-                Log.Warn($"Intento de crear cliente con DNI con formato incorrecto: {dni}.");
-                MessageBox.Show("El DNI debe tener 9 caracteres, 8 números y una letra mayúscula al final. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-            int numero;
-            try
-            { numero = int.Parse(dni.Substring(0, 8)); }
-            catch
-            {
-                Log.Warn($"Intento de crear cliente con DNI cuyos primeros 8 caracteres no son numéricos: {dni}.");
-                MessageBox.Show("Los primeros 8 caracteres del DNI deben ser números. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            char letraCalculada = letras[numero % 23];
-            if (char.ToUpper(dni[8]) != letraCalculada)
-            {
-                Log.Warn($"Intento de crear cliente con DNI cuya letra ({letraCalculada}) no coincide con el número: {dni}.");
-                MessageBox.Show("La letra del DNI no es correcta. Ejemplo: 12345678A", "DNI no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Log.Warn("Dni no encontrado en la base de datos: " + dni);
+                MessageBox.Show("El Dni introducido no corresponde a ningún cliente registrado. Por favor, introduzca un Dni válido o cree un nuevo cliente.", "Dni no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
             return true;

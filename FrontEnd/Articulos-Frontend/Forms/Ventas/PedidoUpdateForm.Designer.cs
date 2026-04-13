@@ -28,9 +28,7 @@
         /// </summary>
         private TextBox textBoxDniCliente;
         private TextBox textBoxId;
-        private TextBox textBoxMetodoPago;
         private TextBox textBoxEstado;
-        private TextBox textBoxImpuestos;
         private Label LabelIdPedido;
         private Label LabelDniCliente;
         private Label LabelMetodoPago;
@@ -41,5 +39,7 @@
         #endregion
 
         private ComboBox comboBoxEstado;
+        private ComboBox comboBoxImpuestos;
+        private ComboBox comboBoxMetodoPago;
     }
 }

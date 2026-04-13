@@ -46,7 +46,7 @@ namespace Articulos_Frontend
                 return;
             }
             pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date).ToList();
-            dgvCliente.DataSource = pedidosFiltrados;
+            dgvPedido.DataSource = pedidosFiltrados;
         }
         private async void buscarPedidos(string nombreFiltro)
         {
@@ -63,65 +63,66 @@ namespace Articulos_Frontend
             }
             pedidos = pedidos.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date);
             pedidos = pedidos.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date);
-            dgvCliente.DataSource = pedidos.ToList();
+            dgvPedido.DataSource = pedidos.ToList();
             listaActual = pedidos.ToList();
-            if (dgvCliente.Columns["dni_cliente"] != null)
+            if (dgvPedido.Columns["dni_cliente"] != null)
             {
-                dgvCliente.Columns["dni_cliente"].HeaderText = "DNI del Cliente";
-                dgvCliente.Columns["dni_cliente"].Width = 80;
-                dgvCliente.Columns["dni_cliente"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["dni_cliente"].HeaderText = "DNI del Cliente";
+                dgvPedido.Columns["dni_cliente"].Width = 80;
+                dgvPedido.Columns["dni_cliente"].Resizable = DataGridViewTriState.False;
             }
-            if (dgvCliente.Columns["porcentaje_impuestos"] != null)
+            if (dgvPedido.Columns["porcentaje_impuestos"] != null)
             {
                 //dgvCliente.Columns["porcentaje"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPedido.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgvPedido.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dgvCliente.Columns["porcentaje"].FillWeight = 30;
-                dgvCliente.Columns["porcentaje_impuestos"].MinimumWidth = 100;
-                dgvCliente.Columns["porcentaje_impuestos"].HeaderText = "Porcentaje de Impuestos";
+                dgvPedido.Columns["porcentaje_impuestos"].MinimumWidth = 100;
+                dgvPedido.Columns["porcentaje_impuestos"].HeaderText = "Porcentaje de Impuestos";
             }
-            if (dgvCliente.Columns["id_pedido"] != null)
+            if (dgvPedido.Columns["id_pedido"] != null)
             {
                 //dgvCliente.Columns["id_pedido"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //dgvCliente.Columns["id_pedido"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //dgvCliente.Columns["id_pedido"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dgvCliente.Columns["id_pedido"].FillWeight = 30;
-                dgvCliente.Columns["id_pedido"].Resizable = DataGridViewTriState.False;
-                dgvCliente.Columns["id_pedido"].MinimumWidth = 120;
-                dgvCliente.Columns["id_pedido"].HeaderText = "Id del Pedido";
+                dgvPedido.Columns["id_pedido"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["id_pedido"].MinimumWidth = 270;
+                dgvPedido.Columns["id_pedido"].HeaderText = "Id del Pedido";
             }
-            if (dgvCliente.Columns["estado"] != null)
+            if (dgvPedido.Columns["estado"] != null)
             {
                 //dgvCliente.Columns["estado"].Width = 250;
                 //dgvCliente.Columns["estado"].Resizable = DataGridViewTriState.False;
                 //dgvCliente.Columns["estado"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //dgvCliente.Columns["estado"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dgvCliente.Columns["estado"].FillWeight = 40;
-                dgvCliente.Columns["estado"].Width = 150;
-                dgvCliente.Columns["estado"].HeaderText = "Estado";
-                dgvCliente.Columns["estado"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["estado"].Width = 150;
+                dgvPedido.Columns["estado"].HeaderText = "Estado";
+                dgvPedido.Columns["estado"].Resizable = DataGridViewTriState.False;
             }
-            if (dgvCliente.Columns["metodo_pago"] != null)
+            if (dgvPedido.Columns["metodo_pago"] != null)
             {
                 //dgvCliente.Columns["metodo_pago"].Width = 250;
                 //dgvCliente.Columns["metodo_pago"].Resizable = DataGridViewTriState.False;
                 //dgvCliente.Columns["metodo_pago"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //dgvCliente.Columns["metodo_pago"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dgvCliente.Columns["metodo_pago"].FillWeight = 40;
-                dgvCliente.Columns["metodo_pago"].Width = 150;
-                dgvCliente.Columns["metodo_pago"].Resizable = DataGridViewTriState.False;
-                dgvCliente.Columns["metodo_pago"].HeaderText = "Método de Pago";
+                dgvPedido.Columns["metodo_pago"].Width = 150;
+                dgvPedido.Columns["metodo_pago"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["metodo_pago"].HeaderText = "Método de Pago";
+                dgvPedido.Columns["metodo_pago"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
-                if (dgvCliente.Columns["fecha_creacion"] != null)
+                if (dgvPedido.Columns["fecha_creacion"] != null)
             {
-                dgvCliente.Columns["fecha_creacion"].Width = 120;
-                dgvCliente.Columns["fecha_creacion"].Resizable = DataGridViewTriState.False;
-                dgvCliente.Columns["fecha_creacion"].HeaderText = "Fecha de Creación";
+                dgvPedido.Columns["fecha_creacion"].Width = 120;
+                dgvPedido.Columns["fecha_creacion"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["fecha_creacion"].HeaderText = "Fecha de Creación";
             }
-            if (dgvCliente.Columns["fecha_rectificacion"] != null) {
-                dgvCliente.Columns["fecha_rectificacion"].Width = 130;
-                dgvCliente.Columns["fecha_rectificacion"].Resizable = DataGridViewTriState.False;
-                dgvCliente.Columns["fecha_rectificacion"].HeaderText = "Fecha de Rectififcación";
+            if (dgvPedido.Columns["fecha_rectificacion"] != null) {
+                dgvPedido.Columns["fecha_rectificacion"].Width = 130;
+                dgvPedido.Columns["fecha_rectificacion"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["fecha_rectificacion"].HeaderText = "Fecha de Rectificación";
             }
         }
         private void BotonBuscar_Click(object sender, EventArgs e)
@@ -168,8 +169,8 @@ namespace Articulos_Frontend
             alerta.ShowDialog();
             if (alerta.resultado)
             {
-                Log.Info($"Eliminando pedido con ID: {dgvCliente.CurrentRow.Cells["id_pedido"].Value.ToString()}");
-                await PedidoApiClient.Eliminar(dgvCliente.CurrentRow.Cells["id_pedido"].Value.ToString());
+                Log.Info($"Eliminando pedido con ID: {dgvPedido.CurrentRow.Cells["id_pedido"].Value.ToString()}");
+                await PedidoApiClient.Eliminar(dgvPedido.CurrentRow.Cells["id_pedido"].Value.ToString());
             }
             else
             {
@@ -183,7 +184,7 @@ namespace Articulos_Frontend
             Log.Info("Doble clic en cliente para editar la información.");
             if (e.RowIndex >= 0)
             {
-                string id = dgvCliente.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString();
+                string id = dgvPedido.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString();
                 Pedido pedido = await PedidoApiClient.BuscarPorIdPedido(id);
                 var formActualizado = new PedidoUpdateForm(pedido);
                 WindowManager.ShowForm(

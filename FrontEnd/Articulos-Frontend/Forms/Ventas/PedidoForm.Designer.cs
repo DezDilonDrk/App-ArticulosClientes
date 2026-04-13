@@ -30,7 +30,7 @@ namespace Articulos_Frontend
         private Button BotonMenosC;
         private Label labelNombreCliente;
         private Button BotonBuscar;
-        private DataGridView dgvCliente;
+        private DataGridView dgvPedido;
         private Button Filtros;
         private Panel panelFiltros;
         private GroupBox FiltroFecha;
@@ -57,7 +57,7 @@ namespace Articulos_Frontend
             labelNombreCliente = new Label();
             BotonBuscar = new Button();
             textBoxCliente = new TextBox();
-            dgvCliente = new DataGridView();
+            dgvPedido = new DataGridView();
             Filtros = new Button();
             panelFiltros = new Panel();
             FiltroFecha = new GroupBox();
@@ -69,7 +69,7 @@ namespace Articulos_Frontend
             panelDGV = new Panel();
             panel1 = new Panel();
             BuscarNombre = new GroupBox();
-            ((ISupportInitialize)dgvCliente).BeginInit();
+            ((ISupportInitialize)dgvPedido).BeginInit();
             panelFiltros.SuspendLayout();
             FiltroFecha.SuspendLayout();
             panelMain.SuspendLayout();
@@ -156,38 +156,38 @@ namespace Articulos_Frontend
             // 
             // dgvCliente
             // 
-            dgvCliente.BackgroundColor = Color.FromArgb(42, 42, 42);
+            dgvPedido.BackgroundColor = Color.FromArgb(42, 42, 42);
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = Color.FromArgb(60, 60, 60);
             dataGridViewCellStyle1.ForeColor = Color.FromArgb(242, 242, 242);
             dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(60, 60, 60);
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvCliente.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvCliente.ColumnHeadersHeight = 40;
-            dgvCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvCliente.Dock = DockStyle.Fill;
-            dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
-            dgvCliente.EnableHeadersVisualStyles = false;
-            dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
-            dgvCliente.Location = new Point(0, 0);
-            dgvCliente.MultiSelect = false;
-            dgvCliente.Name = "dgvCliente";
-            dgvCliente.ReadOnly = true;
+            dgvPedido.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvPedido.ColumnHeadersHeight = 40;
+            dgvPedido.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPedido.Dock = DockStyle.Fill;
+            dgvPedido.EditMode = DataGridViewEditMode.EditOnEnter;
+            dgvPedido.EnableHeadersVisualStyles = false;
+            dgvPedido.GridColor = Color.FromArgb(42, 42, 42);
+            dgvPedido.Location = new Point(0, 0);
+            dgvPedido.MultiSelect = false;
+            dgvPedido.Name = "dgvCliente";
+            dgvPedido.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(60, 60, 60);
             dataGridViewCellStyle2.ForeColor = Color.FromArgb(242, 242, 242);
             dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvCliente.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvCliente.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
-            dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
-            dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
-            dgvCliente.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvCliente.Size = new Size(648, 267);
-            dgvCliente.TabIndex = 5;
-            dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
+            dgvPedido.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvPedido.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
+            dgvPedido.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
+            dgvPedido.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
+            dgvPedido.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvPedido.Size = new Size(648, 267);
+            dgvPedido.TabIndex = 5;
+            dgvPedido.CellDoubleClick += dgvCliente_CellDoubleClick;
             // 
             // Filtros
             // 
@@ -286,7 +286,7 @@ namespace Articulos_Frontend
             // 
             // panelDGV
             // 
-            panelDGV.Controls.Add(dgvCliente);
+            panelDGV.Controls.Add(dgvPedido);
             panelDGV.Dock = DockStyle.Fill;
             panelDGV.Location = new Point(0, 125);
             panelDGV.Name = "panelDGV";
@@ -329,9 +329,9 @@ namespace Articulos_Frontend
             MinimumSize = new Size(848, 431);
             Name = "ClienteForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = stringValuesSP.listaClientes;
+            Text = stringValuesSP.listaPedidos;
             Load += PedidosForm_Load;
-            ((ISupportInitialize)dgvCliente).EndInit();
+            ((ISupportInitialize)dgvPedido).EndInit();
             panelFiltros.ResumeLayout(false);
             FiltroFecha.ResumeLayout(false);
             FiltroFecha.PerformLayout();
