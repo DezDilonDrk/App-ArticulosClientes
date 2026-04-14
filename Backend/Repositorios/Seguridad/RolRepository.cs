@@ -20,7 +20,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT Id, Nombre FROM Roles";
+                string sql = "SELECT Id, Nombre, Descripcion FROM Roles";
                 return db.Query<Rol>(sql).ToList();
             }
         }
@@ -29,7 +29,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT Id, Nombre FROM Roles WHERE Id = @Id";
+                string sql = "SELECT Id, Nombre, Descripcion FROM Roles WHERE Id = @Id";
                 return db.QueryFirstOrDefault<Rol>(sql, new { Id = id });
             }
         }
@@ -38,7 +38,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT Id, Nombre FROM Roles WHERE Nombre = @Nombre";
+                string sql = "SELECT Id, Nombre, Descripcion FROM Roles WHERE Nombre = @Nombre";
                 return db.QueryFirstOrDefault<Rol>(sql, new { Nombre = nombre });
             }
         }
@@ -47,8 +47,8 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "INSERT INTO Roles (Nombre) VALUES (@Nombre); SELECT CAST(SCOPE_IDENTITY() as int);";
-                var id = db.QuerySingle<int>(sql, new { Nombre = rol.Nombre });
+                string sql = "INSERT INTO Roles (Nombre, Descripcion) VALUES (@Nombre, @Descripcion); SELECT CAST(SCOPE_IDENTITY() as int);";
+                var id = db.QuerySingle<int>(sql, new { Nombre = rol.Nombre, Descripcion = rol.Descripcion });
                 return id;
             }
         }
@@ -57,8 +57,8 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "UPDATE Roles SET Nombre = @Nombre WHERE Id = @Id";
-                db.Execute(sql, new { Nombre = rol.Nombre, Id = rol.Id });
+                string sql = "UPDATE Roles SET Nombre = @Nombre, Descripcion = @Descripcion WHERE Id = @Id";
+                db.Execute(sql, new { Nombre = rol.Nombre, Descripcion = rol.Descripcion, Id = rol.Id });
             }
         }
 

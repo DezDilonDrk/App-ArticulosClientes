@@ -37,11 +37,15 @@ namespace Articulos_Frontend
             clientesToolStripMenuItem = new ToolStripMenuItem();
             productosToolStripMenuItem = new ToolStripMenuItem();
             mnuVentanas = new ToolStripMenuItem();
+            seguridadToolStripMenuItem = new ToolStripMenuItem();
+            almacenToolStripMenuItem = new ToolStripMenuItem();
+            ventasToolStripMenuItem = new ToolStripMenuItem();
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             buttonTerminal = new Button();
             buttonLogout = new Button();
             statusStripMenu = new StatusStrip();
             toolStripStatusLabelUser = new ToolStripStatusLabel();
+            toolStripStatusLabelEmail = new ToolStripStatusLabel();
             menuStripAC.SuspendLayout();
             statusStripMenu.SuspendLayout();
             SuspendLayout();
@@ -49,7 +53,7 @@ namespace Articulos_Frontend
             // menuStripAC
             // 
             menuStripAC.ImageScalingSize = new Size(20, 20);
-            menuStripAC.Items.AddRange(new ToolStripItem[] { articulosToolStripMenuItem, clientesToolStripMenuItem, productosToolStripMenuItem, mnuVentanas });
+            menuStripAC.Items.AddRange(new ToolStripItem[] { articulosToolStripMenuItem, clientesToolStripMenuItem, productosToolStripMenuItem, seguridadToolStripMenuItem, almacenToolStripMenuItem, ventasToolStripMenuItem, mnuVentanas });
             menuStripAC.Location = new Point(0, 0);
             menuStripAC.Name = "menuStripAC";
             menuStripAC.Padding = new Padding(4, 2, 0, 2);
@@ -58,10 +62,10 @@ namespace Articulos_Frontend
             menuStripAC.Tag = "menuStrip";
             menuStripAC.Text = "menuStrip";
             // 
-            // artículosToolStripMenuItem
+            // articulosToolStripMenuItem
             // 
             articulosToolStripMenuItem.Name = "articulosToolStripMenuItem";
-            articulosToolStripMenuItem.Size = new Size(249, 20);
+            articulosToolStripMenuItem.Size = new Size(12, 20);
             articulosToolStripMenuItem.Click += artículosToolStripMenuItem_Click;
             // 
             // clientesToolStripMenuItem
@@ -81,6 +85,25 @@ namespace Articulos_Frontend
             mnuVentanas.Name = "mnuVentanas";
             mnuVentanas.Size = new Size(12, 20);
             mnuVentanas.Click += mnuVentanas_Click;
+            // 
+            // seguridadToolStripMenuItem
+            // 
+            seguridadToolStripMenuItem.Name = "seguridadToolStripMenuItem";
+            seguridadToolStripMenuItem.Size = new Size(72, 20);
+            seguridadToolStripMenuItem.Text = "Seguridad";
+            seguridadToolStripMenuItem.Click += seguridadToolStripMenuItem_Click;
+            // 
+            // almacenToolStripMenuItem
+            // 
+            almacenToolStripMenuItem.Name = "almacenToolStripMenuItem";
+            almacenToolStripMenuItem.Size = new Size(66, 20);
+            almacenToolStripMenuItem.Text = "Almacén";
+            // 
+            // ventasToolStripMenuItem
+            // 
+            ventasToolStripMenuItem.Name = "ventasToolStripMenuItem";
+            ventasToolStripMenuItem.Size = new Size(53, 20);
+            ventasToolStripMenuItem.Text = "Ventas";
             // 
             // ventanasToolStripMenuItem
             // 
@@ -109,7 +132,8 @@ namespace Articulos_Frontend
             // 
             // statusStripMenu
             // 
-            statusStripMenu.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelUser });
+            statusStripMenu.AutoSize = false;
+            statusStripMenu.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelUser, toolStripStatusLabelEmail });
             statusStripMenu.Location = new Point(0, 469);
             statusStripMenu.Name = "statusStripMenu";
             statusStripMenu.Size = new Size(914, 22);
@@ -121,6 +145,12 @@ namespace Articulos_Frontend
             toolStripStatusLabelUser.Name = "toolStripStatusLabelUser";
             toolStripStatusLabelUser.Size = new Size(50, 17);
             toolStripStatusLabelUser.Text = "Usuario:";
+            // 
+            // toolStripStatusLabelEmail
+            // 
+            toolStripStatusLabelEmail.Name = "toolStripStatusLabelEmail";
+            toolStripStatusLabelEmail.Size = new Size(39, 17);
+            toolStripStatusLabelEmail.Text = "Email:";
             // 
             // Menu
             // 
@@ -159,5 +189,9 @@ namespace Articulos_Frontend
         private Button buttonLogout;
         private StatusStrip statusStripMenu;
         private ToolStripStatusLabel toolStripStatusLabelUser;
+        private ToolStripStatusLabel toolStripStatusLabelEmail;
+        private ToolStripMenuItem seguridadToolStripMenuItem;
+        private ToolStripMenuItem almacenToolStripMenuItem;
+        private ToolStripMenuItem ventasToolStripMenuItem;
     }
 }

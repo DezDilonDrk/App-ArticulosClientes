@@ -20,6 +20,7 @@ namespace Articulos_Frontend.Client
             {
                 httpClient = new HttpClient();
                 httpClient.BaseAddress = new Uri("http://PT-0057:5000");
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
             }
             catch
             {
@@ -31,7 +32,6 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
                 return await httpClient.GetFromJsonAsync<List<Cliente>>("/clientes");
             }
             catch

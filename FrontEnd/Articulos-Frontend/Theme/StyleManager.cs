@@ -39,6 +39,11 @@ public static class StyleManager
                 lbl.Font = new Font("Intercom", 9, FontStyle.Regular);
             }
         }*/
+        if(control is StatusStrip ss) { 
+            ss.BackColor = ColorPalette.GridHeader;
+            ss.ForeColor = ColorPalette.TextPrimary;
+            ss.Font = new Font("Intercom", 9, FontStyle.Regular);
+        }
         if (control is Label lbl)
         {
             lbl.ForeColor = ColorPalette.TextPrimary;

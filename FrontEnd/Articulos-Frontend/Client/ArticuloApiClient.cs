@@ -15,6 +15,7 @@ public class ArticuloApiClient
         try {
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("http://PT-0041:5000");
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
         } catch { 
             Log.Error("No se pudo conectar al servidor API.");
              throw new Exception("Error al conectar con el servidor API.");
@@ -23,7 +24,7 @@ public class ArticuloApiClient
     public async Task<List<Articulo>> ObtenerArticulos()
     {
         try {
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
+            
 
             var response = await httpClient.GetAsync("/articulos");
 
