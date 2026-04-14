@@ -15,7 +15,7 @@ public static class ClienteEndpoints
                 return cliente is not null
                     ? Results.Ok(cliente)
                     : Results.NotFound();
-            }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminClientes, Roles.UserClientes))
+            }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas, Roles.UserVentas))
             .Produces<Cliente>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
         app.MapGet("/clientes", (string? nombre) => {
@@ -23,7 +23,7 @@ public static class ClienteEndpoints
                 ? repo.ObtenerClientes()
                 : repo.BuscarPorNombre(nombre);
             return Results.Ok(clientes);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminClientes, Roles.UserClientes)).Produces<List<Cliente>>(StatusCodes.Status200OK);
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas, Roles.UserVentas)).Produces<List<Cliente>>(StatusCodes.Status200OK);
         app.MapPost("/clientes", (Cliente cliente) =>
         {
             var existente = repo.ObtenerPorDni(cliente.Dni);
@@ -33,7 +33,7 @@ public static class ClienteEndpoints
             }
             repo.Insertar(cliente);
             return Results.Created($"/clientes/{cliente.Dni}", cliente);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminClientes))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces<Cliente>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/clientes/{dni}", (string dni, Cliente clienteActualizado) =>
@@ -46,7 +46,7 @@ public static class ClienteEndpoints
             clienteActualizado.Dni = dni;
             repo.Actualizar(clienteActualizado);
             return Results.Ok(clienteActualizado);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminClientes))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces<Cliente>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
@@ -59,7 +59,7 @@ public static class ClienteEndpoints
             }
             repo.Eliminar(dni);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminClientes))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status404NotFound);
         return app;

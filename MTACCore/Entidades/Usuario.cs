@@ -21,6 +21,7 @@ namespace MTCore_AC.Entidades
             this.Contrasena = contrasena;
         }
 
+
         public Usuario(string correoElectronico, string contrasena)
         {
             this.CorreoElectronico = correoElectronico;

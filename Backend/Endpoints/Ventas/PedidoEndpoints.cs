@@ -32,10 +32,10 @@ public static class PedidoEndpoints
         app.MapPost("/pedidos", (Pedido pedido) =>
         {
             repo.Insertar(pedido);
-      //      foreach(PedidoArticulos a in pedido.articulos) { 
-      //          a.id_pedido = pedido.id_pedido;
-       //         repo.AgregarArticulo(a);
-      //      }
+           foreach(PedidoArticulos a in pedido.articulos) { 
+               a.id_pedido = pedido.id_pedido;
+               repo.AgregarArticulo(a);
+            }
             return Results.Created($"/pedidos/{pedido.id_pedido}", pedido);
         })
         .Produces<Cliente>(StatusCodes.Status201Created)

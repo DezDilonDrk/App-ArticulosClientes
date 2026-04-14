@@ -18,6 +18,8 @@ public partial class ArticuloForm : Form
     private ArticuloApiClient api;
     private Usuario user;
     private bool admin = true;
+    public string ModoInvocacion;
+    public Articulo articuloSeleccionado;
 
     public ArticuloForm(Usuario usuario)
     {
@@ -32,6 +34,20 @@ public partial class ArticuloForm : Form
         comboBoxCategoria.DataSource = categorias.ToList();
         comboBoxCategoria.SelectedIndex = -1;
         Log.Info("Formulario de artículos iniciado.");
+    }
+    public ArticuloForm()
+    {
+        InitializeComponent();
+        string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
+        //repo = new ArticuloRepository(connStr);
+        api = new ArticuloApiClient();
+        StyleManager.StyleForm(this);
+        user = new Usuario("Guest Mode ON", "Guest", "Guest2026");
+        usuarioActual.Text = $"Usuario: {user.CorreoElectronico}";
+        var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
+        comboBoxCategoria.DataSource = categorias.ToList();
+        comboBoxCategoria.SelectedIndex = -1;
+        Log.Info("Formulario de artículos iniciado en modo Guest");
     }
 
     private void ArticuloForm_Load(object sender, EventArgs e)
@@ -63,8 +79,6 @@ public partial class ArticuloForm : Form
             form.FormClosed += (s, e) => cargarArticulos(null);
             return form;
         }
-        
-
     );
     }
 
@@ -153,6 +167,21 @@ public partial class ArticuloForm : Form
 
     private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
+        if (ModoInvocacion == "CrearPedido")
+        {
+            articuloSeleccionado = new Articulo
+            {
+                id = (int)dataGridView1.Rows[e.RowIndex].Cells["Id"].Value,
+                nombre = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString(),
+                precio = (decimal)dataGridView1.Rows[e.RowIndex].Cells["Precio"].Value,
+                categoria = dataGridView1.Rows[e.RowIndex].Cells["Categoria"].Value.ToString(),
+                FechaCreacion = (DateTime)dataGridView1.Rows[e.RowIndex].Cells["FechaCreacion"].Value,
+                FechaActualizacion = dataGridView1.Rows[e.RowIndex].Cells["FechaActualizacion"].Value as DateTime?
+            };
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+            return;
+        }
         if (!admin)
         {
             MessageBox.Show("No tienes permisos para editar artículos.");

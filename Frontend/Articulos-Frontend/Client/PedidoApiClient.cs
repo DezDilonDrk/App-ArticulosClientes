@@ -102,7 +102,7 @@ namespace Articulos_Frontend.Client
                 throw new Exception("Error al conectar con el servidor API.");
             }
         }
-        /*public async Task AgregarArticulos(List<PedidoArticulos> articulos)
+        public async Task AgregarArticulos(List<PedidoArticulos> articulos)
         {
             try
             {
@@ -116,6 +116,6 @@ namespace Articulos_Frontend.Client
                 Log.Error("No se pudo conectar al servidor API.");
                 throw new Exception("Error al conectar con el servidor API.");
             }
-        }*/
+        }
     }
 }

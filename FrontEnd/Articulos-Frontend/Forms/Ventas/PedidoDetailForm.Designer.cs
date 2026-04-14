@@ -46,5 +46,8 @@
 
         private ComboBox comboBoxImpuestos;
         private ComboBox comboBoxMetodoPago;
+        private DataGridView dataGridViewArticulos;
+        private Button button2;
+        private Button button3;
     }
 }
