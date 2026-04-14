@@ -1,4 +1,5 @@
 using Articulos_Frontend.Client;
+using Articulos_Frontend.Forms.Seguridad;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
@@ -7,8 +8,6 @@ namespace Articulos_Frontend
 {
     public partial class Menu : Form
     {
-        private ArticuloForm articuloForm;
-        private ClienteForm clienteForm;
         ShowTerminal terminal;
         private Usuario user;
         public Menu(UsuarioApiClient api, Usuario usuario)
@@ -24,6 +23,8 @@ namespace Articulos_Frontend
             this.mnuVentanas.Text = stringValuesSP.ventanas;
             this.buttonTerminal.Text = stringValuesSP.terminal;
             this.buttonLogout.Text = stringValuesSP.logout;
+            toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}  |";
+            toolStripStatusLabelEmail.Text = $"|  Email: {usuario.CorreoElectronico}";
         }
         public void Menu_Load(object sender, EventArgs e)
         {
@@ -64,6 +65,25 @@ namespace Articulos_Frontend
                 return new PedidoForm();
             });
         }
+        private void seguridadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dropDown = new ContextMenuStrip();
+            var usuarioItem = new ToolStripMenuItem("UsuarioForm");
+            var rolItem = new ToolStripMenuItem("RolForm");
+            usuarioItem.Click += (s, ev) =>
+            {
+                WindowManager.ShowForm("UsuarioForm", this, () => new UsuarioForm(new UsuarioApiClient()));
+            };
+            rolItem.Click += (s, ev) =>
+            {
+                WindowManager.ShowForm("RolForm", this, () => new RolForm(new RolApiClient()));
+            };
+            dropDown.Items.Add(usuarioItem);
+            dropDown.Items.Add(rolItem);
+            var parent = seguridadToolStripMenuItem.GetCurrentParent();
+            var bounds = seguridadToolStripMenuItem.Bounds;
+            dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
+        }
 
         private void mnuVentanas_Click(object sender, EventArgs e)
         {
@@ -85,9 +105,11 @@ namespace Articulos_Frontend
 
                     var item = new ToolStripMenuItem(form.Text);
                     item.Click += (s, ev) => WindowManager.Activate(key);
-
-                    dropDown.Items.Add(item);
-                }
+                    if(item.Text != "Menú")
+                    {
+                        dropDown.Items.Add(item);
+                    }
+                };
             }
 
             var parent = mnuVentanas.GetCurrentParent();

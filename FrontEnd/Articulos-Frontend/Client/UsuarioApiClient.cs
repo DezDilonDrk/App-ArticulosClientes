@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using static MTCore_AC.DTO.LoginDtos;
 
 namespace Articulos_Frontend.Client;
@@ -18,7 +19,7 @@ public class UsuarioApiClient
         try
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://PT-0057:5000");
+            httpClient.BaseAddress = new Uri("http://PT-0041:5000");
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
         }
         catch
@@ -43,6 +44,7 @@ public class UsuarioApiClient
     {
         try
         {
+
             var response = await httpClient.GetAsync("/usuarios");
             if (!response.IsSuccessStatusCode)
             {
@@ -51,10 +53,25 @@ public class UsuarioApiClient
             }
             return await response.Content.ReadFromJsonAsync<List<Usuario>>() ?? new List<Usuario>();
         }
-        catch
+        catch (HttpRequestException ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }
+        catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error($"Error deserializando JSON: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error inesperado: {ex.Message}");
+            throw;
         }
     }
 

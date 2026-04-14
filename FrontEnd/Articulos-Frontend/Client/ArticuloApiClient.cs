@@ -24,7 +24,7 @@ public class ArticuloApiClient
     public async Task<List<Articulo>> ObtenerArticulos()
     {
         try {
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
+            
 
             var response = await httpClient.GetAsync("/articulos");
 
