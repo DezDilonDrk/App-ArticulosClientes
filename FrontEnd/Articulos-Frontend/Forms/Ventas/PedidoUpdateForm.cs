@@ -55,11 +55,13 @@ namespace Articulos_Frontend
             comboBoxEstado = new ComboBox();
             comboBoxImpuestos = new ComboBox();
             comboBoxMetodoPago = new ComboBox();
+            dataGridViewArticulos = new DataGridView();
+            ((ISupportInitialize)dataGridViewArticulos).BeginInit();
             SuspendLayout();
             // 
             // textBoxDniCliente
             // 
-            textBoxDniCliente.Location = new Point(237, 116);
+            textBoxDniCliente.Location = new Point(237, 111);
             textBoxDniCliente.Name = "textBoxDniCliente";
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(247, 23);
@@ -70,7 +72,7 @@ namespace Articulos_Frontend
             // 
             LabelIdPedido.BackColor = Color.Transparent;
             LabelIdPedido.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelIdPedido.Location = new Point(69, 89);
+            LabelIdPedido.Location = new Point(69, 84);
             LabelIdPedido.Name = "LabelIdPedido";
             LabelIdPedido.Size = new Size(162, 21);
             LabelIdPedido.TabIndex = 4;
@@ -82,7 +84,7 @@ namespace Articulos_Frontend
             // 
             LabelDniCliente.BackColor = Color.Transparent;
             LabelDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDniCliente.Location = new Point(69, 118);
+            LabelDniCliente.Location = new Point(69, 113);
             LabelDniCliente.Name = "LabelDniCliente";
             LabelDniCliente.Size = new Size(162, 21);
             LabelDniCliente.TabIndex = 5;
@@ -94,7 +96,7 @@ namespace Articulos_Frontend
             // 
             LabelMetodoPago.BackColor = Color.Transparent;
             LabelMetodoPago.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelMetodoPago.Location = new Point(69, 147);
+            LabelMetodoPago.Location = new Point(69, 142);
             LabelMetodoPago.Name = "LabelMetodoPago";
             LabelMetodoPago.Size = new Size(162, 21);
             LabelMetodoPago.TabIndex = 6;
@@ -106,7 +108,7 @@ namespace Articulos_Frontend
             // 
             LabelEstado.BackColor = Color.Transparent;
             LabelEstado.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelEstado.Location = new Point(69, 176);
+            LabelEstado.Location = new Point(69, 171);
             LabelEstado.Name = "LabelEstado";
             LabelEstado.Size = new Size(162, 21);
             LabelEstado.TabIndex = 7;
@@ -121,7 +123,7 @@ namespace Articulos_Frontend
             BotonCrearC.BackColor = SystemColors.MenuHighlight;
             BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             BotonCrearC.ForeColor = SystemColors.ControlLightLight;
-            BotonCrearC.Location = new Point(301, 247);
+            BotonCrearC.Location = new Point(418, 392);
             BotonCrearC.Name = "BotonCrearC";
             BotonCrearC.Size = new Size(150, 30);
             BotonCrearC.TabIndex = 5;
@@ -133,7 +135,7 @@ namespace Articulos_Frontend
             // 
             LabelTitulo.BackColor = Color.Transparent;
             LabelTitulo.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            LabelTitulo.Location = new Point(135, 18);
+            LabelTitulo.Location = new Point(190, 9);
             LabelTitulo.Name = "LabelTitulo";
             LabelTitulo.Size = new Size(316, 36);
             LabelTitulo.TabIndex = 0;
@@ -142,7 +144,7 @@ namespace Articulos_Frontend
             // 
             // textBoxId
             // 
-            textBoxId.Location = new Point(237, 87);
+            textBoxId.Location = new Point(237, 82);
             textBoxId.Name = "textBoxId";
             textBoxId.PlaceholderText = "Introduzca el id";
             textBoxId.ReadOnly = true;
@@ -153,7 +155,7 @@ namespace Articulos_Frontend
             // 
             LabelImpuestos.BackColor = Color.Transparent;
             LabelImpuestos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelImpuestos.Location = new Point(69, 205);
+            LabelImpuestos.Location = new Point(69, 200);
             LabelImpuestos.Name = "LabelImpuestos";
             LabelImpuestos.Size = new Size(162, 21);
             LabelImpuestos.TabIndex = 11;
@@ -166,7 +168,7 @@ namespace Articulos_Frontend
             comboBoxEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxEstado.FlatStyle = FlatStyle.Flat;
             comboBoxEstado.FormattingEnabled = true;
-            comboBoxEstado.Location = new Point(237, 174);
+            comboBoxEstado.Location = new Point(237, 169);
             comboBoxEstado.Name = "comboBoxEstado";
             comboBoxEstado.Size = new Size(247, 23);
             comboBoxEstado.TabIndex = 12;
@@ -175,7 +177,7 @@ namespace Articulos_Frontend
             // comboBoxImpuestos
             // 
             comboBoxImpuestos.FormattingEnabled = true;
-            comboBoxImpuestos.Location = new Point(237, 203);
+            comboBoxImpuestos.Location = new Point(237, 198);
             comboBoxImpuestos.Name = "comboBoxImpuestos";
             comboBoxImpuestos.Size = new Size(247, 23);
             comboBoxImpuestos.TabIndex = 13;
@@ -184,15 +186,24 @@ namespace Articulos_Frontend
             // comboBoxMetodoPago
             // 
             comboBoxMetodoPago.FormattingEnabled = true;
-            comboBoxMetodoPago.Location = new Point(237, 145);
+            comboBoxMetodoPago.Location = new Point(237, 140);
             comboBoxMetodoPago.Name = "comboBoxMetodoPago";
             comboBoxMetodoPago.Size = new Size(247, 23);
             comboBoxMetodoPago.TabIndex = 14;
             comboBoxMetodoPago.Tag = "comboBox";
             // 
+            // dgvPedido
+            // 
+            dataGridViewArticulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewArticulos.Location = new Point(12, 236);
+            dataGridViewArticulos.Name = "dgvPedido";
+            dataGridViewArticulos.Size = new Size(556, 150);
+            dataGridViewArticulos.TabIndex = 15;
+            // 
             // PedidoUpdateForm
             // 
-            ClientSize = new Size(580, 363);
+            ClientSize = new Size(704, 434);
+            Controls.Add(dataGridViewArticulos);
             Controls.Add(comboBoxMetodoPago);
             Controls.Add(comboBoxImpuestos);
             Controls.Add(comboBoxEstado);
@@ -207,10 +218,10 @@ namespace Articulos_Frontend
             Controls.Add(textBoxDniCliente);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
-            MaximumSize = new Size(596, 402);
             MinimumSize = new Size(596, 402);
             Name = "PedidoUpdateForm";
             StartPosition = FormStartPosition.CenterParent;
+            ((ISupportInitialize)dataGridViewArticulos).EndInit();
             ResumeLayout(false);
             PerformLayout();
 

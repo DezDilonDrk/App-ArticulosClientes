@@ -55,16 +55,16 @@ public partial class ArticuloForm : Form
         Log.Info("Cargando artículos en el formulario.");
         cargarArticulos(null);
         panelFiltros.Visible = false;
-        if (!AppState.Roles.Contains("ADMIN_ARTICULOS"))
+        /*if (!AppState.Roles.Contains("ADMIN_ARTICULOS"))
         {
             BotonAdd.Enabled = false;
             BotonDel.Enabled = false;
             admin = false;
 
         }else
-        {
+        {*/
             admin = true;
-        }
+        //}
     }
 
     private void botonAdd_Click(object sender, EventArgs e)

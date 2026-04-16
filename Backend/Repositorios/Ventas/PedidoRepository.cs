@@ -90,7 +90,7 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = $"INSERT INTO Pedido_Articulos (id_pedido, id_articulo) VALUES (@id_pedido,@id_articulo)";
+                string sql = $"INSERT INTO Pedido_Articulos (id_pedido, id_articulo, cantidad, precio_unidad) VALUES (@id_pedido,@id_articulo, @cantidad, @precio_unidad)";
                 db.Execute(sql, articulo);
             }
         }

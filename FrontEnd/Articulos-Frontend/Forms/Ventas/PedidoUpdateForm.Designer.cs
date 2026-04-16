@@ -41,5 +41,6 @@
         private ComboBox comboBoxEstado;
         private ComboBox comboBoxImpuestos;
         private ComboBox comboBoxMetodoPago;
+        private DataGridView dataGridViewArticulos;
     }
 }

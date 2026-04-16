@@ -49,5 +49,7 @@
         private DataGridView dataGridViewArticulos;
         private Button button2;
         private Button button3;
+        private Label labelTotal;
+        private Label labelTotalCantidades;
     }
 }
