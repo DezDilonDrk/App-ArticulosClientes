@@ -16,16 +16,18 @@ namespace Articulos_Frontend
     public partial class PedidoDetailForm : Form
     {
         private PedidoApiClient pedidoApiClient;
+        private string state;
         private ClienteApiClient clienteApiClient = new ClienteApiClient();
         private Pedido pedidoCreated;
         public event Action<Pedido> PedidoCreadoCorrectamente;
         BindingList<LineaPedido> articulos = new BindingList<LineaPedido> { };
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoDetailForm()
+        public PedidoDetailForm(string State)
         {
             InitializeComponent();
             LabelTitulo.Text = stringValuesSP.crearPedido;
             this.Text = stringValuesSP.crearPedido;
+            this.state = State;
             var impuestos = new List<string> { "21", "10", "4", "0" };
             var metodosPago = new List<string> { "Tarjeta de Crédito", "PayPal", "Transferencia Bancaria", "Contra Reembolso" };
             comboBoxImpuestos.DataSource = impuestos;
@@ -247,6 +249,9 @@ namespace Articulos_Frontend
 
         private async void BotonCrearC_Click(object sender, EventArgs e)
         {
+            if (this.state == "Create") { 
+                return; //Recien probé el state aquí
+            }
             if (!validarCamposLlenos()) return;
             if (!await ValidarDni(textBoxDniCliente.Text)) return;
             try
@@ -434,6 +439,7 @@ namespace Articulos_Frontend
                 }
                 if (dataGridViewArticulos.Columns["TotalLinea"] != null)
                 {
+                    dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     dataGridViewArticulos.Columns["TotalLinea"].Resizable = DataGridViewTriState.False;
                     dataGridViewArticulos.Columns["TotalLinea"].HeaderText = "Total de la Linea";
@@ -508,7 +514,6 @@ namespace Articulos_Frontend
             decimal impuestos;
             if (string.IsNullOrEmpty(comboBoxImpuestos.Text))
             {
-
                 impuestos = 0;
             }
             else

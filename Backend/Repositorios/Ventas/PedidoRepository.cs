@@ -75,6 +75,13 @@ namespace Articulos_Backend.Repositorios.Ventas
                                WHERE id_pedido = @id_pedido";
 
                 db.Execute(sql, pedido);
+                string sql2= @"DELETE FROM Pedido_Articulos WHERE id_pedido = @id_pedido";
+                db.Execute(sql2, pedido);
+                foreach (var articulo in pedido.articulos)
+                {
+                    string sql3 = @"INSERT INTO Pedido_Articulos (id_pedido, id_articulo, cantidad, precio_unidad) VALUES (@id_pedido,@id_articulo, @cantidad, @precio_unidad)";
+                    db.Execute(sql3, articulo);
+                }
             }
         }
         public void Eliminar(string id)

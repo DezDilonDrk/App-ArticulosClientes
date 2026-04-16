@@ -224,7 +224,6 @@ namespace Articulos_Frontend
             ((ISupportInitialize)dataGridViewArticulos).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
         }
 
         private async void BotonActualizarC_Click(object sender, EventArgs e)
@@ -274,11 +273,11 @@ namespace Articulos_Frontend
         {
            using (var form = new ClienteForm())
             {
-                form.ModoInvocacion = "CrearPedido";
+                form.ModoInvocacion = "ActualizarPedido";
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     textBoxDniCliente.Text = form.DniSeleccionado;
-                    Log.Info($"Cliente seleccionado para pedido con Dni: {form.DniSeleccionado}");
+                    Log.Info($"Cliente seleccionado para actualizar pedido con Dni: {form.DniSeleccionado}");
                 }
             }
         }
