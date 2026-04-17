@@ -53,6 +53,7 @@
             emailText.Name = "emailText";
             emailText.Size = new Size(201, 23);
             emailText.TabIndex = 1;
+            emailText.KeyPress += emailText_keyPress;
             // 
             // contrasenaText
             // 
@@ -62,6 +63,7 @@
             contrasenaText.Size = new Size(201, 23);
             contrasenaText.TabIndex = 2;
             contrasenaText.UseSystemPasswordChar = true;
+            contrasenaText.KeyPress += contrasenaText_keyPress;
             // 
             // emailLabel
             // 
@@ -107,6 +109,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
+
         }
 
         #endregion
