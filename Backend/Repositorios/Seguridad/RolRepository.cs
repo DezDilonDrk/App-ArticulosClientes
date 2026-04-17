@@ -25,6 +25,15 @@ namespace Articulos_Backend.Repositorios.Seguridad
             }
         }
 
+        public IEnumerable<Rol> ObtenerNombreRoles()
+        {
+            using (var db = Connection)
+            {
+                string sql = "SELECT Nombre FROM Roles";
+                return db.Query<Rol>(sql).ToList();
+            }
+        }
+
         public Rol ObtenerPorId(int id)
         {
             using (var db = Connection)

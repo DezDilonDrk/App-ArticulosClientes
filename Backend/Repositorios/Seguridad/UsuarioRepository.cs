@@ -71,6 +71,20 @@ namespace Articulos_Backend.Repositorios.Seguridad
             }
         }
 
+        public void ActualizarRoles(string correoElectronico, List<string> roles)
+        {
+            using (var db = Connection)
+            {
+                string deleteSql = "DELETE FROM UsuarioRoles WHERE UsuarioEmail = @CorreoElectronico";
+                db.Execute(deleteSql, new { CorreoElectronico = correoElectronico });
+                string insertSql = "INSERT INTO UsuarioRoles (UsuarioEmail, RolId) VALUES (@CorreoElectronico, (SELECT Id FROM Roles WHERE Nombre = @RolNombre))";
+                foreach (var rol in roles)
+                {
+                    db.Execute(insertSql, new { CorreoElectronico = correoElectronico, RolNombre = rol });
+                }
+            }
+        }
+
         public void Eliminar(string correoElectronico)
         {
             using (var db = Connection)

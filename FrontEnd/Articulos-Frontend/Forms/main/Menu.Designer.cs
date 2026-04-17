@@ -33,13 +33,10 @@ namespace Articulos_Frontend
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             menuStripAC = new MenuStrip();
-            articulosToolStripMenuItem = new ToolStripMenuItem();
-            clientesToolStripMenuItem = new ToolStripMenuItem();
-            productosToolStripMenuItem = new ToolStripMenuItem();
-            mnuVentanas = new ToolStripMenuItem();
             seguridadToolStripMenuItem = new ToolStripMenuItem();
             almacenToolStripMenuItem = new ToolStripMenuItem();
             ventasToolStripMenuItem = new ToolStripMenuItem();
+            mnuVentanas = new ToolStripMenuItem();
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             buttonTerminal = new Button();
             buttonLogout = new Button();
@@ -53,7 +50,7 @@ namespace Articulos_Frontend
             // menuStripAC
             // 
             menuStripAC.ImageScalingSize = new Size(20, 20);
-            menuStripAC.Items.AddRange(new ToolStripItem[] { articulosToolStripMenuItem, clientesToolStripMenuItem, productosToolStripMenuItem, seguridadToolStripMenuItem, almacenToolStripMenuItem, ventasToolStripMenuItem, mnuVentanas });
+            menuStripAC.Items.AddRange(new ToolStripItem[] { seguridadToolStripMenuItem, almacenToolStripMenuItem, ventasToolStripMenuItem, mnuVentanas });
             menuStripAC.Location = new Point(0, 0);
             menuStripAC.Name = "menuStripAC";
             menuStripAC.Padding = new Padding(4, 2, 0, 2);
@@ -61,30 +58,6 @@ namespace Articulos_Frontend
             menuStripAC.TabIndex = 0;
             menuStripAC.Tag = "menuStrip";
             menuStripAC.Text = "menuStrip";
-            // 
-            // articulosToolStripMenuItem
-            // 
-            articulosToolStripMenuItem.Name = "articulosToolStripMenuItem";
-            articulosToolStripMenuItem.Size = new Size(12, 20);
-            articulosToolStripMenuItem.Click += artículosToolStripMenuItem_Click;
-            // 
-            // clientesToolStripMenuItem
-            // 
-            clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-            clientesToolStripMenuItem.Size = new Size(12, 20);
-            clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
-            // 
-            // productosToolStripMenuItem
-            // 
-            productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            productosToolStripMenuItem.Size = new Size(12, 20);
-            productosToolStripMenuItem.Click += productosToolStripMenuItem_Click;
-            // 
-            // mnuVentanas
-            // 
-            mnuVentanas.Name = "mnuVentanas";
-            mnuVentanas.Size = new Size(12, 20);
-            mnuVentanas.Click += mnuVentanas_Click;
             // 
             // seguridadToolStripMenuItem
             // 
@@ -98,12 +71,20 @@ namespace Articulos_Frontend
             almacenToolStripMenuItem.Name = "almacenToolStripMenuItem";
             almacenToolStripMenuItem.Size = new Size(66, 20);
             almacenToolStripMenuItem.Text = "Almacén";
+            almacenToolStripMenuItem.Click += almacenToolStripMenuItem_Click;
             // 
             // ventasToolStripMenuItem
             // 
             ventasToolStripMenuItem.Name = "ventasToolStripMenuItem";
             ventasToolStripMenuItem.Size = new Size(53, 20);
             ventasToolStripMenuItem.Text = "Ventas";
+            ventasToolStripMenuItem.Click += ventasToolStripMenuItem_Click;
+            // 
+            // mnuVentanas
+            // 
+            mnuVentanas.Name = "mnuVentanas";
+            mnuVentanas.Size = new Size(12, 20);
+            mnuVentanas.Click += mnuVentanas_Click;
             // 
             // ventanasToolStripMenuItem
             // 
@@ -180,9 +161,6 @@ namespace Articulos_Frontend
         #endregion
 
         private MenuStrip menuStripAC;
-        private ToolStripMenuItem articulosToolStripMenuItem;
-        private ToolStripMenuItem clientesToolStripMenuItem;
-        private ToolStripMenuItem productosToolStripMenuItem;
         private ToolStripMenuItem ventanasToolStripMenuItem;
         private Button buttonTerminal;
         private ToolStripMenuItem mnuVentanas;

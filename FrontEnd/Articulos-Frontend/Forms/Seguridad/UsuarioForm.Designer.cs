@@ -61,6 +61,7 @@
             buttonAdd.TabIndex = 3;
             buttonAdd.Text = "+";
             buttonAdd.UseVisualStyleBackColor = true;
+            buttonAdd.Click += buttonAdd_Click;
             // 
             // buttonDel
             // 
@@ -81,6 +82,7 @@
             dataGridViewUsuarios.Size = new Size(688, 302);
             dataGridViewUsuarios.TabIndex = 5;
             dataGridViewUsuarios.DataBindingComplete += dataGridViewUsuarios_DataBindingComplete;
+            dataGridViewUsuarios.CellDoubleClick += dataGridViewUsuarios_CellDoubleClick;
             // 
             // UsuarioForm
             // 

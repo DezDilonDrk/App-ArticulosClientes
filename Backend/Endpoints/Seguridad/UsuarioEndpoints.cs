@@ -15,15 +15,23 @@ public static class UsuarioEndpoints
         {
             var usuarios = repo.ObtenerUsuarios();
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<IEnumerable<Usuario>>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+        app.MapGet("/usuarios/{correoElectronico}/roles", (string correoElectronico) =>
+        {
+            var roles = repo.ObtenerRolesPorUsuario(correoElectronico);
+            return Results.Ok(roles);
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        .Produces<IEnumerable<string>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
         app.MapGet("/usuarios/correo/{correoElectronico}", (string correoElectronico) =>
         {
             var usuarios = repo.ObtenerPorCorreo(correoElectronico);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -31,7 +39,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = repo.ObtenerPorNombre(nombre);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -39,7 +47,7 @@ public static class UsuarioEndpoints
         {
             repo.Insertar(usuario);
             return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -70,7 +78,15 @@ public static class UsuarioEndpoints
         {
             repo.Update(usuario);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status400BadRequest);
+
+        app.MapPut("/usuarios/{correoElectronico}/roles", (string correoElectronico, List<string> roles) =>
+        {
+            repo.ActualizarRoles(correoElectronico, roles);
+            return Results.NoContent();
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -78,7 +94,7 @@ public static class UsuarioEndpoints
         {
             repo.Eliminar(correoElectronico);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminUsuarios))
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
