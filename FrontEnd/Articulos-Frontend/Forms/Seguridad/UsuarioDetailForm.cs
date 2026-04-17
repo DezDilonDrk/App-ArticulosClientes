@@ -53,6 +53,20 @@ namespace Articulos_Frontend.Forms.Seguridad
                 DataPropertyName = "seleccionado",
                 HeaderText = "Asignado",
             });
+
+        }
+
+        private void dataGridViewRoles_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex == 1)
+            {
+                var rol = (RolItem)dataGridViewRoles.Rows[e.RowIndex].DataBoundItem;
+
+                if (rol.nombre == Roles.AdminSeguridad && usuarioActual.CorreoElectronico == usuarioSeleccionado?.CorreoElectronico)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
 

@@ -101,6 +101,7 @@
             dataGridViewRoles.Name = "dataGridViewRoles";
             dataGridViewRoles.Size = new Size(281, 146);
             dataGridViewRoles.TabIndex = 7;
+            dataGridViewRoles.CellBeginEdit += dataGridViewRoles_CellBeginEdit;
             // 
             // buttonConfirm
             // 
