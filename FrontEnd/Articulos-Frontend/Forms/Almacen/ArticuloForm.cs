@@ -64,7 +64,7 @@ public partial class ArticuloForm : Form
         else
         {
             admin = true;
-        //}
+        }
     }
 
     private void botonAdd_Click(object sender, EventArgs e)
