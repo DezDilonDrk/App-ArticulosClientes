@@ -75,7 +75,7 @@ namespace Articulos_Backend.Repositorios.Ventas
                                WHERE id_pedido = @id_pedido";
 
                 db.Execute(sql, pedido);
-                string sql2= @"DELETE FROM Pedido_Articulos WHERE id_pedido = @id_pedido";
+                string sql2 = @"DELETE FROM Pedido_Articulos WHERE id_pedido = @id_pedido";
                 db.Execute(sql2, pedido);
                 foreach (var articulo in pedido.articulos)
                 {
@@ -88,9 +88,10 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = $"DELETE FROM Pedidos WHERE id_pedido = @IdPedido";
-
-                db.Execute(sql, new {IdPedido = id});
+                string sql = $"DELETE FROM Pedido_Articulos WHERE id_pedido = @IdPedido";
+                string sql2 = $"DELETE FROM Pedidos WHERE id_pedido = @IdPedido";
+                db.Execute(sql, new { IdPedido = id });
+                db.Execute(sql2, new { IdPedido = id });
             }
         }
         public void AgregarArticulo(PedidoArticulos articulo)
@@ -107,6 +108,14 @@ namespace Articulos_Backend.Repositorios.Ventas
             {
                 string sql = $"DELETE FROM Pedido_Articulos WHERE id_pedido = @id_pedido AND id_articulo = @id_articulo";
                 db.Execute(sql, articulo);
+            }
+        }
+        public List<PedidoArticulos> ObtenerArticulosPorPedido(string idPedido)
+        {
+            using (var db = Connection)
+            {
+                string sql = $"SELECT id_pedido, id_articulo, cantidad, precio_unidad FROM Pedido_Articulos WHERE id_pedido = @IdPedido";
+                return db.Query<PedidoArticulos>(sql, new { IdPedido = idPedido }).ToList();
             }
         }
     }

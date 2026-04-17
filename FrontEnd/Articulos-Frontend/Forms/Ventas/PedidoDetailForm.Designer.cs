@@ -51,5 +51,7 @@
         private Button button3;
         private Label labelTotal;
         private Label labelTotalCantidades;
+        private Label label1;
+        private ComboBox comboBoxEstado;
     }
 }

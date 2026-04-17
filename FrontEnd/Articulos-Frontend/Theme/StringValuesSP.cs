@@ -23,6 +23,8 @@ namespace Articulos_Frontend.Theme
         public string actualizarPedido = "Actualizar Pedido";
         public string login = "Iniciar Sesión";
         public string logout = "Cerrar Sesión";
+        public string crear = "Crear";
+        public string actualizar = "Actualizar";
 
         public StringValuesSP() { 
         }

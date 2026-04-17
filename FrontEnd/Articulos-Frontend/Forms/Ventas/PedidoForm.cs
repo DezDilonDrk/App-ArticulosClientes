@@ -134,29 +134,29 @@ namespace Articulos_Frontend
         {
             Log.Info("Abriendo formulario para crear un nuevo pedido.");
             //Pedido nuevopedido = new Pedido();
-            var formNuevo = new PedidoDetailForm();
+            var formNuevo = new PedidoDetailForm("Create");
 
-            formNuevo.PedidoCreadoCorrectamente += async pedido =>
+            formNuevo.PedidoModificadoCorrectamente += async pedido =>
             {
                 if (pedido.id_pedido != null)
                 {
-                    var actualizarForm = new PedidoUpdateForm(pedido);
+                    var actualizarForm = new PedidoDetailForm("Update");
                     Log.Warn("Si entra por aquí");
                     WindowManager.ShowForm(
                     $"{pedido.id_pedido}_Actualizar",
                     this,
                     () => actualizarForm);
-                    actualizarForm.PedidoActualizadoCorrectamente += async p => {
+                    actualizarForm.PedidoModificadoCorrectamente += async p => {
                         buscarPedidos(textBoxCliente.Text);
                     };
                 }
             };
-            var pedidoDetailForm = new PedidoDetailForm();
+            var pedidoDetailForm = new PedidoDetailForm("Create");
             WindowManager.ShowForm(
                 "Pedido_Nuevo",
                 this,
                 () => pedidoDetailForm);
-                pedidoDetailForm.PedidoCreadoCorrectamente += async p =>
+                pedidoDetailForm.PedidoModificadoCorrectamente += async p =>
                 {
                     buscarPedidos(textBoxCliente.Text); 
                 };
@@ -186,12 +186,12 @@ namespace Articulos_Frontend
             {
                 string id = dgvPedido.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString();
                 Pedido pedido = await PedidoApiClient.BuscarPorIdPedido(id);
-                var formActualizado = new PedidoUpdateForm(pedido);
+                var formActualizado = new PedidoDetailForm("Update", pedido);
                 WindowManager.ShowForm(
                         $"{id}_Actualizar",
                         this,
                        () => formActualizado);
-                formActualizado.PedidoActualizadoCorrectamente += async p => {
+                formActualizado.PedidoModificadoCorrectamente += async p => {
                     buscarPedidos(textBoxCliente.Text);
                 };
             }

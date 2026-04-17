@@ -2,6 +2,7 @@
 using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http.Json;
 using System.Text;
 
@@ -67,7 +68,8 @@ namespace Articulos_Frontend.Client
             {
                 var response = await httpClient.PostAsJsonAsync("/pedidos", pedido);
                 string contenido = await response.Content.ReadAsStringAsync();
-                if (!response.IsSuccessStatusCode){
+                if (!response.IsSuccessStatusCode)
+                {
                     MessageBox.Show($"Error al crear el pedido: {contenido}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     throw new Exception("Error al crear el pedido en el servidor API.");
                 }
@@ -107,10 +109,23 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                for (int i = 0; i < articulos.ToArray().Length; i ++ ) 
-                { 
+                for (int i = 0; i < articulos.ToArray().Length; i++)
+                {
                     PedidoArticulos articulo = articulos[i];
-                    await httpClient.PostAsJsonAsync("/pedidos/articulo", articulo); }
+                    await httpClient.PostAsJsonAsync("/pedidos/articulo", articulo);
+                }
+            }
+            catch
+            {
+                Log.Error("No se pudo conectar al servidor API.");
+                throw new Exception("Error al conectar con el servidor API.");
+            }
+        }
+        public async Task<List<PedidoArticulos>> ObtenerArticulosDePedido(string idPedido)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
             }
             catch
             {

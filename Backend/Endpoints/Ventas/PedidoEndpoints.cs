@@ -1,4 +1,5 @@
-﻿using Articulos_Backend.Repositorios.Ventas;
+﻿using Articulos_Backend.JWT;
+using Articulos_Backend.Repositorios.Ventas;
 using MTCore_AC.Entidades;
 
 namespace Articulos_Backend.Endpoints.Ventas;
@@ -63,6 +64,13 @@ public static class PedidoEndpoints
         .Produces<Cliente>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
+        app.MapGet("/pedidos/{idPedido}/articulos", (string idPedido) =>
+        {
+            List<PedidoArticulos> articulosPedidos = repo.ObtenerArticulosPorPedido(idPedido);
+            return articulosPedidos is not null ? Results.Ok(articulosPedidos) : Results.NotFound();
+        })
+        .Produces<Usuario>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
         app.MapDelete("/pedidos/{id}", (string id) =>
         {
             var pedido = repo.ObtenerPorId(id);

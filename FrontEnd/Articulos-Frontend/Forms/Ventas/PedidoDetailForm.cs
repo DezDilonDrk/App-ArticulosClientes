@@ -18,25 +18,50 @@ namespace Articulos_Frontend
         private PedidoApiClient pedidoApiClient;
         private string state;
         private ClienteApiClient clienteApiClient = new ClienteApiClient();
+        private ArticuloApiClient articuloApiClient = new ArticuloApiClient();
         private Pedido pedidoCreated;
-        public event Action<Pedido> PedidoCreadoCorrectamente;
+        public event Action<Pedido> PedidoModificadoCorrectamente;
         BindingList<LineaPedido> articulos = new BindingList<LineaPedido> { };
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoDetailForm(string State)
+        public PedidoDetailForm(string State, Pedido pedido = null)
         {
             InitializeComponent();
             LabelTitulo.Text = stringValuesSP.crearPedido;
             this.Text = stringValuesSP.crearPedido;
             this.state = State;
+            var estados = new[] { "Abierto", "Cerrado", "Cancelado" };
             var impuestos = new List<string> { "21", "10", "4", "0" };
             var metodosPago = new List<string> { "Tarjeta de Crédito", "PayPal", "Transferencia Bancaria", "Contra Reembolso" };
             comboBoxImpuestos.DataSource = impuestos;
-            comboBoxImpuestos.SelectedIndex = -1;
             comboBoxMetodoPago.DataSource = metodosPago;
-            comboBoxMetodoPago.SelectedIndex = -1;
-            dataGridViewArticulos.DataSource = articulos;
-            string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
+            comboBoxEstado.DataSource = estados;
             pedidoApiClient = new PedidoApiClient();
+            if (state == "Create")
+            {
+                BotonCrearC.Text = stringValuesSP.crear;
+                dataGridViewArticulos.DataSource = articulos;
+                LabelTitulo.Text = stringValuesSP.crearPedido;
+                comboBoxMetodoPago.SelectedIndex = -1;
+                comboBoxImpuestos.SelectedIndex = -1;
+                comboBoxEstado.SelectedIndex = 0;
+                comboBoxEstado.Enabled = false;
+            }
+            else if(state == "Update")
+            {
+                if (pedido == null)
+                {
+                    Log.Error("El pedido no puede ser nulo en modo Update.");
+                    throw new ArgumentNullException(nameof(pedido), "El pedido no puede ser nulo en modo Update.");
+                }
+                LabelTitulo.Text = stringValuesSP.actualizarPedido;
+                BotonCrearC.Text = stringValuesSP.actualizar;
+                textBoxDniCliente.Text = pedido.dni_cliente;
+                comboBoxEstado.Text = pedido.estado;
+                comboBoxMetodoPago.Text = pedido.metodo_pago;
+                comboBoxImpuestos.Text = pedido.porcentaje_impuestos.ToString();
+                pedidoCreated = pedido;
+            }
+            string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             StyleManager.StyleForm(this);
         }
         private void InitializeComponent()
@@ -55,13 +80,15 @@ namespace Articulos_Frontend
             button3 = new Button();
             labelTotal = new Label();
             labelTotalCantidades = new Label();
+            label1 = new Label();
+            comboBoxEstado = new ComboBox();
             ((ISupportInitialize)dataGridViewArticulos).BeginInit();
             SuspendLayout();
             // 
             // textBoxDniCliente
             // 
             textBoxDniCliente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxDniCliente.Location = new Point(247, 117);
+            textBoxDniCliente.Location = new Point(247, 101);
             textBoxDniCliente.Name = "textBoxDniCliente";
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(247, 23);
@@ -72,7 +99,7 @@ namespace Articulos_Frontend
             // 
             LabelDniCliente.BackColor = Color.Transparent;
             LabelDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDniCliente.Location = new Point(79, 119);
+            LabelDniCliente.Location = new Point(79, 103);
             LabelDniCliente.Name = "LabelDniCliente";
             LabelDniCliente.Size = new Size(162, 21);
             LabelDniCliente.TabIndex = 5;
@@ -84,7 +111,7 @@ namespace Articulos_Frontend
             // 
             LabelMetodoPago.BackColor = Color.Transparent;
             LabelMetodoPago.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelMetodoPago.Location = new Point(79, 148);
+            LabelMetodoPago.Location = new Point(79, 132);
             LabelMetodoPago.Name = "LabelMetodoPago";
             LabelMetodoPago.Size = new Size(162, 21);
             LabelMetodoPago.TabIndex = 6;
@@ -99,7 +126,7 @@ namespace Articulos_Frontend
             BotonCrearC.BackColor = SystemColors.MenuHighlight;
             BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             BotonCrearC.ForeColor = SystemColors.ControlLightLight;
-            BotonCrearC.Location = new Point(344, 81);
+            BotonCrearC.Location = new Point(344, 65);
             BotonCrearC.MaximumSize = new Size(150, 30);
             BotonCrearC.Name = "BotonCrearC";
             BotonCrearC.Size = new Size(150, 30);
@@ -125,7 +152,7 @@ namespace Articulos_Frontend
             button1.BackColor = Color.Chartreuse;
             button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.ForeColor = SystemColors.ActiveCaptionText;
-            button1.Location = new Point(79, 85);
+            button1.Location = new Point(79, 69);
             button1.MaximumSize = new Size(90, 23);
             button1.Name = "button1";
             button1.Size = new Size(90, 23);
@@ -138,7 +165,7 @@ namespace Articulos_Frontend
             // 
             LabelImpuestos.BackColor = Color.Transparent;
             LabelImpuestos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelImpuestos.Location = new Point(79, 177);
+            LabelImpuestos.Location = new Point(79, 190);
             LabelImpuestos.Name = "LabelImpuestos";
             LabelImpuestos.Size = new Size(162, 21);
             LabelImpuestos.TabIndex = 11;
@@ -150,18 +177,17 @@ namespace Articulos_Frontend
             // 
             comboBoxImpuestos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxImpuestos.FormattingEnabled = true;
-            comboBoxImpuestos.Location = new Point(247, 179);
+            comboBoxImpuestos.Location = new Point(247, 192);
             comboBoxImpuestos.Name = "comboBoxImpuestos";
             comboBoxImpuestos.Size = new Size(247, 23);
             comboBoxImpuestos.TabIndex = 12;
             comboBoxImpuestos.Tag = "comboBox";
-            comboBoxImpuestos.Leave += (s, e) => CalcularTotales();
             // 
             // comboBoxMetodoPago
             // 
             comboBoxMetodoPago.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxMetodoPago.FormattingEnabled = true;
-            comboBoxMetodoPago.Location = new Point(247, 148);
+            comboBoxMetodoPago.Location = new Point(247, 132);
             comboBoxMetodoPago.Name = "comboBoxMetodoPago";
             comboBoxMetodoPago.Size = new Size(247, 23);
             comboBoxMetodoPago.TabIndex = 13;
@@ -221,9 +247,32 @@ namespace Articulos_Frontend
             labelTotalCantidades.TabIndex = 18;
             labelTotalCantidades.Text = "0.00 | 0.00";
             // 
+            // label1
+            // 
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(79, 161);
+            label1.Name = "label1";
+            label1.Size = new Size(162, 23);
+            label1.TabIndex = 19;
+            label1.Text = "Estado del Pedido:";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // comboBoxEstado
+            // 
+            comboBoxEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxEstado.FlatStyle = FlatStyle.Flat;
+            comboBoxEstado.FormattingEnabled = true;
+            comboBoxEstado.Location = new Point(247, 161);
+            comboBoxEstado.Name = "comboBoxEstado";
+            comboBoxEstado.Size = new Size(247, 23);
+            comboBoxEstado.TabIndex = 20;
+            comboBoxEstado.Tag = "comboBox";
+            // 
             // PedidoDetailForm
             // 
             ClientSize = new Size(580, 363);
+            Controls.Add(comboBoxEstado);
+            Controls.Add(label1);
             Controls.Add(labelTotalCantidades);
             Controls.Add(labelTotal);
             Controls.Add(button3);
@@ -242,6 +291,7 @@ namespace Articulos_Frontend
             MinimumSize = new Size(596, 402);
             Name = "PedidoDetailForm";
             StartPosition = FormStartPosition.CenterParent;
+            Load += FormLoad;
             ((ISupportInitialize)dataGridViewArticulos).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -249,51 +299,91 @@ namespace Articulos_Frontend
 
         private async void BotonCrearC_Click(object sender, EventArgs e)
         {
-            if (this.state == "Create") { 
-                return; //Recien probé el state aquí
-            }
             if (!validarCamposLlenos()) return;
             if (!await ValidarDni(textBoxDniCliente.Text)) return;
             try
             {
-                bool existePedido = false;
-                double parsedImpuestos = 0;
-                try
+                if(this.state == "Create")
                 {
-                    parsedImpuestos = double.Parse(comboBoxImpuestos.Text);
-                    if (parsedImpuestos < 0 || parsedImpuestos > 100)
+                    bool existePedido = false;
+                    double parsedImpuestos = 0;
+                    try
                     {
-                        Log.Warn($"Intento de crear pedido con porcentaje de impuestos fuera de rango: {comboBoxImpuestos.Text}.");
+                        parsedImpuestos = double.Parse(comboBoxImpuestos.Text);
+                        if (parsedImpuestos < 0 || parsedImpuestos > 100)
+                        {
+                            Log.Warn($"Intento de crear pedido con porcentaje de impuestos fuera de rango: {comboBoxImpuestos.Text}.");
+                            MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
                         MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                }
-                catch (FormatException)
-                {
-                    Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
-                    MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, parsedImpuestos);
-                List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
-                foreach (LineaPedido lin in articulos)
-                {
-                    PedidoArticulos pa = new PedidoArticulos
+                    pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, parsedImpuestos);
+                    List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
+                    foreach (LineaPedido lin in articulos)
                     {
-                        id_pedido = pedidoCreated.id_pedido,
-                        id_articulo = lin.id_articulo,
-                        cantidad = lin.cantidad,
-                        precio_unidad = lin.precioUnidad
-                    };
-                    articulosPedido.Add(pa);
+                        PedidoArticulos pa = new PedidoArticulos
+                        {
+                            id_pedido = pedidoCreated.id_pedido,
+                            id_articulo = lin.id_articulo,
+                            cantidad = lin.cantidad,
+                            precio_unidad = lin.precioUnidad
+                        };
+                        articulosPedido.Add(pa);
+                    }
+                    pedidoCreated.cambiarLista(articulosPedido);
+                    await pedidoApiClient.Crear(pedidoCreated);
+                    EmailSender emailSender = new EmailSender();
+                    emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
+                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
+                    alerta.ShowDialog();
+                    PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
                 }
-                pedidoCreated.cambiarLista(articulosPedido);
-                await pedidoApiClient.Crear(pedidoCreated);
-                EmailSender emailSender = new EmailSender();
-                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
-                Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
-                alerta.ShowDialog();
-                PedidoCreadoCorrectamente?.Invoke(pedidoCreated);
+                if (state == "Update")
+                {
+                    pedidoCreated.dni_cliente = textBoxDniCliente.Text.ToUpper();
+                    pedidoCreated.metodo_pago = comboBoxMetodoPago.Text;
+                    double parsedImpuestos = 0;
+                    try
+                    {
+                        parsedImpuestos = double.Parse(comboBoxImpuestos.Text);
+                        if (parsedImpuestos < 0 || parsedImpuestos > 100)
+                        {
+                            Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos fuera de rango: {comboBoxImpuestos.Text}.");
+                            MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+                    catch (FormatException)
+                    {
+                        Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
+                        MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    pedidoCreated.porcentaje_impuestos = parsedImpuestos;
+                    List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
+                    foreach (LineaPedido lin in articulos)
+                    {
+                        PedidoArticulos pa = new PedidoArticulos
+                        {
+                            id_pedido = pedidoCreated.id_pedido,
+                            id_articulo = lin.id_articulo,
+                            cantidad = lin.cantidad,
+                            precio_unidad = lin.precioUnidad
+                        };
+                        articulosPedido.Add(pa);
+                    }
+                    pedidoCreated.cambiarLista(articulosPedido);
+                    await pedidoApiClient.Actualizar(pedidoCreated.id_pedido, pedidoCreated);
+                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
+                    alerta.ShowDialog();
+                    PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
+                }
                 this.Close();
             }
             catch (Exception ex)
@@ -394,57 +484,9 @@ namespace Articulos_Frontend
                         articulos.Add(new LineaPedido(artSel.id, artSel.nombre, artSel.categoria, 1, artSel.precio));
                         dataGridViewArticulos.DataSource = null;
                         dataGridViewArticulos.DataSource = articulos;
-                        dataGridViewArticulos.ReadOnly = false;
                     }
                 }
-                if (dataGridViewArticulos.Columns["cantidad"] != null)
-                {
-                    dataGridViewArticulos.Columns["cantidad"].Width = 80;
-                    dataGridViewArticulos.Columns["cantidad"].Resizable = DataGridViewTriState.False;
-                    dataGridViewArticulos.Columns["cantidad"].ReadOnly = false;
-                    dataGridViewArticulos.Columns["cantidad"].HeaderText = "Cantidad";
-                }
-                if (dataGridViewArticulos.Columns["id_articulo"] != null)
-                {
-                    dataGridViewArticulos.Columns["id_articulo"].Width = 80;
-                    dataGridViewArticulos.Columns["id_articulo"].Resizable = DataGridViewTriState.False;
-                    dataGridViewArticulos.Columns["id_articulo"].ReadOnly = true;
-                    dataGridViewArticulos.Columns["id_articulo"].HeaderText = "Id del Articulo";
-                }
-                if (dataGridViewArticulos.Columns["Nombre"] != null)
-                {
-                    dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    //dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    //dataGridViewArticulos.Columns["Nombre"].FillWeight = 30;
-                    dataGridViewArticulos.Columns["Nombre"].MinimumWidth = 100;
-                    dataGridViewArticulos.Columns["Nombre"].ReadOnly = true;
-                }
-                if (dataGridViewArticulos.Columns["Categoria"] != null)
-                {
-                    dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    //dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    //dataGridViewArticulos.Columns["Categoria"].FillWeight = 30;
-                    dataGridViewArticulos.Columns["Categoria"].MinimumWidth = 120;
-                    dataGridViewArticulos.Columns["Categoria"].ReadOnly = true;
-                    dataGridViewArticulos.Columns["Categoria"].HeaderText = "Categoría";
-                }
-                if (dataGridViewArticulos.Columns["PrecioUnidad"] != null)
-                {
-                    dataGridViewArticulos.Columns["PrecioUnidad"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    //dataGridViewArticulos.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    //dataGridViewArticulos.Columns["Email"].FillWeight = 40;
-                    dataGridViewArticulos.Columns["PrecioUnidad"].MinimumWidth = 150;
-                    dataGridViewArticulos.Columns["PrecioUnidad"].HeaderText = "Precio de Unidad";
-                    dataGridViewArticulos.Columns["PrecioUnidad"].ReadOnly = false;
-                }
-                if (dataGridViewArticulos.Columns["TotalLinea"] != null)
-                {
-                    dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridViewArticulos.Columns["TotalLinea"].Resizable = DataGridViewTriState.False;
-                    dataGridViewArticulos.Columns["TotalLinea"].HeaderText = "Total de la Linea";
-                    dataGridViewArticulos.Columns["TotalLinea"].ReadOnly = true;
-                }
+                DataGridConfig();
                 CalcularTotales();
             }
             catch (Exception ex)
@@ -503,6 +545,85 @@ namespace Articulos_Frontend
             if (rowIndex < 0 || colIndex < 0) return;
             var colName = dataGridViewArticulos.Columns[colIndex].Name;
             dgvArticulos_CellEndEdit(sender, new DataGridViewCellEventArgs(colIndex, rowIndex));
+        }
+        private async void FormLoad(object sender, EventArgs e)
+        {
+            if (state == "Update")
+            {
+                var articulosPedido = await pedidoApiClient.ObtenerArticulosDePedido(pedidoCreated.id_pedido);
+                foreach (PedidoArticulos a in articulosPedido)
+                {
+                    if (a == null) continue;
+                    Articulo art;
+                    try
+                    {
+                        art = await articuloApiClient.ObtenerPorId(a.id_articulo);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"Error al obtener el artículo con id {a.id_articulo}: {ex.Message}", ex);
+                        MessageBox.Show($"Error al obtener el artículo con id {a.id_articulo}. Es posible que este artículo haya sido eliminado.", "Error al cargar artículo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;
+                    }
+                    articulos.Add(new LineaPedido(a.id_articulo, art.nombre , art.categoria , a.cantidad, a.precio_unidad));
+                }
+                dataGridViewArticulos.DataSource = null;
+                dataGridViewArticulos.DataSource = articulos;
+                CalcularTotales();
+            }
+            DataGridConfig();
+        }
+        private void DataGridConfig()
+        {
+            dataGridViewArticulos.ReadOnly = false;
+            if (dataGridViewArticulos.Columns["cantidad"] != null)
+            {
+                dataGridViewArticulos.Columns["cantidad"].Width = 80;
+                dataGridViewArticulos.Columns["cantidad"].Resizable = DataGridViewTriState.False;
+                dataGridViewArticulos.Columns["cantidad"].ReadOnly = false;
+                dataGridViewArticulos.Columns["cantidad"].HeaderText = "Cantidad";
+            }
+            if (dataGridViewArticulos.Columns["id_articulo"] != null)
+            {
+                dataGridViewArticulos.Columns["id_articulo"].Width = 80;
+                dataGridViewArticulos.Columns["id_articulo"].Resizable = DataGridViewTriState.False;
+                dataGridViewArticulos.Columns["id_articulo"].ReadOnly = true;
+                dataGridViewArticulos.Columns["id_articulo"].HeaderText = "Id del Articulo";
+            }
+            if (dataGridViewArticulos.Columns["Nombre"] != null)
+            {
+                dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dataGridViewArticulos.Columns["Nombre"].FillWeight = 30;
+                dataGridViewArticulos.Columns["Nombre"].MinimumWidth = 100;
+                dataGridViewArticulos.Columns["Nombre"].ReadOnly = true;
+            }
+            if (dataGridViewArticulos.Columns["Categoria"] != null)
+            {
+                dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dataGridViewArticulos.Columns["Categoria"].FillWeight = 30;
+                dataGridViewArticulos.Columns["Categoria"].MinimumWidth = 120;
+                dataGridViewArticulos.Columns["Categoria"].ReadOnly = true;
+                dataGridViewArticulos.Columns["Categoria"].HeaderText = "Categoría";
+            }
+            if (dataGridViewArticulos.Columns["PrecioUnidad"] != null)
+            {
+                dataGridViewArticulos.Columns["PrecioUnidad"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dataGridViewArticulos.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //dataGridViewArticulos.Columns["Email"].FillWeight = 40;
+                dataGridViewArticulos.Columns["PrecioUnidad"].MinimumWidth = 150;
+                dataGridViewArticulos.Columns["PrecioUnidad"].HeaderText = "Precio de Unidad";
+                dataGridViewArticulos.Columns["PrecioUnidad"].ReadOnly = false;
+            }
+            if (dataGridViewArticulos.Columns["TotalLinea"] != null)
+            {
+                dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewArticulos.Columns["TotalLinea"].Resizable = DataGridViewTriState.False;
+                dataGridViewArticulos.Columns["TotalLinea"].HeaderText = "Total de la Linea";
+                dataGridViewArticulos.Columns["TotalLinea"].ReadOnly = true;
+            }
         }
         private void CalcularTotales()
         {
