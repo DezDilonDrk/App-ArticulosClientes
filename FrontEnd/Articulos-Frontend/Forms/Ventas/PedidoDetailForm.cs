@@ -323,7 +323,7 @@ namespace Articulos_Frontend
                         MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, parsedImpuestos);
+                    pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, comboBoxEstado.Text, parsedImpuestos);
                     List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
                     foreach (LineaPedido lin in articulos)
                     {
@@ -348,6 +348,8 @@ namespace Articulos_Frontend
                 {
                     pedidoCreated.dni_cliente = textBoxDniCliente.Text.ToUpper();
                     pedidoCreated.metodo_pago = comboBoxMetodoPago.Text;
+                    pedidoCreated.estado = comboBoxEstado.Text;
+                    pedidoCreated.fecha_rectificacion = DateTime.Now;
                     double parsedImpuestos = 0;
                     try
                     {

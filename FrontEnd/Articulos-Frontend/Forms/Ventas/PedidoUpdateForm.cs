@@ -239,7 +239,8 @@ namespace Articulos_Frontend
                 }
                 try
                 {
-                    pedido.ActualizarPedido(textBoxDniCliente.Text, comboBoxMetodoPago.Text,double.Parse(comboBoxImpuestos.Text), comboBoxEstado.Text,pedido.articulos);
+                    pedido.ActualizarPedido(textBoxDniCliente.Text, comboBoxMetodoPago.Text,double.Parse(comboBoxImpuestos.Text), comboBoxEstado.Text ,pedido.articulos); 
+                    Console.WriteLine(pedido.estado);
                     await pedidoApiClient.Actualizar(pedido.id_pedido, pedido);
                     MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     PedidoActualizadoCorrectamente?.Invoke(pedido);
