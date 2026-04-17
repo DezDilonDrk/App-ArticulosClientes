@@ -32,9 +32,12 @@
             labelNombre = new Label();
             labelCorreo = new Label();
             labelContrasena = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            textBoxNombre = new TextBox();
+            textBoxCorreo = new TextBox();
+            textBoxContrasena = new TextBox();
+            dataGridViewRoles = new DataGridView();
+            buttonConfirm = new Button();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRoles).BeginInit();
             SuspendLayout();
             // 
             // labelDetallesUsuario
@@ -69,41 +72,66 @@
             labelContrasena.TabIndex = 3;
             labelContrasena.Text = "Contraseña:";
             // 
-            // textBox1
+            // textBoxNombre
             // 
-            textBox1.Location = new Point(123, 70);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(281, 23);
-            textBox1.TabIndex = 4;
+            textBoxNombre.Location = new Point(123, 70);
+            textBoxNombre.Name = "textBoxNombre";
+            textBoxNombre.Size = new Size(281, 23);
+            textBoxNombre.TabIndex = 4;
             // 
-            // textBox2
+            // textBoxCorreo
             // 
-            textBox2.Location = new Point(123, 113);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(365, 23);
-            textBox2.TabIndex = 5;
+            textBoxCorreo.Location = new Point(123, 113);
+            textBoxCorreo.Name = "textBoxCorreo";
+            textBoxCorreo.Size = new Size(365, 23);
+            textBoxCorreo.TabIndex = 5;
             // 
-            // textBox3
+            // textBoxContrasena
             // 
-            textBox3.Location = new Point(123, 158);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(338, 23);
-            textBox3.TabIndex = 6;
+            textBoxContrasena.Location = new Point(123, 158);
+            textBoxContrasena.Name = "textBoxContrasena";
+            textBoxContrasena.Size = new Size(338, 23);
+            textBoxContrasena.TabIndex = 6;
+            // 
+            // dataGridViewRoles
+            // 
+            dataGridViewRoles.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewRoles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewRoles.Location = new Point(123, 202);
+            dataGridViewRoles.Name = "dataGridViewRoles";
+            dataGridViewRoles.Size = new Size(281, 146);
+            dataGridViewRoles.TabIndex = 7;
+            // 
+            // buttonConfirm
+            // 
+            buttonConfirm.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonConfirm.Location = new Point(669, 347);
+            buttonConfirm.Name = "buttonConfirm";
+            buttonConfirm.Size = new Size(75, 23);
+            buttonConfirm.TabIndex = 8;
+            buttonConfirm.Text = "Confirmar";
+            buttonConfirm.UseVisualStyleBackColor = true;
+            buttonConfirm.Click += buttonConfirm_Click;
             // 
             // UsuarioDetailForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 307);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            ClientSize = new Size(800, 382);
+            Controls.Add(buttonConfirm);
+            Controls.Add(dataGridViewRoles);
+            Controls.Add(textBoxContrasena);
+            Controls.Add(textBoxCorreo);
+            Controls.Add(textBoxNombre);
             Controls.Add(labelContrasena);
             Controls.Add(labelCorreo);
             Controls.Add(labelNombre);
             Controls.Add(labelDetallesUsuario);
+            MinimumSize = new Size(816, 421);
             Name = "UsuarioDetailForm";
             Text = "UsuarioDetailForm";
+            Load += UsuarioDetailForm_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRoles).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -114,8 +142,10 @@
         private Label labelNombre;
         private Label labelCorreo;
         private Label labelContrasena;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private TextBox textBoxNombre;
+        private TextBox textBoxCorreo;
+        private TextBox textBoxContrasena;
+        private DataGridView dataGridViewRoles;
+        private Button buttonConfirm;
     }
 }

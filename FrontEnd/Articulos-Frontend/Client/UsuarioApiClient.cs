@@ -3,6 +3,7 @@ using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -75,6 +76,32 @@ public class UsuarioApiClient
         }
     }
 
+    public async Task<List<string>> ObtenerRolesUsuario(string correo)
+    {
+        try
+        {
+            var response = await httpClient.GetAsync($"/usuarios/{correo}/roles");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener los roles del usuario: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<List<string>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error en ObtenerRolesUsuario: " + ex.Message);
+            throw;
+        }
+    }
+
     public async Task<Usuario> ObtenerPorCorreo(string Correo)
     {
         try
@@ -91,6 +118,76 @@ public class UsuarioApiClient
         {
             Log.Error("No se pudo conectar al servidor API.");
             throw new Exception("Error al conectar con el servidor API.");
+        }
+    }
+
+    public async Task CrearUsuario(Usuario usuario)
+    {
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("/usuarios", usuario);
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al crear usuario: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al crear usuario: " + ex.Message);
+            throw;
+        }
+    }
+    public async Task EliminarUsuario(string correo)
+    {
+        try
+        {
+            var response = await httpClient.DeleteAsync($"/usuarios/correo/{correo}");
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al eliminar usuario: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al eliminar usuario: " + ex.Message);
+            throw;
+        }
+    }
+    public async Task ActualizarUsuario(Usuario usuario)
+    {
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync($"/usuarios", usuario);
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al actualizar usuario: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al actualizar usuario: " + ex.Message);
+            throw;
+        }
+    }
+
+    public async Task ActualizarRolesUsuario(string correo, List<string> roles)
+    {
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync($"/usuarios/{correo}/roles", roles);
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al actualizar roles del usuario: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al actualizar usuario: " + ex.Message);
+            throw;
         }
     }
 }

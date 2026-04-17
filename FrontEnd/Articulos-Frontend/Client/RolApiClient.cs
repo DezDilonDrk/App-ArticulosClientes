@@ -27,6 +27,25 @@ public class RolApiClient
         }
     }
 
+    public async Task<List<Rol>> ObtenerNombreRoles()
+    {
+        try
+        {
+            var response = await httpClient.GetAsync("/roles/nombres");
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener nombres de roles: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+            return await response.Content.ReadFromJsonAsync<List<Rol>>() ?? new List<Rol>();
+        }
+        catch
+        {
+            Log.Error("No se pudo conectar al servidor API.");
+            throw new Exception("Error al conectar con el servidor API.");
+        }
+    }
+
     public async Task<List<Rol>> ObtenerRoles()
     {
         try

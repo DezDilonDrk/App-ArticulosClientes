@@ -1,4 +1,4 @@
-﻿namespace Articulos_Backend.JWT;
+﻿namespace MTCore_AC.Entidades;
 
 public static class Roles
 {
@@ -8,5 +8,5 @@ public static class Roles
     public const string UserVentas = "USER_VENTAS";
     public const string AdminPedidos = "ADMIN_PEDIDOS";
     public const string UserPedidos = "USER_PEDIDOS";
-    public const string AdminUsuarios = "ADMIN_USUARIOS";
+    public const string AdminSeguridad = "ADMIN_SEGURIDAD";
 }

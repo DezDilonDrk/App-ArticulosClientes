@@ -340,7 +340,7 @@ public partial class ClienteForm : Form
         Log.Info("Cargando clientes en el formulario.");
         buscarClientes(null);
         RegistrarClicks(this);
-        if(!AppState.Roles.Contains("ADMIN_CLIENTES"))
+        if(!AppState.Roles.Contains(Roles.AdminVentas))
         {
             BotonMasC.Enabled = false;
             BotonMenosC.Enabled = false;
