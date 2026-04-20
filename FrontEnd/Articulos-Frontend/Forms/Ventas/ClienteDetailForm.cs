@@ -207,14 +207,7 @@ public partial class ClienteDetailForm : Form
                     Log.Warn($"Intento de crear cliente con DNI duplicado: {textBoxDni.Text.ToUpper()}.");
                     Alerta alertaa = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Cliente duplicado"));
                     alertaa.ShowDialog();
-                    if (alertaa.resultado)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
             catch (Exception ex)

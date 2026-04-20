@@ -111,14 +111,7 @@ namespace Articulos_Frontend.Forms.Seguridad
                 });
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el usuarios correctamente"));
                 alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    this.Close();
-                }
-                else
-                {
-                    this.Close();
-                }
+                this.Close();
             } else
             {
                 Alerta alerta;

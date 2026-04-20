@@ -53,5 +53,8 @@
         private Label labelTotalCantidades;
         private Label label1;
         private ComboBox comboBoxEstado;
+        private Button buttonCerrar;
+        private Label label2;
+        private DateTimePicker dateTimePickerFechaEnvio;
     }
 }
