@@ -10,6 +10,9 @@ namespace Articulos_Frontend.Theme
         public string listaClientes = "Lista de Clientes";
         public string listaArticulos = "Lista de Artículos";
         public string listaPedidos = "Lista de Pedidos";
+        public string seccionRoles = "Sección de Roles";
+        public string seccionUsuarios = "Sección de Usuarios";
+        public string apartadoIniciarSesion = "Apartado de Iniciar Sesión";
         public string crearCliente = "Crear Cliente";
         public string actualizarCliente = "Actualizar Cliente";
         public string detallesArticulo = "Detalles del Artículo";

@@ -78,15 +78,15 @@ namespace Articulos_Frontend
         private void seguridadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
-            var usuarioItem = new ToolStripMenuItem("UsuarioForm");
-            var rolItem = new ToolStripMenuItem("RolForm");
+            var usuarioItem = new ToolStripMenuItem(stringValuesSP.seccionUsuarios);
+            var rolItem = new ToolStripMenuItem(stringValuesSP.seccionRoles);
             usuarioItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("UsuarioForm", this, () => new UsuarioForm(new UsuarioApiClient(), user));
+                WindowManager.ShowForm(stringValuesSP.seccionUsuarios, this, () => new UsuarioForm(new UsuarioApiClient(), user));
             };
             rolItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("RolForm", this, () => new RolForm(new RolApiClient()));
+                WindowManager.ShowForm(stringValuesSP.seccionRoles, this, () => new RolForm(new RolApiClient()));
             };
             dropDown.Items.Add(usuarioItem);
             dropDown.Items.Add(rolItem);
@@ -98,10 +98,10 @@ namespace Articulos_Frontend
         private void almacenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
-            var articuloItem = new ToolStripMenuItem("ArticuloForm");
+            var articuloItem = new ToolStripMenuItem(stringValuesSP.listaArticulos);
             articuloItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("ArticuloForm", this, () => new ArticuloForm(user));
+                WindowManager.ShowForm(stringValuesSP.listaArticulos, this, () => new ArticuloForm(user));
             };
 
             dropDown.Items.Add(articuloItem);
@@ -113,15 +113,15 @@ namespace Articulos_Frontend
         private void ventasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
-            var clienteItem = new ToolStripMenuItem("ClienteForm");
-            var pedidoItem = new ToolStripMenuItem("PedidoForm");
+            var clienteItem = new ToolStripMenuItem(stringValuesSP.listaClientes);
+            var pedidoItem = new ToolStripMenuItem(stringValuesSP.listaPedidos);
             clienteItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("ClienteForm", this, () => new ClienteForm());
+                WindowManager.ShowForm(stringValuesSP.listaClientes, this, () => new ClienteForm());
             };
             pedidoItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("PedidoForm", this, () => new PedidoForm());
+                WindowManager.ShowForm(stringValuesSP.listaPedidos, this, () => new PedidoForm());
             };
             dropDown.Items.Add(clienteItem);
             dropDown.Items.Add(pedidoItem);
@@ -193,31 +193,29 @@ namespace Articulos_Frontend
         {
             return this.menuStripAC.PointToScreen(Point.Empty).Y;
         }
-
         private void buttonTerminal_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo terminal.");
-            WindowManager.ShowForm("TerminalForm", this, () =>
+            WindowManager.ShowForm(stringValuesSP.terminal, this, () =>
             {
                 terminal = new ShowTerminal();
                 return terminal;
             });
         }
-
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            WindowManager.ShowForm("LoginForm", this, () => new LoginForm());
+            WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
 
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {
                 try { entry.formularioHijo.Close(); }
-                catch { }
+                catch (Exception ex ) {
+                    Log.Error("Error al cerrar la ventana: " + ex.Message);
+                }
             }
 
             this.Close();
         }
-
-        
     }
 }
