@@ -697,7 +697,9 @@ namespace Articulos_Frontend
                 {
                     buttonCerrar.Enabled = true;
                 }
+                return;
             }
+            dataGridViewArticulos.ReadOnly = true;
         }
         private void DataGridConfig()
         {
