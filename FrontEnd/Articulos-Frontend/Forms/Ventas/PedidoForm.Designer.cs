@@ -260,6 +260,7 @@ namespace Articulos_Frontend
             FechaHasta.Size = new Size(97, 23);
             FechaHasta.TabIndex = 7;
             FechaHasta.Value = new DateTime(2099, 12, 31, 0, 0, 0, 0);
+            FechaHasta.ValueChanged += FiltrarPorFecha;
             // 
             // FechaDesde
             // 
@@ -273,6 +274,7 @@ namespace Articulos_Frontend
             FechaDesde.Size = new Size(97, 23);
             FechaDesde.TabIndex = 6;
             FechaDesde.Value = new DateTime(1979, 8, 10, 0, 0, 0, 0);
+            FechaDesde.ValueChanged += FiltrarPorFecha;
             // 
             // panelMain
             // 

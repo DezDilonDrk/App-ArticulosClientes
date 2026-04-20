@@ -133,7 +133,6 @@ namespace Articulos_Frontend
         private async void BotonMasC_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario para crear un nuevo pedido.");
-            //Pedido nuevopedido = new Pedido();
             var formNuevo = new PedidoDetailForm("Create");
 
             formNuevo.PedidoModificadoCorrectamente += async pedido =>

@@ -401,8 +401,20 @@ namespace Articulos_Frontend
         {
             if (dataGridViewArticulos.CurrentRow != null)
             {
-                LineaPedido lineaSeleccionada = (LineaPedido)dataGridViewArticulos.CurrentRow.DataBoundItem;
-                articulos.Remove(lineaSeleccionada);
+                Log.Info("Pulsa el botón de eliminar");
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este artículo?"));
+                alerta.ShowDialog();
+                if (alerta.resultado)
+                {
+                    Log.Info("El usuario ha confirmado la eliminación del artículo.");
+                    LineaPedido lineaSeleccionada = (LineaPedido)dataGridViewArticulos.CurrentRow.DataBoundItem;
+                    articulos.Remove(lineaSeleccionada);
+                }
+                else
+                {
+                    Log.Info("Eliminación cancelada por el usuario.");
+                }
+                
                 CalcularTotales();
             }
             else
