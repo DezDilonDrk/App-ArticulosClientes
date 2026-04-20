@@ -34,10 +34,10 @@ namespace Articulos_Frontend.Client
             {
                 return await httpClient.GetFromJsonAsync<List<Cliente>>("/clientes");
             }
-            catch
+            catch (Exception ex)
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw;
             }
         }
         public async Task<List<Cliente>> BuscarPorNombre(string nombre)
@@ -49,7 +49,7 @@ namespace Articulos_Frontend.Client
             catch
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw;
             }
         }
         public async Task<Cliente?> ObtenerPorDni(string dni)
@@ -61,7 +61,7 @@ namespace Articulos_Frontend.Client
             catch
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw;
             }
         }
         public async Task Crear(Cliente cliente)
@@ -73,7 +73,7 @@ namespace Articulos_Frontend.Client
             catch
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw;
             }
         }
         public async Task<bool> Actualizar(string dni, Cliente cliente)
@@ -86,7 +86,7 @@ namespace Articulos_Frontend.Client
             catch
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw;
             }
         }
         public async Task Eliminar(string dni)
@@ -98,7 +98,7 @@ namespace Articulos_Frontend.Client
             catch
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw;
             }
         }
     }
