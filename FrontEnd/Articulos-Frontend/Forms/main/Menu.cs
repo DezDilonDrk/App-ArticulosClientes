@@ -72,7 +72,7 @@ namespace Articulos_Frontend
 
             WindowManager.ShowForm(key, this, () =>
             {
-                return new PedidoForm();
+                return new PedidoForm("SeccionPedido");
             });
         }
         private void seguridadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -115,16 +115,22 @@ namespace Articulos_Frontend
             var dropDown = new ContextMenuStrip();
             var clienteItem = new ToolStripMenuItem(stringValuesSP.listaClientes);
             var pedidoItem = new ToolStripMenuItem(stringValuesSP.listaPedidos);
+            var enviadoItem = new ToolStripMenuItem(stringValuesSP.seccionEnvios);
             clienteItem.Click += (s, ev) =>
             {
                 WindowManager.ShowForm(stringValuesSP.listaClientes, this, () => new ClienteForm());
             };
             pedidoItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm(stringValuesSP.listaPedidos, this, () => new PedidoForm());
+                WindowManager.ShowForm(stringValuesSP.listaPedidos, this, () => new PedidoForm("SeccionPedido"));
+            };
+            enviadoItem.Click += (s, ev) =>
+            {
+                WindowManager.ShowForm(stringValuesSP.seccionEnvios, this, () => new PedidoForm("SeccionEnviado"));
             };
             dropDown.Items.Add(clienteItem);
             dropDown.Items.Add(pedidoItem);
+            dropDown.Items.Add(enviadoItem);
             var parent = ventasToolStripMenuItem.GetCurrentParent();
             var bounds = ventasToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
@@ -214,7 +220,6 @@ namespace Articulos_Frontend
                     Log.Error("Error al cerrar la ventana: " + ex.Message);
                 }
             }
-
             this.Close();
         }
     }

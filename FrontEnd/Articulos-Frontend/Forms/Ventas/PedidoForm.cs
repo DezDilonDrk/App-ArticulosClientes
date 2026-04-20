@@ -17,17 +17,25 @@ namespace Articulos_Frontend
     public partial class PedidoForm : Form
     {
         private PedidoApiClient PedidoApiClient;
+        private string state;
         private ErrorProvider errorProvider;
         private List<Pedido> listaActual;
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoForm()
+        DateTime FechaDesde2 = new DateTime(2000, 1, 1);
+        DateTime FechaDesde3 = new DateTime(2099, 1, 1);
+        public PedidoForm(string state)
         {
             InitializeComponent();
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             PedidoApiClient = new PedidoApiClient();
             StyleManager.StyleForm(this);
             this.ActiveControl = textBoxCliente;
+            this.state = state;
             Log.Info("Formulario de pedidos iniciado.");
+            if (state == "SeccionEnviado")
+            {
+                FechaDesde2 = DateTime.Today;
+            }
         }
         private void PedidosForm_Load(object sender, EventArgs e)
         {
@@ -37,8 +45,11 @@ namespace Articulos_Frontend
         }
         private void FiltrarPorFecha(object sender, EventArgs e)
         {
+            if (listaActual == null) return;
             List<Pedido> pedidosFiltrados = listaActual;
             pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date).ToList();
+            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_envio >= FechaDesde2.Date).ToList();
+            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_envio <= FechaDesde3.Date).ToList();
             if (FechaHasta.Value.Date < FechaDesde.Value.Date)
             {
                 MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -62,6 +73,8 @@ namespace Articulos_Frontend
             }
             pedidos = pedidos.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date);
             pedidos = pedidos.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date);
+            pedidos = pedidos.Where(c => c.fecha_envio >= FechaDesde2.Date);
+            pedidos = pedidos.Where(c => c.fecha_envio <= FechaDesde3.Date);
             dgvPedido.DataSource = pedidos.ToList();
             listaActual = pedidos.ToList();
             if (dgvPedido.Columns["dni_cliente"] != null)

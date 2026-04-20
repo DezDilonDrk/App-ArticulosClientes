@@ -28,6 +28,7 @@ namespace Articulos_Frontend.Theme
         public string logout = "Cerrar Sesión";
         public string crear = "Crear";
         public string actualizar = "Actualizar";
+        public string seccionEnvios = "Sección de Envíos";
 
         public StringValuesSP() { 
         }
