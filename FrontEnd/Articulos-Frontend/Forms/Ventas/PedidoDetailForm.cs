@@ -55,6 +55,7 @@ namespace Articulos_Frontend
                 }
                 LabelTitulo.Text = stringValuesSP.actualizarPedido;
                 BotonCrearC.Text = stringValuesSP.actualizar;
+                BotonCrearC.Enabled = false;
                 textBoxDniCliente.Text = pedido.dni_cliente;
                 comboBoxEstado.Text = pedido.estado;
                 comboBoxMetodoPago.Text = pedido.metodo_pago;
@@ -574,6 +575,7 @@ namespace Articulos_Frontend
                 CalcularTotales();
             }
             DataGridConfig();
+            BotonCrearC.Enabled = true;
         }
         private void DataGridConfig()
         {
