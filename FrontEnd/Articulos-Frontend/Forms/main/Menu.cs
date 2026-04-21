@@ -171,6 +171,14 @@ namespace Articulos_Frontend
 
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
+        private void Ajustes_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+            Rectangle rect = new Rectangle(0, 0, btn.Width, btn.Height);
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            e.Graphics.DrawImage(btn.Image, rect);
+        }
         private void RefrescarMenuVentanas()
         {
             mnuVentanas.DropDownItems.Clear();
