@@ -27,13 +27,16 @@ namespace Articulos_Frontend.Forms.main
             StyleManager.StyleForm(this);
             this.ActiveControl = textBoxBuscadorAjustes;
             this.panelLateralPlegado.Visible = true;
+            panelAccountSettings.Visible = false;
+            panelNotificationSettings.Visible = false;
             Log.Info("Formulario de Ajustes iniciado.");
         }
-        private void ClienteForm_Load(object sender, EventArgs e)
+        private void AjustesForm_Load(object sender, EventArgs e)
         {
             Log.Info("Cargando clientes en el formulario.");
             buscarClientes(null);
             RegistrarClicks(this);
+            syncCheckNotifications();
             if (!AppState.Roles.Contains(Roles.AdminVentas)) {admin = false;} else {admin = true;}
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
@@ -61,69 +64,23 @@ namespace Articulos_Frontend.Forms.main
         {
            //Lo que sea
         }
-        private void BotonBuscar_Click(object sender, EventArgs e)
+        private async void openOptionAjustes(object sender, EventArgs e)
         {
-            //buscarClientes(textBoxCliente.Text);
-        }
-
-        private async void BotonMasC_Click(object sender, EventArgs e)
-        {
-            Log.Info("Abriendo formulario para crear un nuevo cliente.");
-            Cliente nuevoCliente = new Cliente();
-            var formNuevo = new ClienteDetailForm(nuevoCliente);
-
-            formNuevo.ClienteCreadoCorrectamente += async cliente =>
+            if (sender != null)
             {
-                if (!string.IsNullOrEmpty(cliente.Dni))
+                switch (((Control)sender).Name)
                 {
-                    //buscarClientes(textBoxCliente.Text);
-
-                    var actualizarClienteForm = new ClienteDetailForm(cliente);
-                    WindowManager.ShowForm(
-                        $"{cliente.Dni}_Actualizar",
-                        this,
-                        () => actualizarClienteForm);
-
-                    actualizarClienteForm.ClienteCreadoCorrectamente += async updatedCliente =>
-                    {
-                        if (!string.IsNullOrEmpty(updatedCliente.Dni) && !string.IsNullOrEmpty(updatedCliente.Nombre) && !string.IsNullOrEmpty(updatedCliente.Apellidos) && !string.IsNullOrEmpty(updatedCliente.Email))
-                        {
-                            //buscarClientes(textBoxCliente.Text);
-                        }
-                    };
+                    case "labelAccountSettings":
+                        Log.Info("Abriendo panel de configuración de cuenta.");
+                        panelAccountSettings.Visible = true;
+                        panelNotificationSettings.Visible = false;
+                        break;
+                    case "labelNotificationSettings":
+                        Log.Info("Abriendo panel de configuración de notificaciones.");
+                        panelAccountSettings.Visible = false;
+                        panelNotificationSettings.Visible = true;
+                        break;
                 }
-            };
-            WindowManager.ShowForm(
-                "Cliente_Nuevo",
-                this,
-                () => formNuevo);
-        }
-
-        private async void BotonMenosC_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-           
-        }
-        private void Boton_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null)
-            {
-                btn.BackColor = Color.FromArgb(255, 59, 48);
-                btn.ForeColor = Color.White;
-            }
-        }
-        private void Boton_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != null)
-            {
-                btn.BackColor = Color.FromArgb(225, 6, 0);
-                btn.ForeColor = SystemColors.ControlLightLight;
             }
         }
         private void textBoxNombreCliente_EnterClick(object sender, KeyEventArgs e)
@@ -133,16 +90,40 @@ namespace Articulos_Frontend.Forms.main
                 //buscarClientes(textBoxCliente.Text);
             }
         }
-        private void BotonHelpC_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("En esta sección puedes gestionar los clientes. Usa el botón '+' para agregar un nuevo cliente, el botón '-' para eliminar el cliente seleccionado, y haz doble clic en un cliente para editar su información.", "Ayuda - Gestión de Clientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void PanelPlegado_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo panel de filtros.");
             panelLateralPlegado.Visible = false;
             panelLateral.Visible = true;
+        }
+        private void markCheckNotifications_Click(object sender, EventArgs e)
+        {
+            Log.Info("Marcando el checkbox de notificaciones.");
+            if (this.Owner != null)
+            {
+                var menu = this.Owner as Menu;
+                if (menu != null)
+                {
+                    menu.changeSendEmailNotification();
+                }
+            }
+        }
+        private void syncCheckNotifications()
+        {
+            if (this.Owner != null)
+            {
+                var menu = this.Owner as Menu;
+                if (menu != null)
+                {
+                    bool shouldbeChecked = menu.getSendEmailNotification();
+                    if (shouldbeChecked)
+                    {
+                        checkCreateObjectEmailNotifications.Checked = true;
+                        return;
+                    }
+                    checkCreateObjectEmailNotifications.Checked = false;
+                }
+            }
         }
         private void RegistrarClicks(Control parent)
         {

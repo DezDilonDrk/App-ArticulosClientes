@@ -12,6 +12,7 @@ namespace Articulos_Frontend
         ShowTerminal terminal;
         AjustesForm ajustes;
         private Usuario user;
+        private bool sendEmailNotification = false;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
@@ -43,6 +44,14 @@ namespace Articulos_Frontend
             RefrescarMenuVentanas();
             
 
+        }
+        public bool getSendEmailNotification()
+        {
+            return sendEmailNotification;
+        }
+        public void changeSendEmailNotification()
+        {
+            sendEmailNotification = !sendEmailNotification;
         }
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -137,9 +146,6 @@ namespace Articulos_Frontend
             var bounds = ventasToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
-
-
-
         private void mnuVentanas_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
@@ -224,6 +230,7 @@ namespace Articulos_Frontend
             WindowManager.ShowForm(stringValuesSP.ajustes, this, () =>
             {
                 ajustes = new AjustesForm();
+                ajustes.Owner = this;
                 return ajustes;
             });
         }

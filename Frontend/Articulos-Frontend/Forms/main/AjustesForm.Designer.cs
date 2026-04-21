@@ -33,17 +33,30 @@ namespace Articulos_Frontend.Forms.main
         private void InitializeComponent()
         {
             panelLateral = new Panel();
+            groupBoxAppSettings = new GroupBox();
+            groupBoxUserSettings = new GroupBox();
+            labelNotificationSettings = new Label();
+            labelAccountSettings = new Label();
             pictureBoxLogoDesplegado = new PictureBox();
             panelMain = new Panel();
             panelMainSpace = new Panel();
+            panelAccountSettings = new Panel();
+            label1 = new Label();
+            panelNotificationSettings = new Panel();
+            checkCreateObjectEmailNotifications = new CheckBox();
+            labelTittleEmailNotifications = new Label();
             panel1 = new Panel();
             labelBuscadorAjustes = new Label();
             textBoxBuscadorAjustes = new TextBox();
             panelLateralPlegado = new Panel();
             pictureBoxLogo = new PictureBox();
             panelLateral.SuspendLayout();
+            groupBoxUserSettings.SuspendLayout();
             ((ISupportInitialize)pictureBoxLogoDesplegado).BeginInit();
             panelMain.SuspendLayout();
+            panelMainSpace.SuspendLayout();
+            panelAccountSettings.SuspendLayout();
+            panelNotificationSettings.SuspendLayout();
             panel1.SuspendLayout();
             panelLateralPlegado.SuspendLayout();
             ((ISupportInitialize)pictureBoxLogo).BeginInit();
@@ -53,6 +66,8 @@ namespace Articulos_Frontend.Forms.main
             // 
             panelLateral.AutoScroll = true;
             panelLateral.BackColor = Color.FromArgb(58, 58, 58);
+            panelLateral.Controls.Add(groupBoxAppSettings);
+            panelLateral.Controls.Add(groupBoxUserSettings);
             panelLateral.Controls.Add(pictureBoxLogoDesplegado);
             panelLateral.Dock = DockStyle.Left;
             panelLateral.Location = new Point(70, 0);
@@ -60,6 +75,46 @@ namespace Articulos_Frontend.Forms.main
             panelLateral.Size = new Size(200, 450);
             panelLateral.TabIndex = 10;
             panelLateral.Visible = false;
+            // 
+            // groupBoxAppSettings
+            // 
+            groupBoxAppSettings.Location = new Point(3, 116);
+            groupBoxAppSettings.Name = "groupBoxAppSettings";
+            groupBoxAppSettings.Size = new Size(180, 249);
+            groupBoxAppSettings.TabIndex = 4;
+            groupBoxAppSettings.TabStop = false;
+            groupBoxAppSettings.Text = "App Settings";
+            // 
+            // groupBoxUserSettings
+            // 
+            groupBoxUserSettings.Controls.Add(labelNotificationSettings);
+            groupBoxUserSettings.Controls.Add(labelAccountSettings);
+            groupBoxUserSettings.Location = new Point(2, 371);
+            groupBoxUserSettings.Name = "groupBoxUserSettings";
+            groupBoxUserSettings.Size = new Size(180, 100);
+            groupBoxUserSettings.TabIndex = 3;
+            groupBoxUserSettings.TabStop = false;
+            groupBoxUserSettings.Text = "User Settings";
+            // 
+            // labelNotificationSettings
+            // 
+            labelNotificationSettings.AutoSize = true;
+            labelNotificationSettings.Location = new Point(6, 55);
+            labelNotificationSettings.Name = "labelNotificationSettings";
+            labelNotificationSettings.Size = new Size(115, 15);
+            labelNotificationSettings.TabIndex = 3;
+            labelNotificationSettings.Text = "Notification Settings";
+            labelNotificationSettings.Click += openOptionAjustes;
+            // 
+            // labelAccountSettings
+            // 
+            labelAccountSettings.AutoSize = true;
+            labelAccountSettings.Location = new Point(6, 31);
+            labelAccountSettings.Name = "labelAccountSettings";
+            labelAccountSettings.Size = new Size(97, 15);
+            labelAccountSettings.TabIndex = 2;
+            labelAccountSettings.Text = "Account Settings";
+            labelAccountSettings.Click += openOptionAjustes;
             // 
             // pictureBoxLogoDesplegado
             // 
@@ -86,11 +141,63 @@ namespace Articulos_Frontend.Forms.main
             // 
             // panelMainSpace
             // 
+            panelMainSpace.Controls.Add(panelAccountSettings);
+            panelMainSpace.Controls.Add(panelNotificationSettings);
             panelMainSpace.Dock = DockStyle.Fill;
             panelMainSpace.Location = new Point(0, 60);
             panelMainSpace.Name = "panelMainSpace";
             panelMainSpace.Size = new Size(832, 390);
             panelMainSpace.TabIndex = 9;
+            // 
+            // panelAccountSettings
+            // 
+            panelAccountSettings.Controls.Add(label1);
+            panelAccountSettings.Dock = DockStyle.Fill;
+            panelAccountSettings.Location = new Point(0, 0);
+            panelAccountSettings.Name = "panelAccountSettings";
+            panelAccountSettings.Size = new Size(832, 390);
+            panelAccountSettings.TabIndex = 10;
+            panelAccountSettings.Tag = "fondoGrisPanel";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(100, 350);
+            label1.Name = "label1";
+            label1.Size = new Size(145, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Cerrar Sesión en la Cuenta";
+            // 
+            // panelNotificationSettings
+            // 
+            panelNotificationSettings.Controls.Add(checkCreateObjectEmailNotifications);
+            panelNotificationSettings.Controls.Add(labelTittleEmailNotifications);
+            panelNotificationSettings.Dock = DockStyle.Fill;
+            panelNotificationSettings.Location = new Point(0, 0);
+            panelNotificationSettings.Name = "panelNotificationSettings";
+            panelNotificationSettings.Size = new Size(832, 390);
+            panelNotificationSettings.TabIndex = 11;
+            panelNotificationSettings.Tag = "fondoGrisPanel";
+            // 
+            // checkCreateObjectEmailNotifications
+            // 
+            checkCreateObjectEmailNotifications.AutoSize = true;
+            checkCreateObjectEmailNotifications.Location = new Point(130, 47);
+            checkCreateObjectEmailNotifications.Name = "checkCreateObjectEmailNotifications";
+            checkCreateObjectEmailNotifications.Size = new Size(169, 19);
+            checkCreateObjectEmailNotifications.TabIndex = 1;
+            checkCreateObjectEmailNotifications.Text = "Noticación mediante Email";
+            checkCreateObjectEmailNotifications.UseVisualStyleBackColor = true;
+            checkCreateObjectEmailNotifications.Click += markCheckNotifications_Click;
+            // 
+            // labelTittleEmailNotifications
+            // 
+            labelTittleEmailNotifications.AutoSize = true;
+            labelTittleEmailNotifications.Location = new Point(100, 26);
+            labelTittleEmailNotifications.Name = "labelTittleEmailNotifications";
+            labelTittleEmailNotifications.Size = new Size(349, 15);
+            labelTittleEmailNotifications.TabIndex = 0;
+            labelTittleEmailNotifications.Text = "Notificaciones sobre los elementos dados de alta en la aplicación";
             // 
             // panel1
             // 
@@ -119,6 +226,7 @@ namespace Articulos_Frontend.Forms.main
             textBoxBuscadorAjustes.Anchor = AnchorStyles.None;
             textBoxBuscadorAjustes.BackColor = Color.FromArgb(42, 42, 42);
             textBoxBuscadorAjustes.BorderStyle = BorderStyle.None;
+            textBoxBuscadorAjustes.Enabled = false;
             textBoxBuscadorAjustes.ForeColor = Color.FromArgb(242, 242, 242);
             textBoxBuscadorAjustes.Location = new Point(294, 25);
             textBoxBuscadorAjustes.MaxLength = 60;
@@ -168,10 +276,17 @@ namespace Articulos_Frontend.Forms.main
             Name = "AjustesForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AjustesForm";
-            Load += ClienteForm_Load;
+            Load += AjustesForm_Load;
             panelLateral.ResumeLayout(false);
+            groupBoxUserSettings.ResumeLayout(false);
+            groupBoxUserSettings.PerformLayout();
             ((ISupportInitialize)pictureBoxLogoDesplegado).EndInit();
             panelMain.ResumeLayout(false);
+            panelMainSpace.ResumeLayout(false);
+            panelAccountSettings.ResumeLayout(false);
+            panelAccountSettings.PerformLayout();
+            panelNotificationSettings.ResumeLayout(false);
+            panelNotificationSettings.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panelLateralPlegado.ResumeLayout(false);
@@ -189,5 +304,14 @@ namespace Articulos_Frontend.Forms.main
         private Panel panelLateralPlegado;
         private PictureBox pictureBoxLogo;
         private PictureBox pictureBoxLogoDesplegado;
+        private Label labelAccountSettings;
+        private GroupBox groupBoxUserSettings;
+        private Label labelNotificationSettings;
+        private GroupBox groupBoxAppSettings;
+        private Panel panelAccountSettings;
+        private Panel panelNotificationSettings;
+        private Label labelTittleEmailNotifications;
+        private CheckBox checkCreateObjectEmailNotifications;
+        private Label label1;
     }
 }
