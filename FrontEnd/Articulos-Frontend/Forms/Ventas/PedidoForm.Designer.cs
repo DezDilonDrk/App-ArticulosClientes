@@ -49,8 +49,8 @@ namespace Articulos_Frontend
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             ComponentResourceManager resources = new ComponentResourceManager(typeof(PedidoForm));
             BotonMasC = new Button();
             BotonMenosC = new Button();
@@ -60,6 +60,11 @@ namespace Articulos_Frontend
             dgvPedido = new DataGridView();
             Filtros = new Button();
             panelFiltros = new Panel();
+            groupBox1 = new GroupBox();
+            label1 = new Label();
+            label2 = new Label();
+            dtpHasta2 = new DateTimePicker();
+            dtpDesde2 = new DateTimePicker();
             FiltroFecha = new GroupBox();
             labelFechaMax = new Label();
             labelFechaMin = new Label();
@@ -69,19 +74,14 @@ namespace Articulos_Frontend
             panelDGV = new Panel();
             panel1 = new Panel();
             BuscarNombre = new GroupBox();
-            groupBox1 = new GroupBox();
-            label1 = new Label();
-            label2 = new Label();
-            dateTimePicker1 = new DateTimePicker();
-            dateTimePicker2 = new DateTimePicker();
             ((ISupportInitialize)dgvPedido).BeginInit();
             panelFiltros.SuspendLayout();
+            groupBox1.SuspendLayout();
             FiltroFecha.SuspendLayout();
             panelMain.SuspendLayout();
             panelDGV.SuspendLayout();
             panel1.SuspendLayout();
             BuscarNombre.SuspendLayout();
-            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // BotonMasC
@@ -163,13 +163,13 @@ namespace Articulos_Frontend
             // dgvPedido
             // 
             dgvPedido.BackgroundColor = Color.FromArgb(42, 42, 42);
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(60, 60, 60);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(242, 242, 242);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvPedido.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(60, 60, 60);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(242, 242, 242);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvPedido.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvPedido.ColumnHeadersHeight = 40;
             dgvPedido.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvPedido.Dock = DockStyle.Fill;
@@ -180,13 +180,13 @@ namespace Articulos_Frontend
             dgvPedido.MultiSelect = false;
             dgvPedido.Name = "dgvPedido";
             dgvPedido.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(60, 60, 60);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(242, 242, 242);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(204, 42, 36);
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvPedido.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(60, 60, 60);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(242, 242, 242);
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(204, 42, 36);
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvPedido.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvPedido.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
             dgvPedido.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
             dgvPedido.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
@@ -220,6 +220,71 @@ namespace Articulos_Frontend
             panelFiltros.Size = new Size(222, 392);
             panelFiltros.TabIndex = 10;
             panelFiltros.Visible = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = Color.Transparent;
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(dtpHasta2);
+            groupBox1.Controls.Add(dtpDesde2);
+            groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox1.ForeColor = Color.FromArgb(242, 242, 242);
+            groupBox1.Location = new Point(11, 99);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(200, 85);
+            groupBox1.TabIndex = 10;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Filtrar por Fecha de Envío";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(10, 57);
+            label1.Name = "label1";
+            label1.Size = new Size(86, 15);
+            label1.TabIndex = 9;
+            label1.Text = "Fecha Máxima";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label2.Location = new Point(10, 27);
+            label2.Name = "label2";
+            label2.Size = new Size(83, 15);
+            label2.TabIndex = 8;
+            label2.Text = "Fecha Mínima";
+            // 
+            // dtpHasta2
+            // 
+            dtpHasta2.CalendarForeColor = Color.Black;
+            dtpHasta2.CalendarMonthBackground = SystemColors.GrayText;
+            dtpHasta2.CalendarTitleForeColor = Color.Black;
+            dtpHasta2.Format = DateTimePickerFormat.Short;
+            dtpHasta2.Location = new Point(99, 51);
+            dtpHasta2.Name = "dtpHasta2";
+            dtpHasta2.Size = new Size(97, 23);
+            dtpHasta2.TabIndex = 7;
+            dtpHasta2.Value = new DateTime(2099, 12, 31, 0, 0, 0, 0);
+            dtpHasta2.ValueChanged += FiltrarPorFecha;
+            // 
+            // dtpDesde2
+            // 
+            dtpDesde2.AllowDrop = true;
+            dtpDesde2.CalendarForeColor = Color.Black;
+            dtpDesde2.CalendarMonthBackground = SystemColors.GrayText;
+            dtpDesde2.CalendarTitleForeColor = Color.Black;
+            dtpDesde2.Format = DateTimePickerFormat.Short;
+            dtpDesde2.Location = new Point(99, 22);
+            dtpDesde2.Name = "dtpDesde2";
+            dtpDesde2.Size = new Size(97, 23);
+            dtpDesde2.TabIndex = 6;
+            dtpDesde2.Value = new DateTime(1979, 8, 10, 0, 0, 0, 0);
+            if (this.state == "SeccionEnviado") {
+                dtpDesde2.Value = DateTime.Now;
+            }
+            dtpDesde2.ValueChanged += FiltrarPorFecha;
             // 
             // FiltroFecha
             // 
@@ -326,66 +391,6 @@ namespace Articulos_Frontend
             BuscarNombre.TabStop = false;
             BuscarNombre.Text = "Búsqueda por Nombre";
             // 
-            // groupBox1
-            // 
-            groupBox1.BackColor = Color.Transparent;
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(dateTimePicker1);
-            groupBox1.Controls.Add(dateTimePicker2);
-            groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            groupBox1.ForeColor = Color.FromArgb(242, 242, 242);
-            groupBox1.Location = new Point(11, 99);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(200, 85);
-            groupBox1.TabIndex = 10;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Filtrar por Fecha de Envío";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(10, 57);
-            label1.Name = "label1";
-            label1.Size = new Size(86, 15);
-            label1.TabIndex = 9;
-            label1.Text = "Fecha Máxima";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label2.Location = new Point(10, 27);
-            label2.Name = "label2";
-            label2.Size = new Size(83, 15);
-            label2.TabIndex = 8;
-            label2.Text = "Fecha Mínima";
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.CalendarForeColor = Color.Black;
-            dateTimePicker1.CalendarMonthBackground = SystemColors.GrayText;
-            dateTimePicker1.CalendarTitleForeColor = Color.Black;
-            dateTimePicker1.Format = DateTimePickerFormat.Short;
-            dateTimePicker1.Location = new Point(99, 51);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(97, 23);
-            dateTimePicker1.TabIndex = 7;
-            dateTimePicker1.Value = new DateTime(2099, 12, 31, 0, 0, 0, 0);
-            // 
-            // dateTimePicker2
-            // 
-            dateTimePicker2.AllowDrop = true;
-            dateTimePicker2.CalendarForeColor = Color.Black;
-            dateTimePicker2.CalendarMonthBackground = SystemColors.GrayText;
-            dateTimePicker2.CalendarTitleForeColor = Color.Black;
-            dateTimePicker2.Format = DateTimePickerFormat.Short;
-            dateTimePicker2.Location = new Point(99, 22);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(97, 23);
-            dateTimePicker2.TabIndex = 6;
-            dateTimePicker2.Value = new DateTime(1979, 8, 10, 0, 0, 0, 0);
-            // 
             // PedidoForm
             // 
             BackColor = Color.FromArgb(26, 26, 26);
@@ -401,6 +406,8 @@ namespace Articulos_Frontend
             Load += PedidosForm_Load;
             ((ISupportInitialize)dgvPedido).EndInit();
             panelFiltros.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             FiltroFecha.ResumeLayout(false);
             FiltroFecha.PerformLayout();
             panelMain.ResumeLayout(false);
@@ -408,16 +415,14 @@ namespace Articulos_Frontend
             panel1.ResumeLayout(false);
             BuscarNombre.ResumeLayout(false);
             BuscarNombre.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             ResumeLayout(false);
         }
 
         private GroupBox groupBox1;
         private Label label1;
         private Label label2;
-        private DateTimePicker dateTimePicker1;
-        private DateTimePicker dateTimePicker2;
+        private DateTimePicker dtpHasta2;
+        private DateTimePicker dtpDesde2;
     }
 
         #endregion
