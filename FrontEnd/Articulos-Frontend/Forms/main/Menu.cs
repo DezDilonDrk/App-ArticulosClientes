@@ -1,4 +1,5 @@
 using Articulos_Frontend.Client;
+using Articulos_Frontend.Forms.main;
 using Articulos_Frontend.Forms.Seguridad;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
@@ -9,6 +10,7 @@ namespace Articulos_Frontend
     public partial class Menu : Form
     {
         ShowTerminal terminal;
+        AjustesForm ajustes;
         private Usuario user;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
@@ -214,6 +216,15 @@ namespace Articulos_Frontend
             {
                 terminal = new ShowTerminal();
                 return terminal;
+            });
+        }
+        private void buttonAjustes_Click(object sender, EventArgs e)
+        {
+            Log.Info("Abriendo Ajustes.");
+            WindowManager.ShowForm(stringValuesSP.ajustes, this, () =>
+            {
+                ajustes = new AjustesForm();
+                return ajustes;
             });
         }
         private void buttonLogout_Click(object sender, EventArgs e)

@@ -153,6 +153,16 @@ namespace Articulos_Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconoAjustesMTColorClaro {
+            get {
+                object obj = ResourceManager.GetObject("IconoAjustesMTColorClaro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MT_GROUP {
             get {
                 object obj = ResourceManager.GetObject("MT-GROUP", resourceCulture);

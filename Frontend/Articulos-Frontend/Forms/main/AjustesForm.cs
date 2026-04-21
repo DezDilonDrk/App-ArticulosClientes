@@ -25,7 +25,8 @@ namespace Articulos_Frontend.Forms.main
             InitializeComponent();
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             StyleManager.StyleForm(this);
-            this.ActiveControl = textBoxCliente;
+            this.ActiveControl = textBoxBuscadorAjustes;
+            this.panelLateralPlegado.Visible = true;
             Log.Info("Formulario de Ajustes iniciado.");
         }
         private void ClienteForm_Load(object sender, EventArgs e)
@@ -33,77 +34,36 @@ namespace Articulos_Frontend.Forms.main
             Log.Info("Cargando clientes en el formulario.");
             buscarClientes(null);
             RegistrarClicks(this);
-            if (!AppState.Roles.Contains(Roles.AdminVentas))
-            {
-                BotonMasC.Enabled = false;
-                BotonMenosC.Enabled = false;
-                admin = false;
-            }
-            else
-            {
-                admin = true;
-            }
+            if (!AppState.Roles.Contains(Roles.AdminVentas)) {admin = false;} else {admin = true;}
         }
-        private void FiltrarPorFecha(object sender, EventArgs e)
+        private void Ajustes_Paint(object sender, PaintEventArgs e)
         {
-            List<Cliente> clientesFiltrados = listaActual;
-            clientesFiltrados = clientesFiltrados.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date).ToList();
-            if (FechaHasta.Value.Date < FechaDesde.Value.Date)
+            if(sender == null) return;
+            Rectangle rect;
+            if (sender is Button btn)
             {
-                MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                FechaHasta.Value = FechaDesde.Value.Date;
-                return;
+                btn = sender as Button;
+                if (btn == null) return;
+                rect = new Rectangle(0, 0, btn.Width, btn.Height);
+                e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                e.Graphics.DrawImage(btn.Image, rect);
             }
-            clientesFiltrados = clientesFiltrados.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date).ToList();
-            dgvCliente.DataSource = clientesFiltrados;
+            if (sender is PictureBox pb)
+            {
+                pb = sender as PictureBox;
+                if (pb == null) return;
+                rect = new Rectangle(0, 0, pb.Width, pb.Height);
+                e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                e.Graphics.DrawImage(pb.Image, rect);
+            }
         }
         private async void buscarClientes(string nombreFiltro)
         {
            //Lo que sea
-            if (dgvCliente.Columns["Dni"] != null)
-            {
-                dgvCliente.Columns["Dni"].Width = 80;
-                dgvCliente.Columns["Dni"].Resizable = DataGridViewTriState.False;
-            }
-            if (dgvCliente.Columns["Nombre"] != null)
-            {
-                //dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvCliente.Columns["Nombre"].FillWeight = 30;
-                dgvCliente.Columns["Nombre"].MinimumWidth = 100;
-            }
-            if (dgvCliente.Columns["Apellidos"] != null)
-            {
-                //dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Apellidos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvCliente.Columns["Apellidos"].FillWeight = 30;
-                dgvCliente.Columns["Apellidos"].MinimumWidth = 120;
-            }
-            if (dgvCliente.Columns["Email"] != null)
-            {
-                //dgvCliente.Columns["Email"].Width = 250;
-                //dgvCliente.Columns["Email"].Resizable = DataGridViewTriState.False;
-                dgvCliente.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvCliente.Columns["Email"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvCliente.Columns["Email"].FillWeight = 40;
-                dgvCliente.Columns["Email"].MinimumWidth = 150;
-            }
-            if (dgvCliente.Columns["FechaCreacion"] != null)
-            {
-                dgvCliente.Columns["FechaCreacion"].Width = 120;
-                dgvCliente.Columns["FechaCreacion"].Resizable = DataGridViewTriState.False;
-            }
-            if (dgvCliente.Columns["FechaModificacion"] != null)
-            {
-                dgvCliente.Columns["FechaModificacion"].Width = 130;
-                dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
-            }
         }
         private void BotonBuscar_Click(object sender, EventArgs e)
         {
-            buscarClientes(textBoxCliente.Text);
+            //buscarClientes(textBoxCliente.Text);
         }
 
         private async void BotonMasC_Click(object sender, EventArgs e)
@@ -116,7 +76,7 @@ namespace Articulos_Frontend.Forms.main
             {
                 if (!string.IsNullOrEmpty(cliente.Dni))
                 {
-                    buscarClientes(textBoxCliente.Text);
+                    //buscarClientes(textBoxCliente.Text);
 
                     var actualizarClienteForm = new ClienteDetailForm(cliente);
                     WindowManager.ShowForm(
@@ -128,7 +88,7 @@ namespace Articulos_Frontend.Forms.main
                     {
                         if (!string.IsNullOrEmpty(updatedCliente.Dni) && !string.IsNullOrEmpty(updatedCliente.Nombre) && !string.IsNullOrEmpty(updatedCliente.Apellidos) && !string.IsNullOrEmpty(updatedCliente.Email))
                         {
-                            buscarClientes(textBoxCliente.Text);
+                            //buscarClientes(textBoxCliente.Text);
                         }
                     };
                 }
@@ -147,10 +107,6 @@ namespace Articulos_Frontend.Forms.main
         private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
            
-        }
-        private async Task SeleccionarCliente(string dni)
-        {
-            
         }
         private void Boton_MouseEnter(object sender, EventArgs e)
         {
@@ -174,7 +130,7 @@ namespace Articulos_Frontend.Forms.main
         {
             if (e.KeyCode == Keys.Enter)
             {
-                buscarClientes(textBoxCliente.Text);
+                //buscarClientes(textBoxCliente.Text);
             }
         }
         private void BotonHelpC_Click(object sender, EventArgs e)
@@ -182,15 +138,17 @@ namespace Articulos_Frontend.Forms.main
             MessageBox.Show("En esta sección puedes gestionar los clientes. Usa el botón '+' para agregar un nuevo cliente, el botón '-' para eliminar el cliente seleccionado, y haz doble clic en un cliente para editar su información.", "Ayuda - Gestión de Clientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void Filtros_Click(object sender, EventArgs e)
+        private void PanelPlegado_Click(object sender, EventArgs e)
         {
-            
+            Log.Info("Abriendo panel de filtros.");
+            panelLateralPlegado.Visible = false;
+            panelLateral.Visible = true;
         }
         private void RegistrarClicks(Control parent)
         {
             foreach (Control c in parent.Controls)
             {
-                if (c == panelFiltros || c == Filtros)
+                if (c == panelLateral)
                     continue;
 
                 c.Click += CerrarPanelClickFuera;
@@ -203,15 +161,15 @@ namespace Articulos_Frontend.Forms.main
         }
         private void CerrarPanelClickFuera(object sender, EventArgs e)
         {
-            if (panelFiltros.Visible)
+            if (panelLateral.Visible)
             {
                 Point mousePos = this.PointToClient(Cursor.Position);
 
-                if (!panelFiltros.Bounds.Contains(mousePos))
+                if (!panelLateral.Bounds.Contains(mousePos))
                 {
-                    panelFiltros.Visible = false;
+                    panelLateral.Visible = false;
                     Log.Info("Cerrando panel de filtros al hacer clic fuera del panel.");
-                    Filtros.Text = "▼  Abrir Filtros";
+                    panelLateralPlegado.Visible = true;
                 }
             }
         }

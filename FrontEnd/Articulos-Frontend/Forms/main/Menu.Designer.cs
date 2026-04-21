@@ -43,7 +43,7 @@ namespace Articulos_Frontend
             statusStripMenu = new StatusStrip();
             toolStripStatusLabelUser = new ToolStripStatusLabel();
             toolStripStatusLabelEmail = new ToolStripStatusLabel();
-            button1 = new Button();
+            buttonAjustes = new Button();
             menuStripAC.SuspendLayout();
             statusStripMenu.SuspendLayout();
             SuspendLayout();
@@ -134,16 +134,17 @@ namespace Articulos_Frontend
             toolStripStatusLabelEmail.Size = new Size(39, 17);
             toolStripStatusLabelEmail.Text = "Email:";
             // 
-            // button1
+            // buttonAjustes
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Image = Properties.Resources.IconoAjustesColorClaro;
-            button1.Location = new Point(889, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(24, 24);
-            button1.TabIndex = 5;
-            button1.UseVisualStyleBackColor = true;
-            button1.Paint += Ajustes_Paint;
+            buttonAjustes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonAjustes.Image = Properties.Resources.IconoAjustesColorClaro;
+            buttonAjustes.Location = new Point(889, 0);
+            buttonAjustes.Name = "buttonAjustes";
+            buttonAjustes.Size = new Size(24, 24);
+            buttonAjustes.TabIndex = 5;
+            buttonAjustes.UseVisualStyleBackColor = true;
+            buttonAjustes.Paint += Ajustes_Paint;
+            buttonAjustes.Click += buttonAjustes_Click;
             // 
             // Menu
             // 
@@ -152,7 +153,7 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
-            Controls.Add(button1);
+            Controls.Add(buttonAjustes);
             Controls.Add(statusStripMenu);
             Controls.Add(buttonLogout);
             Controls.Add(buttonTerminal);
@@ -184,6 +185,6 @@ namespace Articulos_Frontend
         private ToolStripMenuItem seguridadToolStripMenuItem;
         private ToolStripMenuItem almacenToolStripMenuItem;
         private ToolStripMenuItem ventasToolStripMenuItem;
-        private Button button1;
+        private Button buttonAjustes;
     }
 }
