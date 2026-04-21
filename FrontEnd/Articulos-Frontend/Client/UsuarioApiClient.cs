@@ -173,6 +173,28 @@ public class UsuarioApiClient
         }
     }
 
+    public async Task ActualizarContrasena(string correo, string nuevaContrasena)
+    {
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync(
+            $"/usuarios/{correo}/contrasena",
+            new { NuevaContrasena = nuevaContrasena }
+        );
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error API: {response.StatusCode} - {error}");
+            }
+        }catch (Exception ex)
+        {
+            Log.Error("Error al actualizar contraseña: " + ex.Message);
+            throw;
+        }
+        
+    }
+
     public async Task ActualizarRolesUsuario(string correo, List<string> roles)
     {
         try

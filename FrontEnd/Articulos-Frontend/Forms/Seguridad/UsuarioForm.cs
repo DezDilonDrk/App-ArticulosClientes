@@ -56,7 +56,7 @@ public partial class UsuarioForm : Form
         }
         if (dataGridViewUsuarios.Columns.Count == 0) return;
 
-        dataGridViewUsuarios.Columns[0].Width = 140;
+        dataGridViewUsuarios.Columns[0].Width = 240;
         dataGridViewUsuarios.Columns[1].Width = 140;
         dataGridViewUsuarios.Columns[2].Width = 300;
         DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
@@ -82,18 +82,32 @@ public partial class UsuarioForm : Form
     );
     }
 
-    private void buttonDel_Click(object sender, EventArgs e)
+    private async void buttonDel_Click(object sender, EventArgs e)
     {
-        if (usuarioSeleccionado != null)
+        try
         {
-            Log.Info($"Eliminando usuario con correo {usuarioSeleccionado.CorreoElectronico}.");
+            Log.Info($"Eliminando usuario con correo {dataGridViewUsuarios.CurrentRow?.Cells["CorreoElectronico"].Value.ToString()}.");
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este usuario?"));
             alerta.ShowDialog();
             if (alerta.resultado)
             {
-                api.EliminarUsuario(usuarioSeleccionado.CorreoElectronico);
+                var correo = dataGridViewUsuarios.CurrentRow?.Cells["CorreoElectronico"].Value.ToString();
+                if(string.IsNullOrEmpty(correo))
+                {
+                    Log.Warn("No se pudo obtener el correo electrónico del usuario seleccionado para eliminación.");
+                    alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("No se pudo obtener el correo electrónico del usuario seleccionado."));
+                    alerta.ShowDialog();
+                    return;
+                }
+                await api.EliminarUsuario(dataGridViewUsuarios.CurrentRow?.Cells["CorreoElectronico"].Value.ToString());
                 cargarUsuarios();
             }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al eliminar usuario.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
         }
     }
 
@@ -111,7 +125,7 @@ public partial class UsuarioForm : Form
             var usuarioActual = user;
             Log.Info("Abriendo formulario de detalle para actualizar usuario.");
             WindowManager.ShowForm(
-            $"Usuario_",
+            $"Usuario_{usuarioSeleccionado.CorreoElectronico}",
             this,
             () =>
             {

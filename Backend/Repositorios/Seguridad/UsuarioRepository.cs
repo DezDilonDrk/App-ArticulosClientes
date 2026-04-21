@@ -71,6 +71,16 @@ namespace Articulos_Backend.Repositorios.Seguridad
             }
         }
 
+        public void ActualizarContrasena(string correoElectronico, string contrasena)
+        {
+            using (var db = Connection)
+            {
+                string hash = BCrypt.Net.BCrypt.HashPassword(contrasena);
+                string sql = "UPDATE Usuarios SET Contrasena = @Contrasena WHERE CorreoElectronico = @CorreoElectronico";
+                db.Execute(sql, new { Contrasena = hash, CorreoElectronico = correoElectronico });
+            }
+        }
+
         public void ActualizarRoles(string correoElectronico, List<string> roles)
         {
             using (var db = Connection)
@@ -89,8 +99,11 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "DELETE FROM Usuarios WHERE CorreoElectronico = @CorreoElectronico";
-                db.Execute(sql, new { CorreoElectronico = correoElectronico });
+                string deleteRoles = "DELETE FROM UsuarioRoles WHERE UsuarioEmail = @CorreoElectronico";
+                db.Execute(deleteRoles, new { CorreoElectronico = correoElectronico });
+
+                string deleteUser = "DELETE FROM Usuarios WHERE CorreoElectronico = @CorreoElectronico";
+                db.Execute(deleteUser, new { CorreoElectronico = correoElectronico });
             }
         }
 

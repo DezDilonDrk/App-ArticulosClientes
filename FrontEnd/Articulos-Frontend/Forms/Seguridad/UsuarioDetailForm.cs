@@ -26,7 +26,7 @@ namespace Articulos_Frontend.Forms.Seguridad
             rolapi = api2;
             usuarioActual = usuario1;
             usuarioSeleccionado = usuario2;
-            
+
         }
 
         public void UsuarioDetailForm_Load(object sender, EventArgs e)
@@ -83,6 +83,7 @@ namespace Articulos_Frontend.Forms.Seguridad
             if (usuarioSeleccionado != null)
             {
                 textBoxContrasena.Enabled = false;
+                textBoxCorreo.Enabled = false;
                 textBoxNombre.Text = usuarioSeleccionado.Nombre;
                 textBoxCorreo.Text = usuarioSeleccionado.CorreoElectronico;
                 textBoxContrasena.Text = usuarioSeleccionado.Contrasena;
@@ -98,7 +99,7 @@ namespace Articulos_Frontend.Forms.Seguridad
 
         private async void buttonConfirm_Click(object sender, EventArgs e)
         {
-            if(usuarioSeleccionado != null)
+            if (usuarioSeleccionado != null)
             {
                 var lista = (List<RolItem>)dataGridViewRoles.DataSource;
                 var rolesSeleccionados = lista.Where(r => r.seleccionado).Select(r => r.nombre).ToList();
@@ -119,16 +120,17 @@ namespace Articulos_Frontend.Forms.Seguridad
                 {
                     this.Close();
                 }
-            } else
+            }
+            else
             {
                 Alerta alerta;
-                if(string.IsNullOrEmpty(textBoxNombre.Text) || string.IsNullOrEmpty(textBoxCorreo.Text) || string.IsNullOrEmpty(textBoxContrasena.Text))
+                if (string.IsNullOrEmpty(textBoxNombre.Text) || string.IsNullOrEmpty(textBoxCorreo.Text) || string.IsNullOrEmpty(textBoxContrasena.Text))
                 {
                     alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("Por favor complete todos los campos"));
                     alerta.ShowDialog();
                     return;
                 }
-                if(!ValidarEmail(textBoxCorreo.Text))
+                if (!ValidarEmail(textBoxCorreo.Text))
                 {
                     return;
                 }
@@ -174,6 +176,19 @@ namespace Articulos_Frontend.Forms.Seguridad
                 }
                 return false;
             }
+        }
+
+        private void buttonCC_Click(object sender, EventArgs e)
+        {
+            WindowManager.ShowForm(
+            $"CC_{usuarioSeleccionado.CorreoElectronico}",
+            this,
+            () =>
+            {
+                var form = new CambiarContrasenaForm(usuarioSeleccionado.CorreoElectronico);
+                return form;
+            }
+        );
         }
     }
 }

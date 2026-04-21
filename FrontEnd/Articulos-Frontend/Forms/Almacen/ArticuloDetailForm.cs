@@ -29,6 +29,13 @@ namespace Articulos_Frontend
                 comboBoxCategoria.Text = articulo.categoria;
             }
             StyleManager.StyleForm(this);
+            if(AppState.Roles.Contains(Roles.UserAlmacen))
+            {
+                textBoxNombre.ReadOnly = true;
+                textBoxPrecio.ReadOnly = true;
+                comboBoxCategoria.Enabled = false;
+                botonConfirm.Visible = false;
+            }
 
         }
 

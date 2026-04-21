@@ -4,6 +4,9 @@
     <Compile Update="Forms\main\Alerta.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\Seguridad\CambiarContrasenaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Seguridad\RolForm.cs">
       <SubType>Form</SubType>
     </Compile>

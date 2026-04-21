@@ -518,11 +518,6 @@ public partial class ClienteForm : Form
                     this.Close();
                     return;
                 }
-                if (!admin)
-                {
-                    MessageBox.Show("No tienes permisos para editar clientes.");
-                    return;
-                }
                 string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
                 Cliente cliente = await ClienteApiClient.ObtenerPorDni(dni);
                 var formActualizado = new ClienteUpdateForm(cliente);

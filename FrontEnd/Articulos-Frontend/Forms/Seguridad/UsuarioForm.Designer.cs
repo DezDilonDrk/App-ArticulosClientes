@@ -73,6 +73,7 @@
             buttonDel.TabIndex = 4;
             buttonDel.Text = "-";
             buttonDel.UseVisualStyleBackColor = true;
+            buttonDel.Click += buttonDel_Click;
             // 
             // dataGridViewUsuarios
             // 

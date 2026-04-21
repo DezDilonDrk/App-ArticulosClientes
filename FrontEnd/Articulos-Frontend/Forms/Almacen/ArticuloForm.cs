@@ -239,11 +239,6 @@ public partial class ArticuloForm : Form
             this.Close();
             return;
         }
-        if (!admin)
-        {
-            MessageBox.Show("No tienes permisos para editar artículos.");
-            return;
-        }
         if (e.RowIndex >= 0)
         {
             try

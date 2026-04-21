@@ -37,6 +37,7 @@
             textBoxContrasena = new TextBox();
             dataGridViewRoles = new DataGridView();
             buttonConfirm = new Button();
+            buttonCC = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRoles).BeginInit();
             SuspendLayout();
             // 
@@ -106,19 +107,32 @@
             // buttonConfirm
             // 
             buttonConfirm.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonConfirm.Location = new Point(669, 347);
+            buttonConfirm.Location = new Point(658, 347);
             buttonConfirm.Name = "buttonConfirm";
-            buttonConfirm.Size = new Size(75, 23);
+            buttonConfirm.Size = new Size(86, 23);
             buttonConfirm.TabIndex = 8;
             buttonConfirm.Text = "Confirmar";
             buttonConfirm.UseVisualStyleBackColor = true;
             buttonConfirm.Click += buttonConfirm_Click;
+            // 
+            // buttonCC
+            // 
+            buttonCC.Location = new Point(476, 158);
+            buttonCC.MaximumSize = new Size(147, 23);
+            buttonCC.MinimumSize = new Size(147, 23);
+            buttonCC.Name = "buttonCC";
+            buttonCC.Size = new Size(147, 23);
+            buttonCC.TabIndex = 9;
+            buttonCC.Text = "Cambiar contraseña";
+            buttonCC.UseVisualStyleBackColor = true;
+            buttonCC.Click += buttonCC_Click;
             // 
             // UsuarioDetailForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 382);
+            Controls.Add(buttonCC);
             Controls.Add(buttonConfirm);
             Controls.Add(dataGridViewRoles);
             Controls.Add(textBoxContrasena);
@@ -148,5 +162,6 @@
         private TextBox textBoxContrasena;
         private DataGridView dataGridViewRoles;
         private Button buttonConfirm;
+        private Button buttonCC;
     }
 }

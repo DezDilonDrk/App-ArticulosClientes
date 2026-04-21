@@ -31,6 +31,13 @@ namespace Articulos_Frontend
             clienteApiClient = new ClienteApiClient();
             StyleManager.StyleForm(this);
             Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
+            if(AppState.Roles.Contains(Roles.UserVentas))
+            {
+                textBoxNombre.ReadOnly = true;
+                textBoxApellidos.ReadOnly = true;
+                textBoxEmail.ReadOnly = true;
+                BotonActualizarC.Visible = false;
+            }
         }
 
         private void InitializeComponent()
