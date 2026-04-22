@@ -17,11 +17,13 @@ namespace Articulos_Frontend
     public partial class PedidoForm : Form
     {
         private PedidoApiClient PedidoApiClient;
+        private string state;
         private ErrorProvider errorProvider;
         private List<Pedido> listaActual;
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoForm()
+        public PedidoForm(string state)
         {
+            this.state = state;
             InitializeComponent();
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
             PedidoApiClient = new PedidoApiClient();
@@ -38,14 +40,23 @@ namespace Articulos_Frontend
         private void FiltrarPorFecha(object sender, EventArgs e)
         {
             List<Pedido> pedidosFiltrados = listaActual;
-            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date).ToList();
+            pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_creacion >= FechaDesde.Value.Date).ToList();
             if (FechaHasta.Value.Date < FechaDesde.Value.Date)
             {
                 MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 FechaHasta.Value = FechaDesde.Value.Date;
                 return;
             }
-            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date).ToList();
+            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion <= FechaHasta.Value.Date).ToList();
+
+            pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_envio >= dtpDesde2.Value.Date).ToList();
+            if (dtpHasta2.Value.Date < dtpDesde2.Value.Date)
+            {
+                MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dtpHasta2.Value = dtpDesde2.Value.Date;
+                return;
+            }
+            pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_envio <= FechaHasta.Value.Date).ToList();
             dgvPedido.DataSource = pedidosFiltrados;
         }
         private async void buscarPedidos(string nombreFiltro)
@@ -58,11 +69,12 @@ namespace Articulos_Frontend
             }
             else
             {
-                // pedidos = await PedidoApiClient.BuscarPorNombre(nombreFiltro);
                 pedidos = await PedidoApiClient.ObtenerPedidos(); //esto deberá ser borrado, se puso aquí para que funcione todo en conjunto
             }
             pedidos = pedidos.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date);
             pedidos = pedidos.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date);
+            pedidos = pedidos.Where(c => c.fecha_envio >= dtpDesde2.Value.Date);
+            pedidos = pedidos.Where(c => c.fecha_envio <= dtpHasta2.Value.Date);
             dgvPedido.DataSource = pedidos.ToList();
             listaActual = pedidos.ToList();
             if (dgvPedido.Columns["dni_cliente"] != null)
@@ -74,9 +86,9 @@ namespace Articulos_Frontend
             if (dgvPedido.Columns["porcentaje_impuestos"] != null)
             {
                 //dgvCliente.Columns["porcentaje"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //dgvCliente.Columns["porcentaje"].FillWeight = 30;
                 dgvPedido.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dgvPedido.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                //dgvCliente.Columns["porcentaje"].FillWeight = 30;
                 dgvPedido.Columns["porcentaje_impuestos"].MinimumWidth = 100;
                 dgvPedido.Columns["porcentaje_impuestos"].HeaderText = "Porcentaje de Impuestos";
             }
@@ -124,6 +136,20 @@ namespace Articulos_Frontend
                 dgvPedido.Columns["fecha_rectificacion"].Resizable = DataGridViewTriState.False;
                 dgvPedido.Columns["fecha_rectificacion"].HeaderText = "Fecha de Rectificación";
             }
+            if (dgvPedido.Columns["fecha_envio"] != null)
+            {
+                dgvPedido.Columns["fecha_envio"].Width = 130;
+                dgvPedido.Columns["fecha_envio"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["fecha_envio"].HeaderText = "Fecha de Envio";
+            }
+            if (dgvPedido.Columns["nombre"] != null)
+            {
+
+                dgvPedido.Columns["nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgvPedido.Columns["nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPedido.Columns["nombre"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["nombre"].HeaderText = "Nombre";
+            }
         }
         private void BotonBuscar_Click(object sender, EventArgs e)
         {
@@ -133,7 +159,6 @@ namespace Articulos_Frontend
         private async void BotonMasC_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario para crear un nuevo pedido.");
-            //Pedido nuevopedido = new Pedido();
             var formNuevo = new PedidoDetailForm("Create");
 
             formNuevo.PedidoModificadoCorrectamente += async pedido =>

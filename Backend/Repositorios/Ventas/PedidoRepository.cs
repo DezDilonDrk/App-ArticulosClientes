@@ -17,7 +17,7 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = "SELECT id_pedido, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, estado, porcentaje_impuestos FROM Pedidos";
+                string sql = "SELECT id_pedido, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos FROM Pedidos";
                 return db.Query<Pedido>(sql).ToList();
             }
         }
@@ -57,8 +57,8 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos)
-                           VALUES (@id_pedido, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos)";
+                string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos, fecha_envio)
+                           VALUES (@id_pedido, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos, @fecha_envio)";
                 db.Execute(sql, pedido);
             }
         }
@@ -71,7 +71,8 @@ namespace Articulos_Backend.Repositorios.Ventas
                                metodo_pago = @metodo_pago,
                                fecha_rectificacion = @fecha_rectificacion, 
                                estado = @estado, 
-                               porcentaje_impuestos = @porcentaje_impuestos  
+                               porcentaje_impuestos = @porcentaje_impuestos,
+                               fecha_envio = @fecha_envio
                                WHERE id_pedido = @id_pedido";
 
                 db.Execute(sql, pedido);

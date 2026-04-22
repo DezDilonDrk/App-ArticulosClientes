@@ -1,4 +1,5 @@
 using Articulos_Frontend.Client;
+using Articulos_Frontend.Forms.main;
 using Articulos_Frontend.Forms.Seguridad;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
@@ -9,7 +10,9 @@ namespace Articulos_Frontend
     public partial class Menu : Form
     {
         ShowTerminal terminal;
+        AjustesForm ajustes;
         private Usuario user;
+        private bool sendEmailNotification = false;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
@@ -42,6 +45,14 @@ namespace Articulos_Frontend
             
 
         }
+        public bool getSendEmailNotification()
+        {
+            return sendEmailNotification;
+        }
+        public void changeSendEmailNotification()
+        {
+            sendEmailNotification = !sendEmailNotification;
+        }
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario de artículos.");
@@ -72,21 +83,21 @@ namespace Articulos_Frontend
 
             WindowManager.ShowForm(key, this, () =>
             {
-                return new PedidoForm();
+                return new PedidoForm("SeccionPedido");
             });
         }
         private void seguridadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
-            var usuarioItem = new ToolStripMenuItem("UsuarioForm");
-            var rolItem = new ToolStripMenuItem("RolForm");
+            var usuarioItem = new ToolStripMenuItem(stringValuesSP.seccionUsuarios);
+            var rolItem = new ToolStripMenuItem(stringValuesSP.seccionRoles);
             usuarioItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("UsuarioForm", this, () => new UsuarioForm(new UsuarioApiClient(), user));
+                WindowManager.ShowForm(stringValuesSP.seccionUsuarios, this, () => new UsuarioForm(new UsuarioApiClient(), user));
             };
             rolItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("RolForm", this, () => new RolForm(new RolApiClient()));
+                WindowManager.ShowForm(stringValuesSP.seccionRoles, this, () => new RolForm(new RolApiClient()));
             };
             dropDown.Items.Add(usuarioItem);
             dropDown.Items.Add(rolItem);
@@ -98,10 +109,10 @@ namespace Articulos_Frontend
         private void almacenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
-            var articuloItem = new ToolStripMenuItem("ArticuloForm");
+            var articuloItem = new ToolStripMenuItem(stringValuesSP.listaArticulos);
             articuloItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("ArticuloForm", this, () => new ArticuloForm(user));
+                WindowManager.ShowForm(stringValuesSP.listaArticulos, this, () => new ArticuloForm(user));
             };
 
             dropDown.Items.Add(articuloItem);
@@ -113,25 +124,28 @@ namespace Articulos_Frontend
         private void ventasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
-            var clienteItem = new ToolStripMenuItem("ClienteForm");
-            var pedidoItem = new ToolStripMenuItem("PedidoForm");
+            var clienteItem = new ToolStripMenuItem(stringValuesSP.listaClientes);
+            var pedidoItem = new ToolStripMenuItem(stringValuesSP.listaPedidos);
+            var enviadoItem = new ToolStripMenuItem(stringValuesSP.seccionEnvios);
             clienteItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("ClienteForm", this, () => new ClienteForm());
+                WindowManager.ShowForm(stringValuesSP.listaClientes, this, () => new ClienteForm());
             };
             pedidoItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm("PedidoForm", this, () => new PedidoForm());
+                WindowManager.ShowForm(stringValuesSP.listaPedidos, this, () => new PedidoForm("SeccionPedido"));
+            };
+            enviadoItem.Click += (s, ev) =>
+            {
+                WindowManager.ShowForm(stringValuesSP.seccionEnvios, this, () => new PedidoForm("SeccionEnviado"));
             };
             dropDown.Items.Add(clienteItem);
             dropDown.Items.Add(pedidoItem);
+            dropDown.Items.Add(enviadoItem);
             var parent = ventasToolStripMenuItem.GetCurrentParent();
             var bounds = ventasToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
-
-
-
         private void mnuVentanas_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
@@ -165,6 +179,14 @@ namespace Articulos_Frontend
 
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
+        private void Ajustes_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null) return;
+            Rectangle rect = new Rectangle(0, 0, btn.Width, btn.Height);
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            e.Graphics.DrawImage(btn.Image, rect);
+        }
         private void RefrescarMenuVentanas()
         {
             mnuVentanas.DropDownItems.Clear();
@@ -193,31 +215,38 @@ namespace Articulos_Frontend
         {
             return this.menuStripAC.PointToScreen(Point.Empty).Y;
         }
-
         private void buttonTerminal_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo terminal.");
-            WindowManager.ShowForm("TerminalForm", this, () =>
+            WindowManager.ShowForm(stringValuesSP.terminal, this, () =>
             {
                 terminal = new ShowTerminal();
                 return terminal;
             });
         }
-
+        private void buttonAjustes_Click(object sender, EventArgs e)
+        {
+            Log.Info("Abriendo Ajustes.");
+            WindowManager.ShowForm(stringValuesSP.ajustes, this, () =>
+            {
+                ajustes = new AjustesForm();
+                ajustes.Owner = this;
+                return ajustes;
+            });
+        }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            WindowManager.ShowForm("LoginForm", this, () => new LoginForm());
+            WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
 
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {
                 try { entry.formularioHijo.Close(); }
-                catch { }
+                catch (Exception ex ) {
+                    Log.Error("Error al cerrar la ventana: " + ex.Message);
+                }
             }
-
             this.Close();
         }
-
-        
     }
 }

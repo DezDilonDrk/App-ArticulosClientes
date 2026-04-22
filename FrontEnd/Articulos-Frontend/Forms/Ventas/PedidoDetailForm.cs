@@ -55,6 +55,7 @@ namespace Articulos_Frontend
                 }
                 LabelTitulo.Text = stringValuesSP.actualizarPedido;
                 BotonCrearC.Text = stringValuesSP.actualizar;
+                BotonCrearC.Enabled = false;
                 textBoxDniCliente.Text = pedido.dni_cliente;
                 comboBoxEstado.Text = pedido.estado;
                 comboBoxMetodoPago.Text = pedido.metodo_pago;
@@ -82,16 +83,19 @@ namespace Articulos_Frontend
             labelTotalCantidades = new Label();
             label1 = new Label();
             comboBoxEstado = new ComboBox();
+            buttonCerrar = new Button();
+            label2 = new Label();
+            dateTimePickerFechaEnvio = new DateTimePicker();
             ((ISupportInitialize)dataGridViewArticulos).BeginInit();
             SuspendLayout();
             // 
             // textBoxDniCliente
             // 
             textBoxDniCliente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxDniCliente.Location = new Point(247, 101);
+            textBoxDniCliente.Location = new Point(247, 96);
             textBoxDniCliente.Name = "textBoxDniCliente";
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
-            textBoxDniCliente.Size = new Size(247, 23);
+            textBoxDniCliente.Size = new Size(315, 23);
             textBoxDniCliente.TabIndex = 0;
             textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick;
             // 
@@ -99,7 +103,7 @@ namespace Articulos_Frontend
             // 
             LabelDniCliente.BackColor = Color.Transparent;
             LabelDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDniCliente.Location = new Point(79, 103);
+            LabelDniCliente.Location = new Point(79, 98);
             LabelDniCliente.Name = "LabelDniCliente";
             LabelDniCliente.Size = new Size(162, 21);
             LabelDniCliente.TabIndex = 5;
@@ -111,7 +115,7 @@ namespace Articulos_Frontend
             // 
             LabelMetodoPago.BackColor = Color.Transparent;
             LabelMetodoPago.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelMetodoPago.Location = new Point(79, 132);
+            LabelMetodoPago.Location = new Point(79, 127);
             LabelMetodoPago.Name = "LabelMetodoPago";
             LabelMetodoPago.Size = new Size(162, 21);
             LabelMetodoPago.TabIndex = 6;
@@ -126,7 +130,7 @@ namespace Articulos_Frontend
             BotonCrearC.BackColor = SystemColors.MenuHighlight;
             BotonCrearC.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             BotonCrearC.ForeColor = SystemColors.ControlLightLight;
-            BotonCrearC.Location = new Point(344, 65);
+            BotonCrearC.Location = new Point(415, 60);
             BotonCrearC.MaximumSize = new Size(150, 30);
             BotonCrearC.Name = "BotonCrearC";
             BotonCrearC.Size = new Size(150, 30);
@@ -142,7 +146,7 @@ namespace Articulos_Frontend
             LabelTitulo.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             LabelTitulo.Location = new Point(135, 18);
             LabelTitulo.Name = "LabelTitulo";
-            LabelTitulo.Size = new Size(316, 36);
+            LabelTitulo.Size = new Size(384, 36);
             LabelTitulo.TabIndex = 0;
             LabelTitulo.Tag = "title";
             LabelTitulo.TextAlign = ContentAlignment.MiddleCenter;
@@ -152,7 +156,7 @@ namespace Articulos_Frontend
             button1.BackColor = Color.Chartreuse;
             button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.ForeColor = SystemColors.ActiveCaptionText;
-            button1.Location = new Point(79, 69);
+            button1.Location = new Point(79, 64);
             button1.MaximumSize = new Size(90, 23);
             button1.Name = "button1";
             button1.Size = new Size(90, 23);
@@ -165,7 +169,7 @@ namespace Articulos_Frontend
             // 
             LabelImpuestos.BackColor = Color.Transparent;
             LabelImpuestos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelImpuestos.Location = new Point(79, 190);
+            LabelImpuestos.Location = new Point(79, 185);
             LabelImpuestos.Name = "LabelImpuestos";
             LabelImpuestos.Size = new Size(162, 21);
             LabelImpuestos.TabIndex = 11;
@@ -177,9 +181,9 @@ namespace Articulos_Frontend
             // 
             comboBoxImpuestos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxImpuestos.FormattingEnabled = true;
-            comboBoxImpuestos.Location = new Point(247, 192);
+            comboBoxImpuestos.Location = new Point(247, 187);
             comboBoxImpuestos.Name = "comboBoxImpuestos";
-            comboBoxImpuestos.Size = new Size(247, 23);
+            comboBoxImpuestos.Size = new Size(315, 23);
             comboBoxImpuestos.TabIndex = 12;
             comboBoxImpuestos.Tag = "comboBox";
             // 
@@ -187,9 +191,9 @@ namespace Articulos_Frontend
             // 
             comboBoxMetodoPago.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxMetodoPago.FormattingEnabled = true;
-            comboBoxMetodoPago.Location = new Point(247, 132);
+            comboBoxMetodoPago.Location = new Point(247, 127);
             comboBoxMetodoPago.Name = "comboBoxMetodoPago";
-            comboBoxMetodoPago.Size = new Size(247, 23);
+            comboBoxMetodoPago.Size = new Size(315, 23);
             comboBoxMetodoPago.TabIndex = 13;
             comboBoxMetodoPago.Tag = "comboBox";
             // 
@@ -197,9 +201,9 @@ namespace Articulos_Frontend
             // 
             dataGridViewArticulos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewArticulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewArticulos.Location = new Point(79, 223);
+            dataGridViewArticulos.Location = new Point(79, 245);
             dataGridViewArticulos.Name = "dataGridViewArticulos";
-            dataGridViewArticulos.Size = new Size(415, 108);
+            dataGridViewArticulos.Size = new Size(483, 107);
             dataGridViewArticulos.TabIndex = 14;
             dataGridViewArticulos.CellEndEdit += dgvArticulos_CellEndEdit;
             dataGridViewArticulos.Validating += dgvArticulos_Validating;
@@ -207,7 +211,7 @@ namespace Articulos_Frontend
             // button2
             // 
             button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button2.Location = new Point(500, 223);
+            button2.Location = new Point(568, 245);
             button2.MaximumSize = new Size(68, 51);
             button2.Name = "button2";
             button2.Size = new Size(68, 51);
@@ -219,7 +223,7 @@ namespace Articulos_Frontend
             // button3
             // 
             button3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button3.Location = new Point(500, 280);
+            button3.Location = new Point(568, 302);
             button3.Name = "button3";
             button3.Size = new Size(68, 51);
             button3.TabIndex = 16;
@@ -231,17 +235,17 @@ namespace Articulos_Frontend
             // 
             labelTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelTotal.AutoSize = true;
-            labelTotal.Location = new Point(79, 339);
+            labelTotal.Location = new Point(79, 360);
             labelTotal.Name = "labelTotal";
-            labelTotal.Size = new Size(207, 15);
+            labelTotal.Size = new Size(109, 15);
             labelTotal.TabIndex = 17;
-            labelTotal.Text = "Total (sin impuestos | con impuestos):";
+            labelTotal.Text = "Total (bruto | neto):";
             // 
             // labelTotalCantidades
             // 
             labelTotalCantidades.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelTotalCantidades.AutoSize = true;
-            labelTotalCantidades.Location = new Point(292, 339);
+            labelTotalCantidades.Location = new Point(292, 360);
             labelTotalCantidades.Name = "labelTotalCantidades";
             labelTotalCantidades.Size = new Size(58, 15);
             labelTotalCantidades.TabIndex = 18;
@@ -250,7 +254,7 @@ namespace Articulos_Frontend
             // label1
             // 
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(79, 161);
+            label1.Location = new Point(79, 156);
             label1.Name = "label1";
             label1.Size = new Size(162, 23);
             label1.TabIndex = 19;
@@ -262,15 +266,53 @@ namespace Articulos_Frontend
             comboBoxEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxEstado.FlatStyle = FlatStyle.Flat;
             comboBoxEstado.FormattingEnabled = true;
-            comboBoxEstado.Location = new Point(247, 161);
+            comboBoxEstado.Location = new Point(247, 156);
             comboBoxEstado.Name = "comboBoxEstado";
             comboBoxEstado.Size = new Size(247, 23);
             comboBoxEstado.TabIndex = 20;
             comboBoxEstado.Tag = "comboBox";
             // 
+            // buttonCerrar
+            // 
+            buttonCerrar.AutoSize = true;
+            buttonCerrar.BackColor = SystemColors.MenuHighlight;
+            buttonCerrar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            buttonCerrar.ForeColor = SystemColors.ControlLightLight;
+            buttonCerrar.Location = new Point(497, 154);
+            buttonCerrar.MaximumSize = new Size(150, 30);
+            buttonCerrar.Name = "buttonCerrar";
+            buttonCerrar.Size = new Size(68, 30);
+            buttonCerrar.TabIndex = 21;
+            buttonCerrar.Text = "Cerrar";
+            buttonCerrar.UseVisualStyleBackColor = false;
+            buttonCerrar.Click += buttonCerrar_Click;
+            // 
+            // label2
+            // 
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label2.Location = new Point(79, 216);
+            label2.Name = "label2";
+            label2.Size = new Size(162, 21);
+            label2.TabIndex = 22;
+            label2.Tag = "normalText";
+            label2.Text = "Fecha de Envío: ";
+            label2.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // dateTimePickerFechaEnvio
+            // 
+            dateTimePickerFechaEnvio.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dateTimePickerFechaEnvio.Location = new Point(247, 216);
+            dateTimePickerFechaEnvio.Name = "dateTimePickerFechaEnvio";
+            dateTimePickerFechaEnvio.Size = new Size(315, 23);
+            dateTimePickerFechaEnvio.TabIndex = 23;
+            // 
             // PedidoDetailForm
             // 
-            ClientSize = new Size(580, 363);
+            ClientSize = new Size(648, 384);
+            Controls.Add(dateTimePickerFechaEnvio);
+            Controls.Add(label2);
+            Controls.Add(buttonCerrar);
             Controls.Add(comboBoxEstado);
             Controls.Add(label1);
             Controls.Add(labelTotalCantidades);
@@ -288,7 +330,7 @@ namespace Articulos_Frontend
             Controls.Add(LabelDniCliente);
             Controls.Add(textBoxDniCliente);
             MaximizeBox = false;
-            MinimumSize = new Size(596, 402);
+            MinimumSize = new Size(664, 423);
             Name = "PedidoDetailForm";
             StartPosition = FormStartPosition.CenterParent;
             Load += FormLoad;
@@ -296,7 +338,6 @@ namespace Articulos_Frontend
             ResumeLayout(false);
             PerformLayout();
         }
-
         private async void BotonCrearC_Click(object sender, EventArgs e)
         {
             if (!validarCamposLlenos()) return;
@@ -323,7 +364,7 @@ namespace Articulos_Frontend
                         MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, parsedImpuestos);
+                    pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, comboBoxEstado.Text, parsedImpuestos, dateTimePickerFechaEnvio.Value);
                     List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
                     foreach (LineaPedido lin in articulos)
                     {
@@ -348,6 +389,8 @@ namespace Articulos_Frontend
                 {
                     pedidoCreated.dni_cliente = textBoxDniCliente.Text.ToUpper();
                     pedidoCreated.metodo_pago = comboBoxMetodoPago.Text;
+                    pedidoCreated.estado = comboBoxEstado.Text;
+                    pedidoCreated.fecha_rectificacion = DateTime.Now;
                     double parsedImpuestos = 0;
                     try
                     {
@@ -398,8 +441,20 @@ namespace Articulos_Frontend
         {
             if (dataGridViewArticulos.CurrentRow != null)
             {
-                LineaPedido lineaSeleccionada = (LineaPedido)dataGridViewArticulos.CurrentRow.DataBoundItem;
-                articulos.Remove(lineaSeleccionada);
+                Log.Info("Pulsa el botón de eliminar");
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este artículo?"));
+                alerta.ShowDialog();
+                if (alerta.resultado)
+                {
+                    Log.Info("El usuario ha confirmado la eliminación del artículo.");
+                    LineaPedido lineaSeleccionada = (LineaPedido)dataGridViewArticulos.CurrentRow.DataBoundItem;
+                    articulos.Remove(lineaSeleccionada);
+                }
+                else
+                {
+                    Log.Info("Eliminación cancelada por el usuario.");
+                }
+                
                 CalcularTotales();
             }
             else
@@ -410,17 +465,13 @@ namespace Articulos_Frontend
         }
         private bool validarCamposLlenos()
         {
-            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(comboBoxImpuestos.Text) && !string.IsNullOrEmpty(comboBoxMetodoPago.Text))
+            if (!string.IsNullOrEmpty(textBoxDniCliente.Text) && !string.IsNullOrEmpty(comboBoxImpuestos.Text) && !string.IsNullOrEmpty(comboBoxMetodoPago.Text) && !string.IsNullOrEmpty(comboBoxEstado.Text))
             {
                 return true;
             }
             Log.Warn("Intento de crear pedido con campos incompletos.");
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Campos sin rellenar"));
             alerta.ShowDialog();
-            if (alerta.resultado)
-            {
-                return false;
-            }
             return false;
         }
         private async Task<bool> ValidarDni(string dni)
@@ -535,7 +586,7 @@ namespace Articulos_Frontend
                 CalcularTotales();
             }
         }
-        private void dgvArticulos_Validating(object sender, CancelEventArgs e)
+        private async void dgvArticulos_Validating(object sender, CancelEventArgs e)
         {
             if (dataGridViewArticulos.CurrentCell == null)
                 return;
@@ -546,8 +597,62 @@ namespace Articulos_Frontend
             var colName = dataGridViewArticulos.Columns[colIndex].Name;
             dgvArticulos_CellEndEdit(sender, new DataGridViewCellEventArgs(colIndex, rowIndex));
         }
+        private async void buttonCerrar_Click(object sender, EventArgs e)
+        {
+            if (!validarCamposLlenos()) return;
+            if (!await ValidarDni(textBoxDniCliente.Text)) return;
+            comboBoxEstado.SelectedIndex = 1;
+            pedidoCreated.dni_cliente = textBoxDniCliente.Text.ToUpper();
+            pedidoCreated.metodo_pago = comboBoxMetodoPago.Text;
+            pedidoCreated.estado = comboBoxEstado.Text;
+            pedidoCreated.fecha_rectificacion = DateTime.Now;
+            double parsedImpuestos = 0;
+            try
+            {
+                parsedImpuestos = double.Parse(comboBoxImpuestos.Text);
+                if (parsedImpuestos < 0 || parsedImpuestos > 100)
+                {
+                    Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos fuera de rango: {comboBoxImpuestos.Text}.");
+                    MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            catch (FormatException)
+            {
+                Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
+                MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            pedidoCreated.porcentaje_impuestos = parsedImpuestos;
+            List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
+            foreach (LineaPedido lin in articulos)
+            {
+                PedidoArticulos pa = new PedidoArticulos
+                {
+                    id_pedido = pedidoCreated.id_pedido,
+                    id_articulo = lin.id_articulo,
+                    cantidad = lin.cantidad,
+                    precio_unidad = lin.precioUnidad
+                };
+                articulosPedido.Add(pa);
+            }
+            pedidoCreated.cambiarLista(articulosPedido);
+            await pedidoApiClient.Actualizar(pedidoCreated.id_pedido, pedidoCreated);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
+            alerta.ShowDialog();
+            PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
+            this.Close();
+        }
         private async void FormLoad(object sender, EventArgs e)
         {
+            BotonCrearC.Enabled = false;
+            buttonCerrar.Enabled = false;
+            comboBoxEstado.Enabled = false;
+            comboBoxMetodoPago.Enabled = false;
+            comboBoxImpuestos.Enabled = false;
+            textBoxDniCliente.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
             if (state == "Update")
             {
                 var articulosPedido = await pedidoApiClient.ObtenerArticulosDePedido(pedidoCreated.id_pedido);
@@ -571,7 +676,30 @@ namespace Articulos_Frontend
                 dataGridViewArticulos.DataSource = articulos;
                 CalcularTotales();
             }
+            if (state == "Create")
+            { 
+                buttonCerrar.Visible = false;
+            }
             DataGridConfig();
+            validarEstado();
+        }
+        private void validarEstado()
+        {
+            if (comboBoxEstado.Text == "Abierto")
+            {
+                BotonCrearC.Enabled = true;
+                comboBoxMetodoPago.Enabled = true;
+                comboBoxImpuestos.Enabled = true;
+                textBoxDniCliente.Enabled = true;
+                button2.Enabled = true;
+                button3.Enabled = true;
+                if (state == "Update")
+                {
+                    buttonCerrar.Enabled = true;
+                }
+                return;
+            }
+            dataGridViewArticulos.ReadOnly = true;
         }
         private void DataGridConfig()
         {
@@ -593,16 +721,19 @@ namespace Articulos_Frontend
             if (dataGridViewArticulos.Columns["Nombre"] != null)
             {
                 dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dataGridViewArticulos.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                //dataGridViewArticulos.Columns["Nombre"].FillWeight = 30;
+                dataGridViewArticulos.Columns["Nombre"].FillWeight = 60;
                 dataGridViewArticulos.Columns["Nombre"].MinimumWidth = 100;
                 dataGridViewArticulos.Columns["Nombre"].ReadOnly = true;
             }
             if (dataGridViewArticulos.Columns["Categoria"] != null)
             {
                 dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dataGridViewArticulos.Columns["Categoria"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 //dataGridViewArticulos.Columns["Categoria"].FillWeight = 30;
+                dataGridViewArticulos.Columns["Categoria"].FillWeight = 40;
                 dataGridViewArticulos.Columns["Categoria"].MinimumWidth = 120;
                 dataGridViewArticulos.Columns["Categoria"].ReadOnly = true;
                 dataGridViewArticulos.Columns["Categoria"].HeaderText = "Categoría";
@@ -618,8 +749,6 @@ namespace Articulos_Frontend
             }
             if (dataGridViewArticulos.Columns["TotalLinea"] != null)
             {
-                dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dataGridViewArticulos.Columns["TotalLinea"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridViewArticulos.Columns["TotalLinea"].Resizable = DataGridViewTriState.False;
                 dataGridViewArticulos.Columns["TotalLinea"].HeaderText = "Total de la Linea";
                 dataGridViewArticulos.Columns["TotalLinea"].ReadOnly = true;

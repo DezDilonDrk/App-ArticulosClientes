@@ -189,6 +189,12 @@ public static class StyleManager
                         cb.Font = new Font("Intercom", 9, FontStyle.Regular);
                     }
                     break;
+                case "fondoGrisPanel":
+                    if (control is Panel pnl)
+                    {
+                        pnl.BackColor = ColorPalette.GridBackground;
+                    }
+                    break;
                 default:
                     if (control is TextBox txt2)
                         txt2.Font = new Font("Intercom", 9, FontStyle.Regular);

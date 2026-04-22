@@ -43,6 +43,7 @@ namespace Articulos_Frontend
             statusStripMenu = new StatusStrip();
             toolStripStatusLabelUser = new ToolStripStatusLabel();
             toolStripStatusLabelEmail = new ToolStripStatusLabel();
+            buttonAjustes = new Button();
             menuStripAC.SuspendLayout();
             statusStripMenu.SuspendLayout();
             SuspendLayout();
@@ -133,6 +134,18 @@ namespace Articulos_Frontend
             toolStripStatusLabelEmail.Size = new Size(39, 17);
             toolStripStatusLabelEmail.Text = "Email:";
             // 
+            // buttonAjustes
+            // 
+            buttonAjustes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonAjustes.Image = Properties.Resources.IconoAjustesColorClaro;
+            buttonAjustes.Location = new Point(889, 0);
+            buttonAjustes.Name = "buttonAjustes";
+            buttonAjustes.Size = new Size(24, 24);
+            buttonAjustes.TabIndex = 5;
+            buttonAjustes.UseVisualStyleBackColor = true;
+            buttonAjustes.Paint += Ajustes_Paint;
+            buttonAjustes.Click += buttonAjustes_Click;
+            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -140,6 +153,7 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
+            Controls.Add(buttonAjustes);
             Controls.Add(statusStripMenu);
             Controls.Add(buttonLogout);
             Controls.Add(buttonTerminal);
@@ -171,5 +185,6 @@ namespace Articulos_Frontend
         private ToolStripMenuItem seguridadToolStripMenuItem;
         private ToolStripMenuItem almacenToolStripMenuItem;
         private ToolStripMenuItem ventasToolStripMenuItem;
+        private Button buttonAjustes;
     }
 }
