@@ -19,6 +19,9 @@ namespace Articulos_Frontend.Theme
         public string cambiarContrasena = "Cambiar Contraseña";
         public string notificacionesEmailNo = "Notificaciones por Email: No";
         public string notificacionesEmailSi = "Notificaciones por Email: Sí";
+        public string debugSection = "Sección de Debug";
+        public string ajustesNotificacion = "Ajustes de Notificaciones";
+        public string ajustesCuenta = "Ajustes de la Cuenta";
         public string terminal = "Terminal";
         public string clientes = "Clientes";
         public string articulos = "Artículos";

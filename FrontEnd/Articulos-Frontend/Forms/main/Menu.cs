@@ -177,18 +177,20 @@ namespace Articulos_Frontend
         private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
+            var notificationSettingsItem = new ToolStripMenuItem(stringValuesSP.ajustesNotificacion);
+            var accountSettingsItem = new ToolStripMenuItem(stringValuesSP.ajustesCuenta);
             var cambiarContrasenaItem = new ToolStripMenuItem(stringValuesSP.cambiarContrasena);
-            var cerrarSesionItem = new ToolStripButton(stringValuesSP.logout);
+            var cerrarSesionItem = new ToolStripMenuItem(stringValuesSP.logout);
             var stringValue = sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
             var checkNotificaciones = new ToolStripMenuItem(stringValue);
+
             cambiarContrasenaItem.Click += (s, ev) => {
-                WindowManager.ShowForm(stringValuesSP.cambiarContrasena, this, () => new CambiarContrasenaForm());
+                WindowManager.ShowForm(stringValuesSP.cambiarContrasena, this, () => new CambiarContrasenaForm(user.CorreoElectronico));
             };
             cerrarSesionItem.Click += buttonLogout_Click;
             checkNotificaciones.Click += (s, ev) =>
             {
-                if (sendEmailNotification)
-                {
+                if (sendEmailNotification){
                     Log.Info("Desactivando notificaciones por email.");
                     MessageBox.Show("Las notificaciones por email han sido desactivadas.\n\nNotifications: OFF", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -200,9 +202,11 @@ namespace Articulos_Frontend
                 checkNotificaciones.Text = !sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
                 changeSendEmailNotification();
             };
-            dropDown.Items.Add(cambiarContrasenaItem);
-            dropDown.Items.Add(cerrarSesionItem);
-            dropDown.Items.Add(checkNotificaciones);
+            notificationSettingsItem.DropDownItems.Add(checkNotificaciones);
+            accountSettingsItem.DropDownItems.Add(cambiarContrasenaItem);
+            accountSettingsItem.DropDownItems.Add(cerrarSesionItem);
+            dropDown.Items.Add(accountSettingsItem);
+            dropDown.Items.Add(notificationSettingsItem);
             var parent = usuarioToolStripMenuItem.GetCurrentParent();
             var bounds = usuarioToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
@@ -210,9 +214,13 @@ namespace Articulos_Frontend
         private void aplicacionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
+            var debugItem = new ToolStripMenuItem(stringValuesSP.debugSection);
             var terminalItem = new ToolStripMenuItem(stringValuesSP.terminal);
+            var terminalDebugItem = new ToolStripMenuItem(stringValuesSP.terminal);
             terminalItem.Click += buttonTerminal_Click;
-            dropDown.Items.Add(terminalItem);
+            terminalDebugItem.Click += buttonTerminal_Click;
+            debugItem.DropDownItems.Add(terminalDebugItem);
+            dropDown.Items.Add(debugItem);
             var parent = aplicacionToolStripMenuItem.GetCurrentParent();
             var bounds = aplicacionToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
