@@ -26,6 +26,7 @@ namespace Articulos_Frontend
         public PedidoDetailForm(string State, Pedido pedido = null)
         {
             InitializeComponent();
+            var menu = this.Owner as Menu;
             LabelTitulo.Text = stringValuesSP.crearPedido;
             this.Text = stringValuesSP.crearPedido;
             this.state = State;
@@ -379,8 +380,11 @@ namespace Articulos_Frontend
                     }
                     pedidoCreated.cambiarLista(articulosPedido);
                     await pedidoApiClient.Crear(pedidoCreated);
-                    EmailSender emailSender = new EmailSender();
-                    emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
+                    var menu = this.Owner as Menu;
+                    if (menu.getSendEmailNotification() == true) {
+                        EmailSender emailSender = new EmailSender();
+                        emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
+                    }
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
                     alerta.ShowDialog();
                     PedidoModificadoCorrectamente?.Invoke(pedidoCreated);

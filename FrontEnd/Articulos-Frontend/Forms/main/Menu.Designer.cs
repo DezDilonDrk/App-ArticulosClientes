@@ -39,7 +39,6 @@ namespace Articulos_Frontend
             mnuVentanas = new ToolStripMenuItem();
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             buttonTerminal = new Button();
-            buttonLogout = new Button();
             statusStripMenu = new StatusStrip();
             toolStripStatusLabelUser = new ToolStripStatusLabel();
             toolStripStatusLabelEmail = new ToolStripStatusLabel();
@@ -102,16 +101,6 @@ namespace Articulos_Frontend
             buttonTerminal.UseVisualStyleBackColor = true;
             buttonTerminal.Click += buttonTerminal_Click;
             // 
-            // buttonLogout
-            // 
-            buttonLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonLogout.Location = new Point(12, 387);
-            buttonLogout.Name = "buttonLogout";
-            buttonLogout.Size = new Size(105, 23);
-            buttonLogout.TabIndex = 2;
-            buttonLogout.UseVisualStyleBackColor = true;
-            buttonLogout.Click += buttonLogout_Click;
-            // 
             // statusStripMenu
             // 
             statusStripMenu.AutoSize = false;
@@ -143,8 +132,8 @@ namespace Articulos_Frontend
             buttonAjustes.Size = new Size(24, 24);
             buttonAjustes.TabIndex = 5;
             buttonAjustes.UseVisualStyleBackColor = true;
-            buttonAjustes.Paint += Ajustes_Paint;
             buttonAjustes.Click += buttonAjustes_Click;
+            buttonAjustes.Paint += Ajustes_Paint;
             // 
             // Menu
             // 
@@ -155,7 +144,6 @@ namespace Articulos_Frontend
             ClientSize = new Size(914, 491);
             Controls.Add(buttonAjustes);
             Controls.Add(statusStripMenu);
-            Controls.Add(buttonLogout);
             Controls.Add(buttonTerminal);
             Controls.Add(menuStripAC);
             DoubleBuffered = true;
@@ -178,7 +166,6 @@ namespace Articulos_Frontend
         private ToolStripMenuItem ventanasToolStripMenuItem;
         private Button buttonTerminal;
         private ToolStripMenuItem mnuVentanas;
-        private Button buttonLogout;
         private StatusStrip statusStripMenu;
         private ToolStripStatusLabel toolStripStatusLabelUser;
         private ToolStripStatusLabel toolStripStatusLabelEmail;

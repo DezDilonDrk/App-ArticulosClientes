@@ -41,6 +41,7 @@ namespace Articulos_Frontend.Forms.main
             panelMain = new Panel();
             panelMainSpace = new Panel();
             panelAccountSettings = new Panel();
+            buttonLogout = new Button();
             label1 = new Label();
             panelNotificationSettings = new Panel();
             checkCreateObjectEmailNotifications = new CheckBox();
@@ -50,7 +51,9 @@ namespace Articulos_Frontend.Forms.main
             textBoxBuscadorAjustes = new TextBox();
             panelLateralPlegado = new Panel();
             pictureBoxLogo = new PictureBox();
+            labelDebugMenu = new Label();
             panelLateral.SuspendLayout();
+            groupBoxAppSettings.SuspendLayout();
             groupBoxUserSettings.SuspendLayout();
             ((ISupportInitialize)pictureBoxLogoDesplegado).BeginInit();
             panelMain.SuspendLayout();
@@ -78,6 +81,7 @@ namespace Articulos_Frontend.Forms.main
             // 
             // groupBoxAppSettings
             // 
+            groupBoxAppSettings.Controls.Add(labelDebugMenu);
             groupBoxAppSettings.Location = new Point(3, 116);
             groupBoxAppSettings.Name = "groupBoxAppSettings";
             groupBoxAppSettings.Size = new Size(180, 249);
@@ -151,6 +155,7 @@ namespace Articulos_Frontend.Forms.main
             // 
             // panelAccountSettings
             // 
+            panelAccountSettings.Controls.Add(buttonLogout);
             panelAccountSettings.Controls.Add(label1);
             panelAccountSettings.Dock = DockStyle.Fill;
             panelAccountSettings.Location = new Point(0, 0);
@@ -158,6 +163,15 @@ namespace Articulos_Frontend.Forms.main
             panelAccountSettings.Size = new Size(832, 390);
             panelAccountSettings.TabIndex = 10;
             panelAccountSettings.Tag = "fondoGrisPanel";
+            // 
+            // buttonLogout
+            // 
+            buttonLogout.Location = new Point(100, 371);
+            buttonLogout.Name = "buttonLogout";
+            buttonLogout.Size = new Size(105, 23);
+            buttonLogout.TabIndex = 2;
+            buttonLogout.UseVisualStyleBackColor = true;
+            buttonLogout.Click += buttonLogout_Click;
             // 
             // label1
             // 
@@ -214,9 +228,9 @@ namespace Articulos_Frontend.Forms.main
             labelBuscadorAjustes.Anchor = AnchorStyles.None;
             labelBuscadorAjustes.BackColor = Color.Transparent;
             labelBuscadorAjustes.ForeColor = Color.FromArgb(242, 242, 242);
-            labelBuscadorAjustes.Location = new Point(158, 25);
+            labelBuscadorAjustes.Location = new Point(141, 25);
             labelBuscadorAjustes.Name = "labelBuscadorAjustes";
-            labelBuscadorAjustes.Size = new Size(130, 15);
+            labelBuscadorAjustes.Size = new Size(160, 15);
             labelBuscadorAjustes.TabIndex = 4;
             labelBuscadorAjustes.Tag = "normalText";
             labelBuscadorAjustes.Text = "Buscar en esta sección: ";
@@ -228,11 +242,11 @@ namespace Articulos_Frontend.Forms.main
             textBoxBuscadorAjustes.BorderStyle = BorderStyle.None;
             textBoxBuscadorAjustes.Enabled = false;
             textBoxBuscadorAjustes.ForeColor = Color.FromArgb(242, 242, 242);
-            textBoxBuscadorAjustes.Location = new Point(294, 25);
+            textBoxBuscadorAjustes.Location = new Point(307, 25);
             textBoxBuscadorAjustes.MaxLength = 60;
             textBoxBuscadorAjustes.Name = "textBoxBuscadorAjustes";
             textBoxBuscadorAjustes.PlaceholderText = "Escriba aquí";
-            textBoxBuscadorAjustes.Size = new Size(262, 16);
+            textBoxBuscadorAjustes.Size = new Size(268, 16);
             textBoxBuscadorAjustes.TabIndex = 3;
             // 
             // panelLateralPlegado
@@ -261,6 +275,15 @@ namespace Articulos_Frontend.Forms.main
             pictureBoxLogo.Click += PanelPlegado_Click;
             pictureBoxLogo.Paint += Ajustes_Paint;
             // 
+            // labelDebugMenu
+            // 
+            labelDebugMenu.AutoSize = true;
+            labelDebugMenu.Location = new Point(6, 221);
+            labelDebugMenu.Name = "labelDebugMenu";
+            labelDebugMenu.Size = new Size(76, 15);
+            labelDebugMenu.TabIndex = 4;
+            labelDebugMenu.Text = "Debug Menu";
+            // 
             // AjustesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -278,6 +301,8 @@ namespace Articulos_Frontend.Forms.main
             Text = "AjustesForm";
             Load += AjustesForm_Load;
             panelLateral.ResumeLayout(false);
+            groupBoxAppSettings.ResumeLayout(false);
+            groupBoxAppSettings.PerformLayout();
             groupBoxUserSettings.ResumeLayout(false);
             groupBoxUserSettings.PerformLayout();
             ((ISupportInitialize)pictureBoxLogoDesplegado).EndInit();
@@ -313,5 +338,7 @@ namespace Articulos_Frontend.Forms.main
         private Label labelTittleEmailNotifications;
         private CheckBox checkCreateObjectEmailNotifications;
         private Label label1;
+        private Button buttonLogout;
+        private Label labelDebugMenu;
     }
 }

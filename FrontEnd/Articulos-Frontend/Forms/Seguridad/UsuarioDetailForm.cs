@@ -146,14 +146,7 @@ namespace Articulos_Frontend.Forms.Seguridad
                 await userapi.ActualizarRolesUsuario(usuarioNuevo.CorreoElectronico, rolesSeleccionados);
                 alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el usuario correctamente"));
                 alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    this.Close();
-                }
-                else
-                {
-                    this.Close();
-                }
+                this.Close();
             }
             return;
         }

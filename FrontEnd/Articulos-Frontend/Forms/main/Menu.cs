@@ -22,7 +22,6 @@ namespace Articulos_Frontend
             this.Text = stringValuesSP.menu;
             this.mnuVentanas.Text = stringValuesSP.ventanas;
             this.buttonTerminal.Text = stringValuesSP.terminal;
-            this.buttonLogout.Text = stringValuesSP.logout;
             toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}  |";
             toolStripStatusLabelEmail.Text = $"|  Email: {usuario.CorreoElectronico}";
             if (!AppState.Roles.Contains(Roles.AdminAlmacen) && !AppState.Roles.Contains(Roles.UserAlmacen))
@@ -42,8 +41,6 @@ namespace Articulos_Frontend
         {
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
             RefrescarMenuVentanas();
-            
-
         }
         public bool getSendEmailNotification()
         {
@@ -127,7 +124,6 @@ namespace Articulos_Frontend
             var bounds = almacenToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
-
         private void ventasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
@@ -178,7 +174,6 @@ namespace Articulos_Frontend
                         dropDown.Items.Add(item);
                     }
                 }
-                ;
             }
 
             var parent = mnuVentanas.GetCurrentParent();
@@ -240,20 +235,6 @@ namespace Articulos_Frontend
                 ajustes.Owner = this;
                 return ajustes;
             });
-        }
-        private void buttonLogout_Click(object sender, EventArgs e)
-        {
-            WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
-
-            var abiertos = WindowManager.OpenWindows.Values.ToList();
-            foreach (var entry in abiertos)
-            {
-                try { entry.formularioHijo.Close(); }
-                catch (Exception ex ) {
-                    Log.Error("Error al cerrar la ventana: " + ex.Message);
-                }
-            }
-            this.Close();
         }
     }
 }

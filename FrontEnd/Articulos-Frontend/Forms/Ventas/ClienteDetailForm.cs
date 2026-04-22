@@ -29,8 +29,6 @@ public partial class ClienteDetailForm : Form
         clienteApiClient = new ClienteApiClient();
         StyleManager.StyleForm(this);
     }
-
-
     private void InitializeComponent()
     {
         ComponentResourceManager resources = new ComponentResourceManager(typeof(ClienteDetailForm));
@@ -219,18 +217,14 @@ public partial class ClienteDetailForm : Form
             if (existeDni) return;
             Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
-            EmailSender emailSender = new EmailSender();
-            emailSender.SendEmail("leandro.santilario@mthelmets.com", "Bienvenido a nuestro servicio", $"Hola {cliente.Nombre},\n\nGracias por registrarte en nuestro servicio. Estamos encantados de tenerte con nosotros.\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
+            var menu = this.Owner as Menu;
+            if (menu.getSendEmailNotification() == true) {
+                EmailSender emailSender = new EmailSender();
+                emailSender.SendEmail("leandro.santilario@mthelmets.com", "Bienvenido a nuestro servicio", $"Hola {cliente.Nombre},\n\nGracias por registrarte en nuestro servicio. Estamos encantados de tenerte con nosotros.\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
+            }
             alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
             alerta.ShowDialog();
-            if (alerta.resultado)
-            {
-                this.Close();
-            }
-            else
-            {
-                this.Close();
-            }
+            this.Close();
             ClienteCreadoCorrectamente?.Invoke(cliente);
         }
         catch (Exception ex)

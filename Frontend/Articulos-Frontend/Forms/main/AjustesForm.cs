@@ -16,6 +16,7 @@ namespace Articulos_Frontend.Forms.main
     {
         StringValuesSP stringValuesSP = new StringValuesSP();
         private ErrorProvider errorProvider;
+        ShowTerminal terminal;
         private List<Cliente> listaActual;
         private bool admin = true;
         public string DniSeleccionado;
@@ -29,6 +30,7 @@ namespace Articulos_Frontend.Forms.main
             this.panelLateralPlegado.Visible = true;
             panelAccountSettings.Visible = false;
             panelNotificationSettings.Visible = false;
+            this.buttonLogout.Text = stringValuesSP.logout;
             Log.Info("Formulario de Ajustes iniciado.");
         }
         private void AjustesForm_Load(object sender, EventArgs e)
@@ -59,6 +61,30 @@ namespace Articulos_Frontend.Forms.main
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 e.Graphics.DrawImage(pb.Image, rect);
             }
+        }
+        private void buttonLogout_Click(object sender, EventArgs e)
+        {
+            WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
+
+            var abiertos = WindowManager.OpenWindows.Values.ToList();
+            foreach (var entry in abiertos)
+            {
+                try { entry.formularioHijo.Close(); }
+                catch (Exception ex)
+                {
+                    Log.Error("Error al cerrar la ventana: " + ex.Message);
+                }
+            }
+            this.Close();
+        }
+        private void buttonTerminal_Click(object sender, EventArgs e)
+        {
+            Log.Info("Abriendo terminal.");
+            WindowManager.ShowForm(stringValuesSP.terminal, this, () =>
+            {
+                terminal = new ShowTerminal();
+                return terminal;
+            });
         }
         private async void buscarClientes(string nombreFiltro)
         {

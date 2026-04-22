@@ -69,9 +69,7 @@ namespace Articulos_Frontend
             {
                 
 
-                try
-                {
-                    EmailSender emailSender = new EmailSender();
+                try {
                     var nombre = textBoxNombre.Text.Trim();
                     var precio = textPrecio;
                     var categoria = comboBoxCategoria.Text?.Trim();
@@ -83,18 +81,14 @@ namespace Articulos_Frontend
                     int articuloId = creado.id;
                     this.DialogResult = DialogResult.OK;
                     Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
-                    emailSender.SendEmail("emilio.martinez@mthelmets.com", "Nuevo artículo creado", $"Se ha creado el artículo '{articulo.nombre}' con ID {articulo.id}, con un costo de {articulo.precio} euros y de la categoria {articulo.categoria} en {articulo.FechaCreacion}.");
+                    var menu = this.Owner as Menu;
+                    if (menu.getSendEmailNotification() == true) {
+                        EmailSender emailSender = new EmailSender();
+                        emailSender.SendEmail("emilio.martinez@mthelmets.com", "Nuevo artículo creado", $"Se ha creado el artículo '{articulo.nombre}' con ID {articulo.id}, con un costo de {articulo.precio} euros y de la categoria {articulo.categoria} en {articulo.FechaCreacion}."); 
+                    }
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
                     alerta.ShowDialog();
-                    if (alerta.resultado)
-                    {
-                        this.Close();
-                    }
-                    else
-                    {
-                        this.Close();
-                    }
-                    
+                    this.Close();
                 }
                 catch (Exception ex)
                 {

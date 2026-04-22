@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Articulos_Frontend.Client;
+using Articulos_Frontend.Theme;
+using MTCore_AC.Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Articulos_Frontend.Client;
-using Articulos_Frontend.Theme;
 
 namespace Articulos_Frontend.Forms.Seguridad
 {
@@ -74,6 +75,8 @@ namespace Articulos_Frontend.Forms.Seguridad
             {
                 await api.ActualizarContrasena(textBoxCorreo.Text, textBoxContrasena.Text);
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Contraseña actualizada correctamente.")); alerta.ShowDialog();
+                EmailSender emailSender = new EmailSender();
+                emailSender.SendEmail("leandro.santilario@mthelmets.com", $"Email {textBoxCorreo.Text}: caambio de contraseña", $"Hola,\n\nEl usuario con email {textBoxCorreo.Text} ha cambiado su contraseña en el instante: {DateTime.Now}\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
             }
             catch (Exception ex)
             {
