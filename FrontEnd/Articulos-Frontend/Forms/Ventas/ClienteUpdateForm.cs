@@ -31,6 +31,13 @@ namespace Articulos_Frontend
             clienteApiClient = new ClienteApiClient();
             StyleManager.StyleForm(this);
             Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
+            if(AppState.Roles.Contains(Roles.UserVentas))
+            {
+                textBoxNombre.ReadOnly = true;
+                textBoxApellidos.ReadOnly = true;
+                textBoxEmail.ReadOnly = true;
+                BotonActualizarC.Visible = false;
+            }
         }
 
         private void InitializeComponent()
@@ -194,20 +201,32 @@ namespace Articulos_Frontend
         {
             if (!string.IsNullOrEmpty(textBoxDni.Text) && !string.IsNullOrEmpty(textBoxNombre.Text) && !string.IsNullOrEmpty(textBoxApellidos.Text) && !string.IsNullOrEmpty(textBoxDni.Text))
             {
-                Log.Info("Intento de actualización de cliente con DNI: " + textBoxDni.Text);
                 try
                 {
-                    Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now,DateTime.Now);
-                    await clienteApiClient.Actualizar(cliente.Dni,cliente);
-                    MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClienteActualizadoCorrectamente?.Invoke(cliente);
-                    Log.Info("Cliente actualizado correctamente: " + cliente.Dni);
-                    this.Close();
+                    Log.Info("Intento de actualización de cliente con DNI: " + textBoxDni.Text);
+                    try
+                    {
+                        Cliente cliente = new Cliente(textBoxDni.Text, textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text, DateTime.Now, DateTime.Now);
+                        await clienteApiClient.Actualizar(cliente.Dni, cliente);
+                        MessageBox.Show("Cliente actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClienteActualizadoCorrectamente?.Invoke(cliente);
+                        Log.Info("Cliente actualizado correctamente: " + cliente.Dni);
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Error al actualizar el cliente: " + ex.Message);
+                        Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
+                        return;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al crear el cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Log.Error("Error al actualizar el cliente: " + ex.Message);
+                    Log.Error("Error inesperado al actualizar el cliente: " + ex.Message);
+                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                    alerta.ShowDialog();
+                    return;
                 }
             }
             else

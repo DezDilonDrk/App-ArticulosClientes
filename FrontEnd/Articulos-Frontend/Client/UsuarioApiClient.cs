@@ -20,7 +20,7 @@ public class UsuarioApiClient
         try
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://PT-0057:5000");
+            httpClient.BaseAddress = new Uri("http://PT-0041:5000");
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
         }
         catch
@@ -171,6 +171,28 @@ public class UsuarioApiClient
             Log.Error("Error al actualizar usuario: " + ex.Message);
             throw;
         }
+    }
+
+    public async Task ActualizarContrasena(string correo, string nuevaContrasena)
+    {
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync(
+            $"/usuarios/{correo}/contrasena",
+            new { NuevaContrasena = nuevaContrasena }
+        );
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error API: {response.StatusCode} - {error}");
+            }
+        }catch (Exception ex)
+        {
+            Log.Error("Error al actualizar contraseña: " + ex.Message);
+            throw;
+        }
+        
     }
 
     public async Task ActualizarRolesUsuario(string correo, List<string> roles)

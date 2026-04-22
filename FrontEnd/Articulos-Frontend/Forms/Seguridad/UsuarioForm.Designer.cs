@@ -51,6 +51,7 @@
             textBoxUsuario.PlaceholderText = "Escribe aqui un usuario";
             textBoxUsuario.Size = new Size(143, 23);
             textBoxUsuario.TabIndex = 1;
+            textBoxUsuario.TextChanged += textBoxUsuario_TextChanged;
             // 
             // buttonAdd
             // 
@@ -72,6 +73,7 @@
             buttonDel.TabIndex = 4;
             buttonDel.Text = "-";
             buttonDel.UseVisualStyleBackColor = true;
+            buttonDel.Click += buttonDel_Click;
             // 
             // dataGridViewUsuarios
             // 

@@ -194,6 +194,7 @@ public partial class ClienteDetailForm : Form
 
     private async void BotonCrearC_Click(object sender, EventArgs e)
     {
+        Alerta alerta;
         if (!validarCamposLlenos() || !ValidarDni(textBoxDni.Text) || !ValidarEmail(textBoxEmail.Text)) return;
         try
         {
@@ -205,21 +206,22 @@ public partial class ClienteDetailForm : Form
                 {
                     existeDni = true;
                     Log.Warn($"Intento de crear cliente con DNI duplicado: {textBoxDni.Text.ToUpper()}.");
-                    Alerta alertaa = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Cliente duplicado"));
-                    alertaa.ShowDialog();
+                    alerta = new Alerta(Alerta.AlertaTipo.Error, new DuplicateNameException("Cliente duplicado"));
+                    alerta.ShowDialog();
                     return;
                 }
             }
             catch (Exception ex)
             {
-                existeDni = false;
+                Log.Error("Error al comprobar si el DNI ya existe: " + ex.Message, ex);
+                alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
             }
             if (existeDni) return;
             Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
             EmailSender emailSender = new EmailSender();
             emailSender.SendEmail("leandro.santilario@mthelmets.com", "Bienvenido a nuestro servicio", $"Hola {cliente.Nombre},\n\nGracias por registrarte en nuestro servicio. Estamos encantados de tenerte con nosotros.\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
-            Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
+            alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el articulo correctamente"));
             alerta.ShowDialog();
             if (alerta.resultado)
             {
@@ -234,16 +236,9 @@ public partial class ClienteDetailForm : Form
         catch (Exception ex)
         {
             Log.Error($"Error al crear el cliente: {ex.Message}", ex);
-            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
             alerta.ShowDialog();
-            if (alerta.resultado)
-            {
-                return;
-            }
-            else
-            {
-                return;
-            }
+            return;
             
         }
     }
@@ -254,12 +249,8 @@ public partial class ClienteDetailForm : Form
             return true;
         }
         Log.Warn("Intento de crear cliente con campos incompletos.");
-        Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Campos sin rellenar"));
+        Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new MissingFieldException("Campos sin rellenar"));
         alerta.ShowDialog();
-        if (alerta.resultado)
-        {
-            return false;
-        }
         return false;
     }
     private bool ValidarEmail(string email)

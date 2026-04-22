@@ -29,6 +29,13 @@ namespace Articulos_Frontend
                 comboBoxCategoria.Text = articulo.categoria;
             }
             StyleManager.StyleForm(this);
+            if(AppState.Roles.Contains(Roles.UserAlmacen))
+            {
+                textBoxNombre.ReadOnly = true;
+                textBoxPrecio.ReadOnly = true;
+                comboBoxCategoria.Enabled = false;
+                botonConfirm.Visible = false;
+            }
 
         }
 
@@ -39,14 +46,7 @@ namespace Articulos_Frontend
                 Log.Warn("Intento de guardar artículo sin nombre.");
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Nombre en blanco"));
                 alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    return;
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             if (!decimal.TryParse(textBoxPrecio.Text, out var textPrecio) || textPrecio < 0)
@@ -54,14 +54,7 @@ namespace Articulos_Frontend
                 Log.Warn("Intento de guardar artículo con precio inválido: " + textBoxPrecio.Text);
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new FormatException("Número decimal incorrecto o número negativo"));
                  alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    return;
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             if (string.IsNullOrWhiteSpace(comboBoxCategoria.Text))
@@ -69,14 +62,7 @@ namespace Articulos_Frontend
                 Log.Warn("Intento de guardar artículo sin categoría seleccionada.");
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new MissingFieldException("Categoria no seleccionada"));
                 alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    return;
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             if (_articulo == null)
@@ -115,14 +101,7 @@ namespace Articulos_Frontend
                     Log.Error("Error al guardar artículo: " + ex.Message, ex);
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                     alerta.ShowDialog();
-                    if (alerta.resultado)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    return;
 
                 }
                 return;

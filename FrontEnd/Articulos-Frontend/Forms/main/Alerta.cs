@@ -28,10 +28,10 @@ namespace Articulos_Frontend
             tipo = alertaTipo;
             _alertaDesc = ex.ToString();
             _alertaTipo = ex.GetType().Name;
-            _alertaLinea = ex.StackTrace;
+            _alertaLinea = ObtenerLineaExcepcion(ex);
             StyleManager.StyleForm(this);
 
-            switch ( tipo)
+            switch (tipo)
             {
                 case AlertaTipo.Error:
                     imagenAlerta.BackgroundImage = Properties.Resources._8a027296c847ff9188483471a1830469;
@@ -90,5 +90,24 @@ namespace Articulos_Frontend
             resultado = false;
             this.Close();
         }
+
+        private string ObtenerLineaExcepcion(Exception ex)
+        {
+            if (string.IsNullOrEmpty(ex.StackTrace))
+            {
+                return "Sin información de linea.";
+            }
+            var lineas = ex.StackTrace.Split('\n');
+            foreach(var line in lineas)
+            {
+                if(line.Contains(":line"))
+                {
+                    return line.Trim();
+                }   
+                
+            }
+            return "Sin información de linea";
+
+        }
     }
-}
+    }

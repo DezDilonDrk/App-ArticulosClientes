@@ -339,18 +339,29 @@ public partial class ClienteForm : Form
     }
     private void ClienteForm_Load(object sender, EventArgs e)
     {
-        Log.Info("Cargando clientes en el formulario.");
-        buscarClientes(null);
-        RegistrarClicks(this);
-        if(!AppState.Roles.Contains(Roles.AdminVentas))
+        try
         {
-            BotonMasC.Enabled = false;
-            BotonMenosC.Enabled = false;
-            admin = false;
-        } else
+            Log.Info("Cargando clientes en el formulario.");
+            buscarClientes(null);
+            RegistrarClicks(this);
+            if (!AppState.Roles.Contains(Roles.AdminVentas))
+            {
+                BotonMasC.Enabled = false;
+                BotonMenosC.Enabled = false;
+                admin = false;
+            }
+            else
+            {
+                admin = true;
+            }
+        }catch(Exception ex)
         {
-            admin = true;
+            Log.Error("Error al cargar clientes en el formulario.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
+            return;
         }
+        
     }
     private void FiltrarPorFecha(object sender, EventArgs e)
     {
@@ -424,7 +435,16 @@ public partial class ClienteForm : Form
     }
     private void BotonBuscar_Click(object sender, EventArgs e)
     {
-        buscarClientes(textBoxCliente.Text);
+        try
+        {
+            buscarClientes(textBoxCliente.Text);
+        } catch (Exception ex)
+        {
+            Log.Error("Error al buscar clientes.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
+        }
+        
     }
 
     private async void BotonMasC_Click(object sender, EventArgs e)
@@ -462,54 +482,68 @@ public partial class ClienteForm : Form
 
     private async void BotonMenosC_Click(object sender, EventArgs e)
     {
-        Log.Info("Pulsa el botón de eliminar");
-        Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este cliente?"));
-        alerta.ShowDialog();
-        if (alerta.resultado)
+        try
         {
-            Log.Info($"Eliminando cliente con DNI: {dgvCliente.CurrentRow.Cells["Dni"].Value.ToString()}");
-            await ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+            Log.Info("Pulsa el botón de eliminar");
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Warning, new Exception("¿Confirma que desea eliminar este cliente?"));
+            alerta.ShowDialog();
+            if (alerta.resultado)
+            {
+                Log.Info($"Eliminando cliente con DNI: {dgvCliente.CurrentRow.Cells["Dni"].Value.ToString()}");
+                await ClienteApiClient.Eliminar(dgvCliente.CurrentRow.Cells["Dni"].Value.ToString());
+            }
+            else
+            {
+                Log.Info("Eliminación cancelada por el usuario.");
+            }
+            buscarClientes(textBoxCliente.Text);
         }
-        else
+        catch (Exception ex)
         {
-            Log.Info("Eliminación cancelada por el usuario.");
+            Log.Error("Error al eliminar cliente.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
         }
-        buscarClientes(textBoxCliente.Text);
     }
 
     private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
-        Log.Info("Doble clic en cliente para acceder a la información.");
-        if (e.RowIndex >= 0)
+        try
         {
-            if (ModoInvocacion == "CrearPedido")
+            Log.Info("Doble clic en cliente para acceder a la información.");
+            if (e.RowIndex >= 0)
             {
-                DniSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-                return;
-            }
-            if (!admin)
-            {
-                MessageBox.Show("No tienes permisos para editar clientes.");
-                return;
-            }
-            string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
-            Cliente cliente = await ClienteApiClient.ObtenerPorDni(dni);
-            var formActualizado = new ClienteUpdateForm(cliente);
-
-            formActualizado.ClienteActualizadoCorrectamente += async cliente =>
-            {
-                if (!string.IsNullOrEmpty(cliente.Dni) && !string.IsNullOrEmpty(cliente.Nombre) && !string.IsNullOrEmpty(cliente.Apellidos) && !string.IsNullOrEmpty(cliente.Email))
+                if (ModoInvocacion == "CrearPedido")
                 {
-                    buscarClientes(textBoxCliente.Text);
+                    DniSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                    return;
                 }
-            };
-            WindowManager.ShowForm(
-                    $"{dni}_Actualizar",
-                    this,
-                    () => formActualizado);
-            
+                string dni = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
+                Cliente cliente = await ClienteApiClient.ObtenerPorDni(dni);
+                var formActualizado = new ClienteUpdateForm(cliente);
+
+                formActualizado.ClienteActualizadoCorrectamente += async cliente =>
+                {
+                    if (!string.IsNullOrEmpty(cliente.Dni) && !string.IsNullOrEmpty(cliente.Nombre) && !string.IsNullOrEmpty(cliente.Apellidos) && !string.IsNullOrEmpty(cliente.Email))
+                    {
+                        buscarClientes(textBoxCliente.Text);
+                    }
+                };
+                WindowManager.ShowForm(
+                        $"{dni}_Actualizar",
+                        this,
+                        () => formActualizado);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al abrir formulario de edición de cliente.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
+
         }
     }
     private async Task SeleccionarCliente(string dni)

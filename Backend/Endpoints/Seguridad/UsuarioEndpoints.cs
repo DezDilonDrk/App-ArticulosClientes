@@ -4,6 +4,7 @@ using MTCore_AC.Entidades;
 using MTCore_AC.DTO;
 using static MTCore_AC.DTO.LoginDtos;
 using Articulos_Backend.Repositorios.Seguridad;
+using Microsoft.Identity.Client;
 
 namespace Articulos_Backend.Endpoints.Seguridad;
 
@@ -77,6 +78,14 @@ public static class UsuarioEndpoints
         app.MapPut("/usuarios", (Usuario usuario) =>
         {
             repo.Update(usuario);
+            return Results.NoContent();
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status400BadRequest);
+
+        app.MapPut("/usuarios/{correo}/contrasena", (string correo, CambiarContrasenaRequest request) =>
+        {
+            repo.ActualizarContrasena(correo, request.NuevaContrasena);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
