@@ -34,11 +34,15 @@ namespace Articulos_Frontend.Forms.main
         {
             panelLateral = new Panel();
             groupBoxAppSettings = new GroupBox();
+            labelDebugMenu = new Label();
             groupBoxUserSettings = new GroupBox();
             labelNotificationSettings = new Label();
             labelAccountSettings = new Label();
             pictureBoxLogoDesplegado = new PictureBox();
             panelMain = new Panel();
+            panelDebugMenu = new Panel();
+            buttonTerminal = new Button();
+            labelTerminal = new Label();
             panelMainSpace = new Panel();
             panelAccountSettings = new Panel();
             buttonLogout = new Button();
@@ -51,12 +55,12 @@ namespace Articulos_Frontend.Forms.main
             textBoxBuscadorAjustes = new TextBox();
             panelLateralPlegado = new Panel();
             pictureBoxLogo = new PictureBox();
-            labelDebugMenu = new Label();
             panelLateral.SuspendLayout();
             groupBoxAppSettings.SuspendLayout();
             groupBoxUserSettings.SuspendLayout();
             ((ISupportInitialize)pictureBoxLogoDesplegado).BeginInit();
             panelMain.SuspendLayout();
+            panelDebugMenu.SuspendLayout();
             panelMainSpace.SuspendLayout();
             panelAccountSettings.SuspendLayout();
             panelNotificationSettings.SuspendLayout();
@@ -88,6 +92,16 @@ namespace Articulos_Frontend.Forms.main
             groupBoxAppSettings.TabIndex = 4;
             groupBoxAppSettings.TabStop = false;
             groupBoxAppSettings.Text = "App Settings";
+            // 
+            // labelDebugMenu
+            // 
+            labelDebugMenu.AutoSize = true;
+            labelDebugMenu.Location = new Point(6, 221);
+            labelDebugMenu.Name = "labelDebugMenu";
+            labelDebugMenu.Size = new Size(76, 15);
+            labelDebugMenu.TabIndex = 4;
+            labelDebugMenu.Text = "Debug Menu";
+            labelDebugMenu.Click += openOptionAjustes;
             // 
             // groupBoxUserSettings
             // 
@@ -143,8 +157,38 @@ namespace Articulos_Frontend.Forms.main
             panelMain.Size = new Size(832, 450);
             panelMain.TabIndex = 8;
             // 
+            // panelDebugMenu
+            // 
+            panelDebugMenu.Controls.Add(buttonTerminal);
+            panelDebugMenu.Controls.Add(labelTerminal);
+            panelDebugMenu.Dock = DockStyle.Fill;
+            panelDebugMenu.Location = new Point(0, 0);
+            panelDebugMenu.Name = "panelDebugMenu";
+            panelDebugMenu.Size = new Size(832, 390);
+            panelDebugMenu.TabIndex = 12;
+            panelDebugMenu.Tag = "fondoGrisPanel";
+            // 
+            // buttonTerminal
+            // 
+            buttonTerminal.Location = new Point(100, 368);
+            buttonTerminal.Name = "buttonTerminal";
+            buttonTerminal.Size = new Size(75, 23);
+            buttonTerminal.TabIndex = 1;
+            buttonTerminal.UseVisualStyleBackColor = true;
+            buttonTerminal.Click += buttonTerminal_Click;
+            // 
+            // labelTerminal
+            // 
+            labelTerminal.AutoSize = true;
+            labelTerminal.Location = new Point(100, 350);
+            labelTerminal.Name = "labelTerminal";
+            labelTerminal.Size = new Size(126, 15);
+            labelTerminal.TabIndex = 0;
+            labelTerminal.Text = "Abrir Terminal de Logs";
+            // 
             // panelMainSpace
             // 
+            panelMainSpace.Controls.Add(panelDebugMenu);
             panelMainSpace.Controls.Add(panelAccountSettings);
             panelMainSpace.Controls.Add(panelNotificationSettings);
             panelMainSpace.Dock = DockStyle.Fill;
@@ -275,15 +319,6 @@ namespace Articulos_Frontend.Forms.main
             pictureBoxLogo.Click += PanelPlegado_Click;
             pictureBoxLogo.Paint += Ajustes_Paint;
             // 
-            // labelDebugMenu
-            // 
-            labelDebugMenu.AutoSize = true;
-            labelDebugMenu.Location = new Point(6, 221);
-            labelDebugMenu.Name = "labelDebugMenu";
-            labelDebugMenu.Size = new Size(76, 15);
-            labelDebugMenu.TabIndex = 4;
-            labelDebugMenu.Text = "Debug Menu";
-            // 
             // AjustesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -307,6 +342,8 @@ namespace Articulos_Frontend.Forms.main
             groupBoxUserSettings.PerformLayout();
             ((ISupportInitialize)pictureBoxLogoDesplegado).EndInit();
             panelMain.ResumeLayout(false);
+            panelDebugMenu.ResumeLayout(false);
+            panelDebugMenu.PerformLayout();
             panelMainSpace.ResumeLayout(false);
             panelAccountSettings.ResumeLayout(false);
             panelAccountSettings.PerformLayout();
@@ -340,5 +377,8 @@ namespace Articulos_Frontend.Forms.main
         private Label label1;
         private Button buttonLogout;
         private Label labelDebugMenu;
+        private Panel panelDebugMenu;
+        private Label labelTerminal;
+        private Button buttonTerminal;
     }
 }

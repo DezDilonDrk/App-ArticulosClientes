@@ -30,7 +30,9 @@ namespace Articulos_Frontend.Forms.main
             this.panelLateralPlegado.Visible = true;
             panelAccountSettings.Visible = false;
             panelNotificationSettings.Visible = false;
+            panelDebugMenu.Visible = false;
             this.buttonLogout.Text = stringValuesSP.logout;
+            this.buttonTerminal.Text = stringValuesSP.terminal;
             Log.Info("Formulario de Ajustes iniciado.");
         }
         private void AjustesForm_Load(object sender, EventArgs e)
@@ -100,11 +102,21 @@ namespace Articulos_Frontend.Forms.main
                         Log.Info("Abriendo panel de configuración de cuenta.");
                         panelAccountSettings.Visible = true;
                         panelNotificationSettings.Visible = false;
+                        panelDebugMenu.Visible = false;
                         break;
                     case "labelNotificationSettings":
                         Log.Info("Abriendo panel de configuración de notificaciones.");
                         panelAccountSettings.Visible = false;
                         panelNotificationSettings.Visible = true;
+                        panelDebugMenu.Visible = false;
+                        break;
+                    case "labelDebugMenu":
+                        Log.Info("Abriendo panel de menú de depuración.");
+                        panelAccountSettings.Visible = false;
+                        panelNotificationSettings.Visible = false;
+                        panelDebugMenu.Visible = true;
+                        break;
+                    default:
                         break;
                 }
             }

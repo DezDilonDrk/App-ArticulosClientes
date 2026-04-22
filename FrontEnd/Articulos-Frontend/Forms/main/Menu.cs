@@ -12,7 +12,7 @@ namespace Articulos_Frontend
         ShowTerminal terminal;
         AjustesForm ajustes;
         private Usuario user;
-        private bool sendEmailNotification = false;
+        private bool sendEmailNotification = true;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
@@ -21,7 +21,6 @@ namespace Articulos_Frontend
             user = usuario;
             this.Text = stringValuesSP.menu;
             this.mnuVentanas.Text = stringValuesSP.ventanas;
-            this.buttonTerminal.Text = stringValuesSP.terminal;
             toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}  |";
             toolStripStatusLabelEmail.Text = $"|  Email: {usuario.CorreoElectronico}";
             if (!AppState.Roles.Contains(Roles.AdminAlmacen) && !AppState.Roles.Contains(Roles.UserAlmacen))
@@ -88,7 +87,6 @@ namespace Articulos_Frontend
             var dropDown = new ContextMenuStrip();
             var usuarioItem = new ToolStripMenuItem("UsuarioForm");
             var rolItem = new ToolStripMenuItem("RolForm");
-            var ccItem = new ToolStripMenuItem("CambioContraseñaForm");
             usuarioItem.Click += (s, ev) =>
             {
                 WindowManager.ShowForm(stringValuesSP.seccionUsuarios, this, () => new UsuarioForm(new UsuarioApiClient(), user));
@@ -97,14 +95,9 @@ namespace Articulos_Frontend
             {
                 WindowManager.ShowForm(stringValuesSP.seccionRoles, this, () => new RolForm(new RolApiClient()));
             };
-            ccItem.Click += (s, ev) =>
-            {
-                WindowManager.ShowForm("CambioContraseñaForm", this, () => new CambiarContrasenaForm());
-            };
 
             dropDown.Items.Add(usuarioItem);
             dropDown.Items.Add(rolItem);
-            dropDown.Items.Add(ccItem);
             var parent = seguridadToolStripMenuItem.GetCurrentParent();
             var bounds = seguridadToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
@@ -180,6 +173,64 @@ namespace Articulos_Frontend
             var bounds = mnuVentanas.Bounds;
 
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
+        }
+        private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dropDown = new ContextMenuStrip();
+            var cambiarContrasenaItem = new ToolStripMenuItem(stringValuesSP.cambiarContrasena);
+            var cerrarSesionItem = new ToolStripButton(stringValuesSP.logout);
+            var stringValue = sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
+            var checkNotificaciones = new ToolStripMenuItem(stringValue);
+            cambiarContrasenaItem.Click += (s, ev) => {
+                WindowManager.ShowForm(stringValuesSP.cambiarContrasena, this, () => new CambiarContrasenaForm());
+            };
+            cerrarSesionItem.Click += buttonLogout_Click;
+            checkNotificaciones.Click += (s, ev) =>
+            {
+                if (sendEmailNotification)
+                {
+                    Log.Info("Desactivando notificaciones por email.");
+                    MessageBox.Show("Las notificaciones por email han sido desactivadas.\n\nNotifications: OFF", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    Log.Info("Activando notificaciones por email.");
+                    MessageBox.Show("Las notificaciones por email han sido activadas.\n\nNotifications: ON", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                checkNotificaciones.Text = !sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
+                changeSendEmailNotification();
+            };
+            dropDown.Items.Add(cambiarContrasenaItem);
+            dropDown.Items.Add(cerrarSesionItem);
+            dropDown.Items.Add(checkNotificaciones);
+            var parent = usuarioToolStripMenuItem.GetCurrentParent();
+            var bounds = usuarioToolStripMenuItem.Bounds;
+            dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
+        }
+        private void aplicacionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dropDown = new ContextMenuStrip();
+            var terminalItem = new ToolStripMenuItem(stringValuesSP.terminal);
+            terminalItem.Click += buttonTerminal_Click;
+            dropDown.Items.Add(terminalItem);
+            var parent = aplicacionToolStripMenuItem.GetCurrentParent();
+            var bounds = aplicacionToolStripMenuItem.Bounds;
+            dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
+        }
+        private void buttonLogout_Click(object sender, EventArgs e)
+        {
+            WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
+
+            var abiertos = WindowManager.OpenWindows.Values.ToList();
+            foreach (var entry in abiertos)
+            {
+                try { entry.formularioHijo.Close(); }
+                catch (Exception ex)
+                {
+                    Log.Error("Error al cerrar la ventana: " + ex.Message);
+                }
+            }
+            this.Close();
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {

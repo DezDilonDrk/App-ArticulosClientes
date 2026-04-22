@@ -16,6 +16,9 @@ namespace Articulos_Frontend.Theme
         public string crearCliente = "Crear Cliente";
         public string actualizarCliente = "Actualizar Cliente";
         public string detallesArticulo = "Detalles del Artículo";
+        public string cambiarContrasena = "Cambiar Contraseña";
+        public string notificacionesEmailNo = "Notificaciones por Email: No";
+        public string notificacionesEmailSi = "Notificaciones por Email: Sí";
         public string terminal = "Terminal";
         public string clientes = "Clientes";
         public string articulos = "Artículos";
