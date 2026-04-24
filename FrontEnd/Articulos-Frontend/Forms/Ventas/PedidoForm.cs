@@ -20,6 +20,7 @@ namespace Articulos_Frontend
         private string state;
         private ErrorProvider errorProvider;
         private List<Pedido> listaActual;
+        private List<Pedido> listaFiltrada;
         private StringValuesSP stringValuesSP = new StringValuesSP();
         public PedidoForm(string state)
         {
@@ -29,54 +30,85 @@ namespace Articulos_Frontend
             PedidoApiClient = new PedidoApiClient();
             StyleManager.StyleForm(this);
             this.ActiveControl = textBoxCliente;
+            if (state == "Pedidos")
+            {
+                checkAbiertos.Checked = true;
+                checkCerrados.Checked = true;
+                checkCancelados.Checked = true;
+            }
+            if (state == "Envios")
+            {
+                checkAbiertos.Checked = true;
+                checkCerrados.Checked = false;
+                checkCancelados.Checked = false;
+                FiltroEstadoPedido.Enabled = false;
+            }
             Log.Info("Formulario de pedidos iniciado.");
         }
         private void PedidosForm_Load(object sender, EventArgs e)
         {
             Log.Info("Cargando pedidos en el formulario.");
-            buscarPedidos(null);
-            RegistrarClicks(this);
         }
-        private void FiltrarPorFecha(object sender, EventArgs e)
+        private void VerifyStateAndApply(object sender, EventArgs e)
         {
-            List<Pedido> pedidosFiltrados = listaActual;
-            pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_creacion >= FechaDesde.Value.Date).ToList();
+            if (sender as CheckBox != null)
+            {
+                CheckBox checkBox = sender as CheckBox;
+                if (!checkAbiertos.Checked && !checkCerrados.Checked && !checkCancelados.Checked)
+                {
+                    checkBox.Checked = !checkBox.Checked;
+                    return;
+                }
+
+            }
+            AplicarFiltros();
+        }
+        private void AplicarFiltros(object sender, EventArgs e)
+        {
+            AplicarFiltros();
+        }
+        private void AplicarFiltros() {
+            if (listaActual == null) return;
+            var pedidosFiltrados = listaActual;
             if (FechaHasta.Value.Date < FechaDesde.Value.Date)
             {
                 MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 FechaHasta.Value = FechaDesde.Value.Date;
                 return;
+            } else {
+                pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion <= FechaHasta.Value.Date && c.fecha_creacion >= FechaDesde.Value.Date).ToList();
             }
-            pedidosFiltrados = pedidosFiltrados.Where(c => c.fecha_creacion <= FechaHasta.Value.Date).ToList();
-
-            pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_envio >= dtpDesde2.Value.Date).ToList();
             if (dtpHasta2.Value.Date < dtpDesde2.Value.Date)
             {
                 MessageBox.Show("La fecha máxima no puede ser anterior a la fecha mínima. Por favor, ajusta las fechas.", "Error de Fecha", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 dtpHasta2.Value = dtpDesde2.Value.Date;
                 return;
+            } else {
+                pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_envio >= dtpDesde2.Value.Date && p.fecha_envio <= dtpHasta2.Value.Date).ToList();
             }
-            pedidosFiltrados = pedidosFiltrados.Where(p => p.fecha_envio <= FechaHasta.Value.Date).ToList();
-            dgvPedido.DataSource = pedidosFiltrados;
+            var estados = new List<string>();
+            if (checkAbiertos.Checked) estados.Add("Abierto");
+            if (checkCerrados.Checked) estados.Add("Cerrado");
+            if (checkCancelados.Checked) estados.Add("Cancelado");
+            pedidosFiltrados = pedidosFiltrados.Where(p => estados.Contains(p.estado)).ToList();
+            listaFiltrada = pedidosFiltrados.ToList();
+            dgvPedido.DataSource = listaFiltrada;
         }
         private async void buscarPedidos(string nombreFiltro)
         {
             Log.Info($"Buscando pedidos: '{nombreFiltro}'");
             IEnumerable<Pedido> pedidos;
-            if (string.IsNullOrWhiteSpace(nombreFiltro))
+            if (nombreFiltro != null && nombreFiltro.IsWhiteSpace())
             {
                 pedidos = await PedidoApiClient.ObtenerPedidos();
+                MessageBox.Show("No se ha ingresado ningún filtro. Se mostrarán todos los pedidos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 pedidos = await PedidoApiClient.ObtenerPedidos(); //esto deberá ser borrado, se puso aquí para que funcione todo en conjunto
             }
-            pedidos = pedidos.Where(c => c.fecha_creacion.Date >= FechaDesde.Value.Date);
-            pedidos = pedidos.Where(c => c.fecha_creacion.Date <= FechaHasta.Value.Date);
-            pedidos = pedidos.Where(c => c.fecha_envio >= dtpDesde2.Value.Date);
-            pedidos = pedidos.Where(c => c.fecha_envio <= dtpHasta2.Value.Date);
-            dgvPedido.DataSource = pedidos.ToList();
             listaActual = pedidos.ToList();
+            AplicarFiltros();
             if (dgvPedido.Columns["dni_cliente"] != null)
             {
                 dgvPedido.Columns["dni_cliente"].HeaderText = "DNI del Cliente";

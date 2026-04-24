@@ -43,7 +43,6 @@ namespace Articulos_Frontend
             statusStripMenu = new StatusStrip();
             toolStripStatusLabelUser = new ToolStripStatusLabel();
             toolStripStatusLabelEmail = new ToolStripStatusLabel();
-            buttonAjustes = new Button();
             menuStripAC.SuspendLayout();
             statusStripMenu.SuspendLayout();
             SuspendLayout();
@@ -51,7 +50,7 @@ namespace Articulos_Frontend
             // menuStripAC
             // 
             menuStripAC.ImageScalingSize = new Size(20, 20);
-            menuStripAC.Items.AddRange(new ToolStripItem[] { seguridadToolStripMenuItem, almacenToolStripMenuItem, ventasToolStripMenuItem, mnuVentanas, usuarioToolStripMenuItem, aplicacionToolStripMenuItem });
+            menuStripAC.Items.AddRange(new ToolStripItem[] { seguridadToolStripMenuItem, almacenToolStripMenuItem, ventasToolStripMenuItem, usuarioToolStripMenuItem, aplicacionToolStripMenuItem, mnuVentanas });
             menuStripAC.Location = new Point(0, 0);
             menuStripAC.Name = "menuStripAC";
             menuStripAC.Padding = new Padding(4, 2, 0, 2);
@@ -128,18 +127,6 @@ namespace Articulos_Frontend
             toolStripStatusLabelEmail.Size = new Size(39, 17);
             toolStripStatusLabelEmail.Text = "Email:";
             // 
-            // buttonAjustes
-            // 
-            buttonAjustes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            buttonAjustes.Image = Properties.Resources.IconoAjustesColorClaro;
-            buttonAjustes.Location = new Point(889, 0);
-            buttonAjustes.Name = "buttonAjustes";
-            buttonAjustes.Size = new Size(24, 24);
-            buttonAjustes.TabIndex = 5;
-            buttonAjustes.UseVisualStyleBackColor = true;
-            buttonAjustes.Click += buttonAjustes_Click;
-            buttonAjustes.Paint += Ajustes_Paint;
-            // 
             // Menu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -147,7 +134,6 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
-            Controls.Add(buttonAjustes);
             Controls.Add(statusStripMenu);
             Controls.Add(menuStripAC);
             DoubleBuffered = true;
@@ -175,7 +161,6 @@ namespace Articulos_Frontend
         private ToolStripMenuItem seguridadToolStripMenuItem;
         private ToolStripMenuItem almacenToolStripMenuItem;
         private ToolStripMenuItem ventasToolStripMenuItem;
-        private Button buttonAjustes;
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem aplicacionToolStripMenuItem;
     }

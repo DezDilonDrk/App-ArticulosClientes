@@ -129,11 +129,11 @@ namespace Articulos_Frontend
             };
             pedidoItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm(stringValuesSP.listaPedidos, this, () => new PedidoForm("SeccionPedido"));
+                WindowManager.ShowForm(stringValuesSP.listaPedidos, this, () => new PedidoForm("Pedidos"));
             };
             enviadoItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm(stringValuesSP.seccionEnvios, this, () => new PedidoForm("SeccionEnviado"));
+                WindowManager.ShowForm(stringValuesSP.seccionEnvios, this, () => new PedidoForm("Envios"));
             };
             dropDown.Items.Add(clienteItem);
             dropDown.Items.Add(pedidoItem);
