@@ -8,18 +8,12 @@ public static class PedidoEndpoints
 {
     public static WebApplication MapPedidoEndpoints(this WebApplication app, PedidoRepository repo)
     {
-        app.MapGet("/pedidos", () => {
-            return repo.ObtenerPedidos();
-        }).Produces<List<Pedido>>(StatusCodes.Status200OK);
-        app.MapGet("/pedidos/{id}", (string id) =>
-        {
-            var pedido = repo.ObtenerPorId(id);
-            return pedido is not null
-                ? Results.Ok(pedido)
-                : Results.NotFound();
-        })
-            .Produces<Pedido>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+        app.MapGet("/pedidos", (string? nombre) => {
+            var productos = string.IsNullOrEmpty(nombre)
+                ? repo.ObtenerPedidos()
+                : repo.BuscarPorNombreCliente(nombre);
+            return Results.Ok(productos);
+        });//.RequireAuthorization(policy => policy.RequireRole(Roles.AdminPedidos, Roles.UserPedidos)).Produces<List<Pedido>>(StatusCodes.Status200OK);
         app.MapGet("/pedidos/cliente", (string? dni) => {
             var pedidos = string.IsNullOrEmpty(dni)
                 ? repo.ObtenerPedidos()
@@ -28,6 +22,10 @@ public static class PedidoEndpoints
         }).Produces<List<Pedido>>(StatusCodes.Status200OK);
         app.MapGet("/pedidos/estado", (string estado) => {
             var pedidos = repo.ObtenerPorEstado(estado);
+            return Results.Ok(pedidos);
+        }).Produces<List<Cliente>>(StatusCodes.Status200OK);
+        app.MapGet("/pedidos/{id}", (string id) => {
+            var pedidos = repo.ObtenerPorId(id);
             return Results.Ok(pedidos);
         }).Produces<List<Cliente>>(StatusCodes.Status200OK);
         app.MapPost("/pedidos", (Pedido pedido) =>

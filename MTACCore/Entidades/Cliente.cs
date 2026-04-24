@@ -6,6 +6,7 @@ namespace MTCore_AC.Entidades;
 
 public class Cliente
 {
+    public string Id { get; set; }
     public string Dni { get; set; }
     public string Nombre { get; set; }
     public string Apellidos { get; set; }
@@ -17,6 +18,7 @@ public class Cliente
 
     public Cliente(string dni, string nombre, string apellidos, string email, DateTime FechaCreacion, DateTime? FechaModificacion)
     {
+        this.Id = Guid.NewGuid().ToString();
         this.Dni = dni;
         this.Nombre = nombre;
         this.Apellidos = apellidos;

@@ -59,7 +59,6 @@ namespace Articulos_Frontend
                     checkBox.Checked = !checkBox.Checked;
                     return;
                 }
-
             }
             AplicarFiltros();
         }
@@ -98,14 +97,13 @@ namespace Articulos_Frontend
         {
             Log.Info($"Buscando pedidos: '{nombreFiltro}'");
             IEnumerable<Pedido> pedidos;
-            if (nombreFiltro != null && nombreFiltro.IsWhiteSpace())
+            if (string.IsNullOrEmpty(nombreFiltro))
             {
                 pedidos = await PedidoApiClient.ObtenerPedidos();
-                MessageBox.Show("No se ha ingresado ningún filtro. Se mostrarán todos los pedidos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                pedidos = await PedidoApiClient.ObtenerPedidos(); //esto deberá ser borrado, se puso aquí para que funcione todo en conjunto
+                pedidos = await PedidoApiClient.ObtenerPedidosPorNombreCliente(nombreFiltro);
             }
             listaActual = pedidos.ToList();
             AplicarFiltros();
@@ -133,6 +131,12 @@ namespace Articulos_Frontend
                 dgvPedido.Columns["id_pedido"].Resizable = DataGridViewTriState.False;
                 dgvPedido.Columns["id_pedido"].MinimumWidth = 270;
                 dgvPedido.Columns["id_pedido"].HeaderText = "Id del Pedido";
+            }
+            if (dgvPedido.Columns["id_cliente"] != null)
+            {
+                dgvPedido.Columns["id_cliente"].Resizable = DataGridViewTriState.False;
+                dgvPedido.Columns["id_cliente"].MinimumWidth = 270;
+                dgvPedido.Columns["id_cliente"].HeaderText = "Id del Cliente";
             }
             if (dgvPedido.Columns["estado"] != null)
             {
@@ -176,7 +180,6 @@ namespace Articulos_Frontend
             }
             if (dgvPedido.Columns["nombre"] != null)
             {
-
                 dgvPedido.Columns["nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dgvPedido.Columns["nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dgvPedido.Columns["nombre"].Resizable = DataGridViewTriState.False;
@@ -282,7 +285,6 @@ namespace Articulos_Frontend
         {
             MessageBox.Show("En esta sección puedes gestionar los clientes. Usa el botón '+' para agregar un nuevo cliente, el botón '-' para eliminar el cliente seleccionado, y haz doble clic en un cliente para editar su información.", "Ayuda - Gestión de Clientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
         private void Filtros_Click(object sender, EventArgs e)
         {   Filtros.Focus();
             panelFiltros.Visible = !panelFiltros.Visible;
@@ -319,7 +321,6 @@ namespace Articulos_Frontend
                 if (c.HasChildren)
                     RegistrarClicks(c);
             }
-
             parent.Click += CerrarPanelClickFuera;
         }
         private void CerrarPanelClickFuera(object sender, EventArgs e)

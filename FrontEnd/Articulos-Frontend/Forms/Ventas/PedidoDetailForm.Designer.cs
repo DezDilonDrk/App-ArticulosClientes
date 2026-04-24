@@ -46,15 +46,17 @@
 
         private ComboBox comboBoxImpuestos;
         private ComboBox comboBoxMetodoPago;
-        private DataGridView dataGridViewArticulos;
-        private Button button2;
-        private Button button3;
-        private Label labelTotal;
-        private Label labelTotalCantidades;
         private Label label1;
         private ComboBox comboBoxEstado;
         private Button buttonCerrar;
         private Label label2;
         private DateTimePicker dateTimePickerFechaEnvio;
+        private Label labelTotalCantidades;
+        private Label labelTotal;
+        private Button button3;
+        private Button button2;
+        private DataGridView dataGridViewArticulos;
+        private Label label3;
+        private TextBox textBoxIdCliente;
     }
 }

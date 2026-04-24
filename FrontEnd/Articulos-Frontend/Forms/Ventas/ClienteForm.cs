@@ -23,6 +23,7 @@ public partial class ClienteForm : Form
     private StringValuesSP stringValuesSP = new StringValuesSP();
     private bool admin = true;
     public string DniSeleccionado;
+    public string IdSeleccionado;
     public string ModoInvocacion;
     /*private System.Windows.Forms.Timer animTimer;
     private bool animAbriendo;
@@ -392,6 +393,12 @@ public partial class ClienteForm : Form
         clientes = clientes.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
         dgvCliente.DataSource = clientes.ToList();
         listaActual = clientes.ToList();
+        if (dgvCliente.Columns["Id"] != null)
+        {
+            dgvCliente.Columns["Id"].Resizable = DataGridViewTriState.False;
+            dgvCliente.Columns["Id"].MinimumWidth = 270;
+            dgvCliente.Columns["Id"].HeaderText = "Id";
+        }
         if (dgvCliente.Columns["Dni"] != null)
         {
             dgvCliente.Columns["Dni"].Width = 80;
@@ -516,6 +523,7 @@ public partial class ClienteForm : Form
                 if (ModoInvocacion == "CrearPedido")
                 {
                     DniSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
+                    IdSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                     return;

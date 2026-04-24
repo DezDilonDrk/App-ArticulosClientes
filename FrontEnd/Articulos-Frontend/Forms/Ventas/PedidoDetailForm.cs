@@ -47,7 +47,7 @@ namespace Articulos_Frontend
                 comboBoxEstado.SelectedIndex = 0;
                 comboBoxEstado.Enabled = false;
             }
-            else if(state == "Update")
+            else if (state == "Update")
             {
                 if (pedido == null)
                 {
@@ -77,23 +77,25 @@ namespace Articulos_Frontend
             LabelImpuestos = new Label();
             comboBoxImpuestos = new ComboBox();
             comboBoxMetodoPago = new ComboBox();
-            dataGridViewArticulos = new DataGridView();
-            button2 = new Button();
-            button3 = new Button();
-            labelTotal = new Label();
-            labelTotalCantidades = new Label();
             label1 = new Label();
             comboBoxEstado = new ComboBox();
             buttonCerrar = new Button();
             label2 = new Label();
             dateTimePickerFechaEnvio = new DateTimePicker();
+            labelTotalCantidades = new Label();
+            labelTotal = new Label();
+            button3 = new Button();
+            button2 = new Button();
+            dataGridViewArticulos = new DataGridView();
+            this.label3 = new Label();
+            this.textBoxIdCliente = new TextBox();
             ((ISupportInitialize)dataGridViewArticulos).BeginInit();
             SuspendLayout();
             // 
             // textBoxDniCliente
             // 
             textBoxDniCliente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxDniCliente.Location = new Point(247, 96);
+            textBoxDniCliente.Location = new Point(247, 128);
             textBoxDniCliente.Name = "textBoxDniCliente";
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
             textBoxDniCliente.Size = new Size(315, 23);
@@ -104,7 +106,7 @@ namespace Articulos_Frontend
             // 
             LabelDniCliente.BackColor = Color.Transparent;
             LabelDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelDniCliente.Location = new Point(79, 98);
+            LabelDniCliente.Location = new Point(79, 130);
             LabelDniCliente.Name = "LabelDniCliente";
             LabelDniCliente.Size = new Size(162, 21);
             LabelDniCliente.TabIndex = 5;
@@ -116,7 +118,7 @@ namespace Articulos_Frontend
             // 
             LabelMetodoPago.BackColor = Color.Transparent;
             LabelMetodoPago.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelMetodoPago.Location = new Point(79, 127);
+            LabelMetodoPago.Location = new Point(79, 159);
             LabelMetodoPago.Name = "LabelMetodoPago";
             LabelMetodoPago.Size = new Size(162, 21);
             LabelMetodoPago.TabIndex = 6;
@@ -170,7 +172,7 @@ namespace Articulos_Frontend
             // 
             LabelImpuestos.BackColor = Color.Transparent;
             LabelImpuestos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            LabelImpuestos.Location = new Point(79, 185);
+            LabelImpuestos.Location = new Point(79, 217);
             LabelImpuestos.Name = "LabelImpuestos";
             LabelImpuestos.Size = new Size(162, 21);
             LabelImpuestos.TabIndex = 11;
@@ -182,7 +184,7 @@ namespace Articulos_Frontend
             // 
             comboBoxImpuestos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxImpuestos.FormattingEnabled = true;
-            comboBoxImpuestos.Location = new Point(247, 187);
+            comboBoxImpuestos.Location = new Point(247, 219);
             comboBoxImpuestos.Name = "comboBoxImpuestos";
             comboBoxImpuestos.Size = new Size(315, 23);
             comboBoxImpuestos.TabIndex = 12;
@@ -192,70 +194,16 @@ namespace Articulos_Frontend
             // 
             comboBoxMetodoPago.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxMetodoPago.FormattingEnabled = true;
-            comboBoxMetodoPago.Location = new Point(247, 127);
+            comboBoxMetodoPago.Location = new Point(247, 159);
             comboBoxMetodoPago.Name = "comboBoxMetodoPago";
             comboBoxMetodoPago.Size = new Size(315, 23);
             comboBoxMetodoPago.TabIndex = 13;
             comboBoxMetodoPago.Tag = "comboBox";
             // 
-            // dataGridViewArticulos
-            // 
-            dataGridViewArticulos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridViewArticulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewArticulos.Location = new Point(79, 245);
-            dataGridViewArticulos.Name = "dataGridViewArticulos";
-            dataGridViewArticulos.Size = new Size(483, 107);
-            dataGridViewArticulos.TabIndex = 14;
-            dataGridViewArticulos.CellEndEdit += dgvArticulos_CellEndEdit;
-            dataGridViewArticulos.Validating += dgvArticulos_Validating;
-            // 
-            // button2
-            // 
-            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button2.Location = new Point(568, 245);
-            button2.MaximumSize = new Size(68, 51);
-            button2.Name = "button2";
-            button2.Size = new Size(68, 51);
-            button2.TabIndex = 15;
-            button2.Text = "+";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += BotonAgregarP_Click;
-            // 
-            // button3
-            // 
-            button3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button3.Location = new Point(568, 302);
-            button3.Name = "button3";
-            button3.Size = new Size(68, 51);
-            button3.TabIndex = 16;
-            button3.Text = "-";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += BotonEliminarP_Click;
-            // 
-            // labelTotal
-            // 
-            labelTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            labelTotal.AutoSize = true;
-            labelTotal.Location = new Point(79, 360);
-            labelTotal.Name = "labelTotal";
-            labelTotal.Size = new Size(109, 15);
-            labelTotal.TabIndex = 17;
-            labelTotal.Text = "Total (bruto | neto):";
-            // 
-            // labelTotalCantidades
-            // 
-            labelTotalCantidades.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            labelTotalCantidades.AutoSize = true;
-            labelTotalCantidades.Location = new Point(292, 360);
-            labelTotalCantidades.Name = "labelTotalCantidades";
-            labelTotalCantidades.Size = new Size(58, 15);
-            labelTotalCantidades.TabIndex = 18;
-            labelTotalCantidades.Text = "0.00 | 0.00";
-            // 
             // label1
             // 
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(79, 156);
+            label1.Location = new Point(79, 188);
             label1.Name = "label1";
             label1.Size = new Size(162, 23);
             label1.TabIndex = 19;
@@ -267,7 +215,7 @@ namespace Articulos_Frontend
             comboBoxEstado.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxEstado.FlatStyle = FlatStyle.Flat;
             comboBoxEstado.FormattingEnabled = true;
-            comboBoxEstado.Location = new Point(247, 156);
+            comboBoxEstado.Location = new Point(247, 188);
             comboBoxEstado.Name = "comboBoxEstado";
             comboBoxEstado.Size = new Size(247, 23);
             comboBoxEstado.TabIndex = 20;
@@ -279,7 +227,7 @@ namespace Articulos_Frontend
             buttonCerrar.BackColor = SystemColors.MenuHighlight;
             buttonCerrar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             buttonCerrar.ForeColor = SystemColors.ControlLightLight;
-            buttonCerrar.Location = new Point(497, 154);
+            buttonCerrar.Location = new Point(497, 186);
             buttonCerrar.MaximumSize = new Size(150, 30);
             buttonCerrar.Name = "buttonCerrar";
             buttonCerrar.Size = new Size(68, 30);
@@ -292,7 +240,7 @@ namespace Articulos_Frontend
             // 
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label2.Location = new Point(79, 216);
+            label2.Location = new Point(79, 248);
             label2.Name = "label2";
             label2.Size = new Size(162, 21);
             label2.TabIndex = 22;
@@ -303,24 +251,97 @@ namespace Articulos_Frontend
             // dateTimePickerFechaEnvio
             // 
             dateTimePickerFechaEnvio.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            dateTimePickerFechaEnvio.Location = new Point(247, 216);
+            dateTimePickerFechaEnvio.Location = new Point(247, 248);
             dateTimePickerFechaEnvio.Name = "dateTimePickerFechaEnvio";
             dateTimePickerFechaEnvio.Size = new Size(315, 23);
             dateTimePickerFechaEnvio.TabIndex = 23;
             // 
+            // labelTotalCantidades
+            // 
+            labelTotalCantidades.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            labelTotalCantidades.AutoSize = true;
+            labelTotalCantidades.Location = new Point(292, 392);
+            labelTotalCantidades.Name = "labelTotalCantidades";
+            labelTotalCantidades.Size = new Size(58, 15);
+            labelTotalCantidades.TabIndex = 28;
+            labelTotalCantidades.Text = "0.00 | 0.00";
+            // 
+            // labelTotal
+            // 
+            labelTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            labelTotal.AutoSize = true;
+            labelTotal.Location = new Point(79, 392);
+            labelTotal.Name = "labelTotal";
+            labelTotal.Size = new Size(109, 15);
+            labelTotal.TabIndex = 27;
+            labelTotal.Text = "Total (bruto | neto):";
+            // 
+            // button3
+            // 
+            button3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button3.Location = new Point(568, 334);
+            button3.Name = "button3";
+            button3.Size = new Size(68, 51);
+            button3.TabIndex = 26;
+            button3.Text = "-";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.Location = new Point(568, 277);
+            button2.MaximumSize = new Size(68, 51);
+            button2.Name = "button2";
+            button2.Size = new Size(68, 51);
+            button2.TabIndex = 25;
+            button2.Text = "+";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewArticulos
+            // 
+            dataGridViewArticulos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewArticulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewArticulos.Location = new Point(79, 277);
+            dataGridViewArticulos.Name = "dataGridViewArticulos";
+            dataGridViewArticulos.Size = new Size(483, 107);
+            dataGridViewArticulos.TabIndex = 24;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = Color.Transparent;
+            this.label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            this.label3.Location = new Point(79, 101);
+            this.label3.Name = "label3";
+            this.label3.Size = new Size(162, 21);
+            this.label3.TabIndex = 30;
+            this.label3.Tag = "normalText";
+            this.label3.Text = "Id del Cliente: ";
+            this.label3.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // textBoxIdCliente
+            // 
+            this.textBoxIdCliente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            this.textBoxIdCliente.Location = new Point(247, 99);
+            this.textBoxIdCliente.Name = "textBoxIdCliente";
+            this.textBoxIdCliente.PlaceholderText = "Id del cliente";
+            this.textBoxIdCliente.Size = new Size(315, 23);
+            this.textBoxIdCliente.TabIndex = 29;
+            // 
             // PedidoDetailForm
             // 
-            ClientSize = new Size(648, 384);
-            Controls.Add(dateTimePickerFechaEnvio);
-            Controls.Add(label2);
-            Controls.Add(buttonCerrar);
-            Controls.Add(comboBoxEstado);
-            Controls.Add(label1);
+            ClientSize = new Size(648, 411);
+            Controls.Add(this.label3);
+            Controls.Add(this.textBoxIdCliente);
             Controls.Add(labelTotalCantidades);
             Controls.Add(labelTotal);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(dataGridViewArticulos);
+            Controls.Add(dateTimePickerFechaEnvio);
+            Controls.Add(label2);
+            Controls.Add(buttonCerrar);
+            Controls.Add(comboBoxEstado);
+            Controls.Add(label1);
             Controls.Add(comboBoxMetodoPago);
             Controls.Add(comboBoxImpuestos);
             Controls.Add(LabelImpuestos);
@@ -331,7 +352,7 @@ namespace Articulos_Frontend
             Controls.Add(LabelDniCliente);
             Controls.Add(textBoxDniCliente);
             MaximizeBox = false;
-            MinimumSize = new Size(664, 423);
+            MinimumSize = new Size(664, 450);
             Name = "PedidoDetailForm";
             StartPosition = FormStartPosition.CenterParent;
             Load += FormLoad;
@@ -345,7 +366,7 @@ namespace Articulos_Frontend
             if (!await ValidarDni(textBoxDniCliente.Text)) return;
             try
             {
-                if(this.state == "Create")
+                if (this.state == "Create")
                 {
                     bool existePedido = false;
                     double parsedImpuestos = 0;
@@ -365,7 +386,7 @@ namespace Articulos_Frontend
                         MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, comboBoxEstado.Text, parsedImpuestos, dateTimePickerFechaEnvio.Value);
+                    pedidoCreated = new Pedido(textBoxIdCliente.Text, textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, comboBoxEstado.Text, parsedImpuestos, dateTimePickerFechaEnvio.Value);
                     List<PedidoArticulos> articulosPedido = new List<PedidoArticulos>();
                     foreach (LineaPedido lin in articulos)
                     {
@@ -381,7 +402,8 @@ namespace Articulos_Frontend
                     pedidoCreated.cambiarLista(articulosPedido);
                     await pedidoApiClient.Crear(pedidoCreated);
                     var menu = this.Owner as Menu;
-                    if (menu.getSendEmailNotification() == true) {
+                    if (menu.getSendEmailNotification() == true)
+                    {
                         EmailSender emailSender = new EmailSender();
                         emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
                     }
@@ -458,7 +480,7 @@ namespace Articulos_Frontend
                 {
                     Log.Info("Eliminación cancelada por el usuario.");
                 }
-                
+
                 CalcularTotales();
             }
             else
@@ -513,8 +535,15 @@ namespace Articulos_Frontend
                         MessageBox.Show("No se ha seleccionado ningún cliente. Por favor, seleccione un cliente para continuar.", "Cliente no seleccionado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
+                    if (string.IsNullOrEmpty(form.IdSeleccionado))
+                    {
+                        Log.Warn("No se ha seleccionado ningún cliente para el pedido.");
+                        MessageBox.Show("No se ha seleccionado ningún cliente. Por favor, seleccione un cliente para continuar.", "Cliente no seleccionado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                     Log.Info($"Cliente seleccionado para el pedido con Dni: {form.DniSeleccionado}");
                     textBoxDniCliente.Text = form.DniSeleccionado.ToString();
+                    textBoxIdCliente.Text = form.IdSeleccionado.ToString();
                     Log.Info($"Cliente seleccionado para pedido con Dni: {form.DniSeleccionado}");
                 }
             }
@@ -573,7 +602,8 @@ namespace Articulos_Frontend
                         MessageBox.Show("Por favor, ingrese un número válido para la cantidad.", "Cantidad no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         row.Cells["cantidad"].Value = articulos[e.RowIndex].cantidad; //Revertir al valor anterior
                     }
-                } else if (nomcol == "PrecioUnidad")
+                }
+                else if (nomcol == "PrecioUnidad")
                 {
                     if (decimal.TryParse(row.Cells["precioUnidad"].Value.ToString(), out decimal precio))
                     {
@@ -674,14 +704,14 @@ namespace Articulos_Frontend
                         MessageBox.Show($"Error al obtener el artículo con id {a.id_articulo}. Es posible que este artículo haya sido eliminado.", "Error al cargar artículo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         continue;
                     }
-                    articulos.Add(new LineaPedido(a.id_articulo, art.nombre , art.categoria , a.cantidad, a.precio_unidad));
+                    articulos.Add(new LineaPedido(a.id_articulo, art.nombre, art.categoria, a.cantidad, a.precio_unidad));
                 }
                 dataGridViewArticulos.DataSource = null;
                 dataGridViewArticulos.DataSource = articulos;
                 CalcularTotales();
             }
             if (state == "Create")
-            { 
+            {
                 buttonCerrar.Visible = false;
             }
             DataGridConfig();
@@ -772,7 +802,8 @@ namespace Articulos_Frontend
             }
             else
             {
-                try { impuestos = decimal.Parse(comboBoxImpuestos.Text) / 100; } catch (FormatException)
+                try { impuestos = decimal.Parse(comboBoxImpuestos.Text) / 100; }
+                catch (FormatException)
                 {
                     Log.Warn($"Valor no numérico ingresado en el campo de impuestos: {comboBoxImpuestos.Text}");
                     MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -782,6 +813,11 @@ namespace Articulos_Frontend
             }
             decimal totalConImpuestos = totalSinImpuestos * (1 + impuestos);
             labelTotalCantidades.Text = $"{totalSinImpuestos:0.00} | {totalConImpuestos:0.00}";
+        }
+
+        private void dataGridViewArticulos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

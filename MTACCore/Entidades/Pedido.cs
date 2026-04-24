@@ -7,6 +7,7 @@ namespace MTCore_AC.Entidades
     public class Pedido
     {
         public string id_pedido { get; set; }
+        public string id_cliente { get; set; }
         public string dni_cliente { get; set; }
         public string metodo_pago { get; set; }
         public DateTime fecha_creacion { get; set; }
@@ -15,11 +16,13 @@ namespace MTCore_AC.Entidades
         //public enum EstadoPedido { Abierto, Cerrado, Cancelado }
         public string estado { get; set; }
         public double porcentaje_impuestos { get; set; }
+        public string nombre_cliente { get; set; }
         public List<PedidoArticulos> articulos { get; set; } = new List<PedidoArticulos>();
         public Pedido() {}
-        public Pedido(string DniCliente, string MetodoPago, string Estado, double PorcentajeImpuestos, DateTime? FechaEnvio)
+        public Pedido(string id_cliente, string DniCliente, string MetodoPago, string Estado, double PorcentajeImpuestos, DateTime? FechaEnvio)
         {
             this.id_pedido = Guid.NewGuid().ToString();
+            this.id_cliente = id_cliente;
             this.metodo_pago = MetodoPago;
             this.fecha_creacion = DateTime.Now;
             this.dni_cliente = DniCliente;

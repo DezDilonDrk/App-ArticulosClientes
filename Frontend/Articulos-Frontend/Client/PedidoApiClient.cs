@@ -30,7 +30,19 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<List<Pedido>>("/pedidos");
+                return await httpClient.GetFromJsonAsync<List<Pedido>>("/pedidos?nombre=");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
+            }
+        }
+        public async Task<List<Pedido>> ObtenerPedidosPorNombreCliente(string nombre)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<List<Pedido>>($"/pedidos?Nombre={nombre}");
             }
             catch (Exception ex)
             {
@@ -44,10 +56,10 @@ namespace Articulos_Frontend.Client
             {
                 return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/{id}");
             }
-            catch
+            catch (Exception ex)
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
             }
         }
         public async Task<Pedido?> ObtenerPorDniCliente(string dni)

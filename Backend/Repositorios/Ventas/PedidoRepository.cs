@@ -17,7 +17,7 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = "SELECT id_pedido, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos FROM Pedidos";
+                string sql = "SELECT id_pedido, id_cliente, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos FROM Pedidos";
                 return db.Query<Pedido>(sql).ToList();
             }
         }
@@ -27,6 +27,17 @@ namespace Articulos_Backend.Repositorios.Ventas
             {
                 string sql = "SELECT * FROM Pedidos WHERE id_pedido = @IdPedido";
                 return db.QueryFirstOrDefault<Pedido>(sql, new { IdPedido = id });
+            }
+        }
+        public List<Pedido> BuscarPorNombreCliente(string Nombre)
+        {
+            using (var db = Connection)
+            {
+                string sql = @"SELECT id_pedido, id_cliente, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos
+                               FROM Pedidos
+                               WHERE nombre_cliente LIKE @Nombre";
+
+                return db.Query<Pedido>(sql, new { Nombre = $"%{Nombre}%" }).ToList();
             }
         }
         public List<Pedido> ObtenerPorDniCliente(string dni)
@@ -57,8 +68,8 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = @"INSERT INTO Pedidos (id_pedido, dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos, fecha_envio)
-                           VALUES (@id_pedido, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos, @fecha_envio)";
+                string sql = @"INSERT INTO Pedidos (id_pedido, id_cliente,  dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos, fecha_envio)
+                           VALUES (@id_pedido, @id_cliente, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos, @fecha_envio)";
                 db.Execute(sql, pedido);
             }
         }
@@ -67,7 +78,8 @@ namespace Articulos_Backend.Repositorios.Ventas
             using (var db = Connection)
             {
                 string sql = @"UPDATE Pedidos
-                               SET dni_cliente = @dni_cliente, 
+                               SET id_cliente = @id_cliente
+                                dni_cliente = @dni_cliente, 
                                metodo_pago = @metodo_pago,
                                fecha_rectificacion = @fecha_rectificacion, 
                                estado = @estado, 
