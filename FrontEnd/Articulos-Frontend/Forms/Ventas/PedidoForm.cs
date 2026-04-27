@@ -43,11 +43,14 @@ namespace Articulos_Frontend
                 checkCancelados.Checked = false;
                 FiltroEstadoPedido.Enabled = false;
             }
+            dgvPedido.DataSource = PedidoApiClient.ObtenerPedidos();
             Log.Info("Formulario de pedidos iniciado.");
         }
         private void PedidosForm_Load(object sender, EventArgs e)
         {
             Log.Info("Cargando pedidos en el formulario.");
+            RegistrarClicks(this);
+            buscarPedidos(null);
         }
         private void VerifyStateAndApply(object sender, EventArgs e)
         {
@@ -117,10 +120,14 @@ namespace Articulos_Frontend
             {
                 //dgvCliente.Columns["porcentaje"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 //dgvCliente.Columns["porcentaje"].FillWeight = 30;
-                dgvPedido.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                dgvPedido.Columns["porcentaje_impuestos"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dgvPedido.Columns["porcentaje_impuestos"].MinimumWidth = 100;
+                dgvPedido.Columns["porcentaje_impuestos"].MinimumWidth = 10;
                 dgvPedido.Columns["porcentaje_impuestos"].HeaderText = "Porcentaje de Impuestos";
+            }
+            if (dgvPedido.Columns["nombre_cliente"] != null)
+            {
+                dgvPedido.Columns["nombre_cliente"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgvPedido.Columns["nombre_cliente"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPedido.Columns["nombre_cliente"].HeaderText = "Nombre del Cliente";
             }
             if (dgvPedido.Columns["id_pedido"] != null)
             {

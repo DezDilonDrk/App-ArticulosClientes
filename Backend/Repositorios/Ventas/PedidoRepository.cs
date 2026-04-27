@@ -17,7 +17,7 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = "SELECT id_pedido, id_cliente, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos FROM Pedidos";
+                string sql = "SELECT id_pedido, id_cliente, dni_cliente, nombre_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos FROM Pedidos";
                 return db.Query<Pedido>(sql).ToList();
             }
         }
@@ -33,7 +33,7 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = @"SELECT id_pedido, id_cliente, dni_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos
+                string sql = @"SELECT id_pedido, id_cliente, dni_cliente, nombre_cliente, metodo_pago, fecha_creacion, fecha_rectificacion, fecha_envio, estado, porcentaje_impuestos
                                FROM Pedidos
                                WHERE nombre_cliente LIKE @Nombre";
 

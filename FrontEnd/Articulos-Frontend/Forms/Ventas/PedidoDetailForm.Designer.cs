@@ -51,12 +51,14 @@
         private Button buttonCerrar;
         private Label label2;
         private DateTimePicker dateTimePickerFechaEnvio;
+        private Label label3;
+        private TextBox textBoxIdCliente;
         private Label labelTotalCantidades;
         private Label labelTotal;
         private Button button3;
         private Button button2;
         private DataGridView dataGridViewArticulos;
-        private Label label3;
-        private TextBox textBoxIdCliente;
+        private Label labelNombreCliente;
+        private TextBox textBoxNombreCliente;
     }
 }

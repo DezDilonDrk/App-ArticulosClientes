@@ -24,6 +24,7 @@ public partial class ClienteForm : Form
     private bool admin = true;
     public string DniSeleccionado;
     public string IdSeleccionado;
+    public string NombreSeleccionado;
     public string ModoInvocacion;
     /*private System.Windows.Forms.Timer animTimer;
     private bool animAbriendo;
@@ -524,6 +525,7 @@ public partial class ClienteForm : Form
                 {
                     DniSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
                     IdSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                    NombreSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Nombre"].Value.ToString();
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                     return;
