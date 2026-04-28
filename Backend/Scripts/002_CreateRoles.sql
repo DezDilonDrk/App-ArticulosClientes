@@ -1,4 +1,4 @@
-IF OBJECT_ID('Roles', 'U') IS NULL
+IF OBJECT_ID('Roles', 'R') IS NULL
 BEGIN
     CREATE TABLE Roles(
         Id INT IDENTITY PRIMARY KEY,

@@ -8,6 +8,6 @@ namespace MTCore_AC.DTO
     {
         public string Message { get; set; }
         public string Database {  get; set; }
-        public bool Sucess { get; set; }
+        public bool Success { get; set; }
     }
 }

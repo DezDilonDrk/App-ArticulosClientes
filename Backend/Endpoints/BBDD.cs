@@ -64,6 +64,10 @@ public static class BBDD
             {
                 InitialCatalog = "master"
             };
+            if (string.IsNullOrWhiteSpace(dbname) || dbname.Any(c => !char.IsLetterOrDigit(c) && c != '_'))
+            {
+                return Results.BadRequest("Nombre de base de datos inválido");
+            }
 
             logger.LogInformation("Iniciando creación de base de datos...");
 
@@ -124,7 +128,7 @@ public static class BBDD
                         {
                             Message = "Base de datos inicializada",
                             Database = dbname,
-                            Sucess = true
+                            Success = true
                         });
                     }catch (Exception ex)
                     {

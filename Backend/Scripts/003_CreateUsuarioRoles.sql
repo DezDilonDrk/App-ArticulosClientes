@@ -1,4 +1,4 @@
-IF OBJECT_ID('UsuarioRoles', 'U') IS NULL
+IF OBJECT_ID('UsuarioRoles', 'UR') IS NULL
 BEGIN
     CREATE TABLE UsuarioRoles(
         UsuarioEmail NVARCHAR(255) NOT NULL,
