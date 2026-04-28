@@ -31,6 +31,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 var repositorioCliente = new ClienteRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioArticulo = new ArticuloRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioUsuario = new UsuarioRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
+var repositorioConfiguracion = new ConfiguracionRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioRol = new RolRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioUsuarioRol = new UsuarioRolRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
 var repositorioPedido = new PedidoRepository(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -47,6 +48,7 @@ app.UseAuthorization();
 app.MapClienteEndpoints(repositorioCliente);
 app.MapArticuloEndpoints(repositorioArticulo);
 app.MapUsuarioEndpoints(repositorioUsuario);
+app.MapConfiguracionEndpoints(repositorioConfiguracion);
 app.MapPedidoEndpoints(repositorioPedido);
 app.MapRolEndpoints(repositorioRol);
 app.MapUsuarioRolEndpoints(repositorioUsuarioRol);

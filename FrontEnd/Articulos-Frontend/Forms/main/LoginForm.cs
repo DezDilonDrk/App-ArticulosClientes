@@ -54,6 +54,20 @@ public partial class LoginForm : Form
 
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
 
+                var configApi = new ConfiguracionApiClient();
+                var config = await configApi.ObtenerConfiguracionPorCorreo(email);
+                if (config != null)
+                {
+                    AppState.setConfiguracion(config);
+                    configApi.GuardarConfiguracionPorCorreo(email, config);
+                }
+                else
+                {
+                    Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
+                    config = new ConfiguracionModel { SendNotifications = true };
+                    AppState.setConfiguracion(config);
+                    configApi.GuardarConfiguracionPorCorreo(email, config);
+                }
                 WindowManager.ShowForm(
                     "MainForm",
                     this,
@@ -64,7 +78,6 @@ public partial class LoginForm : Form
                         return form;
                     }
                 );
-
                 this.Hide();
             }
             else
@@ -73,7 +86,6 @@ public partial class LoginForm : Form
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("Credenciales incorrectas."));
                 alerta.ShowDialog();
             }
-
             emailText.Text = "";
             contrasenaText.Text = "";
         }
@@ -83,16 +95,13 @@ public partial class LoginForm : Form
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
             alerta.ShowDialog();
         }
-
     }
-
     private void emailText_keyPress(object sender, KeyPressEventArgs e)
     {
         if (e.KeyChar == (char)Keys.Enter)
         {
             loginButton_Click(sender, e);
         }
-
     }
     private void contrasenaText_keyPress(object sender, KeyPressEventArgs e)
     {

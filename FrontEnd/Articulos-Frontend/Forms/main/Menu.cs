@@ -12,7 +12,8 @@ namespace Articulos_Frontend
         ShowTerminal terminal;
         AjustesForm ajustes;
         private Usuario user;
-        private bool sendEmailNotification = true;
+        private bool sendEmailNotification = AppState.getConfiguracion().SendNotifications;
+        ConfiguracionApiClient configuracionApiClient = new ConfiguracionApiClient();
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
@@ -192,11 +193,15 @@ namespace Articulos_Frontend
             {
                 if (sendEmailNotification){
                     Log.Info("Desactivando notificaciones por email.");
+                    AppState.changeCheckNotifications();
+                    configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
                     MessageBox.Show("Las notificaciones por email han sido desactivadas.\n\nNotifications: OFF", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     Log.Info("Activando notificaciones por email.");
+                    AppState.changeCheckNotifications();
+                    configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
                     MessageBox.Show("Las notificaciones por email han sido activadas.\n\nNotifications: ON", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 checkNotificaciones.Text = !sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
