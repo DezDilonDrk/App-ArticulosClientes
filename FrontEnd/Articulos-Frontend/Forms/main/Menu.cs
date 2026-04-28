@@ -91,7 +91,6 @@ namespace Articulos_Frontend
             var dropDown = new ContextMenuStrip();
             var usuarioItem = new ToolStripMenuItem("UsuarioForm");
             var rolItem = new ToolStripMenuItem("RolForm");
-            var ccItem = new ToolStripMenuItem("CambioContraseñaForm");
             usuarioItem.Click += (s, ev) =>
             {
                 WindowManager.ShowForm(stringValuesSP.seccionUsuarios, this, () => new UsuarioForm(new UsuarioApiClient(), user));
@@ -100,14 +99,9 @@ namespace Articulos_Frontend
             {
                 WindowManager.ShowForm(stringValuesSP.seccionRoles, this, () => new RolForm(new RolApiClient()));
             };
-            ccItem.Click += (s, ev) =>
-            {
-                WindowManager.ShowForm("CambioContraseñaForm", this, () => new CambiarContrasenaForm());
-            };
 
             dropDown.Items.Add(usuarioItem);
             dropDown.Items.Add(rolItem);
-            dropDown.Items.Add(ccItem);
             var parent = seguridadToolStripMenuItem.GetCurrentParent();
             var bounds = seguridadToolStripMenuItem.Bounds;
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));

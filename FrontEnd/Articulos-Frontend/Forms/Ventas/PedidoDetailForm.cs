@@ -340,6 +340,7 @@ namespace Articulos_Frontend
         }
         private async void BotonCrearC_Click(object sender, EventArgs e)
         {
+            Alerta alerta;
             if (!validarCamposLlenos()) return;
             if (!await ValidarDni(textBoxDniCliente.Text)) return;
             try
@@ -358,10 +359,11 @@ namespace Articulos_Frontend
                             return;
                         }
                     }
-                    catch (FormatException)
+                    catch (FormatException ex)
                     {
                         Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
-                        MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
                         return;
                     }
                     pedidoCreated = new Pedido(textBoxDniCliente.Text.ToUpper(), comboBoxMetodoPago.Text, comboBoxEstado.Text, parsedImpuestos, dateTimePickerFechaEnvio.Value);
@@ -378,10 +380,19 @@ namespace Articulos_Frontend
                         articulosPedido.Add(pa);
                     }
                     pedidoCreated.cambiarLista(articulosPedido);
-                    await pedidoApiClient.Crear(pedidoCreated);
+                    try
+                    {
+                        await pedidoApiClient.Crear(pedidoCreated);
+                    }catch (Exception ex)
+                    {
+                        Log.Error("Error al crear pedido. Error: " + ex.Message);
+                        alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
+                    }
+                    
                     EmailSender emailSender = new EmailSender();
                     emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");
-                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
+                    alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha creado el pedido correctamente"));
                     alerta.ShowDialog();
                     PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
                 }
@@ -402,10 +413,11 @@ namespace Articulos_Frontend
                             return;
                         }
                     }
-                    catch (FormatException)
+                    catch (FormatException ex)
                     {
                         Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
-                        MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
                         return;
                     }
                     pedidoCreated.porcentaje_impuestos = parsedImpuestos;
@@ -423,7 +435,7 @@ namespace Articulos_Frontend
                     }
                     pedidoCreated.cambiarLista(articulosPedido);
                     await pedidoApiClient.Actualizar(pedidoCreated.id_pedido, pedidoCreated);
-                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
+                    alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
                     alerta.ShowDialog();
                     PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
                 }
@@ -432,7 +444,7 @@ namespace Articulos_Frontend
             catch (Exception ex)
             {
                 Log.Error($"Error al crear el pedido: {ex.Message}", ex);
-                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                 alerta.ShowDialog();
                 return;
             }
@@ -599,6 +611,7 @@ namespace Articulos_Frontend
         }
         private async void buttonCerrar_Click(object sender, EventArgs e)
         {
+            Alerta alerta;
             if (!validarCamposLlenos()) return;
             if (!await ValidarDni(textBoxDniCliente.Text)) return;
             comboBoxEstado.SelectedIndex = 1;
@@ -617,10 +630,11 @@ namespace Articulos_Frontend
                     return;
                 }
             }
-            catch (FormatException)
+            catch (FormatException ex)
             {
                 Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
-                MessageBox.Show("El porcentaje de impuestos debe ser un número entre 0 y 100. Ejemplo: 21", "Porcentaje no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                alerta.ShowDialog();
                 return;
             }
             pedidoCreated.porcentaje_impuestos = parsedImpuestos;
@@ -637,8 +651,18 @@ namespace Articulos_Frontend
                 articulosPedido.Add(pa);
             }
             pedidoCreated.cambiarLista(articulosPedido);
-            await pedidoApiClient.Actualizar(pedidoCreated.id_pedido, pedidoCreated);
-            Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
+            try
+            {
+                await pedidoApiClient.Actualizar(pedidoCreated.id_pedido, pedidoCreated);
+            }catch (Exception ex)
+            {
+                Log.Error("Error actualizando el pedido. Error: "+ex.Message);
+                alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                alerta.ShowDialog();
+                return;
+            }
+            
+            alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
             alerta.ShowDialog();
             PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
             this.Close();
@@ -667,7 +691,8 @@ namespace Articulos_Frontend
                     catch (Exception ex)
                     {
                         Log.Error($"Error al obtener el artículo con id {a.id_articulo}: {ex.Message}", ex);
-                        MessageBox.Show($"Error al obtener el artículo con id {a.id_articulo}. Es posible que este artículo haya sido eliminado.", "Error al cargar artículo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
                         continue;
                     }
                     articulos.Add(new LineaPedido(a.id_articulo, art.nombre , art.categoria , a.cantidad, a.precio_unidad));

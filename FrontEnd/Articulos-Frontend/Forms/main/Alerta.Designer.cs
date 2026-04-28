@@ -63,7 +63,7 @@
             descripcionAlerta.Font = new Font("Segoe UI", 10F);
             descripcionAlerta.Location = new Point(117, 75);
             descripcionAlerta.Name = "descripcionAlerta";
-            descripcionAlerta.Size = new Size(293, 141);
+            descripcionAlerta.Size = new Size(293, 129);
             descripcionAlerta.TabIndex = 2;
             descripcionAlerta.Text = "descripcionAlerta";
             // 
@@ -77,9 +77,9 @@
             // 
             // lineaAlerta
             // 
-            lineaAlerta.Location = new Point(12, 204);
+            lineaAlerta.Location = new Point(12, 217);
             lineaAlerta.Name = "lineaAlerta";
-            lineaAlerta.Size = new Size(99, 38);
+            lineaAlerta.Size = new Size(190, 59);
             lineaAlerta.TabIndex = 4;
             lineaAlerta.Text = "lineaAlerta";
             lineaAlerta.Click += label1_Click;

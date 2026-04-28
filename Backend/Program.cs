@@ -1,6 +1,7 @@
 using Articulos_Backend.Endpoints.Almacen;
 using Articulos_Backend.Endpoints.Seguridad;
 using Articulos_Backend.Endpoints.Ventas;
+using Articulos_Backend.Endpoints;
 using Articulos_Backend.JWT;
 using Articulos_Backend.Middleware;
 using Articulos_Backend.Repositorios.Almacen;
@@ -50,4 +51,5 @@ app.MapUsuarioEndpoints(repositorioUsuario);
 app.MapPedidoEndpoints(repositorioPedido);
 app.MapRolEndpoints(repositorioRol);
 app.MapUsuarioRolEndpoints(repositorioUsuarioRol);
+app.MapBBDDEndpoints();
 app.Run();

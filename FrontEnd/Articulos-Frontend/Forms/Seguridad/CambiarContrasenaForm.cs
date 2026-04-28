@@ -22,20 +22,10 @@ namespace Articulos_Frontend.Forms.Seguridad
             api = new UsuarioApiClient();
         }
 
-        public CambiarContrasenaForm()
-        {
-            InitializeComponent();
-            StyleManager.StyleForm(this);
-            api = new UsuarioApiClient();
-        }
-
         public void CambiarContrasenaForm_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(correo))
-            {
-                textBoxCorreo.Text = correo;
-                textBoxCorreo.Enabled = false;
-            }
+            textBoxCorreo.Text = correo;
+            textBoxCorreo.Enabled = false;
         }
 
         private async void buttonConfirm_Click(object sender, EventArgs e)

@@ -95,9 +95,24 @@ public class UsuarioApiClient
                 PropertyNameCaseInsensitive = true
             });
         }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }
+        catch (NotSupportedException ex)
+        {
+            Log.Error("Error de formato: " + ex.Message);
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error("Error deserializando JSON: " + ex.Message);
+            throw;
+        }
         catch (Exception ex)
         {
-            Log.Error("Error en ObtenerRolesUsuario: " + ex.Message);
+            Log.Error("Error inesperado: " + ex.Message);
             throw;
         }
     }
@@ -114,10 +129,25 @@ public class UsuarioApiClient
             }
             return await response.Content.ReadFromJsonAsync<Usuario>() ?? new Usuario();
         }
-        catch
+        catch (HttpRequestException ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }
+        catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error($"Error deserializando JSON: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error inesperado: {ex.Message}");
+            throw;
         }
     }
 
@@ -132,9 +162,23 @@ public class UsuarioApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
         }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error($"Error serializando JSON: {ex.Message}");
+            throw;
+        }
         catch (Exception ex)
         {
-            Log.Error("Error al crear usuario: " + ex.Message);
+            Log.Error($"Error al crear usuario: {ex.Message}");
             throw;
         }
     }
@@ -149,9 +193,23 @@ public class UsuarioApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
         }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error($"Error serializando JSON: {ex.Message}");
+            throw;
+        }
         catch (Exception ex)
         {
-            Log.Error("Error al eliminar usuario: " + ex.Message);
+            Log.Error($"Error al eliminar usuario: {ex.Message}");
             throw;
         }
     }
@@ -166,9 +224,23 @@ public class UsuarioApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
         }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error($"Error serializando JSON: {ex.Message}");
+            throw;
+        }
         catch (Exception ex)
         {
-            Log.Error("Error al actualizar usuario: " + ex.Message);
+            Log.Error($"Error al actualizar usuario: {ex.Message}");
             throw;
         }
     }
@@ -187,12 +259,27 @@ public class UsuarioApiClient
                 var error = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Error API: {response.StatusCode} - {error}");
             }
-        }catch (Exception ex)
+        }
+        catch (HttpRequestException ex)
         {
-            Log.Error("Error al actualizar contraseña: " + ex.Message);
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
             throw;
         }
-        
+        catch (JsonException ex)
+        {
+            Log.Error($"Error serializando JSON: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error al actualizar contraseña: {ex.Message}");
+            throw;
+
+        }
     }
 
     public async Task ActualizarRolesUsuario(string correo, List<string> roles)
@@ -206,9 +293,23 @@ public class UsuarioApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
         }
+        catch(HttpRequestException ex)
+        {
+            Log.Error($"Error HTTP: {ex.Message}");
+            throw;
+        }catch (NotSupportedException ex)
+        {
+            Log.Error($"Error de formato: {ex.Message}");
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            Log.Error($"Error serializando JSON: {ex.Message}");
+            throw;
+        }
         catch (Exception ex)
         {
-            Log.Error("Error al actualizar usuario: " + ex.Message);
+            Log.Error($"Error al actualizar roles del usuario: {ex.Message}");
             throw;
         }
     }
