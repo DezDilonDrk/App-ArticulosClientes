@@ -78,7 +78,7 @@ namespace Articulos_Backend.Repositorios.Ventas
             using (var db = Connection)
             {
                 string sql = @"UPDATE Pedidos
-                               SET id_cliente = @id_cliente
+                               SET id_cliente = @id_cliente,
                                 dni_cliente = @dni_cliente, 
                                metodo_pago = @metodo_pago,
                                fecha_rectificacion = @fecha_rectificacion, 

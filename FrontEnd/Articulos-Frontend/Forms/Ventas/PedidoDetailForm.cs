@@ -311,6 +311,7 @@ namespace Articulos_Frontend
             button3.TabIndex = 33;
             button3.Text = "-";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += BotonEliminarP_Click;
             // 
             // button2
             // 
@@ -322,6 +323,7 @@ namespace Articulos_Frontend
             button2.TabIndex = 32;
             button2.Text = "+";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += BotonAgregarP_Click;
             // 
             // dataGridViewArticulos
             // 
