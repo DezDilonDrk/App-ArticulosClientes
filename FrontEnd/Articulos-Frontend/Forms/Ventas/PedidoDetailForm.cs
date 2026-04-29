@@ -46,6 +46,7 @@ namespace Articulos_Frontend
                 comboBoxImpuestos.SelectedIndex = -1;
                 comboBoxEstado.SelectedIndex = 0;
                 comboBoxEstado.Enabled = false;
+                this.Text = stringValuesSP.crearPedido;
             }
             else if (state == "Update")
             {
@@ -63,6 +64,7 @@ namespace Articulos_Frontend
                 comboBoxEstado.Text = pedido.estado;
                 comboBoxMetodoPago.Text = pedido.metodo_pago;
                 comboBoxImpuestos.Text = pedido.porcentaje_impuestos.ToString();
+                this.Text = stringValuesSP.actualizarPedido;
                 pedidoCreated = pedido;
             }
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";

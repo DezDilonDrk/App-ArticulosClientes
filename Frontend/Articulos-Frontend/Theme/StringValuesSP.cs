@@ -28,6 +28,7 @@ namespace Articulos_Frontend.Theme
         public string pedidos = "Pedidos";
         public string ventanas = "Ventanas";
         public string buscar = "Buscar";
+        public string roles = "Roles";
         public string crearPedido = "Crear Pedido";
         public string actualizarPedido = "Actualizar Pedido";
         public string login = "Iniciar Sesión";
@@ -35,7 +36,8 @@ namespace Articulos_Frontend.Theme
         public string crear = "Crear";
         public string actualizar = "Actualizar";
         public string ajustes = "Ajustes";
-        public string seccionEnvios = "Sección de Envíos";
+        public string seccionEnvios = "Confirmación de Envíos";
+        public string listaEnvios = "Lista de Envíos";
         public StringValuesSP() { 
         }
     }

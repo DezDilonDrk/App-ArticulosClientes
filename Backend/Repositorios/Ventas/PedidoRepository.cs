@@ -86,7 +86,6 @@ namespace Articulos_Backend.Repositorios.Ventas
                                porcentaje_impuestos = @porcentaje_impuestos,
                                fecha_envio = @fecha_envio
                                WHERE id_pedido = @id_pedido";
-
                 db.Execute(sql, pedido);
                 string sql2 = @"DELETE FROM Pedido_Articulos WHERE id_pedido = @id_pedido";
                 db.Execute(sql2, pedido);

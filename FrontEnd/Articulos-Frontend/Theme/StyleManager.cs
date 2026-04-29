@@ -151,6 +151,10 @@ public static class StyleManager
                     if (control is Label lbl3)
                         lbl3.Font = new Font("Intercom", 9, FontStyle.Bold);
                     break;
+                case "mediumText":
+                    if (control is Label lbl4)
+                        lbl4.Font = new Font("Intercom", 12, FontStyle.Bold);
+                    break;
                 case "modButton":
                     if (control is Button btn3)
                     {
@@ -166,8 +170,8 @@ public static class StyleManager
                     }
                     break;
                 case "titleTerminal":
-                    if (control is Label lbl4)
-                        lbl4.Font = new Font("Intercom", 30, FontStyle.Bold);
+                    if (control is Label lbl5)
+                        lbl5.Font = new Font("Intercom", 30, FontStyle.Bold);
                     break;
                 case "terminal":
                     if (control is Panel panel)

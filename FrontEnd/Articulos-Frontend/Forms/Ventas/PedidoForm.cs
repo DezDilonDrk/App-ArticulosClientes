@@ -35,6 +35,7 @@ namespace Articulos_Frontend
                 checkAbiertos.Checked = true;
                 checkCerrados.Checked = true;
                 checkCancelados.Checked = true;
+                this.Text = stringValuesSP.listaPedidos;
             }
             if (state == "Envios")
             {
@@ -42,6 +43,7 @@ namespace Articulos_Frontend
                 checkCerrados.Checked = false;
                 checkCancelados.Checked = false;
                 FiltroEstadoPedido.Enabled = false;
+                this.Text = stringValuesSP.listaEnvios;
             }
             dgvPedido.DataSource = PedidoApiClient.ObtenerPedidos();
             Log.Info("Formulario de pedidos iniciado.");

@@ -44,8 +44,16 @@ namespace Articulos_Frontend
             toolStripStatusLabelUser = new ToolStripStatusLabel();
             toolStripStatusLabelEmail = new ToolStripStatusLabel();
             StStatusLServidor = new ToolStripStatusLabel();
+            panelRolesUsuario = new Panel();
+            panelSuperiorRoles = new Panel();
+            labelRolesTitulo = new Label();
+            panel2 = new Panel();
+            LabelListaRoles = new Label();
             menuStripAC.SuspendLayout();
             statusStripMenu.SuspendLayout();
+            panelRolesUsuario.SuspendLayout();
+            panelSuperiorRoles.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // menuStripAC
@@ -121,18 +129,68 @@ namespace Articulos_Frontend
             toolStripStatusLabelUser.Name = "toolStripStatusLabelUser";
             toolStripStatusLabelUser.Size = new Size(50, 17);
             toolStripStatusLabelUser.Text = "Usuario:";
+            toolStripStatusLabelUser.Click += RolesClick;
             // 
             // toolStripStatusLabelEmail
             // 
             toolStripStatusLabelEmail.Name = "toolStripStatusLabelEmail";
             toolStripStatusLabelEmail.Size = new Size(39, 17);
             toolStripStatusLabelEmail.Text = "Email:";
+            toolStripStatusLabelEmail.Click += RolesClick;
             // 
             // StStatusLServidor
             // 
             StStatusLServidor.Name = "StStatusLServidor";
             StStatusLServidor.Size = new Size(56, 17);
             StStatusLServidor.Text = "Servidor: ";
+            // 
+            // panelRolesUsuario
+            // 
+            panelRolesUsuario.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            panelRolesUsuario.Controls.Add(panelSuperiorRoles);
+            panelRolesUsuario.Controls.Add(panel2);
+            panelRolesUsuario.Location = new Point(0, 27);
+            panelRolesUsuario.MinimumSize = new Size(200, 439);
+            panelRolesUsuario.Name = "panelRolesUsuario";
+            panelRolesUsuario.Size = new Size(200, 439);
+            panelRolesUsuario.TabIndex = 5;
+            panelRolesUsuario.Visible = false;
+            // 
+            // panelSuperiorRoles
+            // 
+            panelSuperiorRoles.Controls.Add(labelRolesTitulo);
+            panelSuperiorRoles.Dock = DockStyle.Top;
+            panelSuperiorRoles.Location = new Point(0, 0);
+            panelSuperiorRoles.Name = "panelSuperiorRoles";
+            panelSuperiorRoles.Size = new Size(200, 60);
+            panelSuperiorRoles.TabIndex = 0;
+            // 
+            // labelRolesTitulo
+            // 
+            labelRolesTitulo.AutoSize = true;
+            labelRolesTitulo.Location = new Point(80, 23);
+            labelRolesTitulo.Name = "labelRolesTitulo";
+            labelRolesTitulo.RightToLeft = RightToLeft.No;
+            labelRolesTitulo.Size = new Size(0, 15);
+            labelRolesTitulo.TabIndex = 1;
+            labelRolesTitulo.Tag = "mediumText";
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(LabelListaRoles);
+            panel2.Location = new Point(0, 59);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(200, 380);
+            panel2.TabIndex = 0;
+            // 
+            // LabelListaRoles
+            // 
+            LabelListaRoles.AutoSize = true;
+            LabelListaRoles.Location = new Point(12, 13);
+            LabelListaRoles.Name = "LabelListaRoles";
+            LabelListaRoles.Size = new Size(78, 15);
+            LabelListaRoles.TabIndex = 0;
+            LabelListaRoles.Text = "Lista de Roles";
             // 
             // Menu
             // 
@@ -141,6 +199,7 @@ namespace Articulos_Frontend
             BackgroundImage = Properties.Resources.MT_GROUP;
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(914, 491);
+            Controls.Add(panelRolesUsuario);
             Controls.Add(statusStripMenu);
             Controls.Add(menuStripAC);
             DoubleBuffered = true;
@@ -153,6 +212,11 @@ namespace Articulos_Frontend
             menuStripAC.PerformLayout();
             statusStripMenu.ResumeLayout(false);
             statusStripMenu.PerformLayout();
+            panelRolesUsuario.ResumeLayout(false);
+            panelSuperiorRoles.ResumeLayout(false);
+            panelSuperiorRoles.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -171,5 +235,10 @@ namespace Articulos_Frontend
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem aplicacionToolStripMenuItem;
         private ToolStripStatusLabel StStatusLServidor;
+        private Panel panelRolesUsuario;
+        private Panel panel2;
+        private Panel panelSuperiorRoles;
+        private Label labelRolesTitulo;
+        private Label LabelListaRoles;
     }
 }

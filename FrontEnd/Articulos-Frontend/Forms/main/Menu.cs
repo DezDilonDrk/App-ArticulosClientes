@@ -37,11 +37,14 @@ namespace Articulos_Frontend
             {
                 seguridadToolStripMenuItem.Enabled = false;
             }
+            this.Load += Menu_Load;
+            labelRolesTitulo.Text = stringValuesSP.roles;
         }
         public void Menu_Load(object sender, EventArgs e)
         {
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
             RefrescarMenuVentanas();
+            RegistrarClicks(this);
         }
         public bool getSendEmailNotification()
         {
@@ -290,6 +293,53 @@ namespace Articulos_Frontend
                 terminal = new ShowTerminal();
                 return terminal;
             });
+        }
+        private void RolesClick(object sender, EventArgs e)
+        {
+            Log.Info("Abriendo panel de roles.");
+            LabelListaRoles.Text = "";
+            foreach (string rol in AppState.Roles)
+            {
+                LabelListaRoles.Text = $"{LabelListaRoles.Text}\n\n{rol}";
+            }
+            panelRolesUsuario.Visible = true;
+        }
+        private void RegistrarClicks(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                if (c == panelRolesUsuario)
+                    continue;
+                c.Click += CerrarPanelClickFuera;
+                if (c.HasChildren)
+                    RegistrarClicks(c);
+            }
+            parent.Click += CerrarPanelClickFuera;
+            foreach (Control c in parent.Controls)
+            {
+                if (c == panelRolesUsuario || c.Name == toolStripStatusLabelUser.Name)
+                    continue;
+
+                c.Click += CerrarPanelClickFuera;
+
+                if (c.HasChildren)
+                    RegistrarClicks(c);
+            }
+            parent.Click += CerrarPanelClickFuera;
+        }
+        private void CerrarPanelClickFuera(object sender, EventArgs e)
+        {
+            if (panelRolesUsuario.Visible)
+            {
+                Point mousePos = this.PointToClient(Cursor.Position);
+
+                if (!panelRolesUsuario.Bounds.Contains(mousePos))
+                {
+                    panelRolesUsuario.Visible = false;
+                    Log.Info("Cerrando panel de filtros al hacer clic fuera del panel.");
+                    panelRolesUsuario.Text = "▼  Abrir Filtros";
+                }
+            }
         }
         private void buttonAjustes_Click(object sender, EventArgs e)
         {
