@@ -22,8 +22,9 @@ namespace Articulos_Frontend
             user = usuario;
             this.Text = stringValuesSP.menu;
             this.mnuVentanas.Text = stringValuesSP.ventanas;
-            toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}  |";
-            toolStripStatusLabelEmail.Text = $"|  Email: {usuario.CorreoElectronico}";
+            toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}  ";
+            toolStripStatusLabelEmail.Text = $"|  Email: {usuario.CorreoElectronico}  ";
+            StStatusLServidor.Text = $"|  Servidor: {AppState.getServer()}";
             if (!AppState.Roles.Contains(Roles.AdminAlmacen) && !AppState.Roles.Contains(Roles.UserAlmacen))
             {
                 almacenToolStripMenuItem.Enabled = false;

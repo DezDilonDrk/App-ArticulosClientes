@@ -15,7 +15,7 @@ namespace Articulos_Frontend.Client
             try
             {
                 httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri("http://PT-0057:5000");
+                httpClient.BaseAddress = new Uri(AppState.getServer());
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
             }
             catch

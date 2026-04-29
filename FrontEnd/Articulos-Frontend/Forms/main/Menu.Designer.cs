@@ -36,13 +36,14 @@ namespace Articulos_Frontend
             seguridadToolStripMenuItem = new ToolStripMenuItem();
             almacenToolStripMenuItem = new ToolStripMenuItem();
             ventasToolStripMenuItem = new ToolStripMenuItem();
-            mnuVentanas = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             aplicacionToolStripMenuItem = new ToolStripMenuItem();
+            mnuVentanas = new ToolStripMenuItem();
             ventanasToolStripMenuItem = new ToolStripMenuItem();
             statusStripMenu = new StatusStrip();
             toolStripStatusLabelUser = new ToolStripStatusLabel();
             toolStripStatusLabelEmail = new ToolStripStatusLabel();
+            StStatusLServidor = new ToolStripStatusLabel();
             menuStripAC.SuspendLayout();
             statusStripMenu.SuspendLayout();
             SuspendLayout();
@@ -80,12 +81,6 @@ namespace Articulos_Frontend
             ventasToolStripMenuItem.Text = "Ventas";
             ventasToolStripMenuItem.Click += ventasToolStripMenuItem_Click;
             // 
-            // mnuVentanas
-            // 
-            mnuVentanas.Name = "mnuVentanas";
-            mnuVentanas.Size = new Size(12, 20);
-            mnuVentanas.Click += mnuVentanas_Click;
-            // 
             // usuarioToolStripMenuItem
             // 
             usuarioToolStripMenuItem.Name = "usuarioToolStripMenuItem";
@@ -100,6 +95,12 @@ namespace Articulos_Frontend
             aplicacionToolStripMenuItem.Text = "Aplicación";
             aplicacionToolStripMenuItem.Click += aplicacionToolStripMenuItem_Click;
             // 
+            // mnuVentanas
+            // 
+            mnuVentanas.Name = "mnuVentanas";
+            mnuVentanas.Size = new Size(12, 20);
+            mnuVentanas.Click += mnuVentanas_Click;
+            // 
             // ventanasToolStripMenuItem
             // 
             ventanasToolStripMenuItem.Name = "ventanasToolStripMenuItem";
@@ -108,7 +109,7 @@ namespace Articulos_Frontend
             // statusStripMenu
             // 
             statusStripMenu.AutoSize = false;
-            statusStripMenu.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelUser, toolStripStatusLabelEmail });
+            statusStripMenu.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelUser, toolStripStatusLabelEmail, StStatusLServidor });
             statusStripMenu.Location = new Point(0, 469);
             statusStripMenu.Name = "statusStripMenu";
             statusStripMenu.Size = new Size(914, 22);
@@ -126,6 +127,12 @@ namespace Articulos_Frontend
             toolStripStatusLabelEmail.Name = "toolStripStatusLabelEmail";
             toolStripStatusLabelEmail.Size = new Size(39, 17);
             toolStripStatusLabelEmail.Text = "Email:";
+            // 
+            // StStatusLServidor
+            // 
+            StStatusLServidor.Name = "StStatusLServidor";
+            StStatusLServidor.Size = new Size(56, 17);
+            StStatusLServidor.Text = "Servidor: ";
             // 
             // Menu
             // 
@@ -163,5 +170,6 @@ namespace Articulos_Frontend
         private ToolStripMenuItem ventasToolStripMenuItem;
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem aplicacionToolStripMenuItem;
+        private ToolStripStatusLabel StStatusLServidor;
     }
 }

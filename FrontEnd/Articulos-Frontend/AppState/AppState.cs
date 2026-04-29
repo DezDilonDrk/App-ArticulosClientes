@@ -13,6 +13,8 @@ public static class AppState
     public static List<string> Roles { get; set; } = new List<string>();
     private static string correo_usuario;
     private static ConfiguracionModel configuracion;
+    public static string serverLeandro = "http://PT-0057:5000";
+    public static string serverEmilio = "http://PT-0041:5000";
     public static string getCorreo()
     {
         return correo_usuario;
@@ -32,5 +34,9 @@ public static class AppState
     public static void changeCheckNotifications()
     {
         configuracion.SendNotifications = !configuracion.SendNotifications;
+    }
+    public static string getServer()
+    {
+        return serverLeandro;
     }
 }
