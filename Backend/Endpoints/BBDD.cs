@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Articulos_Backend.Scripts;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
@@ -10,36 +11,39 @@ public static class BBDD
 {
     public static WebApplication MapBBDDEndpoints(this WebApplication app)
     {
-        app.MapGet("/database/scripts", async (IConfiguration config, ILogger<Program> logger) =>
+        app.MapGet("/database/scripts/{dbname}", async (string dbname, IConfiguration config, ILogger<Program> logger) =>
         {
             try
             {
                 var connectionString = config.GetConnectionString("DefaultConnection");
-                using var db = new SqlConnection(connectionString);
+                var builder = new SqlConnectionStringBuilder(connectionString)
+                {
+                    InitialCatalog = dbname
+                };
+                using var db = new SqlConnection(builder.ConnectionString);
                 await db.OpenAsync();
                 
                 var ejecutados = (await db.QueryAsync<(string NombreScript, DateTime fechaEjecucion)>(SqlQueries.SelectScript)).ToList();
-                
-                var basePath = AppContext.BaseDirectory;
-                var scriptsPath = Path.Combine(basePath, "Scripts");
 
-                if (!Directory.Exists(scriptsPath))
+                var scripts = typeof(PAK_2026429000000_CreateUsuarios).Assembly
+                .GetTypes()
+                .Where(t => typeof(Script).IsAssignableFrom(t) && !t.IsAbstract)
+                .Select(t => t.Name)
+                .OrderBy(x => x)
+                .ToList();
+
+                var resultado = scripts.Select(nombre =>
                 {
-                    logger.LogError("La carpeta Scripts no existe");
-                    return Results.Problem("Carpeta de scripts no encontrada");
-                }
-
-                var archivos = Directory.GetFiles(scriptsPath, "*.sql").Select(Path.GetFileName).OrderBy(x => x).ToList();
-
-                var resultado = archivos.Select(nombre =>
-                {
-                    var scriptEjecutado = ejecutados.FirstOrDefault(e => e.NombreScript == nombre);
+                    var scriptEjecutado = ejecutados
+                        .FirstOrDefault(e => e.NombreScript == nombre);
 
                     return new ScriptEstado
                     {
                         Nombre = nombre,
                         Ejecutado = scriptEjecutado.NombreScript != null,
-                        Fecha = scriptEjecutado.NombreScript != null ? scriptEjecutado.fechaEjecucion : null
+                        Fecha = scriptEjecutado.NombreScript != null
+                            ? scriptEjecutado.fechaEjecucion
+                            : null
                     };
                 });
 
@@ -99,13 +103,18 @@ public static class BBDD
                             logger.LogError("La carpeta Scripts no existe");
                             return Results.Problem("Carpeta de scripts no encontrada");
                         }
-                        var scripts = Directory.GetFiles(scriptsPath, "*.sql")
-                       .OrderBy(x => x)
-                       .ToList();
+                        var assembly = typeof(PAK_2026429000000_CreateUsuarios).Assembly;
 
-                        foreach (var scriptPath in scripts)
+                        var scripts = assembly
+                            .GetTypes()
+                            .Where(t => typeof(Script).IsAssignableFrom(t) && !t.IsAbstract)
+                            .Select(t => (Script)Activator.CreateInstance(t)!)
+                            .OrderBy(s => s.GetType().Name)
+                            .ToList();
+                        scripts = scripts.OrderBy(s => s.GetType().Name).ToList();
+                        foreach (var script in scripts)
                         {
-                            var nombre = Path.GetFileName(scriptPath);
+                            var nombre = script.GetType().Name;
 
                             var existe = await db.ExecuteScalarAsync<int>(
                                 SqlQueries.ScriptExiste,
@@ -114,9 +123,7 @@ public static class BBDD
                             if (existe > 0)
                                 continue;
 
-                            var sql = await File.ReadAllTextAsync(scriptPath);
-
-                            await db.ExecuteAsync(sql, transaction: transaction);
+                            await db.ExecuteAsync(script.script, transaction: transaction);
 
                             await db.ExecuteAsync(
                                 SqlQueries.InsertScript,

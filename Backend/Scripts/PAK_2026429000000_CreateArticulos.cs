@@ -1,0 +1,19 @@
+﻿using MTCore_AC.DTO;
+
+namespace Articulos_Backend.Scripts;
+
+public class PAK_2026429000000_CreateArticulos: Script
+{
+    public PAK_2026429000000_CreateArticulos()
+    {
+        this.script = """
+CREATE TABLE Articulos(
+Id INT IDENTITY(1,1) NOT NULL,
+Nombre NVARCHAR(200) NOT NULL,
+Precio FLOAT NOT NULL,
+Categoria [nvarchar](100) NULL,
+FechaCreacion DATETIME2(7) NOT NULL,
+FechaActualizacion DATETIME2(7) NULL);
+""";
+    }
+}

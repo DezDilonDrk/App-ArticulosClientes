@@ -10,8 +10,18 @@ using Articulos_Backend.Repositorios.Ventas;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(
+        "logs/log.txt",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 7
+    ).CreateLogger();
+builder.Host.UseSerilog();
 var key = Encoding.UTF8.GetBytes("CLAVE_SECRETA_SECRETOSA_PORFAVOR_FUNCIONA_SOCORRO");
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 builder.Services.AddEndpointsApiExplorer();
