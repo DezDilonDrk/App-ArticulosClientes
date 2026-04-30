@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="../MTACCore/MTCore_AC.csproj" />
+  <Project Path="../TestProjectMT/TestProjectMT.csproj" Id="0022fe15-7989-4fb6-914e-ece303c8e8a3" />
   <Project Path="Articulos-Frontend/Articulos-Frontend.csproj" />
 </Solution>
