@@ -24,7 +24,7 @@ namespace TestProjectMT
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
-            Assert.That(body.Contains("id_pedido"), Is.True, "El JSON no contiene id_pedido,");
+            Assert.That(body.Contains("id_pedido"), Is.True, "El JSON no contiene id_pedido");
         }
         [Test]
         public async Task CrearPedido()
