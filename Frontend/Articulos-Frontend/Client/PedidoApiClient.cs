@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text;
 
 
@@ -20,34 +21,34 @@ namespace Articulos_Frontend.Client
                 httpClient.BaseAddress = new Uri("http://PT-0057:5000");
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
             }
-            catch
+            catch (Exception ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+                throw;
             }
         }
         public async Task<List<Pedido>> ObtenerPedidos()
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<List<Pedido>>("/pedidos?nombre=");
+                return await httpClient.GetFromJsonAsync<List<Pedido>>("/pedidos");
+            }catch (HttpRequestException ex)
+            {
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }catch (JsonException ex)
+            {
+                Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
+                throw;
             }
             catch (Exception ex)
             {
                 Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
-                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
-            }
-        }
-        public async Task<List<Pedido>> ObtenerPedidosPorNombreCliente(string nombre)
-        {
-            try
-            {
-                return await httpClient.GetFromJsonAsync<List<Pedido>>($"/pedidos?Nombre={nombre}");
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
-                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
             }
         }
         public async Task<Pedido> BuscarPorIdPedido(string id)
@@ -55,11 +56,25 @@ namespace Articulos_Frontend.Client
             try
             {
                 return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/{id}");
+            }catch (HttpRequestException ex)
+            {
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (JsonException ex)
+            {
+                Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
+                throw;
             }
             catch (Exception ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
+                Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+                throw;
             }
         }
         public async Task<Pedido?> ObtenerPorDniCliente(string dni)
@@ -67,11 +82,25 @@ namespace Articulos_Frontend.Client
             try
             {
                 return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/cliente?dni={dni}");
-            }
-            catch
+            }catch(HttpRequestException ex) 
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+             catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (JsonException ex)
+            {
+                Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+                throw;
             }
         }
         public async Task Crear(Pedido pedido)
@@ -85,11 +114,20 @@ namespace Articulos_Frontend.Client
                     MessageBox.Show($"Error al crear el pedido: {contenido}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     throw new Exception("Error al crear el pedido en el servidor API.");
                 }
-            }
-            catch
+            }catch (HttpRequestException ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+                throw;
             }
         }
         public async Task<bool> Actualizar(string id, Pedido pedido)
@@ -98,11 +136,20 @@ namespace Articulos_Frontend.Client
             {
                 var response = await httpClient.PutAsJsonAsync($"/pedidos/{id}", pedido);
                 return response.IsSuccessStatusCode;
-            }
-            catch
+            }catch (HttpRequestException ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+                throw;
             }
         }
         public async Task Eliminar(string id)
@@ -110,11 +157,20 @@ namespace Articulos_Frontend.Client
             try
             {
                 await httpClient.DeleteAsync($"/pedidos/{id}");
-            }
-            catch
+            }catch (HttpRequestException ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+                throw;
             }
         }
         public async Task AgregarArticulos(List<PedidoArticulos> articulos)
@@ -126,11 +182,20 @@ namespace Articulos_Frontend.Client
                     PedidoArticulos articulo = articulos[i];
                     await httpClient.PostAsJsonAsync("/pedidos/articulo", articulo);
                 }
-            }
-            catch
+            }catch (HttpRequestException ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+                throw;
             }
         }
         public async Task<List<PedidoArticulos>> ObtenerArticulosDePedido(string idPedido)
@@ -138,11 +203,25 @@ namespace Articulos_Frontend.Client
             try
             {
                 return await httpClient.GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
-            }
-            catch
+            }catch (HttpRequestException ex)
             {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
+                Log.Error($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
+            }
+            catch (TaskCanceledException ex)
+            {
+                Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
+                throw;
+            }
+            catch (JsonException ex)
+            {
+                Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+                throw;
             }
         }
     }
