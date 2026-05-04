@@ -49,9 +49,9 @@ public static class ArticuloEndpoints
             var refreshed = repo.ObtenerPorId(id) ?? updatedArticulo;
             return Results.Ok(refreshed);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
-.Produces<Articulo>(StatusCodes.Status200OK)
-.Produces(StatusCodes.Status404NotFound)
-.Produces(StatusCodes.Status409Conflict);
+        .Produces<Articulo>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status409Conflict);
         app.MapDelete("/articulos/{id:int}", (int id) =>
         {
             var articulo = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
