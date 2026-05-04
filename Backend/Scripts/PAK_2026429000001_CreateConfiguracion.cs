@@ -9,8 +9,9 @@ public class PAK_2026429000000_CreateConfiguracion: Script
         this.script = """
 CREATE TABLE Configuraciones(
 id_configuracion NVARCHAR(36) NOT NULL,
-correo_usuario VARCHAR(255) NOT NULL,
-config_json VARBINARY(max) NULL);
+correo_usuario NVARCHAR(255) NOT NULL,
+config_json VARBINARY(max) NULL,
+CONSTRAINT PK_Configuracion PRIMARY KEY CLUSTERED (id_configuracion));
 """;
     }
 }

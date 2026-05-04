@@ -15,7 +15,8 @@ Nombre NVARCHAR(100) NOT NULL,
 Apellidos NVARCHAR(150) NOT NULL,
 Email NVARCHAR(150) NOT NULL,
 FechaCreacion DATETIME2(7) NOT NULL,
-FechaModificacion DATETIME2(7) NULL);
+FechaModificacion DATETIME2(7) NULL,
+CONSTRAINT PK_Clientes PRIMARY KEY CLUSTERED (Id));
 """;
     }
 }

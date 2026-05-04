@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
+using System.Transactions;
 
 
 namespace Articulos_Backend.Endpoints;
@@ -91,62 +92,62 @@ public static class BBDD
             {
                 await db.OpenAsync();
 
-                using (var transaction = db.BeginTransaction())
+                try
                 {
-                    try
+                    await db.ExecuteAsync(SqlQueries.CrearTablaScript);
+                    var assembly = typeof(PAK_2026429000000_CreateUsuarios).Assembly;
+
+                    var scripts = assembly
+                        .GetTypes()
+                        .Where(t => typeof(Script).IsAssignableFrom(t) && !t.IsAbstract)
+                        .Select(t => (Script)Activator.CreateInstance(t)!)
+                        .OrderBy(s => s.GetType().Name)
+                        .ToList();
+                    scripts = scripts.OrderBy(s => s.GetType().Name).ToList();
+                    foreach (var script in scripts)
                     {
-                        await db.ExecuteAsync(SqlQueries.CrearTablaScript,transaction: transaction);
-                        var basePath = AppContext.BaseDirectory;
-                        var scriptsPath = Path.Combine(basePath, "Scripts");
-                        if (!Directory.Exists(scriptsPath))
+                        var nombre = script.GetType().Name;
+                        try
                         {
-                            logger.LogError("La carpeta Scripts no existe");
-                            return Results.Problem("Carpeta de scripts no encontrada");
-                        }
-                        var assembly = typeof(PAK_2026429000000_CreateUsuarios).Assembly;
-
-                        var scripts = assembly
-                            .GetTypes()
-                            .Where(t => typeof(Script).IsAssignableFrom(t) && !t.IsAbstract)
-                            .Select(t => (Script)Activator.CreateInstance(t)!)
-                            .OrderBy(s => s.GetType().Name)
-                            .ToList();
-                        scripts = scripts.OrderBy(s => s.GetType().Name).ToList();
-                        foreach (var script in scripts)
-                        {
-                            var nombre = script.GetType().Name;
-
+                            logger.LogInformation($"Ejecutando script: {nombre}");
                             var existe = await db.ExecuteScalarAsync<int>(
-                                SqlQueries.ScriptExiste,
-                                new { Nombre = nombre }, transaction);
+                            SqlQueries.ScriptExiste,
+                            new { Nombre = nombre });
 
                             if (existe > 0)
                                 continue;
 
-                            await db.ExecuteAsync(script.script, transaction: transaction);
+                            await db.ExecuteAsync(script.script);
 
                             await db.ExecuteAsync(
                                 SqlQueries.InsertScript,
-                                new { Nombre = nombre }, transaction);
+                                new { Nombre = nombre });
+
                         }
-                        transaction.Commit();
-
-                        return Results.Ok(new DatabaseInitResponse
+                        catch (Exception ex)
                         {
-                            Message = "Base de datos inicializada",
-                            Database = dbname,
-                            Success = true
-                        });
-                    }catch (Exception ex)
-                    {
-                        transaction.Rollback();
-
-                        logger.LogError(ex, "Error ejecutando scripts de base de datos");
-
-                        return Results.Problem(ex.ToString());
+                            logger.LogError(ex, $"Error en script: {nombre}");
+                            return Results.Problem($@"Script: {nombre}, Error: {ex.Message}, SQL: {script.script}
+                            ");
+                        }
+                        
                     }
-                    
+
+                    return Results.Ok(new DatabaseInitResponse
+                    {
+                        Message = "Base de datos inicializada",
+                        Database = dbname,
+                        Success = true
+                    });
                 }
+                catch (Exception ex)
+                {
+
+                    logger.LogError(ex, "Error ejecutando scripts de base de datos");
+
+                    return Results.Problem(ex.ToString());
+                }
+
             }
 
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad));

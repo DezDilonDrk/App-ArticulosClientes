@@ -17,7 +17,9 @@ fecha_creacion DATETIME2(7) NOT NULL,
 fecha_rectificacion DATETIME2(7) NULL,
 estado NVARCHAR(100) NOT NULL,
 porcentaje_impuestos INT NOT NULL,
-fecha_envio DATETIME2(7) NOT NULL);
+fecha_envio DATETIME2(7) NOT NULL,
+CONSTRAINT PK_Pedidos PRIMARY KEY CLUSTERED (id_pedido)
+);
 """;
     }
 }
