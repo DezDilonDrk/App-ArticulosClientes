@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text;
 using MTCore_AC.Entidades;
+using SesionMT;
 
 namespace TestProjectMT
 {
     public class ClienteTest
     {
         private HttpClient _client;
-        private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibGVhbmRyby5zYW50aWxhcmlvQG10aGVsbWV0cy5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQURNSU5fQUxNQUNFTiIsIkFETUlOX1ZFTlRBUyIsIkFETUlOX1NFR1VSSURBRCJdLCJleHAiOjE3Nzc4ODM5NzF9.6mKcA6e1JEd4vriIx-a9WbcBMH_jDIu-ZIDG4LclfMo";
-
+        private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibGVhbmRyby5zYW50aWxhcmlvQG10aGVsbWV0cy5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQURNSU5fQUxNQUNFTiIsIkFETUlOX1ZFTlRBUyIsIkFETUlOX1NFR1VSSURBRCJdLCJleHAiOjE3Nzc4OTkyMDF9.0mWBEQkRhMKyRhxPGQHqHcD-nD_OemOLU4gSH9DxocA";
+        private string currentServer = "local";
         [SetUp]
         public void Setup()
         {
@@ -25,7 +26,7 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerClientes()
         {
-            var response = await _client.GetAsync("http://localhost:5000/clientes");
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
@@ -33,7 +34,7 @@ namespace TestProjectMT
         }
         [Test]
         public async Task BuscarClientePorNombre() {
-            var response = await _client.GetAsync("http://localhost:5000/clientes?Nombre=Federico");
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes?Nombre=Federico");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);
@@ -42,7 +43,7 @@ namespace TestProjectMT
         public async Task CrearCliente()
         {
             Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
-            var response = await _client.PostAsJsonAsync("http://localhost:5000/clientes", cliente);
+            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes", cliente);
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -52,8 +53,8 @@ namespace TestProjectMT
         public async Task CrearMismoCliente()
         {
             Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
-            await _client.PostAsJsonAsync("http://localhost:5000/clientes", cliente);
-            var response = await _client.PostAsJsonAsync("http://localhost:5000/clientes", cliente);
+            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/clientes", cliente);
+            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes", cliente);
             Assert.That(response.IsSuccessStatusCode, Is.False);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -63,7 +64,7 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerClientePorDni()
         {
-            var response = await _client.GetAsync("http://localhost:5000/clientes/12345678Z");
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes/12345678Z");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body.Contains("id"), Is.True);
@@ -72,8 +73,8 @@ namespace TestProjectMT
         public async Task ActualizarCliente()
         {
             Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
-            await _client.PostAsJsonAsync("http://localhost:5000/clientes", cliente);
-            var response = await _client.PutAsJsonAsync($"http://localhost:5000/clientes/{cliente.Dni}", cliente);
+            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/clientes", cliente);
+            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes/{cliente.Dni}", cliente);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
             EliminarCliente();
@@ -83,8 +84,8 @@ namespace TestProjectMT
         public async Task EliminarCliente()
         {
             Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
-            await _client.PostAsJsonAsync("http://localhost:5000/clientes", cliente);
-            var response = await _client.DeleteAsync("http://localhost:5000/clientes/12345678A");
+            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/clientes", cliente);
+            var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/clientes/12345678A");
             Assert.That(response.IsSuccessStatusCode, Is.True);
         }
     }
