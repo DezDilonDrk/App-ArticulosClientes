@@ -2,9 +2,9 @@
 
 namespace Articulos_Backend.Scripts;
 
-public class PAK_2026429000002_ContraintsClientes: Script
+public class PAK_2026429000002_ConstraintsClientes: Script
 {
-    public PAK_2026429000002_ContraintsClientes()
+    public PAK_2026429000002_ConstraintsClientes()
     {
         this.script = """
 ALTER TABLE Clientes
