@@ -8,7 +8,7 @@ public class PAK_2026429000000_CreateArticulos: Script
     {
         this.script = """
 CREATE TABLE Articulos(
-Id INT IDENTITY(1,1) NOT NULL,
+Id NVARCHAR(36) NOT NULL,
 Nombre NVARCHAR(200) NOT NULL,
 Precio FLOAT NOT NULL,
 Categoria NVARCHAR(100) NULL,
