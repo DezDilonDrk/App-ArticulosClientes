@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TestProjectMT
 {
-    public class UsuarioTest
+    public class RolTest
     {
         private HttpClient _client;
         private string token = UserSession.token;
@@ -109,7 +109,7 @@ namespace TestProjectMT
             Usuario usuario = new Usuario("pruebafaustoo12345678765432123456787654321@correo.com", "Fausto", "contraseña123");
             await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
             string nuevaContrasena = "nuevaContraseña123";
-            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/contrasena", new { NuevaContrasena = nuevaContrasena});
+            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/contrasena", new { NuevaContrasena = nuevaContrasena });
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
             BorrarUsuario(usuario.CorreoElectronico);
