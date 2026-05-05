@@ -10,7 +10,7 @@ namespace TestProjectMT
     public class ClienteTest
     {
         private HttpClient _client;
-        private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibGVhbmRyby5zYW50aWxhcmlvQG10aGVsbWV0cy5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQURNSU5fQUxNQUNFTiIsIkFETUlOX1ZFTlRBUyIsIkFETUlOX1NFR1VSSURBRCJdLCJleHAiOjE3Nzc4OTkyMDF9.0mWBEQkRhMKyRhxPGQHqHcD-nD_OemOLU4gSH9DxocA";
+        private string token = UserSession.token;
         private string currentServer = "local";
         [SetUp]
         public void Setup()
@@ -22,6 +22,10 @@ namespace TestProjectMT
         public void Cleanup()
         {
             _client.Dispose();
+        }
+        private async void BorrarCliente(string dni)
+        {
+            _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/clientes/{dni}");
         }
         [Test]
         public async Task ObtenerClientes()
@@ -47,7 +51,7 @@ namespace TestProjectMT
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
-            EliminarCliente();
+            BorrarCliente(cliente.Dni);
         }
         [Test]
         public async Task CrearMismoCliente()
@@ -59,7 +63,7 @@ namespace TestProjectMT
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
             Assert.That(response.IsSuccessStatusCode, Is.False);
-            EliminarCliente();
+            BorrarCliente(cliente.Dni);
         }
         [Test]
         public async Task ObtenerClientePorDni()
@@ -77,7 +81,7 @@ namespace TestProjectMT
             var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes/{cliente.Dni}", cliente);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
-            EliminarCliente();
+            BorrarCliente(cliente.Dni);
         }
 
         [Test]

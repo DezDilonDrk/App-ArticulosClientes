@@ -10,7 +10,7 @@ namespace TestProjectMT
     public class ArticuloTest
     {
         private HttpClient _client;
-        private string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibGVhbmRyby5zYW50aWxhcmlvQG10aGVsbWV0cy5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQURNSU5fQUxNQUNFTiIsIkFETUlOX1ZFTlRBUyIsIkFETUlOX1NFR1VSSURBRCJdLCJleHAiOjE3Nzc4OTkyMDF9.0mWBEQkRhMKyRhxPGQHqHcD-nD_OemOLU4gSH9DxocA";
+        private string token = UserSession.token;
         private string currentServer = "local";
         [SetUp]
         public void Setup()
@@ -30,7 +30,7 @@ namespace TestProjectMT
         }
         private async void BorrarArticulo(string id)
         {
-            _client.DeleteAsync($"{UrlMT.getUrl("local")}/articulos/{id}");
+            _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/articulos/{id}");
         }
         [Test]
         public async Task ObtenerArticulos()
@@ -57,19 +57,19 @@ namespace TestProjectMT
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
-            BorrarArticulo(articulo.id.ToString());
+            BorrarArticulo(articulo.id);
         }
         [Test]
         public async Task CrearMismoArticulo()
         {
             Articulo articulo = await NewArticulo();
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/articulos", articulo);
+            await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
             var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
             Assert.That(response.IsSuccessStatusCode, Is.False);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
             Assert.That(response.IsSuccessStatusCode, Is.False);
-            BorrarArticulo(articulo.id.ToString());
+            BorrarArticulo(articulo.id);
         }
         [Test]
         public async Task ObtenerClientePorDni()
@@ -83,18 +83,18 @@ namespace TestProjectMT
         public async Task ActualizarArticulo() //TO DO solo queda el problema del id = 0
         {
             Articulo articulo = await NewArticulo();
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/articulos", articulo);
+            await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
             var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos/{articulo.id}", articulo);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
-            BorrarArticulo(articulo.id.ToString());
+            BorrarArticulo(articulo.id);
         }
 
         [Test]
         public async Task EliminarArticulo() //TO DO solo queda el problema del id = 0
         {
             Articulo articulo = await NewArticulo();
-            var created = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/articulos", articulo);
+            var created = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
             Assert.That(created.IsSuccessStatusCode, Is.True);
             var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/articulos/{articulo.id}");
             Assert.That(response.IsSuccessStatusCode, Is.True);

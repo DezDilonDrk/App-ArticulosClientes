@@ -33,8 +33,8 @@ public static class ArticuloEndpoints
         .Produces(StatusCodes.Status404NotFound);
         app.MapPost("/articulos", (Articulo articulo) =>
         {
-            var existente = repo.ObtenerPorNombreExacto(articulo.nombre);
-            if (existente != null) { throw new InvalidOperationException($"Ya existe un artículo con nombre '{articulo.nombre}'"); }              
+            //var existente = repo.ObtenerPorId(articulo.id);
+            //if (existente != null) { throw new InvalidOperationException($"Ya existe un artículo con id '{articulo.id}'"); }              
             string id = repo.Insertar(articulo);
             articulo.id = id;
             return Results.Created($"/articulos/{articulo.id}", articulo);
