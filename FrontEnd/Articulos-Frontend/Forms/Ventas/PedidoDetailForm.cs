@@ -435,7 +435,7 @@ namespace Articulos_Frontend
                     pedidoCreated.cambiarLista(articulosPedido);
                     await pedidoApiClient.Crear(pedidoCreated);
                     var menu = this.Owner as Menu;
-                    if (menu.getSendEmailNotification() == true)
+                    if (AppState.getConfiguracion().SendNotifications == true)
                     {
                         EmailSender emailSender = new EmailSender();
                         emailSender.SendEmail("leandro.santilario@mthelmets.com", "Un nuevo pedido ha sido creado", $"Un nuevo pedido ha sido creado con el id: {pedidoCreated.id_pedido}");

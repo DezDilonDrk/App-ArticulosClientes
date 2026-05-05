@@ -142,7 +142,7 @@ namespace Articulos_Frontend.Forms.main
                 var menu = this.Owner as Menu;
                 if (menu != null)
                 {
-                    menu.changeSendEmailNotification();
+                    AppState.changeCheckNotifications();
                 }
             }
         }
@@ -153,7 +153,7 @@ namespace Articulos_Frontend.Forms.main
                 var menu = this.Owner as Menu;
                 if (menu != null)
                 {
-                    bool shouldbeChecked = menu.getSendEmailNotification();
+                    bool shouldbeChecked = AppState.getConfiguracion().SendNotifications;
                     if (shouldbeChecked)
                     {
                         checkCreateObjectEmailNotifications.Checked = true;

@@ -1,5 +1,4 @@
-﻿
-using Articulos_Frontend.Client;
+﻿using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
@@ -78,11 +77,11 @@ namespace Articulos_Frontend
                     var articulo = new Articulo(nombre, precio, categoria, fechaCreacion, fechaActualizacion);
                     var creado = await _client.Crear(articulo);
                     if(creado == null) throw new Exception("No se ha podido crear el artículo");
-                    int articuloId = creado.id;
+                    string articuloId = creado.id;
                     this.DialogResult = DialogResult.OK;
                     Log.Info($"Artículo creado: {articulo.nombre} (ID: {articulo.id})");
                     var menu = this.Owner as Menu;
-                    if (menu.getSendEmailNotification() == true) {
+                    if (AppState.getConfiguracion().SendNotifications == true) {
                         EmailSender emailSender = new EmailSender();
                         emailSender.SendEmail("emilio.martinez@mthelmets.com", "Nuevo artículo creado", $"Se ha creado el artículo '{articulo.nombre}' con ID {articulo.id}, con un costo de {articulo.precio} euros y de la categoria {articulo.categoria} en {articulo.FechaCreacion}."); 
                     }

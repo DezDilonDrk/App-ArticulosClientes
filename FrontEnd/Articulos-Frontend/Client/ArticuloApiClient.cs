@@ -41,7 +41,7 @@ public class ArticuloApiClient
             throw;
         }
     }
-    public async Task<Articulo?> ObtenerPorId(int id)
+    public async Task<Articulo?> ObtenerPorId(string id)
     {
         try
         {
@@ -83,7 +83,7 @@ public class ArticuloApiClient
         }
     }
 
-    public async Task Actualizar(int id, Articulo articulo)
+    public async Task Actualizar(string id, Articulo articulo)
     {
         try
         {
@@ -98,7 +98,7 @@ public class ArticuloApiClient
         }
     }
 
-    public async Task Eliminar(int id)
+    public async Task Eliminar(string id)
     {
         try
         {

@@ -110,7 +110,7 @@ public partial class ArticuloForm : Form
             alerta.ShowDialog();
             if (alerta.resultado)
             {
-                await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as int? ?? 0);
+                await api.Eliminar(dataGridView1.CurrentRow?.Cells["Id"].Value as string ?? string.Empty);
             }
             cargarArticulos(null);
         }
@@ -228,7 +228,7 @@ public partial class ArticuloForm : Form
         {
             articuloSeleccionado = new Articulo
             {
-                id = (int)dataGridView1.Rows[e.RowIndex].Cells["Id"].Value,
+                id = (string)dataGridView1.Rows[e.RowIndex].Cells["Id"].Value,
                 nombre = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString(),
                 precio = (decimal)dataGridView1.Rows[e.RowIndex].Cells["Precio"].Value,
                 categoria = dataGridView1.Rows[e.RowIndex].Cells["Categoria"].Value.ToString(),
@@ -331,7 +331,7 @@ public partial class ArticuloForm : Form
         }
         if (dataGridView1.Columns.Count == 0) return;
 
-        dataGridView1.Columns[0].Width = 40;
+        dataGridView1.Columns[0].Width = 270;
         dataGridView1.Columns[1].Width = 120;
         dataGridView1.Columns[2].Width = 80;
         dataGridView1.Columns[3].Width = 80;

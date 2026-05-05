@@ -6,14 +6,14 @@ namespace MTCore_AC.Entidades
 {
     public class LineaPedido
     {
-        public int id_articulo { get; set; }
+        public string id_articulo { get; set; }
         public string nombre { get; set; }
         public string categoria { get; set; }
 
         public decimal precioUnidad { get; set; }
         public int cantidad { get; set; }
         public decimal totalLinea { get; set; }
-        public LineaPedido(int id_articulo, string nombre, string categoria, int cantidad, decimal precioUnidad)
+        public LineaPedido(string id_articulo, string nombre, string categoria, int cantidad, decimal precioUnidad)
         {
             this.id_articulo = id_articulo;
             this.nombre = nombre;

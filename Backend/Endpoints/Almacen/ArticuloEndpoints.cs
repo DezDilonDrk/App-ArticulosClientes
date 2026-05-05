@@ -15,7 +15,7 @@ public static class ArticuloEndpoints
     public static WebApplication MapArticuloEndpoints(this WebApplication app, ArticuloRepository repo)
     {
 
-        app.MapGet("/articulos/{id:int}", (int id) =>
+        app.MapGet("/articulos/{id}", (string id) =>
         {
             var articulo = repo.ObtenerPorId(id);
             return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
@@ -35,13 +35,13 @@ public static class ArticuloEndpoints
         {
             var existente = repo.ObtenerPorNombreExacto(articulo.nombre);
             if (existente != null) { throw new InvalidOperationException($"Ya existe un artículo con nombre '{articulo.nombre}'"); }              
-            int id = repo.Insertar(articulo);
+            string id = repo.Insertar(articulo);
             articulo.id = id;
             return Results.Created($"/articulos/{articulo.id}", articulo);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces<Articulo>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapPut("/articulos/{id:int}", (int id, Articulo updatedArticulo) =>
+        app.MapPut("/articulos/{id}", (string id, Articulo updatedArticulo) =>
         {
             var existing = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             updatedArticulo.id = id;
@@ -52,7 +52,7 @@ public static class ArticuloEndpoints
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapDelete("/articulos/{id:int}", (int id) =>
+        app.MapDelete("/articulos/{id}", (string id) =>
         {
             var articulo = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             repo.Eliminar(id);

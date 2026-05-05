@@ -218,7 +218,7 @@ public partial class ClienteDetailForm : Form
             Cliente cliente = new Cliente(textBoxDni.Text.ToUpper(), textBoxNombre.Text, textBoxApellidos.Text, textBoxEmail.Text.ToLower(), DateTime.Now, null);
             clienteApiClient.Crear(cliente);
             var menu = this.Owner as Menu;
-            if (menu.getSendEmailNotification() == true) {
+            if (AppState.getConfiguracion().SendNotifications == true) {
                 EmailSender emailSender = new EmailSender();
                 emailSender.SendEmail("leandro.santilario@mthelmets.com", "Bienvenido a nuestro servicio", $"Hola {cliente.Nombre},\n\nGracias por registrarte en nuestro servicio. Estamos encantados de tenerte con nosotros.\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
             }

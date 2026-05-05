@@ -12,7 +12,6 @@ namespace Articulos_Frontend
         ShowTerminal terminal;
         AjustesForm ajustes;
         private Usuario user;
-        private bool sendEmailNotification = AppState.getConfiguracion().SendNotifications;
         ConfiguracionApiClient configuracionApiClient = new ConfiguracionApiClient();
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
@@ -45,14 +44,6 @@ namespace Articulos_Frontend
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
             RefrescarMenuVentanas();
             RegistrarClicks(this);
-        }
-        public bool getSendEmailNotification()
-        {
-            return sendEmailNotification;
-        }
-        public void changeSendEmailNotification()
-        {
-            sendEmailNotification = !sendEmailNotification;
         }
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -186,7 +177,7 @@ namespace Articulos_Frontend
             var accountSettingsItem = new ToolStripMenuItem(stringValuesSP.ajustesCuenta);
             var cambiarContrasenaItem = new ToolStripMenuItem(stringValuesSP.cambiarContrasena);
             var cerrarSesionItem = new ToolStripMenuItem(stringValuesSP.logout);
-            var stringValue = sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
+            var stringValue = AppState.getConfiguracion().SendNotifications ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
             var checkNotificaciones = new ToolStripMenuItem(stringValue);
 
             cambiarContrasenaItem.Click += (s, ev) => {
@@ -195,7 +186,7 @@ namespace Articulos_Frontend
             cerrarSesionItem.Click += buttonLogout_Click;
             checkNotificaciones.Click += (s, ev) =>
             {
-                if (sendEmailNotification){
+                if (AppState.getConfiguracion().SendNotifications){
                     Log.Info("Desactivando notificaciones por email.");
                     AppState.changeCheckNotifications();
                     configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
@@ -208,8 +199,8 @@ namespace Articulos_Frontend
                     configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
                     MessageBox.Show("Las notificaciones por email han sido activadas.\n\nNotifications: ON", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                checkNotificaciones.Text = !sendEmailNotification ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
-                changeSendEmailNotification();
+                checkNotificaciones.Text = !AppState.getConfiguracion().SendNotifications ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
+                AppState.changeCheckNotifications();
             };
             notificationSettingsItem.DropDownItems.Add(checkNotificaciones);
             accountSettingsItem.DropDownItems.Add(cambiarContrasenaItem);

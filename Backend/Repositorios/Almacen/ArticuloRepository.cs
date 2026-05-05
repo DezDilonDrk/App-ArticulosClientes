@@ -25,7 +25,7 @@ public class ArticuloRepository
         }
     }
 
-    public Articulo ObtenerPorId(int id)
+    public Articulo ObtenerPorId(string id)
     {
         
         using ( var db = Connection )
@@ -51,12 +51,13 @@ public class ArticuloRepository
             return db.QueryFirstOrDefault<Articulo>(sql, new { Nombre = nombre });
         }
     }
-    public int Insertar(Articulo articulo)
+    public string Insertar(Articulo articulo)
     {
         using var db = Connection;
-        string sql = @"INSERT INTO Articulos (Nombre, Precio, Categoria, FechaCreacion) VALUES (@Nombre, @Precio, @Categoria, @FechaCreacion); SELECT CAST(SCOPE_IDENTITY() AS INT);";
-        return db.QuerySingle<int>(sql, new
+        string sql = @"INSERT INTO Articulos (Id, Nombre, Precio, Categoria, FechaCreacion) VALUES (@Id, @Nombre, @Precio, @Categoria, @FechaCreacion); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        return db.QuerySingle<string>(sql, new
         {
+            Id = articulo.id,
             Nombre = articulo.nombre,
             Precio = articulo.precio,
             Categoria = articulo.categoria,
@@ -73,7 +74,7 @@ public class ArticuloRepository
         }
     }
 
-    public void Eliminar(int id)
+    public void Eliminar(string id)
     {
         using ( var db = Connection )
         {

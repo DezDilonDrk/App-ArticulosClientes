@@ -6,7 +6,7 @@ namespace MTCore_AC.Entidades;
 
 public class Articulo
 {
-    public int id { get; set; }
+    public String id { get; set; }
 
     //[Required(ErrorMessage = "Nombre obligatorio")]
     //[StringLength(100, ErrorMessage = "Máximo 100 caracteres")]
@@ -18,7 +18,7 @@ public class Articulo
     public DateTime FechaCreacion { get; set; }
     public DateTime? FechaActualizacion { get; set; }
 
-    public Articulo(int id, String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
+    public Articulo(String id, String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
     {
         this.id = id;
         this.nombre = nombre;
@@ -29,6 +29,7 @@ public class Articulo
     }
     public Articulo(String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
     {
+        this.id = Guid.NewGuid().ToString();
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
