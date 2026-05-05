@@ -7,16 +7,14 @@ using System.Text;
 
 namespace TestProjectMT
 {
-    public class RolTest
+    public class UsuarioRolTest
     {
         private HttpClient _client;
-        private string token = UserSession.token;
         private string currentServer = "local";
         [SetUp]
         public void Setup()
         {
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
         [TearDown]
         public void Cleanup()
@@ -28,64 +26,46 @@ namespace TestProjectMT
             _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/roles/{id}");
         }
         [Test]
-        public async Task ObtenerRoles()
+        public async Task ObtenerTodo()
         {
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles");
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
         }
         [Test]
-        public async Task ObtenerNombredeRoles()
+        public async Task ObtenerRolPorEmail()
         {
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/nombres");
+            string email = "leandro.santilario@mthelmets.com";
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/usuario/{email}");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);
         }
         [Test]
-        public async Task ObtenerPorId()
+        public async Task ObtenerRolPorId()
         {
             Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
             var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}");
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/rol/{creado.Id}");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
-            BorrarRol(creado.Id);
+            BorrarRol(rol.Id);
         }
         [Test]
-        public async Task CrearRol()
+        public async Task EliminarRoldeUsuario()
         {
-            Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/roles", rol);
-            var creado = await response.Content.ReadFromJsonAsync<Rol>();
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body, Is.Not.Null.And.Not.Empty);
-            BorrarRol(creado.Id);
-        }
-        [Test]
-        public async Task ActualizarRol()
-        {
-            Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
-            var previo =await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
-            var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}", rol);
-            response.EnsureSuccessStatusCode();
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            BorrarRol(creado.Id);
-        }
-        [Test]
-        public async Task EliminarRol()
-        {
+            //UsuarioRol usuarioRol = new UsuarioRol(345, "flipanteemail@gmail.com"); Post no encontrado
             Rol rol = new Rol(0, "RolPrueba2", "Rol de prueba para test");
+            string emailEjemplo = "ejemplooo12069023847@gmail.com";
             var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
             Assert.That(creado.Id, Is.GreaterThan(0));
-            var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}");
+            var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/{creado.Id}/{emailEjemplo}");
             Assert.That(response.IsSuccessStatusCode, Is.True);
+            BorrarRol(creado.Id);
         }
     }
 }

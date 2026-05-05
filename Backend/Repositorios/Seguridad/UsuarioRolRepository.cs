@@ -20,7 +20,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT rol_id AS RolId, usuario_email AS UsuarioEmail FROM UsuarioRoles";
+                string sql = "SELECT RolId, UsuarioEmail FROM UsuarioRoles";
                 return db.Query<UsuarioRol>(sql).ToList();
             }
         }
