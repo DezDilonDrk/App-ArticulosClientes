@@ -27,9 +27,20 @@ public partial class UsuarioForm : Form
         user = usuario;
         MinimumSize = new Size(800, 600);
     }
-    public void UsuarioForm_Load(object sender, EventArgs e)
+    public async void UsuarioForm_Load(object sender, EventArgs e)
     {
-        cargarUsuarios();
+        try
+        {
+            Log.Info("Cargando usuarios desde API.");
+            await cargarUsuarios();
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al cargar usuarios.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
+        }
     }
 
     public async void textBoxUsuario_TextChanged(object sender, EventArgs e)
@@ -37,7 +48,7 @@ public partial class UsuarioForm : Form
         cargarUsuarios();
     }
 
-    public async void cargarUsuarios()
+    public async Task cargarUsuarios()
     {
         var usuarios = await api.ObtenerUsuarios();
         var search = textBoxUsuario.Text;

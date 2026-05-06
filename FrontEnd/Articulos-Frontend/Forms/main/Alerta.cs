@@ -97,16 +97,15 @@ namespace Articulos_Frontend
             {
                 return "Sin información de linea.";
             }
-            var lineas = ex.StackTrace.Split('\n');
-            foreach(var line in lineas)
+            var match = System.Text.RegularExpressions.Regex.Match(ex.StackTrace, @"in (.*):line (\d+)");
+            if (match.Success)
             {
-                if(line.Contains(":line"))
-                {
-                    return line.Trim();
-                }   
-                
+                var filePath = match.Groups[1].Value;
+                var archivo = System.IO.Path.GetFileName(filePath);
+                var linea = match.Groups[2].Value;
+                return $"Archivo: {archivo}, Línea: {linea}";
             }
-            return "Sin información de linea";
+            return match.Success ? $"Archivo: {match.Groups[1].Value}, Línea: {match.Groups[2].Value}" : "Sin información de linea.";
 
         }
     }

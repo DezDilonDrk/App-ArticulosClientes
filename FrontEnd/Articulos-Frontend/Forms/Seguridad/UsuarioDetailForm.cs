@@ -29,15 +29,18 @@ namespace Articulos_Frontend.Forms.Seguridad
 
         }
 
-        public void UsuarioDetailForm_Load(object sender, EventArgs e)
+        public async void UsuarioDetailForm_Load(object sender, EventArgs e)
         {
             Size = new Size(816, 421);
-            cargarRoles();
+            await cargarRoles();
             if (usuarioSeleccionado != null)
             {
                 textBoxNombre.Text = usuarioSeleccionado.Nombre;
                 textBoxCorreo.Text = usuarioSeleccionado.CorreoElectronico;
                 textBoxContrasena.Text = usuarioSeleccionado.Contrasena;
+            } else if(usuarioSeleccionado == null)
+            {
+                buttonCC.Visible = false;
             }
             dataGridViewRoles.AutoGenerateColumns = false;
             dataGridViewRoles.ReadOnly = false;
@@ -76,25 +79,35 @@ namespace Articulos_Frontend.Forms.Seguridad
             public bool seleccionado { get; set; }
         }
 
-        private async void cargarRoles()
+        private async Task cargarRoles()
         {
-            var roles = await rolapi.ObtenerRoles();
-            var usuarioRoles = new List<string>();
-            if (usuarioSeleccionado != null)
+            try
             {
-                textBoxContrasena.Enabled = false;
-                textBoxCorreo.Enabled = false;
-                textBoxNombre.Text = usuarioSeleccionado.Nombre;
-                textBoxCorreo.Text = usuarioSeleccionado.CorreoElectronico;
-                textBoxContrasena.Text = usuarioSeleccionado.Contrasena;
-                usuarioRoles = await userapi.ObtenerRolesUsuario(usuarioSeleccionado.CorreoElectronico);
+                var roles = await rolapi.ObtenerRoles();
+                var usuarioRoles = new List<string>();
+                if (usuarioSeleccionado != null)
+                {
+                    textBoxContrasena.Enabled = false;
+                    textBoxCorreo.Enabled = false;
+                    textBoxNombre.Text = usuarioSeleccionado.Nombre;
+                    textBoxCorreo.Text = usuarioSeleccionado.CorreoElectronico;
+                    textBoxContrasena.Text = usuarioSeleccionado.Contrasena;
+                    usuarioRoles = await userapi.ObtenerRolesUsuario(usuarioSeleccionado.CorreoElectronico);
+                }
+                var listaRoles = roles.Select(r => new RolItem
+                {
+                    nombre = r.Nombre,
+                    seleccionado = usuarioRoles.Contains(r.Nombre)
+                }).ToList();
+                dataGridViewRoles.DataSource = listaRoles;
             }
-            var listaRoles = roles.Select(r => new RolItem
+            catch (Exception ex)
             {
-                nombre = r.Nombre,
-                seleccionado = usuarioRoles.Contains(r.Nombre)
-            }).ToList();
-            dataGridViewRoles.DataSource = listaRoles;
+                Log.Error("Error al cargar roles: " + ex.Message);
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                alerta.ShowDialog();
+
+            }
         }
 
         private async void buttonConfirm_Click(object sender, EventArgs e)

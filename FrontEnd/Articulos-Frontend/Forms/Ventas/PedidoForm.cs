@@ -48,11 +48,20 @@ namespace Articulos_Frontend
             dgvPedido.DataSource = PedidoApiClient.ObtenerPedidos();
             Log.Info("Formulario de pedidos iniciado.");
         }
-        private void PedidosForm_Load(object sender, EventArgs e)
+        private async void PedidosForm_Load(object sender, EventArgs e)
         {
-            Log.Info("Cargando pedidos en el formulario.");
-            RegistrarClicks(this);
-            buscarPedidos(null);
+            try
+            {
+                Log.Info("Cargando pedidos en el formulario.");
+                await buscarPedidos(null);
+                RegistrarClicks(this);
+            }catch (Exception ex)
+            {
+                Log.Error("Error al cargar los pedidos en el formulario.", ex);
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                alerta.ShowDialog();
+            }
+            
         }
         private void VerifyStateAndApply(object sender, EventArgs e)
         {
@@ -98,7 +107,7 @@ namespace Articulos_Frontend
             listaFiltrada = pedidosFiltrados.ToList();
             dgvPedido.DataSource = listaFiltrada;
         }
-        private async void buscarPedidos(string nombreFiltro)
+        private async Task buscarPedidos(string nombreFiltro)
         {
             Log.Info($"Buscando pedidos: '{nombreFiltro}'");
             IEnumerable<Pedido> pedidos;
@@ -195,9 +204,18 @@ namespace Articulos_Frontend
                 dgvPedido.Columns["nombre"].HeaderText = "Nombre";
             }
         }
-        private void BotonBuscar_Click(object sender, EventArgs e)
+        private async void BotonBuscar_Click(object sender, EventArgs e)
         {
-            buscarPedidos(textBoxCliente.Text);
+            try
+            {
+                await buscarPedidos(textBoxCliente.Text);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error al buscar pedidos.", ex);
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                alerta.ShowDialog();
+            }
         }
 
         private async void BotonMasC_Click(object sender, EventArgs e)
@@ -216,7 +234,7 @@ namespace Articulos_Frontend
                     this,
                     () => actualizarForm);
                     actualizarForm.PedidoModificadoCorrectamente += async p => {
-                        buscarPedidos(textBoxCliente.Text);
+                        await buscarPedidos(textBoxCliente.Text);
                     };
                 }
             };
@@ -227,7 +245,7 @@ namespace Articulos_Frontend
                 () => pedidoDetailForm);
                 pedidoDetailForm.PedidoModificadoCorrectamente += async p =>
                 {
-                    buscarPedidos(textBoxCliente.Text); 
+                        await buscarPedidos(textBoxCliente.Text);    
                 };
         }
 
@@ -245,7 +263,7 @@ namespace Articulos_Frontend
             {
                 Log.Info("Eliminación cancelada por el usuario.");
             }
-            buscarPedidos(textBoxCliente.Text);
+            await buscarPedidos(textBoxCliente.Text);
         }
 
         private async void dgvCliente_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -261,7 +279,7 @@ namespace Articulos_Frontend
                         this,
                        () => formActualizado);
                 formActualizado.PedidoModificadoCorrectamente += async p => {
-                    buscarPedidos(textBoxCliente.Text);
+                    await buscarPedidos(textBoxCliente.Text);
                 };
             }
         }
@@ -283,11 +301,11 @@ namespace Articulos_Frontend
                 btn.ForeColor = SystemColors.ControlLightLight;
             }
         }
-        private void textBoxNombreCliente_EnterClick(object sender, KeyEventArgs e)
+        private async void textBoxNombreCliente_EnterClick(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                buscarPedidos(textBoxCliente.Text);
+                await buscarPedidos(textBoxCliente.Text);
             }
         }
         private void BotonHelpC_Click(object sender, EventArgs e)

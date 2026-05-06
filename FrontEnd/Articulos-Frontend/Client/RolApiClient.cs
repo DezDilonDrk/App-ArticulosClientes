@@ -58,10 +58,15 @@ public class RolApiClient
             }
             return await response.Content.ReadFromJsonAsync<List<Rol>>() ?? new List<Rol>();
         }
-        catch
+        catch (HttpRequestException ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error("No se pudo conectar al servidor API.", ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error inesperado al obtener roles.", ex);
+            throw;
         }
     }
 
@@ -77,10 +82,15 @@ public class RolApiClient
             }
             return await response.Content.ReadFromJsonAsync<Rol>();
         }
-        catch
+        catch (HttpRequestException ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error($"No se pudo conectar al servidor API para obtener rol por ID: {id}.", ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error inesperado al obtener rol por ID: {id}.", ex);
+            throw;
         }
     }
 
@@ -96,10 +106,16 @@ public class RolApiClient
             }
             return await response.Content.ReadFromJsonAsync<Rol>();
         }
-        catch
+        catch (HttpRequestException ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error($"No se pudo conectar al servidor API para obtener rol por nombre: {nombre}.", ex);
+            throw;
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error inesperado al obtener rol por nombre: {nombre}.", ex);
+            throw;
         }
     }
 
@@ -114,10 +130,14 @@ public class RolApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
         }
-        catch
+        catch(HttpRequestException ex) { 
+            Log.Error("No se pudo conectar al servidor API.", ex);
+            throw;
+        }
+        catch (Exception ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error("Error inesperado al crear rol.", ex);
+            throw;
         }
     }
 
@@ -132,28 +152,38 @@ public class RolApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
         }
-        catch
+        catch (HttpRequestException ex)
         {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
+            Log.Error($"No se pudo conectar al servidor API para actualizar rol con ID: {rol.Id}.", ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error inesperado al actualizar rol con ID: {rol.Id}.", ex);
+            throw;
         }
     }
-
     public async Task EliminarRol(int id)
         {
-            try
+        try
+        {
+            var response = await httpClient.DeleteAsync($"/roles/{id}");
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await httpClient.DeleteAsync($"/roles/{id}");
-                if (!response.IsSuccessStatusCode)
-                {
-                    Log.Error($"Error al eliminar rol: {response.StatusCode}");
-                    throw new Exception($"Error API: {response.StatusCode}");
-                }
+                Log.Error($"Error al eliminar rol: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
             }
-            catch
-            {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
-            }
+        }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"No se pudo conectar al servidor API para eliminar rol con ID: {id}.", ex);
+            throw;
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Error inesperado al eliminar rol con ID: {id}.", ex);
+            throw;
+        }
     }
 }
