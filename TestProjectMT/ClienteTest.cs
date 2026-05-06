@@ -30,33 +30,42 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerClientes()
         {
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes");
+            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
             Assert.That(body.Contains("id"), Is.True, "El JSON no contiene ningún Id de clientes");
+            } catch (Exception ex){
+                Assert.Fail($"Excepción al obtener clientes: {ex.Message}");
+            }
         }
         [Test]
         public async Task BuscarClientePorNombre() {
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes?Nombre=Federico");
+            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes?Nombre=Federico");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);
+            } catch (Exception ex){
+                Assert.Fail($"Excepción al buscar cliente por nombre: {ex.Message}");
+            }
         }
         [Test]
         public async Task CrearCliente()
         {
-            Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
+            try{Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
             var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes", cliente);
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
             BorrarCliente(cliente.Dni);
+            } catch (Exception ex){
+                Assert.Fail($"Excepción al crear cliente: {ex.Message}");
+            }
         }
         [Test]
         public async Task CrearMismoCliente()
         {
-            Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
+            try{Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
             await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/clientes", cliente);
             var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes", cliente);
             Assert.That(response.IsSuccessStatusCode, Is.False);
@@ -64,33 +73,46 @@ namespace TestProjectMT
             Assert.That(body, Is.Not.Null.And.Not.Empty);
             Assert.That(response.IsSuccessStatusCode, Is.False);
             BorrarCliente(cliente.Dni);
-        }
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"Excepción al crear el mismo cliente: {ex.Message}");
+            }
         [Test]
         public async Task ObtenerClientePorDni()
         {
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes/12345678Z");
+            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes/12345678Z");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body.Contains("id"), Is.True);
+            } catch (Exception ex){
+                Assert.Fail($"Excepción al obtener cliente por DNI: {ex.Message}");
+            }
         }
         [Test]
         public async Task ActualizarCliente()
         {
-            Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
+            try{Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
             await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/clientes", cliente);
             var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/clientes/{cliente.Dni}", cliente);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
             BorrarCliente(cliente.Dni);
+            } catch (Exception ex){
+                Assert.Fail($"Excepción al actualizar cliente: {ex.Message}");
+            }
         }
 
         [Test]
         public async Task EliminarCliente()
         {
-            Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
+            try{Cliente cliente = new Cliente("12345678A", "Fausto", "De Pruebas", "faustoeldepruebas@gmail.com", DateTime.Now, null);
             await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/clientes", cliente);
             var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/clientes/12345678A");
             Assert.That(response.IsSuccessStatusCode, Is.True);
+            } catch (Exception ex){
+                Assert.Fail($"Excepción al eliminar cliente: {ex.Message}");
+            }
         }
     }
 }

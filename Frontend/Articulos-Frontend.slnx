@@ -1,6 +1,10 @@
 <Solution>
   <Project Path="../MTACCore/MTCore_AC.csproj" />
-  <Project Path="../TestProjectMT/TestProjectMT.csproj" Id="0022fe15-7989-4fb6-914e-ece303c8e8a3" />
+  <Project Path="../TestProjectMT/TestProjectMT.csproj" Id="0022fe15-7989-4fb6-914e-ece303c8e8a3">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="Articulos-Frontend/Articulos-Frontend.csproj" />
-  <Project Path="SesionMT/SesionMT.csproj" Id="945d5d99-6d10-43bd-b609-3d8a4d85b997" />
+  <Project Path="SesionMT/SesionMT.csproj" Id="945d5d99-6d10-43bd-b609-3d8a4d85b997">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
 </Solution>
