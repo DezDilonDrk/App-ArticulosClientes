@@ -7,16 +7,14 @@ using System.Text;
 
 namespace TestProjectMT
 {
-    public class ArticuloTest
+    public class ArticuloTest : BaseTest
     {
-        private HttpClient _client;
-        private string token = UserSession.token;
-        private string currentServer = "local";
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
+           await UserSession.GenerateToken();
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
         }
         [TearDown]
         public void Cleanup()
@@ -35,14 +33,15 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerArticulos()
         {
-            try {var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/articulos");
-            Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
+            try { var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/articulos");
+                Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
+                var body = await response.Content.ReadAsStringAsync();
+                Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
                 Assert.That(body.Contains("id"), Is.True, "El JSON no contiene ningún Id de articulos");
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 Assert.Fail($"Excepción al obtener artículos: {ex.Message}");
             }
+        }
         [Test]
         public async Task BuscarArticuloPorNombre()
         {
@@ -70,17 +69,22 @@ namespace TestProjectMT
         [Test]
         public async Task CrearMismoArticulo()
         {
-            try { Articulo articulo = await NewArticulo();
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
-            Assert.That(response.IsSuccessStatusCode, Is.False);
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body, Is.Not.Null.And.Not.Empty);
-            Assert.That(response.IsSuccessStatusCode, Is.False);
-            BorrarArticulo(articulo.id);
-            } catch (Exception ex){
+            try
+            {
+                Articulo articulo = await NewArticulo();
+                await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
+                var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
+                Assert.That(response.IsSuccessStatusCode, Is.False);
+                var body = await response.Content.ReadAsStringAsync();
+                Assert.That(body, Is.Not.Null.And.Not.Empty);
+                Assert.That(response.IsSuccessStatusCode, Is.False);
+                BorrarArticulo(articulo.id);
+            }
+            catch (Exception ex)
+            {
                 Assert.Fail($"Excepción al crear el mismo artículo: {ex.Message}");
             }
+        }
         [Test]
         public async Task ObtenerClientePorDni()
         {

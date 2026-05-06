@@ -1,8 +1,37 @@
-﻿namespace SesionMT
+﻿
+using MTCore_AC.DTO;
+using System.Net.Http.Json;
+using System.Text.Json;
+
+namespace SesionMT
 {
     public static class UserSession
     {
-        private static HttpClient client = new HttpClient();
-        public static string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibGVhbmRyby5zYW50aWxhcmlvQG10aGVsbWV0cy5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQURNSU5fQUxNQUNFTiIsIkFETUlOX1ZFTlRBUyIsIkFETUlOX1NFR1VSSURBRCJdLCJleHAiOjE3NzgwNTIwNzR9.ONVuEMUGt8AEHm2P862L-b1fKe59sIXR3njUDJrfXRI"; //Sustituir lo del front por esto, para usarlo aquí y en Test
+        public static string token = "";
+        //Sustituir lo del front por esto, para usarlo aquí y en Test
+        public static async Task<string> GenerateToken()
+        {
+            if (!String.IsNullOrEmpty(token))
+            {
+                return token;
+            }
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(UrlMT.getUrl("local"));
+
+            var loginData = new
+            {
+                Email = "leandro.santilario@mthelmets.com",
+                Password = "Leandro321"
+            };
+
+            var resp = await client.PostAsJsonAsync("/usuarios/login", loginData);
+            resp.EnsureSuccessStatusCode();
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
+
+            token = doc.token;
+            return doc.token;
+        }
     }
 }

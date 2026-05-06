@@ -7,16 +7,14 @@ using System.Text;
 
 namespace TestProjectMT
 {
-    public class RolTest
+    public class RolTest : BaseTest
     {
-        private HttpClient _client;
-        private string token = UserSession.token;
-        private string currentServer = "local";
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
+            await UserSession.GenerateToken();
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
         }
         [TearDown]
         public void Cleanup()
@@ -38,12 +36,18 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerNombredeRoles()
         {
-            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/nombres");
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body, Is.Not.Empty);} catch (Exception ex){
+            try
+            {
+                var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/nombres");
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                var body = await response.Content.ReadAsStringAsync();
+                Assert.That(body, Is.Not.Empty);
+            }
+            catch (Exception ex)
+            {
                 Assert.Fail($"Excepción al obtener nombres de roles: {ex.Message}");
             }
+        }
         [Test]
         public async Task ObtenerPorId()
         {
@@ -57,6 +61,7 @@ namespace TestProjectMT
             BorrarRol(creado.Id);} catch (Exception ex){
                 Assert.Fail($"Excepción al obtener rol por ID: {ex.Message}");
             }
+        }
         [Test]
         public async Task CrearRol()
         {
@@ -70,6 +75,7 @@ namespace TestProjectMT
             catch (Exception ex){
                 Assert.Fail($"Excepción al crear rol: {ex.Message}");
             }
+        }
         [Test]
         public async Task ActualizarRol()
         {

@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace TestProjectMT
 {
-    public class PedidoTest
+    public class PedidoTest : BaseTest
     {
-        private HttpClient _client;
-        private string currentServer = "local";
         [SetUp]
         public void Setup()
         {
@@ -45,17 +43,18 @@ namespace TestProjectMT
         [Test]
         public async Task CrearPedido()
         {
-            try{Pedido pedido = await NewPedido();
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body, Is.Not.Null.And.Not.Empty);
-            Assert.That(body.Contains("id_pedido"), Is.True);
-            BorrarPedido(pedido.id_pedido);}
+            try { Pedido pedido = await NewPedido();
+                var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                var body = await response.Content.ReadAsStringAsync();
+                Assert.That(body, Is.Not.Null.And.Not.Empty);
+                Assert.That(body.Contains("id_pedido"), Is.True);
+                BorrarPedido(pedido.id_pedido); }
             catch (Exception ex)
             {
                 Assert.Fail($"Excepción al crear pedido: {ex.Message}");
             }
+        }
         [Test]
         public async Task CrearMismoPedido()
         {
@@ -80,20 +79,22 @@ namespace TestProjectMT
             } catch (Exception ex){
                 Assert.Fail($"Excepción al obtener pedidos por nombre de cliente: {ex.Message}");
             }
+        }
         [Test]
         public async Task ObtenerPedidoPorId()
         {
-            try{Pedido pedido = await NewPedido();
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/pedidos", pedido);
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos/{pedido.id_pedido}");
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body.Contains("id_pedido"), Is.True);
-            BorrarPedido(pedido.id_pedido);
-            }catch (Exception ex)
+            try { Pedido pedido = await NewPedido();
+                await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/pedidos", pedido);
+                var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos/{pedido.id_pedido}");
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                var body = await response.Content.ReadAsStringAsync();
+                Assert.That(body.Contains("id_pedido"), Is.True);
+                BorrarPedido(pedido.id_pedido);
+            } catch (Exception ex)
             {
                 Assert.Fail($"Excepción al obtener pedido por ID: {ex.Message}");
             }
+        }
         [Test]
         public async Task ObtenerPorDniCliente()
         {
@@ -105,7 +106,6 @@ namespace TestProjectMT
                 Assert.Fail($"Excepción al obtener pedidos por DNI de cliente: {ex.Message}");
             }
         }
-
         [Test]
         public async Task ObtenerArticulosPorPedido()
         {
@@ -121,16 +121,21 @@ namespace TestProjectMT
         [Test]
         public async Task ActualizarPedido()
         {
-            try{Pedido pedido = new Pedido("690D35EF-D847-47C8-BF0F-A7F7BADD28E1", "12345678A", "Fausterico", "PruebaPal", "Abierto", 21, DateTime.Now);
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
-            var json = "{\"id_pedido\":\"pruebaDelTestN3\",\"id_cliente\":\"690D35EF-D847-47C8-BF0F-A7F7BADD28E1\",\"dni_cliente\":\"12345678A\",\"metodo_pago\":\"Tarjeta\",\"fecha_rectificacion\":\"2024-01-02\",\"estado\":\"Enviado\",\"porcentaje_impuestos\":21,\"fecha_envio\":\"2024-01-03\",\"articulos\":[]}";
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _client.PutAsync($"{UrlMT.getUrl(currentServer)}/pedidos/1", content);
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            BorrarPedido(pedido.id_pedido);}
-            catch (Exception ex){
+            try
+            {
+                Pedido pedido = new Pedido("690D35EF-D847-47C8-BF0F-A7F7BADD28E1", "12345678A", "Fausterico", "PruebaPal", "Abierto", 21, DateTime.Now);
+                await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
+                var json = "{\"id_pedido\":\"pruebaDelTestN3\",\"id_cliente\":\"690D35EF-D847-47C8-BF0F-A7F7BADD28E1\",\"dni_cliente\":\"12345678A\",\"metodo_pago\":\"Tarjeta\",\"fecha_rectificacion\":\"2024-01-02\",\"estado\":\"Enviado\",\"porcentaje_impuestos\":21,\"fecha_envio\":\"2024-01-03\",\"articulos\":[]}";
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _client.PutAsync($"{UrlMT.getUrl(currentServer)}/pedidos/1", content);
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                BorrarPedido(pedido.id_pedido);
+            }
+            catch (Exception ex)
+            {
                 Assert.Fail($"Excepción al actualizar pedido: {ex.Message}");
             }
+        }
         [Test]
         public async Task EliminarPedido()
         {

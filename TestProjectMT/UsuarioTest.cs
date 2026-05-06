@@ -7,16 +7,14 @@ using System.Text;
 
 namespace TestProjectMT
 {
-    public class UsuarioTest
+    public class UsuarioTest : BaseTest
     {
-        private HttpClient _client;
-        private string token = UserSession.token;
-        private string currentServer = "local";
         [SetUp]
-        public void Setup()
+        public async void Setup()
         {
+            await UserSession.GenerateToken();
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
         }
         [TearDown]
         public void Cleanup()
@@ -66,18 +64,19 @@ namespace TestProjectMT
         [Test]
         public async Task CrearMismoUsuario()
         {
-            try{Usuario usuario = new Usuario("pruebafaustoo12345678765432123456787654321@correo.com", "Fausto", "contraseña123");
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios", usuario);
-            Assert.That(response.IsSuccessStatusCode, Is.False);
-            var body = await response.Content.ReadAsStringAsync();
-            Assert.That(body, Is.Not.Null.And.Not.Empty);
-            Assert.That(response.IsSuccessStatusCode, Is.False);
-            BorrarUsuario(usuario.CorreoElectronico);}
+            try { Usuario usuario = new Usuario("pruebafaustoo12345678765432123456787654321@correo.com", "Fausto", "contraseña123");
+                await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
+                var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios", usuario);
+                Assert.That(response.IsSuccessStatusCode, Is.False);
+                var body = await response.Content.ReadAsStringAsync();
+                Assert.That(body, Is.Not.Null.And.Not.Empty);
+                Assert.That(response.IsSuccessStatusCode, Is.False);
+                BorrarUsuario(usuario.CorreoElectronico); }
             catch (Exception ex)
             {
                 Assert.Fail($"Excepción al crear el mismo usuario: {ex.Message}");
             }
+        }
         [Test]
         public async Task ObtenerRolesUsuario()
         {
@@ -87,6 +86,7 @@ namespace TestProjectMT
             catch (Exception ex){
                 Assert.Fail($"Excepción al obtener roles de usuario: {ex.Message}");
             }
+        }
         [Test]
         public async Task ObtenerUsuarioPorCorreo()
         {
@@ -129,29 +129,35 @@ namespace TestProjectMT
         [Test]
         public async Task ActualizarContrasenaUsuario()
         {
-            try{Usuario usuario = new Usuario("pruebafaustoo12345678765432123456787654321@correo.com", "Fausto", "contraseña123");
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
-            string nuevaContrasena = "nuevaContraseña123";
-            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/contrasena", new { NuevaContrasena = nuevaContrasena});
-            response.EnsureSuccessStatusCode();
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            BorrarUsuario(usuario.CorreoElectronico);}
-            catch (Exception ex){
+            try { Usuario usuario = new Usuario("pruebafaustoo12345678765432123456787654321@correo.com", "Fausto", "contraseña123");
+                await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
+                string nuevaContrasena = "nuevaContraseña123";
+                var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/contrasena", new { NuevaContrasena = nuevaContrasena });
+                response.EnsureSuccessStatusCode();
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                BorrarUsuario(usuario.CorreoElectronico); }
+            catch (Exception ex) {
                 Assert.Fail($"Excepción al actualizar contraseña de usuario: {ex.Message}");
             }
+        }
         [Test]
         public async Task ActualizarRolesUsuario()
         {
-            try{Usuario usuario = new Usuario("prueba@correo.com", "Fausto", "contraseña123");
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
-            List<string> roles = new List<string>();
-            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/roles", roles);
-            response.EnsureSuccessStatusCode();
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            BorrarUsuario(usuario.CorreoElectronico);}
-            catch (Exception ex){
+            try
+            {
+                Usuario usuario = new Usuario("prueba@correo.com", "Fausto", "contraseña123");
+                await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
+                List<string> roles = new List<string>();
+                var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/roles", roles);
+                response.EnsureSuccessStatusCode();
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                BorrarUsuario(usuario.CorreoElectronico);
+            }
+            catch (Exception ex)
+            {
                 Assert.Fail($"Excepción al actualizar roles de usuario: {ex.Message}");
             }
+        }
         [Test]
         public async Task EliminarUsuario()
         {
