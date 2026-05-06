@@ -395,7 +395,6 @@ namespace Articulos_Frontend
         }
         private async void BotonCrearC_Click(object sender, EventArgs e)
         {
-            Alerta alerta;
             if (!validarCamposLlenos()) return;
             if (!await ValidarDni(textBoxDniCliente.Text)) return;
             try
@@ -417,8 +416,8 @@ namespace Articulos_Frontend
                     catch (FormatException ex)
                     {
                         Log.Warn($"Intento de crear pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
-                        alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
-                        alerta.ShowDialog();
+                        var alerta1 = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta1.ShowDialog();
                         return;
                     }
                     pedidoCreated = new Pedido(textBoxIdCliente.Text, textBoxDniCliente.Text.ToUpper(), textBoxNombreCliente.Text, comboBoxMetodoPago.Text, comboBoxEstado.Text, parsedImpuestos, dateTimePickerFechaEnvio.Value);
@@ -435,7 +434,15 @@ namespace Articulos_Frontend
                         articulosPedido.Add(pa);
                     }
                     pedidoCreated.cambiarLista(articulosPedido);
-                    await pedidoApiClient.Crear(pedidoCreated);
+
+                    try {
+                        await pedidoApiClient.Crear(pedidoCreated);
+                    } catch (Exception ex) {
+                        Log.Error("Error al crear pedido. Error: " + ex.Message);
+                        var alerta2= new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta2.ShowDialog();
+                        return;
+                    }
                     var menu = this.Owner as Menu;
                     if (AppState.getConfiguracion().SendNotifications == true)
                     {
@@ -466,8 +473,8 @@ namespace Articulos_Frontend
                     catch (FormatException ex)
                     {
                         Log.Warn($"Intento de actualizar pedido con porcentaje de impuestos no numérico: {comboBoxImpuestos.Text}.");
-                        alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
-                        alerta.ShowDialog();
+                        var alerta3= new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta3.ShowDialog();
                         return;
                     }
                     pedidoCreated.porcentaje_impuestos = parsedImpuestos;
@@ -485,7 +492,7 @@ namespace Articulos_Frontend
                     }
                     pedidoCreated.cambiarLista(articulosPedido);
                     await pedidoApiClient.Actualizar(pedidoCreated.id_pedido, pedidoCreated);
-                    alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
+                    var alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el pedido correctamente"));
                     alerta.ShowDialog();
                     PedidoModificadoCorrectamente?.Invoke(pedidoCreated);
                 }
@@ -494,7 +501,7 @@ namespace Articulos_Frontend
             catch (Exception ex)
             {
                 Log.Error($"Error al crear el pedido: {ex.Message}", ex);
-                alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                var alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                 alerta.ShowDialog();
                 return;
             }
