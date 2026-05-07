@@ -29,7 +29,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT rol_id AS RolId, usuario_email AS UsuarioEmail FROM UsuarioRoles WHERE rol_id = @RolId AND usuario_email = @UsuarioEmail";
+                string sql = "SELECT RolId, UsuarioEmail FROM UsuarioRoles WHERE RolId = @RolId AND UsuarioEmail = @UsuarioEmail";
                 return db.QueryFirstOrDefault<UsuarioRol>(sql, new { RolId = rolId, UsuarioEmail = usuarioEmail });
             }
         }
@@ -38,7 +38,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT rol_id AS RolId, usuario_email AS UsuarioEmail FROM UsuarioRoles WHERE rol_id = @RolId";
+                string sql = "SELECT RolId, UsuarioEmail FROM UsuarioRoles WHERE rol_id = @RolId";
                 return db.Query<UsuarioRol>(sql, new { RolId = rolId }).ToList();
             }
         }
@@ -47,7 +47,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT rol_id AS RolId, usuario_email AS UsuarioEmail FROM UsuarioRoles WHERE usuario_email = @UsuarioEmail";
+                string sql = "SELECT RolId, UsuarioEmail FROM UsuarioRoles WHERE UsuarioEmail = @UsuarioEmail";
                 return db.Query<UsuarioRol>(sql, new { UsuarioEmail = usuarioEmail }).ToList();
             }
         }
@@ -58,8 +58,8 @@ namespace Articulos_Backend.Repositorios.Seguridad
             {
                 string sql = @"SELECT r.Id, r.Nombre
                                FROM Roles r
-                               INNER JOIN UsuarioRoles ur ON r.Id = ur.rol_id
-                               WHERE ur.usuario_email = @Email";
+                               INNER JOIN UsuarioRoles ur ON r.Id = ur.RolId
+                               WHERE ur.UsuarioEmail = @Email";
                 return db.Query<Rol>(sql, new { Email = usuarioEmail }).ToList();
             }
         }
@@ -67,7 +67,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "DELETE FROM UsuarioRoles WHERE rol_id = @RolId AND usuario_email = @UsuarioEmail";
+                string sql = "DELETE FROM UsuarioRoles WHERE RolId = @RolId AND UsuarioEmail = @UsuarioEmail";
                 db.Execute(sql, new { RolId = rolId, UsuarioEmail = usuarioEmail });
             }
         }
