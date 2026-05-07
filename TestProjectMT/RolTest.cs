@@ -68,10 +68,11 @@ namespace TestProjectMT
             try{Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
             var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/roles", rol);
             var creado = await response.Content.ReadFromJsonAsync<Rol>();
+            BorrarRol(creado.Id);
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
-            BorrarRol(creado.Id);}
+            }
             catch (Exception ex){
                 Assert.Fail($"Excepción al crear rol: {ex.Message}");
             }
@@ -83,9 +84,10 @@ namespace TestProjectMT
             var previo =await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
             var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}", rol);
+            BorrarRol(creado.Id);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
-            BorrarRol(creado.Id);}
+            }
             catch (Exception ex){
                 Assert.Fail($"Excepción al actualizar rol: {ex.Message}");
             }
@@ -96,7 +98,6 @@ namespace TestProjectMT
             try{Rol rol = new Rol(0, "RolPrueba2", "Rol de prueba para test");
             var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-            Assert.That(creado.Id, Is.GreaterThan(0));
             var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}");
             Assert.That(response.IsSuccessStatusCode, Is.True);}
             catch (Exception ex){

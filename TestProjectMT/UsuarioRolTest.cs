@@ -10,18 +10,16 @@ namespace TestProjectMT
     public class UsuarioRolTest : BaseTest
     {
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
+            await UserSession.GenerateToken();
             _client = new HttpClient();
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
         }
         [TearDown]
         public void Cleanup()
         {
             _client.Dispose();
-        }
-        private async void BorrarRol(int id)
-        {
-            _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/roles/{id}");
         }
         [Test]
         public async Task ObtenerTodo()
@@ -36,10 +34,19 @@ namespace TestProjectMT
             }
         }
         [Test]
-        public async Task ObtenerRolPorEmail()
+        public async Task ObtenerRolesPorEmail()
         {
-            try{string email = "leandro.santilario@mthelmets.com";
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/usuario/{email}");
+            try{
+            Usuario usuario = new Usuario("prueba@correo.com", "Fausto", "contraseña123");
+            _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuarios/correo/{usuario.CorreoElectronico}");
+            var userResp = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
+            Assert.That(userResp.IsSuccessStatusCode, Is.True);
+            var obtenerRoles = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles");
+            Assert.That(obtenerRoles.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
+            var roles = await obtenerRoles.Content.ReadFromJsonAsync<List<Rol>>();
+            Assert.That(roles, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
+            Rol rol = roles[2];
+            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/usuario/{usuario.CorreoElectronico}");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);}
@@ -49,18 +56,36 @@ namespace TestProjectMT
             }
         }
         [Test]
-        public async Task ObtenerRolPorId()
+        public async Task ObtenerPorRol()
         {
             try
             {
-                Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
-                var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
-                var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-                var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/rol/{creado.Id}");
-                Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
+                var obtenerRoles = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles");
+                Assert.That(obtenerRoles.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
+
+                var roles = await obtenerRoles.Content.ReadFromJsonAsync<List<Rol>>();
+                Assert.That(roles, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
+
+                var rol = roles[2];
+
+                Usuario usuario = new Usuario("prueba@correo.com", "Fausto", "contraseña123");
+                _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuarios/correo/{usuario.CorreoElectronico}"); //Esto es por si este usuario estaba en la base de datos ya, aunque procuro borrarlo luego
+                var userResp = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
+                Assert.That(userResp.IsSuccessStatusCode, Is.True);
+
+                var asignarResp = await _client.PutAsJsonAsync(
+                    $"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/roles",
+                    new List<string> { rol.Nombre }
+                );
+                Assert.That(asignarResp.IsSuccessStatusCode, Is.True);
+
+                var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/rol/{rol.Id}");
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+
                 var body = await response.Content.ReadAsStringAsync();
-                Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
-                BorrarRol(rol.Id);
+                Assert.That(body, Is.Not.Null.And.Not.Empty);
+
+                await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuarios/correo/{usuario.CorreoElectronico}");
             }
             catch (Exception ex)
             {
@@ -71,15 +96,26 @@ namespace TestProjectMT
         public async Task EliminarRoldeUsuario()
         {
             try
-            {//UsuarioRol usuarioRol = new UsuarioRol(345, "flipanteemail@gmail.com"); Post no encontrado
-                Rol rol = new Rol(0, "RolPrueba2", "Rol de prueba para test");
-                string emailEjemplo = "ejemplooo12069023847@gmail.com";
-                var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
-                var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-                Assert.That(creado.Id, Is.GreaterThan(0));
-                var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/{creado.Id}/{emailEjemplo}");
+            {
+                var obtenerRoles = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles");
+                Assert.That(obtenerRoles.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
+
+                var roles = await obtenerRoles.Content.ReadFromJsonAsync<List<Rol>>();
+                Assert.That(roles, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
+
+                var rol = roles[2];
+
+                Usuario usuario = new Usuario("prueba@correo.com", "Fausto", "contraseña123");
+                var userResp = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/usuarios", usuario);
+
+                var asignarResp = await _client.PutAsJsonAsync(
+                    $"{UrlMT.getUrl(currentServer)}/usuarios/{usuario.CorreoElectronico}/roles",
+                    new List<string> { rol.Nombre }
+                );
+                Assert.That(asignarResp.IsSuccessStatusCode, Is.True);
+                var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuario-roles/{rol.Id}/{usuario.CorreoElectronico}");
                 Assert.That(response.IsSuccessStatusCode, Is.True);
-                BorrarRol(creado.Id);
+                _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/usuarios/correo/{usuario.CorreoElectronico}");
             }
             catch (Exception ex)
             {

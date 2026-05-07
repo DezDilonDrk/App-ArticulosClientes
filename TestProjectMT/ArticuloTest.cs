@@ -97,7 +97,7 @@ namespace TestProjectMT
             }
         }
         [Test]
-        public async Task ActualizarArticulo() //TO DO solo queda el problema del id = 0
+        public async Task ActualizarArticulo()
         {
             try {Articulo articulo = await NewArticulo();
             await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);

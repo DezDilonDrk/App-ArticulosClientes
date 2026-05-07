@@ -11,9 +11,11 @@ namespace TestProjectMT
     public class PedidoTest : BaseTest
     {
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
+            await UserSession.GenerateToken();
             _client = new HttpClient();
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
         }
         private async Task<Pedido> NewPedido() {
             Pedido pedido = new Pedido("690D35EF-D847-47C8-BF0F-A7F7BADD28E1", "12345678A", "Fausterico", "PruebaPal", "Abierto", 21, DateTime.Now);

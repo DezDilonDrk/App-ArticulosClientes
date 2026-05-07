@@ -10,7 +10,7 @@ namespace TestProjectMT
     public class UsuarioTest : BaseTest
     {
         [SetUp]
-        public async void Setup()
+        public async Task Setup()
         {
             await UserSession.GenerateToken();
             _client = new HttpClient();

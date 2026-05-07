@@ -7,14 +7,14 @@ namespace SesionMT
 {
     public static class UserSession
     {
-        public static string token = "";
+        public static string token = null;
         //Sustituir lo del front por esto, para usarlo aquí y en Test
         public static async Task<string> GenerateToken()
         {
-            if (!String.IsNullOrEmpty(token))
+            /*if (!String.IsNullOrEmpty(token))
             {
                 return token;
-            }
+            }*/
             var client = new HttpClient();
             client.BaseAddress = new Uri(UrlMT.getUrl("local"));
 

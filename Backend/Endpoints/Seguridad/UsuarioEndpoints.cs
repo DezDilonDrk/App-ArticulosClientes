@@ -69,7 +69,7 @@ public static class UsuarioEndpoints
 
             return Results.Ok(new LoginResponse
             {
-                Token = token,
+                token = token,
                 Roles = roles,
                 Usuario = usuario
             });
