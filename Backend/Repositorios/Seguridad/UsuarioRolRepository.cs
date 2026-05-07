@@ -38,7 +38,7 @@ namespace Articulos_Backend.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string sql = "SELECT RolId, UsuarioEmail FROM UsuarioRoles WHERE rol_id = @RolId";
+                string sql = "SELECT RolId, UsuarioEmail FROM UsuarioRoles WHERE RolId = @RolId";
                 return db.Query<UsuarioRol>(sql, new { RolId = rolId }).ToList();
             }
         }
