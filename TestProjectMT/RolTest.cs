@@ -9,26 +9,20 @@ namespace TestProjectMT
 {
     public class RolTest : BaseTest
     {
-        [SetUp]
+        string currentServer = "";
+        [OneTimeSetUp]
         public async Task Setup()
         {
-            await UserSession.GenerateToken();
-            _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
-        }
-        [TearDown]
-        public void Cleanup()
-        {
-            _client.Dispose();
+            await this.Init(UrlMT.serverLocal);
         }
         private async void BorrarRol(int id)
         {
-            _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/roles/{id}");
+            this.mySession.GetClient().DeleteAsync($"/roles/{id}");
         }
         [Test]
         public async Task ObtenerRoles()
         {
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles");
+            var response = await this.mySession.GetClient().GetAsync($"/roles");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
@@ -38,7 +32,7 @@ namespace TestProjectMT
         {
             try
             {
-                var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/nombres");
+                var response = await this.mySession.GetClient().GetAsync($"/roles/nombres");
                 Assert.That(response.IsSuccessStatusCode, Is.True);
                 var body = await response.Content.ReadAsStringAsync();
                 Assert.That(body, Is.Not.Empty);
@@ -52,9 +46,9 @@ namespace TestProjectMT
         public async Task ObtenerPorId()
         {
             try{Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
-            var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
+            var previo = await this.mySession.GetClient().PostAsJsonAsync($"/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-            var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}");
+            var response = await this.mySession.GetClient().GetAsync($"/roles/{creado.Id}");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
@@ -66,7 +60,7 @@ namespace TestProjectMT
         public async Task CrearRol()
         {
             try{Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/roles", rol);
+            var response = await this.mySession.GetClient().PostAsJsonAsync($"/roles", rol);
             var creado = await response.Content.ReadFromJsonAsync<Rol>();
             BorrarRol(creado.Id);
             Assert.That(response.IsSuccessStatusCode, Is.True);
@@ -81,9 +75,9 @@ namespace TestProjectMT
         public async Task ActualizarRol()
         {
             try{Rol rol = new Rol(987, "RolPrueba", "Rol de prueba para test");
-            var previo =await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
+            var previo =await this.mySession.GetClient().PostAsJsonAsync($"/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}", rol);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/roles/{creado.Id}", rol);
             BorrarRol(creado.Id);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
@@ -96,9 +90,9 @@ namespace TestProjectMT
         public async Task EliminarRol()
         {
             try{Rol rol = new Rol(0, "RolPrueba2", "Rol de prueba para test");
-            var previo = await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/roles", rol);
+            var previo = await this.mySession.GetClient().PostAsJsonAsync($"/roles", rol);
             var creado = await previo.Content.ReadFromJsonAsync<Rol>();
-            var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/roles/{creado.Id}");
+            var response = await this.mySession.GetClient().DeleteAsync($"/roles/{creado.Id}");
             Assert.That(response.IsSuccessStatusCode, Is.True);}
             catch (Exception ex){
                 Assert.Fail($"Excepción al eliminar rol: {ex.Message}");

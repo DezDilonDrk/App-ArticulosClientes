@@ -9,17 +9,15 @@ namespace TestProjectMT
 {
     public class ArticuloTest : BaseTest
     {
-        [SetUp]
+        string currentServer = "";
+        [OneTimeSetUp]
         public async Task Setup()
         {
-           await UserSession.GenerateToken();
-            _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
+           await this.Init(UrlMT.serverLocal);
         }
         [TearDown]
         public void Cleanup()
         {
-            _client.Dispose();
         }
         private async Task<Articulo> NewArticulo()
         {
@@ -28,12 +26,12 @@ namespace TestProjectMT
         }
         private async void BorrarArticulo(string id)
         {
-            _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/articulos/{id}");
+            this.mySession.GetClient().DeleteAsync($"/articulos/{id}");
         }
         [Test]
         public async Task ObtenerArticulos()
         {
-            try { var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/articulos");
+            try { var response = await this.mySession.GetClient().GetAsync($"/articulos");
                 Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
                 var body = await response.Content.ReadAsStringAsync();
                 Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
@@ -45,7 +43,7 @@ namespace TestProjectMT
         [Test]
         public async Task BuscarArticuloPorNombre()
         {
-            try {var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/articulos?Nombre=Federico");
+            try {var response = await this.mySession.GetClient().GetAsync($"/articulos?Nombre=Federico");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);
@@ -57,7 +55,7 @@ namespace TestProjectMT
         public async Task CrearArticulo()
         {
             try { Articulo articulo = await NewArticulo();
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
+            var response = await this.mySession.GetClient().PostAsJsonAsync($"/articulos", articulo);
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -72,8 +70,8 @@ namespace TestProjectMT
             try
             {
                 Articulo articulo = await NewArticulo();
-                await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
-                var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
+                await this.mySession.GetClient().PostAsJsonAsync($"/articulos", articulo);
+                var response = await this.mySession.GetClient().PostAsJsonAsync($"/articulos", articulo);
                 Assert.That(response.IsSuccessStatusCode, Is.False);
                 var body = await response.Content.ReadAsStringAsync();
                 Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -88,7 +86,7 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerClientePorDni()
         {
-            try {var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/clientes/12345678Z");
+            try {var response = await this.mySession.GetClient().GetAsync($"/clientes/12345678Z");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body.Contains("id"), Is.True);
@@ -100,8 +98,8 @@ namespace TestProjectMT
         public async Task ActualizarArticulo()
         {
             try {Articulo articulo = await NewArticulo();
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
-            var response = await _client.PutAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos/{articulo.id}", articulo);
+            await this.mySession.GetClient().PostAsJsonAsync($"/articulos", articulo);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{articulo.id}", articulo);
             response.EnsureSuccessStatusCode();
             Assert.That(response.IsSuccessStatusCode, Is.True);
             BorrarArticulo(articulo.id);
@@ -114,9 +112,9 @@ namespace TestProjectMT
         public async Task EliminarArticulo() //TO DO solo queda el problema del id = 0
         {
             try {Articulo articulo = await NewArticulo();
-            var created = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/articulos", articulo);
+            var created = await this.mySession.GetClient().PostAsJsonAsync($"/articulos", articulo);
             Assert.That(created.IsSuccessStatusCode, Is.True);
-            var response = await _client.DeleteAsync($"{UrlMT.getUrl(currentServer)}/articulos/{articulo.id}");
+            var response = await this.mySession.GetClient().DeleteAsync($"/articulos/{articulo.id}");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             } catch (Exception ex){
                 Assert.Fail($"Excepción al eliminar artículo: {ex.Message}");

@@ -10,30 +10,24 @@ namespace TestProjectMT
 {
     public class PedidoTest : BaseTest
     {
-        [SetUp]
-        public async Task Setup()
+		string currentServer = "";
+		[OneTimeSetUp]
+		public async Task Setup()
         {
-            await UserSession.GenerateToken();
-            _client = new HttpClient();
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserSession.token);
-        }
+            await this.Init(UrlMT.serverLocal);
+		}
         private async Task<Pedido> NewPedido() {
             Pedido pedido = new Pedido("690D35EF-D847-47C8-BF0F-A7F7BADD28E1", "12345678A", "Fausterico", "PruebaPal", "Abierto", 21, DateTime.Now);
             return pedido; 
         }
         private async void BorrarPedido(string id_pedido)
         {
-            _client.DeleteAsync($"{UrlMT.getUrl("local")}/pedidos/{id_pedido}");
-        }
-        [TearDown]
-        public void Cleanup()
-        {
-            _client.Dispose();
+            this.mySession.GetClient().DeleteAsync($"/pedidos/{id_pedido}");
         }
         [Test]
         public async Task ObtenerPedidos()
         {
-            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos/");
+            try{var response = await this.mySession.GetClient().GetAsync($"/pedidos/");
             Assert.That(response.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty, "El cuerpo está vacío");
@@ -46,7 +40,7 @@ namespace TestProjectMT
         public async Task CrearPedido()
         {
             try { Pedido pedido = await NewPedido();
-                var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
+                var response = await this.mySession.GetClient().PostAsJsonAsync($"/pedidos", pedido);
                 Assert.That(response.IsSuccessStatusCode, Is.True);
                 var body = await response.Content.ReadAsStringAsync();
                 Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -61,8 +55,8 @@ namespace TestProjectMT
         public async Task CrearMismoPedido()
         {
             try{Pedido pedido = new Pedido("690D35EF-D847-47C8-BF0F-A7F7BADD28E1", "12345678A", "Fausterico", "PruebaPal", "Abierto", 21, DateTime.Now);
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/pedidos", pedido);
-            var response = await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
+            await this.mySession.GetClient().PostAsJsonAsync($"/pedidos", pedido);
+            var response = await this.mySession.GetClient().PostAsJsonAsync($"/pedidos", pedido);
             Assert.That(response.IsSuccessStatusCode, Is.False);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -74,7 +68,7 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerPedidosPorNombreCliente()
         {
-            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos?Nombre=Federico");
+            try{var response = await this.mySession.GetClient().GetAsync($"/pedidos?Nombre=Federico");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);
@@ -86,8 +80,8 @@ namespace TestProjectMT
         public async Task ObtenerPedidoPorId()
         {
             try { Pedido pedido = await NewPedido();
-                await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/pedidos", pedido);
-                var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos/{pedido.id_pedido}");
+                await this.mySession.GetClient().PostAsJsonAsync($"/pedidos", pedido);
+                var response = await this.mySession.GetClient().GetAsync($"/pedidos/{pedido.id_pedido}");
                 Assert.That(response.IsSuccessStatusCode, Is.True);
                 var body = await response.Content.ReadAsStringAsync();
                 Assert.That(body.Contains("id_pedido"), Is.True);
@@ -100,7 +94,7 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerPorDniCliente()
         {
-            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos/cliente?dni=12345678A");
+            try{var response = await this.mySession.GetClient().GetAsync($"/pedidos/cliente?dni=12345678A");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Null.And.Not.Empty);
@@ -111,7 +105,7 @@ namespace TestProjectMT
         [Test]
         public async Task ObtenerArticulosPorPedido()
         {
-            try{var response = await _client.GetAsync($"{UrlMT.getUrl(currentServer)}/pedidos/pruebaDelTestN2/articulos");
+            try{var response = await this.mySession.GetClient().GetAsync($"/pedidos/pruebaDelTestN2/articulos");
             Assert.That(response.IsSuccessStatusCode, Is.True);
 
             var body = await response.Content.ReadAsStringAsync();
@@ -126,10 +120,10 @@ namespace TestProjectMT
             try
             {
                 Pedido pedido = new Pedido("690D35EF-D847-47C8-BF0F-A7F7BADD28E1", "12345678A", "Fausterico", "PruebaPal", "Abierto", 21, DateTime.Now);
-                await _client.PostAsJsonAsync($"{UrlMT.getUrl(currentServer)}/pedidos", pedido);
-                var json = "{\"id_pedido\":\"pruebaDelTestN3\",\"id_cliente\":\"690D35EF-D847-47C8-BF0F-A7F7BADD28E1\",\"dni_cliente\":\"12345678A\",\"metodo_pago\":\"Tarjeta\",\"fecha_rectificacion\":\"2024-01-02\",\"estado\":\"Enviado\",\"porcentaje_impuestos\":21,\"fecha_envio\":\"2024-01-03\",\"articulos\":[]}";
+                await this.mySession.GetClient().PostAsJsonAsync($"/pedidos", pedido);
+                var json = "{\"id_pedido\":\"pruebaDelTestN3\",\"idthis.mySession.GetClient()e\":\"690D35EF-D847-47C8-BF0F-A7F7BADD28E1\",\"dnithis.mySession.GetClient()e\":\"12345678A\",\"metodo_pago\":\"Tarjeta\",\"fecha_rectificacion\":\"2024-01-02\",\"estado\":\"Enviado\",\"porcentaje_impuestos\":21,\"fecha_envio\":\"2024-01-03\",\"articulos\":[]}";
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await _client.PutAsync($"{UrlMT.getUrl(currentServer)}/pedidos/1", content);
+                var response = await this.mySession.GetClient().PutAsync($"/pedidos/1", content);
                 Assert.That(response.IsSuccessStatusCode, Is.True);
                 BorrarPedido(pedido.id_pedido);
             }
@@ -142,8 +136,8 @@ namespace TestProjectMT
         public async Task EliminarPedido()
         {
             try{Pedido pedido = await NewPedido();
-            await _client.PostAsJsonAsync($"{UrlMT.getUrl("local")}/pedidos", pedido);
-            var response = await _client.DeleteAsync($"{UrlMT.getUrl("local")}/pedidos/{pedido.id_pedido}");
+            await this.mySession.GetClient().PostAsJsonAsync($"/pedidos", pedido);
+            var response = await this.mySession.GetClient().DeleteAsync($"/pedidos/{pedido.id_pedido}");
             Assert.That(response.IsSuccessStatusCode, Is.True);
             } catch (Exception ex){
                 Assert.Fail($"Excepción al eliminar pedido: {ex.Message}");

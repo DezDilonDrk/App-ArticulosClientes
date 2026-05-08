@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SesionMT;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,11 @@ namespace TestProjectMT
 {
     public class BaseTest
     {
-        protected HttpClient _client;
-        protected string currentServer = "local";
+        protected UserSession mySession;
+        public async Task Init(string currentServer)
+        {
+            this.mySession = new UserSession(currentServer);
+            await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        }
     }
 }
