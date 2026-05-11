@@ -24,7 +24,6 @@ namespace SesionMT
             this.client = new HttpClient();
             token = await GenerateToken();
             this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
         }
 
         //Sustituir lo del front por esto, para usarlo aquí y en Test

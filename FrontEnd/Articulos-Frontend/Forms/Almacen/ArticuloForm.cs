@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Articulos_Frontend.Client;
+using Articulos_Frontend.LogConfig;
+using Articulos_Frontend.Theme;
+using MTCore_AC.Entidades;
+using SesionMT;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Theme;
-using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend;
 
@@ -27,6 +28,7 @@ public partial class ArticuloForm : Form
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         //repo = new ArticuloRepository(connStr);
         api = new ArticuloApiClient();
+        panelFiltros.Visible = false;
         StyleManager.StyleForm(this);
         user = usuario;
         usuarioActual.Text = $"Usuario: {user.CorreoElectronico}";
@@ -41,6 +43,7 @@ public partial class ArticuloForm : Form
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         //repo = new ArticuloRepository(connStr);
         api = new ArticuloApiClient();
+        panelFiltros.Visible = false;
         StyleManager.StyleForm(this);
         user = new Usuario("Guest Mode ON", "Guest", "Guest2026");
         usuarioActual.Text = $"Usuario: {user.CorreoElectronico}";
@@ -50,10 +53,11 @@ public partial class ArticuloForm : Form
         Log.Info("Formulario de artículos iniciado en modo Guest");
     }
 
-    private void ArticuloForm_Load(object sender, EventArgs e)
+    private async void ArticuloForm_Load(object sender, EventArgs e)
     {
         try
         {
+            await api.InitAsync(UrlMT.serverLocal);
             Log.Info("Cargando artículos en el formulario.");
             cargarArticulos(null);
             panelFiltros.Visible = false;

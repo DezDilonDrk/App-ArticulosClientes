@@ -1,6 +1,7 @@
 ﻿using Articulos_Frontend;
 using Articulos_Frontend.LogConfig;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -8,32 +9,23 @@ using System.Net.Sockets;
 
 public class ArticuloApiClient
 {
-    private readonly HttpClient httpClient;
+    UserSession mySession;
 
-    public ArticuloApiClient()
+    public ArticuloApiClient() {}
+    public async Task InitAsync(string currentServer)
     {
-        try {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(AppState.getServer());
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
-        } catch { 
-            Log.Error("No se pudo conectar al servidor API.");
-             throw new Exception("Error al conectar con el servidor API.");
-        }
+        this.mySession = new UserSession(currentServer);
+        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
     public async Task<List<Articulo>> ObtenerArticulos()
     {
         try {
-            
-
-            var response = await httpClient.GetAsync("/articulos");
-
+            var response = await this.mySession.GetClient().GetAsync("/articulos");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener artículos: {response.StatusCode}");
                 throw new Exception($"Error API: {response.StatusCode}");
             }
-
             return await response.Content.ReadFromJsonAsync<List<Articulo>>() ?? new List<Articulo>();
         } catch(HttpRequestException ex)
         {
@@ -64,7 +56,7 @@ public class ArticuloApiClient
     {
         try
         {
-            var response = await httpClient.GetAsync($"/articulos/{id}");
+            var response = await this.mySession.GetClient().GetAsync($"/articulos/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
@@ -106,7 +98,7 @@ public class ArticuloApiClient
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync("/articulos", articulo);
+            var response = await this.mySession.GetClient().PostAsJsonAsync("/articulos", articulo);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al crear artículo: {response.StatusCode}");
@@ -144,7 +136,7 @@ public class ArticuloApiClient
     {
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"/articulos/{id}", articulo);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
             response.EnsureSuccessStatusCode();
 
         }catch(HttpRequestException ex)
@@ -178,7 +170,7 @@ public class ArticuloApiClient
     {
         try
         {
-            var response = await httpClient.DeleteAsync($"/articulos/{id}");
+            var response = await this.mySession.GetClient().DeleteAsync($"/articulos/{id}");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al eliminar artículo: {response.StatusCode}");

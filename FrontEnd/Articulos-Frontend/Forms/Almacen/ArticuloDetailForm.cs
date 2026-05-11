@@ -95,7 +95,6 @@ namespace Articulos_Frontend
                     Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
                     alerta.ShowDialog();
                     return;
-
                 }
                 return;
             }

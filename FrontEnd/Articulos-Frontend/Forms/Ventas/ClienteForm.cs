@@ -3,6 +3,7 @@ using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -339,10 +340,11 @@ public partial class ClienteForm : Form
         BuscarNombre.PerformLayout();
         ResumeLayout(false);
     }
-    private void ClienteForm_Load(object sender, EventArgs e)
+    private async void ClienteForm_Load(object sender, EventArgs e)
     {
         try
         {
+            await ClienteApiClient.InitAsync(UrlMT.serverLocal);
             Log.Info("Cargando clientes en el formulario.");
             buscarClientes(null);
             RegistrarClicks(this);

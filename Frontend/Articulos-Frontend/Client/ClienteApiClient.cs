@@ -1,10 +1,11 @@
-﻿using MTCore_AC.Entidades;
+﻿using Articulos_Frontend.LogConfig;
+using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using Articulos_Frontend.LogConfig;
 using System.Net.Sockets;
 using System.Text;
 using static System.Net.WebRequestMethods;
@@ -13,31 +14,23 @@ namespace Articulos_Frontend.Client
 {
     internal class ClienteApiClient
     {
-        private readonly HttpClient httpClient;
-        public ClienteApiClient()
+        UserSession mySession;
+        public ClienteApiClient(){}
+        public async Task InitAsync(string currentServer)
         {
-            try
-            {
-                httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(AppState.getServer());
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
-            }
-            catch
-            {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
-            }
+            this.mySession = new UserSession(currentServer);
+            await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<List<Cliente>>("/clientes");
-            }catch (HttpRequestException ex)
+                return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>("/clientes");
+            }catch(HttpRequestException ex)
             {
                 Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
                 throw;
-            }catch (SocketException ex)
+            }catch(SocketException ex)
             {
                 Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
                 throw;
@@ -46,7 +39,7 @@ namespace Articulos_Frontend.Client
                 Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
                 throw;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Log.Error("No se pudo conectar al servidor API.");
                 throw;
@@ -56,7 +49,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
+                return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
             }
             catch (HttpRequestException ex)
             {
@@ -83,7 +76,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<Cliente>($"/clientes/{dni}");
+                return await this.mySession.GetClient().GetFromJsonAsync<Cliente>($"/clientes/{dni}");
             }catch (HttpRequestException ex)
             {
                 Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
@@ -109,7 +102,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                await httpClient.PostAsJsonAsync("/clientes", cliente);
+                await this.mySession.GetClient().PostAsJsonAsync("/clientes", cliente);
             }catch (HttpRequestException ex)
             {
                 Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
@@ -135,7 +128,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                var response = await httpClient.PutAsJsonAsync($"/clientes/{dni}", cliente);
+                var response = await this.mySession.GetClient().PutAsJsonAsync($"/clientes/{dni}", cliente);
                 return response.IsSuccessStatusCode;
             }catch (HttpRequestException ex)
             {
@@ -162,7 +155,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                await httpClient.DeleteAsync($"/clientes/{dni}");
+                await this.mySession.GetClient().DeleteAsync($"/clientes/{dni}");
             }catch (HttpRequestException ex)
             {
                 Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
