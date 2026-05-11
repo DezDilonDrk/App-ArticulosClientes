@@ -3,6 +3,7 @@ using Articulos_Frontend.Forms.main;
 using Articulos_Frontend.Forms.Seguridad;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
+using SesionMT;
 using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend

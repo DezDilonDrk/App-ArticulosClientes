@@ -1,37 +1,34 @@
 ﻿using Articulos_Frontend.LogConfig;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 
 namespace Articulos_Frontend.Client;
 
-internal class PedidoApiClient
+public class PedidoApiClient
 {
-    private readonly HttpClient httpClient;
-    public PedidoApiClient()
+    UserSession mySession;
+    public PedidoApiClient(){}
+    public async Task InitAsync(string currentServer)
     {
-        try
-        {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(AppState.getServer());
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-            throw;
-        }
+        this.mySession = new UserSession(currentServer);
+        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+    }
+    public UserSession GetSession()
+    {
+        return this.mySession;
     }
     public async Task<List<Pedido>> ObtenerPedidos()
     {
         try
         {
-            return await httpClient.GetFromJsonAsync<List<Pedido>>("/pedidos");
+            return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>("/pedidos");
         }catch (HttpRequestException ex)
         {
             Log.Error($"Error al conectar con el servidor API: {ex.Message}");
@@ -55,7 +52,7 @@ internal class PedidoApiClient
     {
         try
         {
-            return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/{id}");
+            return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/{id}");
         }catch (HttpRequestException ex)
         {
             Log.Error($"Error al conectar con el servidor API: {ex.Message}");
@@ -81,7 +78,7 @@ internal class PedidoApiClient
     {
         try
         {
-            return await httpClient.GetFromJsonAsync<Pedido>($"/pedidos/cliente?dni={dni}");
+            return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/cliente?dni={dni}");
         }catch(HttpRequestException ex) 
         {
             Log.Error($"Error al conectar con el servidor API: {ex.Message}");
@@ -107,7 +104,7 @@ internal class PedidoApiClient
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync("/pedidos", pedido);
+            var response = await this.mySession.GetClient().PostAsJsonAsync("/pedidos", pedido);
             string contenido = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -134,7 +131,7 @@ internal class PedidoApiClient
     {
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"/pedidos/{id}", pedido);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/pedidos/{id}", pedido);
             return response.IsSuccessStatusCode;
         }catch (HttpRequestException ex)
         {
@@ -156,7 +153,7 @@ internal class PedidoApiClient
     {
         try
         {
-            await httpClient.DeleteAsync($"/pedidos/{id}");
+            await this.mySession.GetClient().DeleteAsync($"/pedidos/{id}");
         }catch (HttpRequestException ex)
         {
             Log.Error($"Error al conectar con el servidor API: {ex.Message}");
@@ -180,7 +177,7 @@ internal class PedidoApiClient
             for (int i = 0; i < articulos.ToArray().Length; i++)
             {
                 PedidoArticulos articulo = articulos[i];
-                await httpClient.PostAsJsonAsync("/pedidos/articulo", articulo);
+                await this.mySession.GetClient().PostAsJsonAsync("/pedidos/articulo", articulo);
             }
         }catch (HttpRequestException ex)
         {
@@ -202,7 +199,7 @@ internal class PedidoApiClient
     {
         try
         {
-            return await httpClient.GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
+            return await this.mySession.GetClient().GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
         }catch (HttpRequestException ex)
         {
             Log.Error($"Error al conectar con el servidor API: {ex.Message}");
@@ -228,7 +225,7 @@ internal class PedidoApiClient
     {
         try
         {
-            return await httpClient.GetFromJsonAsync<List<Pedido>>($"/pedidos?Nombre={nombre}");
+            return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos?Nombre={nombre}");
         }
         catch (Exception ex)
         {

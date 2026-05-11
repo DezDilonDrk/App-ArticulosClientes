@@ -10,12 +10,14 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using MTCore_AC.Entidades;
+using SesionMT;
 
 namespace Articulos_Frontend
 {
     public partial class PedidoDetailForm : Form
     {
         private PedidoApiClient pedidoApiClient;
+        private UserSession mySession;
         private string state;
         private ClienteApiClient clienteApiClient = new ClienteApiClient();
         private ArticuloApiClient articuloApiClient = new ArticuloApiClient();
@@ -23,7 +25,7 @@ namespace Articulos_Frontend
         public event Action<Pedido> PedidoModificadoCorrectamente;
         BindingList<LineaPedido> articulos = new BindingList<LineaPedido> { };
         private StringValuesSP stringValuesSP = new StringValuesSP();
-        public PedidoDetailForm(string State, Pedido pedido = null)
+        public PedidoDetailForm(string State, PedidoApiClient pedidoApiClient, Pedido pedido = null)
         {
             InitializeComponent();
             var menu = this.Owner as Menu;
@@ -36,7 +38,8 @@ namespace Articulos_Frontend
             comboBoxImpuestos.DataSource = impuestos;
             comboBoxMetodoPago.DataSource = metodosPago;
             comboBoxEstado.DataSource = estados;
-            pedidoApiClient = new PedidoApiClient();
+            this.mySession = pedidoApiClient.GetSession();
+            this.pedidoApiClient = pedidoApiClient;
             if (state == "Create")
             {
                 BotonCrearC.Text = stringValuesSP.crear;
@@ -587,6 +590,7 @@ namespace Articulos_Frontend
                     Log.Info($"Cliente seleccionado para el pedido con Dni: {form.DniSeleccionado}");
                     textBoxDniCliente.Text = form.DniSeleccionado.ToString();
                     textBoxIdCliente.Text = form.IdSeleccionado.ToString();
+                    textBoxNombreCliente.Text = form.NombreSeleccionado.ToString();
                     Log.Info($"Cliente seleccionado para pedido con Dni: {form.DniSeleccionado}");
                 }
             }
@@ -744,6 +748,9 @@ namespace Articulos_Frontend
             textBoxNombreCliente.Enabled = false;
             button2.Enabled = false;
             button3.Enabled = false;
+            await clienteApiClient.InitAsync(UrlMT.serverLocal);
+            await pedidoApiClient.InitAsync(UrlMT.serverLocal);
+            await articuloApiClient.InitAsync(UrlMT.serverLocal);
             if (state == "Update")
             {
                 var articulosPedido = await pedidoApiClient.ObtenerArticulosDePedido(pedidoCreated.id_pedido);

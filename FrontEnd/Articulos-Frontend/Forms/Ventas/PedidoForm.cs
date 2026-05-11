@@ -2,6 +2,7 @@
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,16 +46,18 @@ namespace Articulos_Frontend
                 FiltroEstadoPedido.Enabled = false;
                 this.Text = stringValuesSP.listaEnvios;
             }
-            dgvPedido.DataSource = PedidoApiClient.ObtenerPedidos();
             Log.Info("Formulario de pedidos iniciado.");
         }
         private async void PedidosForm_Load(object sender, EventArgs e)
         {
             try
             {
+                this.Enabled = false;
+				await PedidoApiClient.InitAsync(UrlMT.serverLocal);
                 Log.Info("Cargando pedidos en el formulario.");
-                await buscarPedidos(null);
-                RegistrarClicks(this);
+				await buscarPedidos(null);
+                this.Enabled = true;
+				RegistrarClicks(this);
             }catch (Exception ex)
             {
                 Log.Error("Error al cargar los pedidos en el formulario.", ex);
@@ -221,13 +224,13 @@ namespace Articulos_Frontend
         private async void BotonMasC_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario para crear un nuevo pedido.");
-            var formNuevo = new PedidoDetailForm("Create");
+            var formNuevo = new PedidoDetailForm("Create", PedidoApiClient, null);
 
             formNuevo.PedidoModificadoCorrectamente += async pedido =>
             {
                 if (pedido.id_pedido != null)
                 {
-                    var actualizarForm = new PedidoDetailForm("Update");
+                    var actualizarForm = new PedidoDetailForm("Update", PedidoApiClient, pedido);
                     Log.Warn("Si entra por aquí");
                     WindowManager.ShowForm(
                     $"{pedido.id_pedido}_Actualizar",
@@ -238,7 +241,7 @@ namespace Articulos_Frontend
                     };
                 }
             };
-            var pedidoDetailForm = new PedidoDetailForm("Create");
+            var pedidoDetailForm = new PedidoDetailForm("Create", PedidoApiClient, null);
             WindowManager.ShowForm(
                 "Pedido_Nuevo",
                 this,
@@ -273,7 +276,7 @@ namespace Articulos_Frontend
             {
                 string id = dgvPedido.Rows[e.RowIndex].Cells["id_pedido"].Value.ToString();
                 Pedido pedido = await PedidoApiClient.BuscarPorIdPedido(id);
-                var formActualizado = new PedidoDetailForm("Update", pedido);
+                var formActualizado = new PedidoDetailForm("Update", PedidoApiClient,  pedido);
                 WindowManager.ShowForm(
                         $"{id}_Actualizar",
                         this,

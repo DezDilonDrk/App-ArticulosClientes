@@ -9,15 +9,10 @@ namespace TestProjectMT
 {
     public class ArticuloTest : BaseTest
     {
-        string currentServer = "";
         [OneTimeSetUp]
         public async Task Setup()
         {
            await this.Init(UrlMT.serverLocal);
-        }
-        [TearDown]
-        public void Cleanup()
-        {
         }
         private async Task<Articulo> NewArticulo()
         {

@@ -68,8 +68,8 @@ namespace Articulos_Backend.Repositorios.Ventas
         {
             using (var db = Connection)
             {
-                string sql = @"INSERT INTO Pedidos (id_pedido, id_cliente,  dni_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos, fecha_envio)
-                           VALUES (@id_pedido, @id_cliente, @dni_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos, @fecha_envio)";
+                string sql = @"INSERT INTO Pedidos (id_pedido, id_cliente,  dni_cliente, nombre_cliente, metodo_pago, fecha_creacion, estado, porcentaje_impuestos, fecha_envio)
+                           VALUES (@id_pedido, @id_cliente, @dni_cliente, @nombre_cliente, @metodo_pago, @fecha_creacion, @estado, @porcentaje_impuestos, @fecha_envio)";
                 db.Execute(sql, pedido);
             }
         }

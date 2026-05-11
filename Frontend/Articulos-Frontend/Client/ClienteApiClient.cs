@@ -12,7 +12,7 @@ using static System.Net.WebRequestMethods;
 
 namespace Articulos_Frontend.Client
 {
-    internal class ClienteApiClient
+    public class ClienteApiClient
     {
         UserSession mySession;
         public ClienteApiClient(){}

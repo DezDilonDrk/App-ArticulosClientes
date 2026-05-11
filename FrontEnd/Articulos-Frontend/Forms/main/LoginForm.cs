@@ -30,6 +30,8 @@ public partial class LoginForm : Form
     }
     public async void loginButton_Click(object sender, EventArgs e)
     {
+        emailText.Text = "leandro.santilario@mthelmets.com";
+        contrasenaText.Text = "Leandro321";
         string email = emailText.Text;
         string contrasena = contrasenaText.Text;
 
@@ -44,12 +46,10 @@ public partial class LoginForm : Form
         try
         {
             var loginRequest = new LoginRequest { Email = email, Password = contrasena };
-
             var loginResponse = await api.LoginAsync(loginRequest);
-
             if (loginResponse != null)
             {
-                AppState.Token = loginResponse.Token;
+                AppState.Token = loginResponse.token;
                 AppState.Roles = loginResponse.Roles;
 
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");

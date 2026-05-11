@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Articulos_Frontend.Client
 {
-    internal class ConfiguracionApiClient
+    public class ConfiguracionApiClient
     {
         private readonly HttpClient httpClient;
         public ConfiguracionApiClient()
