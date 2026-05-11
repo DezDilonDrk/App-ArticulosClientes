@@ -1,6 +1,7 @@
 ﻿using Articulos_Frontend.Client;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,13 +23,12 @@ namespace Articulos_Frontend.Forms.Seguridad
             this.correo = correo;
             api = new UsuarioApiClient();
         }
-
-        public void CambiarContrasenaForm_Load(object sender, EventArgs e)
+        public async void CambiarContrasenaForm_Load(object sender, EventArgs e)
         {
+            await api.InitAsync(UrlMT.serverLocal);
             textBoxCorreo.Text = correo;
             textBoxCorreo.Enabled = false;
         }
-
         private async void buttonConfirm_Click(object sender, EventArgs e)
         {
             if(textBoxContrasena.Text != textBoxConfirmarContrasena.Text)

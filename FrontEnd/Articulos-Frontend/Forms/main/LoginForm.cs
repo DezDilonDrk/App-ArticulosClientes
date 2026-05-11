@@ -1,7 +1,9 @@
 ﻿using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
+using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +13,6 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows.Forms;
 using static MTCore_AC.DTO.LoginDtos;
-using MTCore_AC.DTO;
 
 namespace Articulos_Frontend;
 
@@ -30,8 +31,6 @@ public partial class LoginForm : Form
     }
     public async void loginButton_Click(object sender, EventArgs e)
     {
-        emailText.Text = "leandro.santilario@mthelmets.com";
-        contrasenaText.Text = "Leandro321";
         string email = emailText.Text;
         string contrasena = contrasenaText.Text;
 
@@ -108,6 +107,19 @@ public partial class LoginForm : Form
         if (e.KeyChar == (char)Keys.Enter)
         {
             loginButton_Click(sender, e);
+        }
+    }
+    public async void LoginForm_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            await api.InitAsync(UrlMT.serverLocal);
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error con el InitAsync del api en Login Form.", ex);
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Articulos_Frontend.Client;
+using Articulos_Frontend.LogConfig;
+using Articulos_Frontend.Theme;
+using MTCore_AC.Entidades;
+using SesionMT;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Articulos_Frontend.Client;
-using MTCore_AC.Entidades;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Theme;
 
 namespace Articulos_Frontend.Forms.Seguridad
 {
@@ -26,11 +27,12 @@ namespace Articulos_Frontend.Forms.Seguridad
             rolapi = api2;
             usuarioActual = usuario1;
             usuarioSeleccionado = usuario2;
-
         }
-
         public async void UsuarioDetailForm_Load(object sender, EventArgs e)
         {
+            this.Enabled = false;
+            await userapi.InitAsync(UrlMT.serverLocal);
+            await rolapi.InitAsync(UrlMT.serverLocal);
             Size = new Size(816, 421);
             await cargarRoles();
             if (usuarioSeleccionado != null)
@@ -56,9 +58,8 @@ namespace Articulos_Frontend.Forms.Seguridad
                 DataPropertyName = "seleccionado",
                 HeaderText = "Asignado",
             });
-
+            this.Enabled = true;
         }
-
         private void dataGridViewRoles_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             if (e.ColumnIndex == 1)

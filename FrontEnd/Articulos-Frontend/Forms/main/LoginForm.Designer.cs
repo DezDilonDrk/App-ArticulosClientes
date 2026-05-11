@@ -104,6 +104,7 @@
             Controls.Add(contrasenaText);
             Controls.Add(emailText);
             Controls.Add(pictureBox1);
+            Load += LoginForm_Load;
             Name = "LoginForm";
             Text = "LoginForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

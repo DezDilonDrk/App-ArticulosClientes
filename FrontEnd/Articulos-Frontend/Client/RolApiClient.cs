@@ -1,37 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Articulos_Frontend.LogConfig;
+﻿using Articulos_Frontend.LogConfig;
 using MTCore_AC.Entidades;
+using SesionMT;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 
 namespace Articulos_Frontend.Client;
 
 public class RolApiClient
 {
-    private readonly HttpClient httpClient;
+    UserSession mySession;
 
-    public RolApiClient()
+    public RolApiClient(){}
+    public async Task InitAsync(string currentServer)
     {
-        try
-        {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(AppState.getServer());
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
-        }
-        catch
-        {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
-        }
+        this.mySession = new UserSession(currentServer);
+        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
 
     public async Task<List<Rol>> ObtenerNombreRoles()
     {
         try
         {
-            var response = await httpClient.GetAsync("/roles/nombres");
+            var response = await this.mySession.GetClient().GetAsync("/roles/nombres");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener nombres de roles: {response.StatusCode}");
@@ -45,12 +38,11 @@ public class RolApiClient
             throw new Exception("Error al conectar con el servidor API.");
         }
     }
-
     public async Task<List<Rol>> ObtenerRoles()
     {
         try
         {
-            var response = await httpClient.GetAsync("/roles");
+            var response = await this.mySession.GetClient().GetAsync("/roles");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener roles: {response.StatusCode}");
@@ -74,7 +66,7 @@ public class RolApiClient
     {
         try
         {
-            var response = await httpClient.GetAsync($"/roles/{id}");
+            var response = await this.mySession.GetClient().GetAsync($"/roles/{id}");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener rol por ID: {response.StatusCode}");
@@ -98,7 +90,7 @@ public class RolApiClient
     {
         try
         {
-            var response = await httpClient.GetAsync($"/roles/nombre/{nombre}");
+            var response = await this.mySession.GetClient().GetAsync($"/roles/nombre/{nombre}");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener rol por nombre: {response.StatusCode}");
@@ -123,7 +115,7 @@ public class RolApiClient
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync("/roles", rol);
+            var response = await this.mySession.GetClient().PostAsJsonAsync("/roles", rol);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al crear rol: {response.StatusCode}");
@@ -140,12 +132,11 @@ public class RolApiClient
             throw;
         }
     }
-
     public async Task ActualizarRol(Rol rol)
     {
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"/roles/{rol.Id}", rol);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/roles/{rol.Id}", rol);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al actualizar rol: {response.StatusCode}");
@@ -167,7 +158,7 @@ public class RolApiClient
         {
         try
         {
-            var response = await httpClient.DeleteAsync($"/roles/{id}");
+            var response = await this.mySession.GetClient().DeleteAsync($"/roles/{id}");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al eliminar rol: {response.StatusCode}");
@@ -178,7 +169,6 @@ public class RolApiClient
         {
             Log.Error($"No se pudo conectar al servidor API para eliminar rol con ID: {id}.", ex);
             throw;
-
         }
         catch (Exception ex)
         {

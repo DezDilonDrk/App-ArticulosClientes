@@ -1,4 +1,7 @@
-﻿using Articulos_Frontend.Theme;
+﻿using Articulos_Frontend.Client;
+using Articulos_Frontend.LogConfig;
+using Articulos_Frontend.Theme;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,8 +9,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Client;
 
 namespace Articulos_Frontend.Forms.Seguridad
 {
@@ -22,12 +23,11 @@ namespace Articulos_Frontend.Forms.Seguridad
             api = apiRol;
             MinimumSize = new Size(800, 600);
         }
-
-        public void RolForm_Load(object sender, EventArgs e)
+        public async void RolForm_Load(object sender, EventArgs e)
         {
+            await api.InitAsync(UrlMT.serverLocal);
             cargarRoles();
         }
-
         public async void cargarRoles()
         {
             var roles = await api.ObtenerRoles();

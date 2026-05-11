@@ -1,6 +1,7 @@
 ﻿using Articulos_Frontend.LogConfig;
 using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
@@ -13,26 +14,18 @@ namespace Articulos_Frontend.Client;
 
 public class UsuarioApiClient
 {
-    private readonly HttpClient httpClient;
+    private UserSession mySession;
+    public UsuarioApiClient(){}
 
-    public UsuarioApiClient()
+    public async Task InitAsync(string currentServer)
     {
-        try
-        {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(AppState.getServer());
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
-        }
-        catch
-        {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw new Exception("Error al conectar con el servidor API.");
-        }
+        this.mySession = new UserSession(currentServer);
+        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
-        var response = await httpClient.PostAsJsonAsync("usuarios/login", request);
+        var response = await this.mySession.GetClient().PostAsJsonAsync("usuarios/login", request);
 
         if (!response.IsSuccessStatusCode)
             return null;
@@ -46,7 +39,7 @@ public class UsuarioApiClient
         try
         {
 
-            var response = await httpClient.GetAsync("/usuarios");
+            var response = await this.mySession.GetClient().GetAsync("/usuarios");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener usuarios: {response.StatusCode}");
@@ -80,7 +73,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.GetAsync($"/usuarios/{correo}/roles");
+            var response = await this.mySession.GetClient().GetAsync($"/usuarios/{correo}/roles");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -121,7 +114,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.GetAsync($"/usuarios/{Correo}");
+            var response = await this.mySession.GetClient().GetAsync($"/usuarios/{Correo}");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al obtener usuario por correo: {response.StatusCode}");
@@ -155,7 +148,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync("/usuarios", usuario);
+            var response = await this.mySession.GetClient().PostAsJsonAsync("/usuarios", usuario);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al crear usuario: {response.StatusCode}");
@@ -186,7 +179,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.DeleteAsync($"/usuarios/correo/{correo}");
+            var response = await this.mySession.GetClient().DeleteAsync($"/usuarios/correo/{correo}");
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al eliminar usuario: {response.StatusCode}");
@@ -217,7 +210,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"/usuarios", usuario);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios", usuario);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al actualizar usuario: {response.StatusCode}");
@@ -249,7 +242,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.PutAsJsonAsync(
+            var response = await this.mySession.GetClient().PutAsJsonAsync(
             $"/usuarios/{correo}/contrasena",
             new { NuevaContrasena = nuevaContrasena }
         );
@@ -286,7 +279,7 @@ public class UsuarioApiClient
     {
         try
         {
-            var response = await httpClient.PutAsJsonAsync($"/usuarios/{correo}/roles", roles);
+            var response = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios/{correo}/roles", roles);
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error al actualizar roles del usuario: {response.StatusCode}");

@@ -1,4 +1,8 @@
-﻿using Articulos_Frontend.Theme;
+﻿using Articulos_Frontend.Client;
+using Articulos_Frontend.LogConfig;
+using Articulos_Frontend.Theme;
+using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,9 +10,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Client;
-using MTCore_AC.Entidades;
 
 namespace Articulos_Frontend.Forms.Seguridad;
 
@@ -32,6 +33,7 @@ public partial class UsuarioForm : Form
         try
         {
             Log.Info("Cargando usuarios desde API.");
+            await api.InitAsync(UrlMT.serverLocal);
             await cargarUsuarios();
 
         }
