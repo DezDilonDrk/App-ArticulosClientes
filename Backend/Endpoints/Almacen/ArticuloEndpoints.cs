@@ -1,7 +1,6 @@
-﻿using Microsoft.Identity.Client;
-using MTCore_AC.Entidades;
+﻿using MTCore_AC.Entidades;
 using Articulos_Backend.JWT;
-using Articulos_Backend.Repositorios.Almacen;
+using MTNegocios.MTEndpoints.Almacen;
 
 namespace Articulos_Backend.Endpoints.Almacen;
 public static class ArticuloEndpoints
@@ -12,50 +11,50 @@ public static class ArticuloEndpoints
             new Articulo(2, "Smartphone", 499.99, "Electronics"),
             new Articulo(3, "Table", 199.99, "Furniture")
         }; */
-    public static WebApplication MapArticuloEndpoints(this WebApplication app, ArticuloRepository repo)
+    public static WebApplication MapArticuloEndpoints(this WebApplication app)
     {
 
-        app.MapGet("/articulos/{id}", (string id) =>
+        app.MapGet("/articulos/{id}", async (string id, ArticuloMethods methods) =>
         {
-            var articulo = repo.ObtenerPorId(id);
+            var articulo = await methods.ObtenerPorId(id);
             return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen))
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-        app.MapGet("/articulos", (string? nombre) =>
+        app.MapGet("/articulos", async (string? nombre, ArticuloMethods methods) =>
         {
-            if (string.IsNullOrWhiteSpace(nombre)) { return Results.Ok(repo.ObtenerArticulos()); }
-            var articulo = repo.ObtenerPorNombre(nombre) ?? throw new KeyNotFoundException("Artículo no encontrado");
+            if (string.IsNullOrWhiteSpace(nombre)) { return Results.Ok(await methods.ObtenerArticulos()); }
+            var articulo = await methods.ObtenerPorNombre(nombre) ?? throw new KeyNotFoundException("Artículo no encontrado");
             return Results.Ok(articulo);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen))
         .Produces<List<Articulo>>(StatusCodes.Status200OK)
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-        app.MapPost("/articulos", (Articulo articulo) =>
+        app.MapPost("/articulos", async (Articulo articulo, ArticuloMethods methods) =>
         {
-            //var existente = repo.ObtenerPorId(articulo.id);
+            //var existente = await methods.ObtenerPorId(articulo.id);
             //if (existente != null) { throw new InvalidOperationException($"Ya existe un artículo con id '{articulo.id}'"); }              
-            string id = repo.Insertar(articulo);
+            string id = await methods.Insertar(articulo);
             articulo.id = id;
             return Results.Created($"/articulos/{articulo.id}", articulo);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces<Articulo>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapPut("/articulos/{id}", (string id, Articulo updatedArticulo) =>
+        app.MapPut("/articulos/{id}", async (string id, Articulo updatedArticulo, ArticuloMethods methods) =>
         {
-            var existing = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
+            var existing = await methods.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             updatedArticulo.id = id;
-            repo.Actualizar(updatedArticulo);
-            var refreshed = repo.ObtenerPorId(id) ?? updatedArticulo;
+            await methods.Actualizar(updatedArticulo);
+            var refreshed = await methods.ObtenerPorId(id) ?? updatedArticulo;
             return Results.Ok(refreshed);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapDelete("/articulos/{id}", (string id) =>
+        app.MapDelete("/articulos/{id}", async (string id, ArticuloMethods methods) =>
         {
-            var articulo = repo.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
-            repo.Eliminar(id);
+            var articulo = await methods.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
+            await methods.Eliminar(id);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces(StatusCodes.Status204NoContent)
