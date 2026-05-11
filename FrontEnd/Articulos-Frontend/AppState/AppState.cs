@@ -1,4 +1,5 @@
 ﻿using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,8 +14,8 @@ public static class AppState
     public static List<string> Roles { get; set; } = new List<string>();
     private static string correo_usuario;
     private static ConfiguracionModel configuracion;
-    public static string serverLeandro = "http://PT-0057:5000";
-    public static string serverEmilio = "http://PT-0041:5000";
+    public static string serverLeandro = UrlMT.serverLeandro;
+    public static string serverEmilio = UrlMT.serverEmilio;
     public static string getCorreo()
     {
         return correo_usuario;
