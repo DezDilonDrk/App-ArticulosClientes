@@ -1,62 +1,61 @@
-﻿using Articulos_Backend.JWT;
-using Microsoft.AspNetCore.Identity.Data;
+﻿using Microsoft.AspNetCore.Identity.Data;
 using MTCore_AC.Entidades;
 using MTCore_AC.DTO;
 using static MTCore_AC.DTO.LoginDtos;
-using Articulos_Backend.Repositorios.Seguridad;
-using Microsoft.Identity.Client;
+using MTNegocios.MTEndpoints.Seguridad;
+using Articulos_Backend.JWT;
 
 namespace Articulos_Backend.Endpoints.Seguridad;
 
 public static class UsuarioEndpoints
 {
-    public static WebApplication MapUsuarioEndpoints(this WebApplication app, UsuarioRepository repo)
+    public static WebApplication MapUsuarioEndpoints(this WebApplication app)
     {
-        app.MapGet("/usuarios", () =>
+        app.MapGet("/usuarios", async (UsuarioMethods methods) =>
         {
-            var usuarios = repo.ObtenerUsuarios();
+            var usuarios = await methods.ObtenerUsuarios();
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<IEnumerable<Usuario>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapGet("/usuarios/{correoElectronico}/roles", (string correoElectronico) =>
+        app.MapGet("/usuarios/{correoElectronico}/roles",  async (string correoElectronico, UsuarioMethods methods) =>
         {
-            var roles = repo.ObtenerRolesPorUsuario(correoElectronico);
+            var roles = await methods.ObtenerRolesPorUsuario(correoElectronico);
             return Results.Ok(roles);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<IEnumerable<string>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapGet("/usuarios/correo/{correoElectronico}", (string correoElectronico) =>
+        app.MapGet("/usuarios/correo/{correoElectronico}", async (string correoElectronico, UsuarioMethods methods) =>
         {
-            var usuarios = repo.ObtenerPorCorreo(correoElectronico);
+            var usuarios = await methods.ObtenerPorCorreo(correoElectronico);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapGet("/usuarios/nombre/{nombre}", (string nombre) =>
+        app.MapGet("/usuarios/nombre/{nombre}", async (string nombre, UsuarioMethods methods) =>
         {
-            var usuarios = repo.ObtenerPorNombre(nombre);
+            var usuarios = await methods.ObtenerPorNombre(nombre);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapPost("/usuarios", (Usuario usuario) =>
+        app.MapPost("/usuarios",  async (Usuario usuario, UsuarioMethods methods) =>
         {
-            repo.Insertar(usuario);
+            await methods.Insertar(usuario);
             return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapPost("/usuarios/login", (MTCore_AC.DTO.LoginDtos.LoginRequest request) =>
+        app.MapPost("/usuarios/login", async (MTCore_AC.DTO.LoginDtos.LoginRequest request, UsuarioMethods methods) =>
         {
             var jwtService = app.Services.GetRequiredService<JwtService>();
 
-            var usuario = repo.ObtenerPorCorreo(request.Email);
+            var usuario = await methods.ObtenerPorCorreo(request.Email);
 
             if (usuario == null)
                 return Results.Unauthorized();
@@ -64,7 +63,7 @@ public static class UsuarioEndpoints
             if (!BCrypt.Net.BCrypt.Verify(request.Password,usuario.Contrasena))
                 return Results.Unauthorized();
 
-            var roles = repo.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
+            var roles = await methods.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
             var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles);
 
             return Results.Ok(new LoginResponse
@@ -75,33 +74,33 @@ public static class UsuarioEndpoints
             });
         });
 
-        app.MapPut("/usuarios", (Usuario usuario) =>
+        app.MapPut("/usuarios", async (Usuario usuario, UsuarioMethods methods) =>
         {
-            repo.Update(usuario);
+            await methods.Actualizar(usuario);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapPut("/usuarios/{correo}/contrasena", (string correo, CambiarContrasenaRequest request) =>
+        app.MapPut("/usuarios/{correo}/contrasena", async (string correo, CambiarContrasenaRequest request, UsuarioMethods methods) =>
         {
-            repo.ActualizarContrasena(correo, request.NuevaContrasena);
+            await methods.ActualizarContrasena(correo, request.NuevaContrasena);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapPut("/usuarios/{correoElectronico}/roles", (string correoElectronico, List<string> roles) =>
+        app.MapPut("/usuarios/{correoElectronico}/roles", async (string correoElectronico, List<string> roles, UsuarioMethods methods) =>
         {
-            repo.ActualizarRoles(correoElectronico, roles);
+            await methods.ActualizarRoles(correoElectronico, roles);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapDelete("/usuarios/correo/{correoElectronico}", (string correoElectronico) =>
+        app.MapDelete("/usuarios/correo/{correoElectronico}", async (string correoElectronico, UsuarioMethods methods) =>
         {
-            repo.Eliminar(correoElectronico);
+            await methods.Eliminar(correoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)

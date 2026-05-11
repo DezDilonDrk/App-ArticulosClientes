@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Elementos de la solución/" />
   <Project Path="../MTACCore/MTCore_AC.csproj" />
+  <Project Path="../MTNegocios/MTNegocios.csproj" Id="4a358aef-f74d-40a4-8cd7-b48ffdf1cd7f" />
   <Project Path="Articulos-Backend.csproj" />
 </Solution>

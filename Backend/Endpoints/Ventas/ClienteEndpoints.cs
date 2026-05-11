@@ -1,63 +1,64 @@
 ﻿using MTCore_AC.Entidades;
 using System.Runtime.CompilerServices;
 using Articulos_Backend.JWT;
-using Articulos_Backend.Repositorios.Ventas;
+using MTNegocios.Repositorios.Ventas;
+using MTNegocios.MTEndpoints.Ventas;
 
 namespace Articulos_Backend.Endpoints.Ventas;
 
 public static class ClienteEndpoints
 {
-    public static WebApplication MapClienteEndpoints(this WebApplication app, ClienteRepository repo)
+    public static WebApplication MapClienteEndpoints(this WebApplication app)
     {
-        app.MapGet("/clientes/{dni}", (string dni) =>
+        app.MapGet("/clientes/{dni}", async (string dni, ClienteMethods methods) =>
             {
-                var cliente = repo.ObtenerPorDni(dni);
-                return cliente is not null
-                    ? Results.Ok(cliente)
+                var result = await methods.ObtenerPorDni(dni);
+                return result is not null
+                    ? Results.Ok(result)
                     : Results.NotFound();
             }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas, Roles.UserVentas))
             .Produces<Cliente>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
-        app.MapGet("/clientes", (string? nombre) => {
+        app.MapGet("/clientes", (string? nombre, ClienteMethods methods) => {
             var clientes = string.IsNullOrEmpty(nombre)
-                ? repo.ObtenerClientes()
-                : repo.BuscarPorNombre(nombre);
+                ? methods.ObtenerClientes()
+                : methods.BuscarPorNombre(nombre);
             return Results.Ok(clientes);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas, Roles.UserVentas)).Produces<List<Cliente>>(StatusCodes.Status200OK);
-        app.MapPost("/clientes", (Cliente cliente) =>
+        app.MapPost("/clientes", async (Cliente cliente, ClienteMethods methods) =>
         {
-            var existente = repo.ObtenerPorDni(cliente.Dni);
+            var existente = await methods.ObtenerPorDni(cliente.Dni);
             if (existente != null)
             {
                 return Results.Conflict($"Ya existe un cliente con DNI {cliente.Dni}");
             }
-            repo.Insertar(cliente);
+            await methods.Insertar(cliente);
             return Results.Created($"/clientes/{cliente.Dni}", cliente);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces<Cliente>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapPut("/clientes/{dni}", (string dni, Cliente clienteActualizado) =>
-        {
-            var cliente = repo.ObtenerPorDni(dni);
+        app.MapPut("/clientes/{dni}", async (string dni, Cliente clienteActualizado, ClienteMethods methods) =>
+        {   
+            var cliente = await methods.ObtenerPorDni(dni);
             if (cliente == null)
             {
                 return Results.NotFound();
             }
             clienteActualizado.Dni = dni;
-            repo.Actualizar(clienteActualizado);
+            await methods.Actualizar(clienteActualizado);
             return Results.Ok(clienteActualizado);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces<Cliente>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapDelete("/clientes/{dni}", (string dni) =>
+        app.MapDelete("/clientes/{dni}", async (string dni, ClienteMethods methods) =>
         {
-            var cliente = repo.ObtenerPorDni(dni);
+            var cliente = await methods.ObtenerPorDni(dni);
             if (cliente == null)
             {
                 return Results.NotFound();
             }
-            repo.Eliminar(dni);
+            await methods.Eliminar(dni);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces(StatusCodes.Status204NoContent)

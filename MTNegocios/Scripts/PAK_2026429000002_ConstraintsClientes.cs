@@ -1,0 +1,14 @@
+﻿using MTCore_AC.DTO;
+
+namespace MTNegocios.Scripts;
+
+public class PAK_2026429000002_ConstraintsClientes: Script
+{
+    public PAK_2026429000002_ConstraintsClientes()
+    {
+        this.script = """
+ALTER TABLE Clientes
+ADD CONSTRAINT DF__Clientes__FechaC__5CD6CB2B DEFAULT (getdate()) FOR FechaCreacion;
+""";
+    }
+}
