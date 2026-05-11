@@ -23,11 +23,11 @@ public static class PedidoEndpoints
         app.MapGet("/pedidos/estado", (string estado) => {
             var pedidos = repo.ObtenerPorEstado(estado);
             return Results.Ok(pedidos);
-        }).Produces<List<Cliente>>(StatusCodes.Status200OK);
+        }).Produces<List<Pedido>>(StatusCodes.Status200OK);
         app.MapGet("/pedidos/{id}", (string id) => {
             var pedidos = repo.ObtenerPorId(id);
             return Results.Ok(pedidos);
-        }).Produces<List<Cliente>>(StatusCodes.Status200OK);
+        }).Produces<List<Pedido>>(StatusCodes.Status200OK);
         app.MapPost("/pedidos", (Pedido pedido) =>
         {
             repo.Insertar(pedido);
@@ -37,7 +37,7 @@ public static class PedidoEndpoints
             }
             return Results.Created($"/pedidos/{pedido.id_pedido}", pedido);
         })
-        .Produces<Cliente>(StatusCodes.Status201Created)
+        .Produces<Pedido>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/pedidos/{id}", (string id, Pedido pedidoActualizado) =>
         {
@@ -45,7 +45,7 @@ public static class PedidoEndpoints
             repo.Actualizar(pedidoActualizado);
             return Results.Ok(pedidoActualizado);
         })
-        .Produces<Cliente>(StatusCodes.Status200OK)
+        .Produces<Pedido>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
         app.MapPut("/pedidos/articulo{id}", (string id, PedidoArticulos articulo) =>
@@ -59,7 +59,7 @@ public static class PedidoEndpoints
             repo.AgregarArticulo(articulo);
             return Results.Ok(articulo);
         })
-        .Produces<Cliente>(StatusCodes.Status200OK)
+        .Produces<Pedido>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
         app.MapGet("/pedidos/{idPedido}/articulos", (string idPedido) =>
