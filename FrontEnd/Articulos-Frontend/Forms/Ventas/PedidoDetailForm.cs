@@ -461,6 +461,7 @@ namespace Articulos_Frontend
                     pedidoCreated.dni_cliente = textBoxDniCliente.Text.ToUpper();
                     pedidoCreated.metodo_pago = comboBoxMetodoPago.Text;
                     pedidoCreated.estado = comboBoxEstado.Text;
+                    pedidoCreated.nombre_cliente = textBoxNombreCliente.Text;
                     pedidoCreated.fecha_rectificacion = DateTime.Now;
                     double parsedImpuestos = 0;
                     try
