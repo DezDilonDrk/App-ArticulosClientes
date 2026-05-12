@@ -19,12 +19,14 @@ namespace Articulos_Frontend;
 public partial class LoginForm : Form
 {
     private UsuarioApiClient api;
+    private ConfiguracionApiClient configApi;
     private StringValuesSP stringValuesSP = new StringValuesSP();
     public LoginForm()
     {
         InitializeComponent();
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         api = new UsuarioApiClient();
+        configApi = new ConfiguracionApiClient();
         StyleManager.StyleForm(this);
         Log.Info("Formulario de login iniciado.");
         this.Text = stringValuesSP.login;
@@ -53,7 +55,6 @@ public partial class LoginForm : Form
 
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
 
-                var configApi = new ConfiguracionApiClient();
                 var config = await configApi.ObtenerConfiguracionPorCorreo(email);
                 if (config != null)
                 {
@@ -114,6 +115,7 @@ public partial class LoginForm : Form
         try
         {
             await api.InitAsync(UrlMT.serverLocal);
+            await configApi.InitAsync(UrlMT.serverLocal);
         }
         catch (Exception ex)
         {

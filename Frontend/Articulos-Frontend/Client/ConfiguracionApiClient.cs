@@ -1,5 +1,6 @@
 ﻿using Articulos_Frontend.LogConfig;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
@@ -9,31 +10,27 @@ namespace Articulos_Frontend.Client
 {
     public class ConfiguracionApiClient
     {
-        private readonly HttpClient httpClient;
-        public ConfiguracionApiClient()
+        UserSession mySession;
+        public ConfiguracionApiClient(){}
+        /*public UserSession GetSession()
         {
-            try
-            {
-                httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri(AppState.getServer());
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AppState.Token);
-            }
-            catch
-            {
-                Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception("Error al conectar con el servidor API.");
-            }
+            return this.mySession;
+        }*/
+        public async Task InitAsync(string currentServer)
+        {
+            this.mySession = new UserSession(currentServer);
+            await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
         }
         public async Task<ConfiguracionModel> ObtenerConfiguracionPorCorreo(string correo)
         {
             try
             {
-                var response = await httpClient.GetAsync($"/configuracion/{correo}");
+                var response = await this.mySession.GetClient().GetAsync($"/configuracion/{correo}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     return null;
                 }
-                return await httpClient.GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
+                return await this.mySession.GetClient().GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
             }
             catch (Exception ex)
             {
@@ -45,7 +42,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync($"/guardar_configuracion/{correo}", configuracion);
+                var response = await this.mySession.GetClient().PostAsJsonAsync($"/guardar_configuracion/{correo}", configuracion);
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<ConfiguracionModel>();
             }

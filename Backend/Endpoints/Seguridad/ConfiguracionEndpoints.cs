@@ -9,7 +9,7 @@ public static class ConfiguracionEndpoints
     {
         app.MapGet("/configuracion/{correo}", async (string correo, ConfiguracionMethods methods) =>
         {
-            var configuracion = methods.ObtenerConfiguracionPorCorreo(correo);
+            var configuracion = await methods.ObtenerConfiguracionPorCorreo(correo);
             return configuracion is not null
                 ? Results.Ok(configuracion)
                 : Results.NotFound(null);

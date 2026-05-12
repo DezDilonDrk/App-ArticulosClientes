@@ -27,7 +27,7 @@ public class ClienteMethods
 
     public async Task<List<Cliente>> ObtenerClientes()
     {
-        var clientes = _repo.ObtenerClientes();
+        var clientes = await _repo.ObtenerClientes();
         return clientes;
     }
     public async Task Insertar(Cliente cliente)

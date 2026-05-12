@@ -15,12 +15,12 @@ public class ClienteRepository
         _connectionString = config.GetConnectionString("DefaultConnection");
     }
     private IDbConnection Connection => new SqlConnection(_connectionString);
-    public List<Cliente> ObtenerClientes()
+    public async Task<List<Cliente>> ObtenerClientes()
     {
         using (var db = Connection)
         {
             string sql = "SELECT Id, Dni, Nombre, Apellidos, Email, FechaCreacion, FechaModificacion FROM Clientes";
-            return db.Query<Cliente>(sql).ToList();
+            return (await db.QueryAsync<Cliente>(sql)).ToList();
         }
     }
     public async Task<Cliente?> ObtenerPorDni(string dni)

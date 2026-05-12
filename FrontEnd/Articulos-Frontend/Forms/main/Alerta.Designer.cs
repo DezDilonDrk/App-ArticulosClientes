@@ -60,6 +60,7 @@
             // 
             // descripcionAlerta
             // 
+            descripcionAlerta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             descripcionAlerta.Font = new Font("Segoe UI", 10F);
             descripcionAlerta.Location = new Point(117, 75);
             descripcionAlerta.Name = "descripcionAlerta";
@@ -69,6 +70,7 @@
             // 
             // excepcionAlerta
             // 
+            excepcionAlerta.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             excepcionAlerta.Location = new Point(12, 99);
             excepcionAlerta.Name = "excepcionAlerta";
             excepcionAlerta.Size = new Size(99, 87);
@@ -77,6 +79,7 @@
             // 
             // lineaAlerta
             // 
+            lineaAlerta.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lineaAlerta.Location = new Point(12, 217);
             lineaAlerta.Name = "lineaAlerta";
             lineaAlerta.Size = new Size(190, 59);
@@ -86,6 +89,7 @@
             // 
             // buttonConfirm
             // 
+            buttonConfirm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonConfirm.Location = new Point(229, 239);
             buttonConfirm.Name = "buttonConfirm";
             buttonConfirm.Size = new Size(75, 23);
@@ -96,6 +100,7 @@
             // 
             // buttonCancel
             // 
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonCancel.Location = new Point(313, 239);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(75, 23);

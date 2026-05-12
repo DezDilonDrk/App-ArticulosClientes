@@ -19,10 +19,10 @@ public static class ClienteEndpoints
             }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas, Roles.UserVentas))
             .Produces<Cliente>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
-        app.MapGet("/clientes", (string? nombre, ClienteMethods methods) => {
+        app.MapGet("/clientes", async (string? nombre, ClienteMethods methods) => {
             var clientes = string.IsNullOrEmpty(nombre)
-                ? methods.ObtenerClientes()
-                : methods.BuscarPorNombre(nombre);
+                ? await methods.ObtenerClientes()
+                : await methods.BuscarPorNombre(nombre);
             return Results.Ok(clientes);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas, Roles.UserVentas)).Produces<List<Cliente>>(StatusCodes.Status200OK);
         app.MapPost("/clientes", async (Cliente cliente, ClienteMethods methods) =>

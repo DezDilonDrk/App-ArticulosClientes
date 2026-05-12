@@ -3,6 +3,7 @@ using Articulos_Frontend.Client;
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
+using SesionMT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -180,6 +181,7 @@ public partial class ClienteDetailForm : Form
         Controls.Add(textBoxDni);
         FormBorderStyle = FormBorderStyle.FixedSingle;
         Icon = (Icon)resources.GetObject("$this.Icon");
+        Load += ClienteDetailForm_Load;
         MaximizeBox = false;
         MaximumSize = new Size(596, 402);
         MinimumSize = new Size(596, 402);
@@ -235,6 +237,11 @@ public partial class ClienteDetailForm : Form
             return;
             
         }
+    }
+    private void ClienteDetailForm_Load(object sender, EventArgs e)
+    {
+        clienteApiClient.InitAsync(UrlMT.serverLeandro);
+        StyleManager.StyleForm(this);
     }
     private bool validarCamposLlenos()
     {

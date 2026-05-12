@@ -40,8 +40,9 @@ namespace Articulos_Frontend
             this.Load += Menu_Load;
             labelRolesTitulo.Text = stringValuesSP.roles;
         }
-        public void Menu_Load(object sender, EventArgs e)
+        public async void Menu_Load(object sender, EventArgs e)
         {
+            await configuracionApiClient.InitAsync(AppState.getServer());
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
             RefrescarMenuVentanas();
             RegistrarClicks(this);
