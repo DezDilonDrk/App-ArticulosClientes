@@ -12,13 +12,16 @@ public static class AppState
 
     public static string Token { get; set; } = string.Empty;
     public static List<string> Roles { get; set; } = new List<string>();
-    private static string correo_usuario;
+    public static string correo_usuario;
     private static ConfiguracionModel configuracion;
     public static string serverLeandro = UrlMT.serverLeandro;
     public static string serverEmilio = UrlMT.serverEmilio;
     public static string getCorreo()
     {
         return correo_usuario;
+    }
+    public static string getToken(){
+        return Token;
     }
     public static ConfiguracionModel getConfiguracion()
     {

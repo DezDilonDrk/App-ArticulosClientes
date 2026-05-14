@@ -66,7 +66,7 @@ namespace Articulos_Frontend.Forms.Seguridad
                 await api.ActualizarContrasena(textBoxCorreo.Text, textBoxContrasena.Text);
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Contraseña actualizada correctamente.")); alerta.ShowDialog();
                 EmailSender emailSender = new EmailSender();
-                emailSender.SendEmail("leandro.santilario@mthelmets.com", $"Email {textBoxCorreo.Text}: caambio de contraseña", $"Hola,\n\nEl usuario con email {textBoxCorreo.Text} ha cambiado su contraseña en el instante: {DateTime.Now}\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
+                emailSender.SendEmail("leandro.santilario@mthelmets.com", $"Email {textBoxCorreo.Text}: cambio de contraseña", $"Hola,\n\nEl usuario con email {textBoxCorreo.Text} ha cambiado su contraseña en el instante: {DateTime.Now}\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
             }
             catch (Exception ex)
             {

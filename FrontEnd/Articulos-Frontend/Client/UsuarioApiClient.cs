@@ -19,7 +19,7 @@ public class UsuarioApiClient
 
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer);
+        this.mySession = new UserSession(currentServer, AppState.getToken());
         await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
 

@@ -13,6 +13,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows.Forms;
 using static MTCore_AC.DTO.LoginDtos;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Articulos_Frontend;
 
@@ -35,7 +36,6 @@ public partial class LoginForm : Form
     {
         string email = emailText.Text;
         string contrasena = contrasenaText.Text;
-
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
         {
             Log.Warn("Intento de login con campos vacíos.");
@@ -43,7 +43,6 @@ public partial class LoginForm : Form
             alerta.ShowDialog();
             return;
         }
-
         try
         {
             var loginRequest = new LoginRequest { Email = email, Password = contrasena };
@@ -116,12 +115,49 @@ public partial class LoginForm : Form
         {
             await api.InitAsync(UrlMT.serverLocal);
             await configApi.InitAsync(UrlMT.serverLocal);
+            UserSession userSession = new UserSession(UrlMT.serverLocal, AppState.getToken());
+            userSession.BorrarToken();
+            if (userSession.tokenExists() && !userSession.tokenExpired()) { 
+                AppState.Token = userSession.CargarToken();
+                AppState.Roles = userSession.getRoles();
+                AppState.correo_usuario = userSession.getEmail();
+
+                ConfigurationSetAndLogin(userSession.getEmail()); // Ojo
+
+                WindowManager.ShowForm(
+                    "MainForm",
+                    this,
+                    () =>
+                    {
+                        var form = new Menu(api, new Usuario(userSession.getEmail(), null, userSession.getContrasena()));
+                        form.FormClosed += (s, args) => this.Show();
+                        return form;
+                    }
+                );
+                this.Hide();
+            }
         }
         catch (Exception ex)
         {
             Log.Error("Error con el InitAsync del api en Login Form.", ex);
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
             alerta.ShowDialog();
+        }
+    }
+    private async void ConfigurationSetAndLogin(string email) {
+        if (string.IsNullOrEmpty(email)) { return; }
+        var config = await configApi.ObtenerConfiguracionPorCorreo(email);
+        if (config != null)
+        {
+            AppState.setConfiguracion(config);
+            configApi.GuardarConfiguracionPorCorreo(email, config);
+        }
+        else
+        {
+            Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
+            config = new ConfiguracionModel { SendNotifications = true };
+            AppState.setConfiguracion(config);
+            configApi.GuardarConfiguracionPorCorreo(email, config);
         }
     }
 }

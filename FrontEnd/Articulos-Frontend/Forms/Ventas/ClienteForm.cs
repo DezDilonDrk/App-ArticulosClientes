@@ -527,7 +527,7 @@ public partial class ClienteForm : Form
                 {
                     DniSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Dni"].Value.ToString();
                     IdSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    NombreSeleccionado = dgvCliente.Rows[e.RowIndex].Cells["Nombre"].Value.ToString();
+                    NombreSeleccionado = $"{dgvCliente.Rows[e.RowIndex].Cells["Nombre"].Value.ToString()} {dgvCliente.Rows[e.RowIndex].Cells["Apellidos"].Value.ToString()}";
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                     return;

@@ -14,7 +14,7 @@ public class ArticuloApiClient
     public ArticuloApiClient() {}
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer);
+        this.mySession = new UserSession(currentServer, AppState.getToken());
         await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
     public async Task<List<Articulo>> ObtenerArticulos()
