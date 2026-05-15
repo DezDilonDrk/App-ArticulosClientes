@@ -15,6 +15,8 @@ public class Articulo
 
     public String categoria { get; set; }
 
+    public String? idDisenoCasco { get; set; }
+
     public DateTime FechaCreacion { get; set; }
     public DateTime? FechaActualizacion { get; set; }
 

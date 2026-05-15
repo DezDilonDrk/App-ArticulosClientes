@@ -20,7 +20,7 @@ public class ArticuloRepository
     {
         using ( var db = Connection )
         {
-            string sql = "SELECT Id, Nombre, Precio, Categoria, FechaCreacion, FechaActualizacion FROM Articulos";
+            string sql = "SELECT a.Id, a.Nombre, a.Precio, a.Categoria, d.Nombre AS DisenoCasco, a.FechaCreacion, a.FechaActualizacion FROM Articulos a JOIN DisenoCascos d ON a.IdDisenoCasco = d.Id";
             return (await db.QueryAsync<Articulo>(sql)).ToList();
         }
     }
@@ -30,7 +30,7 @@ public class ArticuloRepository
         
         using ( var db = Connection )
         {
-            string sql = "SELECT * FROM Articulos WHERE Id = @Id";
+            string sql = "SELECT a.Id, a.Nombre, a.Precio, a.Categoria, d.Nombre AS DisenoCasco, a.FechaCreacion, a.FechaActualizacion FROM Articulos a JOIN DisenoCascos d ON a.IdDisenoCasco = d.Id WHERE a.Id = @Id";
             return await db.QueryFirstOrDefaultAsync<Articulo>(sql, new { Id = id });
         }
     }
@@ -39,7 +39,7 @@ public class ArticuloRepository
     {
         using ( var db = Connection )
         {
-            string sql = "SELECT * FROM Articulos WHERE Nombre LIKE @Nombre";
+            string sql = "SELECT a.Id, a.Nombre, a.Precio, a.Categoria, d.Nombre AS DisenoCasco, a.FechaCreacion, a.FechaActualizacion FROM Articulos a JOIN DisenoCascos d ON a.IdDisenoCasco = d.Id WHERE a.Nombre LIKE @Nombre";
             return await db.QueryAsync<Articulo>(sql, new { Nombre = $"%{nombre}%" });
         }
     }
@@ -47,7 +47,7 @@ public class ArticuloRepository
     {
         using (var db = Connection)
         {
-            string sql = "SELECT * FROM Articulos WHERE Nombre = @Nombre";
+            string sql = "SELECT a.Id, a.Nombre, a.Precio, a.Categoria, d.Nombre AS DisenoCasco, a.FechaCreacion, a.FechaActualizacion FROM Articulos a JOIN DisenoCascos d ON a.IdDisenoCasco = d.Id WHERE a.Nombre = @Nombre";
             return await db.QueryFirstOrDefaultAsync<Articulo>(sql, new { Nombre = nombre });
         }
     }

@@ -1,11 +1,16 @@
 ﻿using Dapper;
+using Bogus;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
-using System.Transactions;
 using MTNegocios.ConexionDB;
+using MTNegocios.MTEndpoints.Almacen;
 using MTNegocios.MTEndpoints.BBDD;
-using Microsoft.AspNetCore.Mvc;
+using MTNegocios.MTEndpoints.Seguridad;
+using MTNegocios.MTEndpoints.Ventas;
+using System.Transactions;
+using static MTNegocios.MTEndpoints.BBDD.SeedService;
 
 
 namespace Articulos_Backend.Endpoints;
@@ -13,7 +18,14 @@ namespace Articulos_Backend.Endpoints;
 public static class BBDD
 {
     static Builder builder = new Builder();
-    public static WebApplication MapBBDDEndpoints(this WebApplication app)
+    public enum CategoriaArticulo
+    {
+        Cascos,
+        Ropa,
+        Accesorios,
+        Otros
+    }
+    public static async Task<WebApplication> MapBBDDEndpoints(this WebApplication app)
     {
         app.MapGet("/database/scripts/{dbname}", async (string dbname, [FromServices] MigrationBBDD service, [FromServices] ILogger<Program> logger) =>
         {
@@ -143,11 +155,74 @@ public static class BBDD
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error durante migración de base de dato    s");
+                logger.LogError(ex, "Error durante migración de base de datos");
                 return Results.Problem($"Error migrando datos: {ex.Message}");
             }
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad));
 
+
+        app.MapPost("/database/seed", async (DatabaseSeedRequest request, [FromServices] SeedService seedService, [FromServices] ILogger logger) =>
+        {
+            try
+            {
+                Random random = new Random();
+
+                
+                var categorias = Enum.GetValues<CategoriaArticulo>();
+                var categoriasRandom = categorias[random.Next(categorias.Length)];
+                var articulosFaker = new Faker<Articulo>("es")
+                                    .RuleFor(x => x.nombre,
+                                        f => f.Commerce.ProductName())
+                                    .RuleFor(x => x.precio,
+                                        f => Math.Round(f.Random.Decimal(20, 500), 2))
+                                    .RuleFor(x => x.categoria,
+                                        f => categorias[
+                                            f.Random.Int(0, categorias.Length - 1)
+                                        ].ToString())
+                                    .RuleFor(x => x.FechaCreacion,
+                                        f => f.Date.Past())
+                                    .RuleFor(x => x.FechaActualizacion,
+                                        f => f.Random.Bool(0.5f)
+                                            ? f.Date.Recent()
+                                            : null);
+                var clientesFaker = new Faker<Cliente>("es")
+                                    .RuleFor(x => x.Id,
+                                    f => Guid.NewGuid().ToString())
+                                    .RuleFor(x => x.Dni,
+                                        f => $"{f.Random.Int(10000000, 99999999)}{f.Random.Char('A', 'Z')}")
+                                    .RuleFor(x => x.Nombre,
+                                        f => f.Name.FirstName())
+                                    .RuleFor(x => x.Apellidos,
+                                        f => f.Name.LastName())
+                                    .RuleFor(x => x.Email,
+                                        f => f.Internet.Email())
+                                    .RuleFor(x => x.FechaCreacion
+                                    , f => f.Date.Past())
+                                    .RuleFor(x => x.FechaModificacion
+                                    , f => f.Random.Bool(0.5f)
+                                        ? f.Date.Recent()
+                                        : null);
+                var usuariosFaker = new Faker<Usuario>("es")
+                                    .RuleFor(x => x.CorreoElectronico,
+                                        f => f.Internet.Email())
+                                    .RuleFor(x => x.Nombre,
+                                        f => f.Name.FirstName())
+                                    .RuleFor(x => x.Contrasena,
+                                        f => BCrypt.Net.BCrypt.HashPassword("1234"));
+                List <Articulo> articulos = articulosFaker.Generate(request.Articulos);
+                List<Cliente> clientes = clientesFaker.Generate(request.Clientes);
+                List<Usuario> usuarios = usuariosFaker.Generate(request.Usuarios);
+
+                var result = await seedService.SeedDatabase(request, articulos, clientes, usuarios, logger);
+                return Results.Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error seeding database");
+                return Results.Problem($"Error seeding database: {ex.Message}");
+            }
+        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad));
         return app;
     }
 

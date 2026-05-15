@@ -10,6 +10,7 @@ using MTNegocios.Repositorios.Ventas;
 using MTNegocios.MTEndpoints.Seguridad;
 using MTNegocios.MTEndpoints.Almacen;
 using MTNegocios.MTEndpoints.Ventas;
+using MTNegocios.MTEndpoints.BBDD;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -56,6 +57,8 @@ builder.Services.AddScoped<ConfiguracionMethods>();
 builder.Services.AddScoped<PedidoMethods>();
 builder.Services.AddScoped<RolMethods>();
 builder.Services.AddScoped<UsuarioRolMethods>();
+builder.Services.AddScoped<MigrationBBDD>();
+builder.Services.AddScoped<SeedService>();
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
