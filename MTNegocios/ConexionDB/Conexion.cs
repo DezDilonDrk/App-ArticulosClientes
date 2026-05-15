@@ -5,7 +5,7 @@
         public string conexionString;
         public Conexion()
         {
-            this.conexionString = "DefaultConnection";
+            this.conexionString = "Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=True;";
         }
     }
 }

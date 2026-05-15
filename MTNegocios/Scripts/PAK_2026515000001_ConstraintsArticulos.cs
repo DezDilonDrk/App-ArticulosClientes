@@ -2,9 +2,9 @@
 
 namespace MTNegocios.Scripts;
 
-public class PAK_2026515000000_ConstraintsArticulos: Script
+public class PAK_2026515000001_ConstraintsArticulos: Script
 {
-    public PAK_2026515000000_ConstraintsArticulos()
+    public PAK_2026515000001_ConstraintsArticulos()
     {
         this.script = """
             ALTER TABLE Articulos
