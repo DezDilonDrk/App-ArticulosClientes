@@ -1,6 +1,6 @@
-﻿using Articulos_Frontend.LogConfig;
-using MTCore_AC.Entidades;
+﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.LogConfig;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -16,8 +16,8 @@ public class RolApiClient
     public RolApiClient(){}
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer, AppState.getToken());
-        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        this.mySession = new UserSession(currentServer, mySession.CargarToken());
+        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
 
     public async Task<List<Rol>> ObtenerNombreRoles()

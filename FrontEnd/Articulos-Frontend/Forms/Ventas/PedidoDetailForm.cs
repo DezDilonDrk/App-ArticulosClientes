@@ -1,26 +1,18 @@
 ﻿using Articulos_Frontend.Client;
 using Articulos_Frontend.Theme;
-using Articulos_Frontend.LogConfig;
 using MTCore_AC.Entidades;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.LogConfig;
 
 namespace Articulos_Frontend
 {
     public partial class PedidoDetailForm : Form
     {
         private PedidoApiClient pedidoApiClient;
-        private UserSession mySession;
         private string state;
         private ClienteApiClient clienteApiClient = new ClienteApiClient();
-        private ArticuloApiClient articuloApiClient = new ArticuloApiClient();
+        private ArticuloApiClient articuloApiClient;
         private Pedido pedidoCreated;
         public event Action<Pedido> PedidoModificadoCorrectamente;
         BindingList<LineaPedido> articulos = new BindingList<LineaPedido> { };
@@ -29,6 +21,7 @@ namespace Articulos_Frontend
         {
             InitializeComponent();
             var menu = this.Owner as Menu;
+            articuloApiClient = new ArticuloApiClient(AppState.getUserSession());
             LabelTitulo.Text = stringValuesSP.crearPedido;
             this.Text = stringValuesSP.crearPedido;
             this.state = State;
@@ -38,7 +31,6 @@ namespace Articulos_Frontend
             comboBoxImpuestos.DataSource = impuestos;
             comboBoxMetodoPago.DataSource = metodosPago;
             comboBoxEstado.DataSource = estados;
-            this.mySession = pedidoApiClient.GetSession();
             this.pedidoApiClient = pedidoApiClient;
             if (state == "Create")
             {
@@ -749,9 +741,6 @@ namespace Articulos_Frontend
             textBoxNombreCliente.Enabled = false;
             button2.Enabled = false;
             button3.Enabled = false;
-            await clienteApiClient.InitAsync(UrlMT.serverLocal);
-            await pedidoApiClient.InitAsync(UrlMT.serverLocal);
-            await articuloApiClient.InitAsync(UrlMT.serverLocal);
             if (state == "Update")
             {
                 var articulosPedido = await pedidoApiClient.ObtenerArticulosDePedido(pedidoCreated.id_pedido);

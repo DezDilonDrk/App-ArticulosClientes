@@ -1,15 +1,9 @@
 ﻿
 using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
-using System;
-using System.Collections.Generic;
+using SesionMT.LogConfig;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace Articulos_Frontend
 {
@@ -31,7 +25,7 @@ namespace Articulos_Frontend
             clienteApiClient = new ClienteApiClient();
             StyleManager.StyleForm(this);
             Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
-            if(AppState.Roles.Contains(Roles.UserVentas))
+            if(AppState.getUserSession().getRoles().Contains(Roles.UserVentas))
             {
                 textBoxNombre.ReadOnly = true;
                 textBoxApellidos.ReadOnly = true;

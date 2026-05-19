@@ -11,7 +11,7 @@ namespace TestProjectMT
         public async Task Init(string currentServer)
         {
             this.mySession = new UserSession(currentServer);
-            await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+            mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
         }
     }
 }

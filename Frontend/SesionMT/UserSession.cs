@@ -1,6 +1,9 @@
 ﻿
+using Articulos_Frontend.Client;
 using MTCore_AC.DTO;
+using MTCore_AC.Entidades;
 using System.Net.Http.Json;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
 using static MTCore_AC.DTO.LoginDtos;
@@ -10,30 +13,59 @@ namespace SesionMT
     public class UserSession
     {
         HttpClient client;
-        string username = "";
-        string password = "";
-        private string nombre = "";
-        public string token = null;
+        private UsuarioApiClient api = new UsuarioApiClient();
+        private ConfiguracionApiClient configApi;
+        private string email = "";
+        private List<string> roles;
+        private string password = "";
+        private string token = null;
         private string currentServer = "";
-        string tokenPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ERP_MT", "session.token");
+        string tokenPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ERP_MT", "sessionToken.txt");
 
         public UserSession(string currentServer, string token = null)
         {
             this.currentServer = currentServer;
             this.token = CargarToken();
-            if (token != null) {
-                this.token = token;
+            configApi = new ConfiguracionApiClient();
+
+            this.client = new HttpClient();
+            client.BaseAddress = new Uri(currentServer);
+            this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+        public UserSession(string currentServer)
+        {
+            this.currentServer = currentServer;
+            this.token = CargarToken();
+            configApi = new ConfiguracionApiClient();
+
+            this.client = new HttpClient();
+            client.BaseAddress = new Uri(currentServer);
+            this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+        public void Init(string email, string password)
+        {
+            if (tokenExpired())
+            {
+                this.email = email;
+                this.password = password;
             }
         }
-        public async Task Init(string username, string password)
+        public void loginUser()
         {
-            if (tokenExpired()) {
-                this.username = username;
-                this.password = password;
-                this.client = new HttpClient();
-                client.BaseAddress = new Uri(currentServer);
-                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            token = CargarToken();
+            roles = getRoles();
+            this.email = getEmail();
+            _ = ConfigurationSet(email); // Ojo
+        }
+        private async Task ConfigurationSet(string email)
+        {
+            await configApi.InitAsync(currentServer);
+            var config = await configApi.ObtenerConfiguracionPorCorreo(email);
+            if (config == null){
+                config = new ConfiguracionModel { SendNotifications = true };
             }
+            setConfiguracion(config);
+            await configApi.GuardarConfiguracionPorCorreo(email, config);
         }
         public bool tokenExpired()
         {
@@ -44,9 +76,11 @@ namespace SesionMT
             var json = GetPayload();
             var expString = json.Split("\"exp\":")[1].Split(",")[0];
             long exp;
-            try {
+            try
+            {
                 exp = long.Parse(expString);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error al verificar la expiración del token: {ex.Message}");
                 return true; // Si hay un error, asumime que el token está expirado
@@ -64,17 +98,60 @@ namespace SesionMT
         public string getEmail()
         {
             var json = GetPayload();
-            return json.Split("\"name\":\"")[1].Split('"')[0];
+            return json.Split("\"email\":\"")[1].Split('"')[0];
+        }
+        public void setEmail(string email)
+        {
+            this.email = email;
+        }
+        public string getContrasena()
+        {
+            var json = GetPayload();
+            return json.Split("\"password\":\"")[1].Split('"')[0];
+        }
+        public string getNombre()
+        {
+            var json = GetPayload();
+            return json.Split("\"nombre\":\"")[1].Split('"')[0];
         }
         public List<string> getRoles()
         {
             var json = GetPayload();
-            var rolesString = json.Split("\"role\":[")[1].Split("]")[0];
-            rolesString = rolesString.Replace("\"", "").Replace("[", "").Replace("]", "");
-            var roles = rolesString.Split(',').ToList();
-            return roles;
+            int idx = json.IndexOf("\"roles\":");
+            if (idx == -1)
+                return new List<string>();
+            string sub = json.Substring(idx);
+            if (sub.Contains("["))
+            {
+                string arrayPart = sub.Split('[', 2)[1].Split(']', 2)[0];
+                return arrayPart
+                    .Replace("\"", "")
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(r => r.Trim())
+                    .ToList();
+            }
+            if (sub.Contains(":"))
+            {
+                string value = sub.Split(':', 2)[1]
+                                  .Split(',', 2)[0]
+                                  .Replace("\"", "")
+                                  .Trim();
+
+                return new List<string> { value };
+            }
+
+            return new List<string>();
         }
-        public void GuardarToken() {
+        public void setRoles(List<string> roles)
+        {
+            this.roles = roles;
+        }
+        public void setToken(string token)
+        {
+            this.token = token;
+        }
+        public void GuardarToken()
+        {
             try
             {
                 var directory = Path.GetDirectoryName(tokenPath);
@@ -82,40 +159,27 @@ namespace SesionMT
                 {
                     Directory.CreateDirectory(directory);
                 }
-                string encodedPassword = Encode(password);
-                File.WriteAllText(tokenPath, $"{token}|{username}|{encodedPassword}|{nombre}");
+                File.WriteAllText(tokenPath, token);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al guardar el token: {ex.Message}");
             }
         }
-        private string Encode(string text)
+        public string CargarToken()
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(text));
-        }
-
-        private string Decode(string encoded)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
-        }
-        public string CargarToken() {
             try
             {
                 if (File.Exists(tokenPath))
                 {
                     var content = File.ReadAllText(tokenPath);
-                    var parts = content.Split('|');
-                    if (parts.Length == 4)
-                    {
-                        token = parts[0];
-                        username = parts[1];
-                        password = Decode(parts[2]);
-                        nombre = parts[3];
-                    }
+                    token = content;
                     return token;
-                } else {
-                    GetToken().GetAwaiter().GetResult();
+                }
+                else
+                {
+                    this.token = GenerateToken().GetAwaiter().GetResult();
+                    GuardarToken();
                     return this.token;
                 }
             }
@@ -125,10 +189,12 @@ namespace SesionMT
             }
             return null;
         }
-        public bool tokenExists() {
+        public bool fileExists()
+        {
             return File.Exists(tokenPath);
         }
-        public void BorrarToken() {
+        public void BorrarToken()
+        {
             try
             {
                 if (File.Exists(tokenPath))
@@ -143,14 +209,9 @@ namespace SesionMT
         }
         private async Task<string> GenerateToken()
         {
-            /*if (!String.IsNullOrEmpty(token))
-            {
-                return token;
-            }*/
-
             var loginData = new
             {
-                Email = username,
+                Email = email,
                 Password = password
             };
 
@@ -163,26 +224,26 @@ namespace SesionMT
             token = doc.token;
             return doc.token;
         }
-        public async Task<string> GetToken()
-        {
-            if (string.IsNullOrEmpty(this.token))
-            {
-                this.token = await GenerateToken();
-                GuardarToken();
-            }
-            return this.token;
-        }
-        public string getContrasena()
-        {
-            return this.password;
-        }
         public HttpClient GetClient()
         {
             if (tokenExpired())
             {
-                Init(username, password).GetAwaiter().GetResult();
+                Init(email, password);
             }
             return this.client;
+        }
+        public static ConfiguracionModel setConfiguracion(ConfiguracionModel config)
+        {
+            //configuracion = config;
+            return config;
+        }
+        public ConfiguracionApiClient getConfiguracionApiClient()
+        {
+            return this.configApi;
+        }
+        public UsuarioApiClient getUsuarioApiClient()
+        {
+            return this.api;
         }
     }
 }

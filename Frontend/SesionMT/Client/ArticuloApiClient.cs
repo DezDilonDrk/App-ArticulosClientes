@@ -1,7 +1,8 @@
 ﻿using Articulos_Frontend;
-using Articulos_Frontend.LogConfig;
+using SesionMT.LogConfig;
 using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.LogConfig;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -11,11 +12,9 @@ public class ArticuloApiClient
 {
     UserSession mySession;
 
-    public ArticuloApiClient() {}
-    public async Task InitAsync(string currentServer)
+    public ArticuloApiClient(UserSession session)
     {
-        this.mySession = new UserSession(currentServer, AppState.getToken());
-        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        this.mySession = session;
     }
     public async Task<List<Articulo>> ObtenerArticulos()
     {
@@ -141,22 +140,7 @@ public class ArticuloApiClient
 
         }catch(HttpRequestException ex)
         {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex); // Centralizarlo en una clase base
             throw;
         }
         catch (Exception ex)

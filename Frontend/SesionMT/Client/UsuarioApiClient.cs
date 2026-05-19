@@ -1,12 +1,7 @@
-﻿using Articulos_Frontend.LogConfig;
-using MTCore_AC.DTO;
-using MTCore_AC.Entidades;
+﻿using MTCore_AC.Entidades;
 using SesionMT;
-using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
+using SesionMT.LogConfig;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using static MTCore_AC.DTO.LoginDtos;
 
@@ -19,10 +14,9 @@ public class UsuarioApiClient
 
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer, AppState.getToken());
-        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        this.mySession = new UserSession(currentServer);
+        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
-
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
         var response = await this.mySession.GetClient().PostAsJsonAsync("usuarios/login", request);
@@ -38,7 +32,6 @@ public class UsuarioApiClient
     {
         try
         {
-
             var response = await this.mySession.GetClient().GetAsync("/usuarios");
             if (!response.IsSuccessStatusCode)
             {

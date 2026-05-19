@@ -1,14 +1,7 @@
 ﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using SesionMT;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+using SesionMT.LogConfig;
 
 namespace Articulos_Frontend.Forms.Seguridad
 {

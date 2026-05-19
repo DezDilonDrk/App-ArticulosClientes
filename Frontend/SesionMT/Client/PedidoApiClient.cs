@@ -1,6 +1,7 @@
-﻿using Articulos_Frontend.LogConfig;
+﻿using SesionMT.LogConfig;
 using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.LogConfig;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,11 +15,13 @@ namespace Articulos_Frontend.Client;
 public class PedidoApiClient
 {
     UserSession mySession;
-    public PedidoApiClient(){}
+    public PedidoApiClient(UserSession session){
+        this.mySession = session;
+    }
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer, AppState.getToken());
-        await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        this.mySession = new UserSession(currentServer, mySession.CargarToken());
+        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
     public UserSession GetSession()
     {
@@ -108,7 +111,7 @@ public class PedidoApiClient
             string contenido = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                MessageBox.Show($"Error al crear el pedido: {contenido}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log.Error($"Error al crear el pedido: {contenido}");
                 throw new Exception("Error al crear el pedido en el servidor API.");
             }
         }catch (HttpRequestException ex)

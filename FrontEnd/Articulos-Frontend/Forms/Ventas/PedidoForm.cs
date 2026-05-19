@@ -1,17 +1,9 @@
 ﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using SesionMT;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using SesionMT.LogConfig;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Articulos_Frontend
 {
@@ -28,7 +20,7 @@ namespace Articulos_Frontend
             this.state = state;
             InitializeComponent();
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-            PedidoApiClient = new PedidoApiClient();
+            PedidoApiClient = new PedidoApiClient(AppState.getUserSession());
             StyleManager.StyleForm(this);
             this.ActiveControl = textBoxCliente;
             if (state == "Pedidos")

@@ -1,14 +1,6 @@
-﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Theme;
+﻿using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+using SesionMT.LogConfig;
 
 namespace Articulos_Frontend.Forms.main
 {
@@ -41,7 +33,7 @@ namespace Articulos_Frontend.Forms.main
             buscarClientes(null);
             RegistrarClicks(this);
             syncCheckNotifications();
-            if (!AppState.Roles.Contains(Roles.AdminVentas)) {admin = false;} else {admin = true;}
+            if (!AppState.getUserSession().getRoles().Contains(Roles.AdminVentas)) {admin = false;} else {admin = true;}
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {

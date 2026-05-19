@@ -1,8 +1,6 @@
-﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Theme;
+﻿using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
-using System.Drawing.Text;
+using SesionMT.LogConfig;
 
 namespace Articulos_Frontend
 {
@@ -28,7 +26,7 @@ namespace Articulos_Frontend
                 comboBoxCategoria.Text = articulo.categoria;
             }
             StyleManager.StyleForm(this);
-            if(AppState.Roles.Contains(Roles.UserAlmacen))
+            if(AppState.getUserSession().getRoles().Contains(Roles.UserAlmacen))
             {
                 textBoxNombre.ReadOnly = true;
                 textBoxPrecio.ReadOnly = true;

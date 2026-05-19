@@ -104,13 +104,12 @@
             Controls.Add(contrasenaText);
             Controls.Add(emailText);
             Controls.Add(pictureBox1);
-            Load += LoginForm_Load;
+            Load += async (s, e) => await LoginForm_Load(s, e);
             Name = "LoginForm";
             Text = "LoginForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
         }
 
         #endregion

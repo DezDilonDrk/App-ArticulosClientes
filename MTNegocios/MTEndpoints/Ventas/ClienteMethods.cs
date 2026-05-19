@@ -34,7 +34,6 @@ public class ClienteMethods
     {
         await _repo.Insertar(cliente);
     }
-
     public async Task Actualizar(Cliente cliente)
     {
             await _repo.Actualizar(cliente);

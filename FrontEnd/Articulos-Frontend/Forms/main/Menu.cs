@@ -1,10 +1,12 @@
 using Articulos_Frontend.Client;
 using Articulos_Frontend.Forms.main;
 using Articulos_Frontend.Forms.Seguridad;
-using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
-using SesionMT;
 using MTCore_AC.Entidades;
+using SesionMT;
+using SesionMT.LogConfig;
+using static MTCore_AC.DTO.LoginDtos;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Articulos_Frontend
 {
@@ -13,6 +15,7 @@ namespace Articulos_Frontend
         ShowTerminal terminal;
         AjustesForm ajustes;
         private Usuario user;
+        UsuarioApiClient api;
         ConfiguracionApiClient configuracionApiClient = new ConfiguracionApiClient();
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
@@ -20,33 +23,76 @@ namespace Articulos_Frontend
             StyleManager.StyleForm(this);
             Log.Info("Menú principal iniciado.");
             user = usuario;
+            this.api = api;
             this.Text = stringValuesSP.menu;
             this.mnuVentanas.Text = stringValuesSP.ventanas;
             toolStripStatusLabelUser.Text = $"Usuario: {usuario.Nombre}  ";
             toolStripStatusLabelEmail.Text = $"|  Email: {usuario.CorreoElectronico}  ";
             StStatusLServidor.Text = $"|  Servidor: {AppState.getServer()}";
-            if (!AppState.Roles.Contains(Roles.AdminAlmacen) && !AppState.Roles.Contains(Roles.UserAlmacen))
+            if (!AppState.getUserSession().getRoles().Contains(Roles.AdminAlmacen) && !AppState.getUserSession().getRoles().Contains(Roles.UserAlmacen))
             {
                 almacenToolStripMenuItem.Enabled = false;
             }
-            if (!AppState.Roles.Contains(Roles.AdminVentas) && !AppState.Roles.Contains(Roles.UserVentas))
+            if (!AppState.getUserSession().getRoles().Contains(Roles.AdminVentas) && !AppState.getUserSession().getRoles().Contains(Roles.UserVentas))
             {
                 ventasToolStripMenuItem.Enabled = false;
             }
-            if (!AppState.Roles.Contains(Roles.AdminSeguridad))
+            if (!AppState.getUserSession().getRoles().Contains(Roles.AdminSeguridad))
             {
                 seguridadToolStripMenuItem.Enabled = false;
             }
             this.Load += Menu_Load;
+            this.Shown += Menu_Shown;
             labelRolesTitulo.Text = stringValuesSP.roles;
+        }
+        private async Task initAsync()
+        {
+            try
+            {
+                UserSession userSession = AppState.getUserSession();
+                string email = userSession.getEmail();
+                string contrasena = userSession.getContrasena();
+                var loginRequest = new LoginRequest { Email = email, Password = contrasena };
+                var loginResponse = await api.LoginAsync(loginRequest);
+
+                if (loginResponse != null)
+                {
+                    AppState.getUserSession().setToken(loginResponse.token);
+                    AppState.getUserSession().setRoles(loginResponse.Roles);
+                    userSession.GuardarToken();
+                    Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
+
+                    await ConfigurationSet(AppState.getUserSession().getEmail());
+                }
+                else
+                {
+                    Log.Warn($"Intento de login fallido para el usuario {email}.");
+                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("Credenciales incorrectas."));
+                    alerta.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error durante el proceso de login automático: {ex.Message}");
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("Ocurrió un error durante el inicio de sesión automático. Por favor, inicie sesión manualmente."));
+                alerta.ShowDialog();
+            }
         }
         public async void Menu_Load(object sender, EventArgs e)
         {
-            await configuracionApiClient.InitAsync(AppState.getServer());
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
-            RefrescarMenuVentanas();
             RegistrarClicks(this);
         }
+        public async void Menu_Shown(object sender, EventArgs e)
+        {
+            Enabled = false;
+            await configuracionApiClient.InitAsync(AppState.getServer());
+            await api.InitAsync(AppState.getServer());
+            await ConfigurationSet(AppState.getUserSession().getEmail());
+            await initAsync();
+            Enabled = true;
+            RefrescarMenuVentanas();
+        }   
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario de artículos.");
@@ -202,7 +248,6 @@ namespace Articulos_Frontend
                     MessageBox.Show("Las notificaciones por email han sido activadas.\n\nNotifications: ON", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 checkNotificaciones.Text = !AppState.getConfiguracion().SendNotifications ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
-                AppState.changeCheckNotifications();
             };
             notificationSettingsItem.DropDownItems.Add(checkNotificaciones);
             accountSettingsItem.DropDownItems.Add(cambiarContrasenaItem);
@@ -230,7 +275,8 @@ namespace Articulos_Frontend
         private void buttonLogout_Click(object sender, EventArgs e)
         {
             WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
-
+            UserSession userSession = new UserSession("", "");
+            userSession.BorrarToken();
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {
@@ -291,7 +337,7 @@ namespace Articulos_Frontend
         {
             Log.Info("Abriendo panel de roles.");
             LabelListaRoles.Text = "";
-            foreach (string rol in AppState.Roles)
+            foreach (string rol in AppState.getUserSession().getRoles())
             {
                 LabelListaRoles.Text = $"{LabelListaRoles.Text}\n\n{rol}";
             }
@@ -343,6 +389,23 @@ namespace Articulos_Frontend
                 ajustes.Owner = this;
                 return ajustes;
             });
+        }
+        private async Task ConfigurationSet(string email)
+        {
+            await configuracionApiClient.InitAsync(UrlMT.serverLocal);
+            var config = await configuracionApiClient.ObtenerConfiguracionPorCorreo(email);
+            if (config != null)
+            {
+                AppState.setConfiguracion(config);
+                await configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
+            }
+            else
+            {
+                Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
+                config = new ConfiguracionModel { SendNotifications = true };
+                AppState.setConfiguracion(config);
+                await configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
+            }
         }
     }
 }

@@ -1,15 +1,8 @@
-﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
-using Articulos_Frontend.Theme;
+﻿using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using SesionMT;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using SesionMT.LogConfig;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace Articulos_Frontend;
 
@@ -27,7 +20,7 @@ public partial class ArticuloForm : Form
         InitializeComponent();
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         //repo = new ArticuloRepository(connStr);
-        api = new ArticuloApiClient();
+        api = new ArticuloApiClient(AppState.getUserSession());
         panelFiltros.Visible = false;
         StyleManager.StyleForm(this);
         user = usuario;
@@ -42,7 +35,7 @@ public partial class ArticuloForm : Form
         InitializeComponent();
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         //repo = new ArticuloRepository(connStr);
-        api = new ArticuloApiClient();
+        api = new ArticuloApiClient(AppState.getUserSession());
         panelFiltros.Visible = false;
         StyleManager.StyleForm(this);
         user = new Usuario("Guest Mode ON", "Guest", "Guest2026");
@@ -57,11 +50,10 @@ public partial class ArticuloForm : Form
     {
         try
         {
-            await api.InitAsync(UrlMT.serverLocal);
             Log.Info("Cargando artículos en el formulario.");
             cargarArticulos(null);
             panelFiltros.Visible = false;
-            if (!AppState.Roles.Contains(Roles.AdminAlmacen))
+            if (!AppState.getUserSession().getRoles().Contains(Roles.AdminAlmacen))
             {
                 BotonAdd.Enabled = false;
                 BotonDel.Enabled = false;

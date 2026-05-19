@@ -64,8 +64,8 @@ public static class UsuarioEndpoints
                 return Results.Unauthorized();
 
             var roles = await methods.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
-            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles);
-
+            usuario.Contrasena = request.Password;
+            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles, usuario);
             return Results.Ok(new LoginResponse
             {
                 token = token,

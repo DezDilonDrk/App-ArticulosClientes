@@ -1,19 +1,9 @@
 ﻿using Articulos_Frontend.Client;
-using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
-using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
 using SesionMT;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Windows.Forms;
+using SesionMT.LogConfig;
 using static MTCore_AC.DTO.LoginDtos;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Articulos_Frontend;
 
@@ -25,7 +15,6 @@ public partial class LoginForm : Form
     public LoginForm()
     {
         InitializeComponent();
-        string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         api = new UsuarioApiClient();
         configApi = new ConfiguracionApiClient();
         StyleManager.StyleForm(this);
@@ -36,6 +25,7 @@ public partial class LoginForm : Form
     {
         string email = emailText.Text;
         string contrasena = contrasenaText.Text;
+
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
         {
             Log.Warn("Intento de login con campos vacíos.");
@@ -47,26 +37,16 @@ public partial class LoginForm : Form
         {
             var loginRequest = new LoginRequest { Email = email, Password = contrasena };
             var loginResponse = await api.LoginAsync(loginRequest);
+            
             if (loginResponse != null)
             {
-                AppState.Token = loginResponse.token;
-                AppState.Roles = loginResponse.Roles;
-
+                AppState.getUserSession().setToken(loginResponse.token);
+                AppState.getUserSession().setRoles(loginResponse.Roles);
+                UserSession userSession = new UserSession(UrlMT.serverLocal, AppState.getUserSession().CargarToken());
+                userSession.GuardarToken();
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
 
-                var config = await configApi.ObtenerConfiguracionPorCorreo(email);
-                if (config != null)
-                {
-                    AppState.setConfiguracion(config);
-                    configApi.GuardarConfiguracionPorCorreo(email, config);
-                }
-                else
-                {
-                    Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
-                    config = new ConfiguracionModel { SendNotifications = true };
-                    AppState.setConfiguracion(config);
-                    configApi.GuardarConfiguracionPorCorreo(email, config);
-                }
+                await ConfigurationSet(AppState.getUserSession().getEmail());
                 WindowManager.ShowForm(
                     "MainForm",
                     this,
@@ -109,33 +89,12 @@ public partial class LoginForm : Form
             loginButton_Click(sender, e);
         }
     }
-    public async void LoginForm_Load(object sender, EventArgs e)
+    public async Task LoginForm_Load(object sender, EventArgs e)
     {
         try
         {
             await api.InitAsync(UrlMT.serverLocal);
             await configApi.InitAsync(UrlMT.serverLocal);
-            UserSession userSession = new UserSession(UrlMT.serverLocal, AppState.getToken());
-            userSession.BorrarToken();
-            if (userSession.tokenExists() && !userSession.tokenExpired()) { 
-                AppState.Token = userSession.CargarToken();
-                AppState.Roles = userSession.getRoles();
-                AppState.correo_usuario = userSession.getEmail();
-
-                ConfigurationSetAndLogin(userSession.getEmail()); // Ojo
-
-                WindowManager.ShowForm(
-                    "MainForm",
-                    this,
-                    () =>
-                    {
-                        var form = new Menu(api, new Usuario(userSession.getEmail(), null, userSession.getContrasena()));
-                        form.FormClosed += (s, args) => this.Show();
-                        return form;
-                    }
-                );
-                this.Hide();
-            }
         }
         catch (Exception ex)
         {
@@ -144,20 +103,21 @@ public partial class LoginForm : Form
             alerta.ShowDialog();
         }
     }
-    private async void ConfigurationSetAndLogin(string email) {
-        if (string.IsNullOrEmpty(email)) { return; }
+    private async Task ConfigurationSet(string email) {
+
+        await configApi.InitAsync(UrlMT.serverLocal);
         var config = await configApi.ObtenerConfiguracionPorCorreo(email);
         if (config != null)
         {
             AppState.setConfiguracion(config);
-            configApi.GuardarConfiguracionPorCorreo(email, config);
+            await configApi.GuardarConfiguracionPorCorreo(email, config);
         }
         else
         {
             Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
             config = new ConfiguracionModel { SendNotifications = true };
             AppState.setConfiguracion(config);
-            configApi.GuardarConfiguracionPorCorreo(email, config);
+            await configApi.GuardarConfiguracionPorCorreo(email, config);
         }
     }
 }
