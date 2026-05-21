@@ -37,6 +37,8 @@
             detallesTitulo = new Label();
             botonConfirm = new Button();
             comboBoxCategoria = new ComboBox();
+            labelDiseno = new Label();
+            comboBoxDiseno = new ComboBox();
             SuspendLayout();
             // 
             // detalleNombre
@@ -123,13 +125,38 @@
             comboBoxCategoria.Name = "comboBoxCategoria";
             comboBoxCategoria.Size = new Size(131, 23);
             comboBoxCategoria.TabIndex = 0;
+            comboBoxCategoria.SelectedIndexChanged += comboBoxCategoria_OnChange;
+            // 
+            // labelDiseno
+            // 
+            labelDiseno.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            labelDiseno.BackColor = Color.Transparent;
+            labelDiseno.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelDiseno.Location = new Point(71, 236);
+            labelDiseno.Name = "labelDiseno";
+            labelDiseno.Size = new Size(70, 28);
+            labelDiseno.TabIndex = 8;
+            labelDiseno.Tag = "normalText";
+            labelDiseno.Text = "Diseño";
+            // 
+            // comboBoxDiseno
+            // 
+            comboBoxDiseno.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            comboBoxDiseno.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxDiseno.Location = new Point(147, 239);
+            comboBoxDiseno.Name = "comboBoxDiseno";
+            comboBoxDiseno.Size = new Size(131, 23);
+            comboBoxDiseno.TabIndex = 9;
             // 
             // ArticuloDetailForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
+            Load += ArticuloDetailForm_Load;
             ClientSize = new Size(583, 343);
+            Controls.Add(comboBoxDiseno);
+            Controls.Add(labelDiseno);
             Controls.Add(comboBoxCategoria);
             Controls.Add(botonConfirm);
             Controls.Add(detallesTitulo);
@@ -143,7 +170,6 @@
             MinimumSize = new Size(599, 382);
             Name = "ArticuloDetailForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = stringValuesSP.detallesArticulo;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -158,5 +184,7 @@
         private Label detallesTitulo;
         private Button botonConfirm;
         private ComboBox comboBoxCategoria;
+        private Label labelDiseno;
+        private ComboBox comboBoxDiseno;
     }
 }

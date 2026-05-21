@@ -2,6 +2,7 @@
 using Articulos_Frontend.LogConfig;
 using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
+using MTCore_AC.DTO;
 using SesionMT;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ public partial class ArticuloForm : Form
         StyleManager.StyleForm(this);
         user = usuario;
         usuarioActual.Text = $"Usuario: {user.CorreoElectronico}";
-        var categorias = new[] { "Electrónica", "Perifericos", "Mobiliario" };
+        var categorias = new[] { "Cascos", "Ropa", "Accesorios", "Otros" };
         comboBoxCategoria.DataSource = categorias.ToList();
         comboBoxCategoria.SelectedIndex = -1;
         Log.Info("Formulario de artículos iniciado.");
@@ -131,7 +132,7 @@ public partial class ArticuloForm : Form
     {
         try
         {
-            var articulos = await api.ObtenerArticulos();
+            var articulos = await api.ObtenerArticuloDTO();
             var dateDesde = fechaDesde.Value.Date;
             var dateHasta = fechaHasta.Value.Date.AddDays(1);
             var categoria = comboBoxCategoria.SelectedItem as string;
@@ -159,7 +160,7 @@ public partial class ArticuloForm : Form
             if (!string.IsNullOrWhiteSpace(nombre))
             {
                 articulos = articulos
-                    .Where(a => a.nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
+                    .Where(a => a.Nombre.Contains(nombre, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
             if (panelFiltros.Visible)
@@ -179,13 +180,13 @@ public partial class ArticuloForm : Form
                 if (!string.IsNullOrWhiteSpace(categoria))
                 {
                     articulos = articulos
-                        .Where(a => a.categoria == categoria)
+                        .Where(a => a.Categoria == categoria)
                         .ToList();
                 }
 
                 articulos = articulos
-                .Where(a => a.precio >= PrecioMin)
-                .Where(a => a.precio <= PrecioMax)
+                .Where(a => a.Precio >= PrecioMin)
+                .Where(a => a.Precio <= PrecioMax)
                 .ToList();
             }
 
@@ -226,16 +227,17 @@ public partial class ArticuloForm : Form
         
     }
 
-    private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+    private async void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
         if (ModoInvocacion == "CrearPedido")
         {
             articuloSeleccionado = new Articulo
-            {
+            {   
                 id = (string)dataGridView1.Rows[e.RowIndex].Cells["Id"].Value,
-                nombre = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString(),
-                precio = (decimal)dataGridView1.Rows[e.RowIndex].Cells["Precio"].Value,
-                categoria = dataGridView1.Rows[e.RowIndex].Cells["Categoria"].Value.ToString(),
+                Nombre = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString(),
+                Precio = (decimal)dataGridView1.Rows[e.RowIndex].Cells["Precio"].Value,
+                Categoria = dataGridView1.Rows[e.RowIndex].Cells["Categoria"].Value.ToString(),
+                IdDisenoCasco = dataGridView1.Rows[e.RowIndex].Cells["IdDisenoCasco"].Value?.ToString(),
                 FechaCreacion = (DateTime)dataGridView1.Rows[e.RowIndex].Cells["FechaCreacion"].Value,
                 FechaActualizacion = dataGridView1.Rows[e.RowIndex].Cells["FechaActualizacion"].Value as DateTime?
             };
@@ -243,35 +245,55 @@ public partial class ArticuloForm : Form
             this.Close();
             return;
         }
-        if (e.RowIndex >= 0)
+        if (e.RowIndex < 0)
         {
-            try
-            {
-                var articulo = dataGridView1.Rows[e.RowIndex].DataBoundItem as Articulo;
-
-                if (articulo != null)
-                {
-                    Log.Info($"Abriendo formulario de detalle para artículo ID {articulo.id}.");
-                    WindowManager.ShowForm(
-                        $"{nameof(ArticuloForm)}_{articulo.id}",
-                        this,
-                        () =>
-                        {
-                            var form = new ArticuloDetailForm(api, articulo, user);
-                            form.FormClosed += (s, e) => cargarArticulos(null);
-                            return form;
-                        }
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
-                alerta.ShowDialog();
-                return;
-
-            }
+            return;
         }
+
+        try
+        {
+            var dto = dataGridView1.Rows[e.RowIndex].DataBoundItem as ArticuloDTO;
+            string idDiseno = null;
+
+            if (dto == null)
+            {
+                return;
+            }
+            if(dto.DisenoCasco != null)
+            {
+                idDiseno = await api.ObtenerIdDiseno(dto.DisenoCasco);
+            }
+            var articulo = new Articulo
+            {
+                id = dto.Id,
+                Nombre = dto.Nombre,
+                Precio = dto.Precio,
+                Categoria = dto.Categoria,
+                IdDisenoCasco = idDiseno,
+                FechaCreacion = dto.FechaCreacion,
+                FechaActualizacion = dto.FechaActualizacion
+            };
+
+            Log.Info($"Abriendo formulario de detalle para artículo ID {articulo.id}.");
+            WindowManager.ShowForm(
+                $"{nameof(ArticuloForm)}_{articulo.id}",
+                this,
+                () =>
+                {
+                    var form = new ArticuloDetailForm(api, articulo, user);
+                    form.FormClosed += (s, e) => cargarArticulos(null);
+                    return form;
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+            alerta.ShowDialog();
+            return;
+
+        }
+        
     }
 
 
@@ -341,6 +363,7 @@ public partial class ArticuloForm : Form
         dataGridView1.Columns[3].Width = 80;
         dataGridView1.Columns[4].Width = 110;
         dataGridView1.Columns[5].Width = 140;
+
         DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
         col.Name = "colVacia";
         col.HeaderText = "";

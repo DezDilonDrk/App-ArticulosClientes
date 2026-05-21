@@ -7,34 +7,33 @@ namespace MTCore_AC.Entidades;
 public class Articulo
 {
     public String id { get; set; }
+    public String Nombre { get; set; }
+    public decimal Precio { get; set; }
 
-    //[Required(ErrorMessage = "Nombre obligatorio")]
-    //[StringLength(100, ErrorMessage = "Máximo 100 caracteres")]
-    public String nombre { get; set; }
-    public decimal precio { get; set; }
+    public String Categoria { get; set; }
 
-    public String categoria { get; set; }
-
-    public String? idDisenoCasco { get; set; }
+    public String? IdDisenoCasco { get; set; }
 
     public DateTime FechaCreacion { get; set; }
     public DateTime? FechaActualizacion { get; set; }
 
-    public Articulo(String id, String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
+    public Articulo(String id, String nombre, decimal precio, String categoria, String? idDisenoCasco, DateTime fechaCreacion, DateTime? fechaActualizacion)
     {
         this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.categoria = categoria;
+        this.Nombre = nombre;
+        this.Precio = precio;
+        this.Categoria = categoria;
+        this.IdDisenoCasco = idDisenoCasco;
         this.FechaCreacion = fechaCreacion;
         this.FechaActualizacion = fechaActualizacion;
     }
-    public Articulo(String nombre, decimal precio, String categoria, DateTime fechaCreacion, DateTime? fechaActualizacion)
+    public Articulo(String nombre, decimal precio, String categoria, String? idDisenoCasco, DateTime fechaCreacion, DateTime? fechaActualizacion)
     {
         this.id = Guid.NewGuid().ToString();
-        this.nombre = nombre;
-        this.precio = precio;
-        this.categoria = categoria;
+        this.Nombre = nombre;
+        this.Precio = precio;
+        this.Categoria = categoria;
+        this.IdDisenoCasco = idDisenoCasco;
         this.FechaCreacion = fechaCreacion;
         this.FechaActualizacion = fechaActualizacion;
     }

@@ -19,7 +19,7 @@ namespace Articulos_Frontend.Client
         public async Task InitAsync(string currentServer)
         {
             this.mySession = new UserSession(currentServer);
-            await mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+            await mySession.Init("emilio.martinez@mthelmets.com", "emilio123");
         }
         public async Task<ConfiguracionModel> ObtenerConfiguracionPorCorreo(string correo)
         {

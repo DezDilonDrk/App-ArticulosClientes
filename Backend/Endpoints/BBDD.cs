@@ -171,11 +171,11 @@ public static class BBDD
                 var categorias = Enum.GetValues<CategoriaArticulo>();
                 var categoriasRandom = categorias[random.Next(categorias.Length)];
                 var articulosFaker = new Faker<Articulo>("es")
-                                    .RuleFor(x => x.nombre,
+                                    .RuleFor(x => x.Nombre,
                                         f => f.Commerce.ProductName())
-                                    .RuleFor(x => x.precio,
+                                    .RuleFor(x => x.Precio,
                                         f => Math.Round(f.Random.Decimal(20, 500), 2))
-                                    .RuleFor(x => x.categoria,
+                                    .RuleFor(x => x.Categoria,
                                         f => categorias[
                                             f.Random.Int(0, categorias.Length - 1)
                                         ].ToString())

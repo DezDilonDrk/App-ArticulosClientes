@@ -31,9 +31,40 @@ public class ArticuloMethods
         var articulo = await _repo.ObtenerPorNombreExacto(nombre);
         return articulo;
     }
+
+    public async Task<IEnumerable<ArticuloDTO>> ObtenerArticuloDTO()
+    {
+        var articulos = await _repo.ObtenerArticuloDTO();
+        return articulos;
+    }
+
+    public async Task<IEnumerable<DisenoCasco>> ObtenerDisenosCascos()
+    {
+        var disenos = await _repo.ObtenerDisenosCascos();
+        return disenos;
+    }
+
+    public  async Task<DisenoCasco> ObtenerDisenoPorId(string id)
+    {
+        var diseno = await _repo.ObtenerDisenoPorId(id);
+        return diseno;
+    }
+
+    public async Task<string> ObtenerIdDiseno(string nombre)
+    {
+        var id = await _repo.ObtenerIdDiseno(nombre);
+        return id;
+    }
+
     public async Task<string> Insertar(Articulo articulo)
     {
         var id = await _repo.Insertar(articulo);
+        return id;
+    }
+
+    public async Task<string> InsertarDiseno(DisenoCasco diseno)
+    {
+        var id = await _repo.InsertarDiseno(diseno);
         return id;
     }
 

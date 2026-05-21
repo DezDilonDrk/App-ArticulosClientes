@@ -612,8 +612,8 @@ namespace Articulos_Frontend
                             return;
                         }
                         Articulo artSel = form.articuloSeleccionado;
-                        Log.Info($"Artículo seleccionado para el pedido con nombre: {artSel.nombre}");
-                        articulos.Add(new LineaPedido(artSel.id, artSel.nombre, artSel.categoria, 1, artSel.precio));
+                        Log.Info($"Artículo seleccionado para el pedido con nombre: {artSel.Nombre}");
+                        articulos.Add(new LineaPedido(artSel.id, artSel.Nombre, artSel.Categoria, 1, artSel.Precio));
                         dataGridViewArticulos.DataSource = null;
                         dataGridViewArticulos.DataSource = articulos;
                     }
@@ -770,7 +770,7 @@ namespace Articulos_Frontend
                         alerta.ShowDialog();
                         continue;
                     }
-                    articulos.Add(new LineaPedido(a.id_articulo, art.nombre, art.categoria, a.cantidad, a.precio_unidad));
+                    articulos.Add(new LineaPedido(a.id_articulo, art.Nombre, art.Categoria, a.cantidad, a.precio_unidad));
                 }
                 dataGridViewArticulos.DataSource = null;
                 dataGridViewArticulos.DataSource = articulos;
