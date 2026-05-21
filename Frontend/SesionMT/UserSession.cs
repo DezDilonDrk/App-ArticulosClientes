@@ -13,7 +13,7 @@ namespace SesionMT
     public class UserSession
     {
         HttpClient client;
-        private UsuarioApiClient api = new UsuarioApiClient();
+        private UsuarioApiClient api;
         private ConfiguracionApiClient configApi;
         private string email = "";
         private List<string> roles;
@@ -27,32 +27,38 @@ namespace SesionMT
             this.currentServer = currentServer;
             this.email = email;
             this.password = password;
+            if (fileExists())
+            {
+                this.token = CargarToken();
+            }
             if (fileExists() && tokenExpired())
             {
                 BorrarToken();
                 this.token = null;
-            } else if (!fileExists() && !string.IsNullOrEmpty(token))
+            } else if (!string.IsNullOrEmpty(token))
             {
                 this.token = token;
                 GuardarToken();
-            } else if (fileExists())
-            {
-                this.token = CargarToken();
             }
             configApi = new ConfiguracionApiClient(this);
+            api = new UsuarioApiClient(this);
 
             this.client = new HttpClient();
             client.BaseAddress = new Uri(currentServer);
 
-            if (token != null){
-                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            if (!string.IsNullOrEmpty(this.token)){
+                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
             }
         }
         public UserSession(string currentServer)
         {
             this.currentServer = currentServer;
-            this.token = CargarToken();
             configApi = new ConfiguracionApiClient(this);
+            api = new UsuarioApiClient(this);
+            if (fileExists())
+            {
+                this.token = CargarToken();
+            }
             if (fileExists() && tokenExpired())
             {
                 BorrarToken();
@@ -60,8 +66,8 @@ namespace SesionMT
             }
             this.client = new HttpClient();
             client.BaseAddress = new Uri(currentServer);
-            if (token != null) { 
-                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token); 
+            if (!string.IsNullOrEmpty(this.token)) { 
+                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token); 
             }
         }
         public void Init(string email, string password)
@@ -103,7 +109,7 @@ namespace SesionMT
             if (json == null){
                 return true;
             }
-            var expString = json.Split("\"exp\":")[1].Split(",")[0];
+            var expString = json.Split("\"exp\":")[1].Split("}")[0];
             long exp;
             try
             {
@@ -201,7 +207,6 @@ namespace SesionMT
         {
             this.email = email;
             this.password = password;
-            this.token = token;
             try
             {
                 if (File.Exists(tokenPath))
