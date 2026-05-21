@@ -25,22 +25,44 @@ namespace SesionMT
         public UserSession(string currentServer, string token = null)
         {
             this.currentServer = currentServer;
-            this.token = CargarToken();
-            configApi = new ConfiguracionApiClient();
+            this.email = email;
+            this.password = password;
+            if (fileExists() && tokenExpired())
+            {
+                BorrarToken();
+                this.token = null;
+            } else if (!fileExists() && !string.IsNullOrEmpty(token))
+            {
+                this.token = token;
+                GuardarToken();
+            } else if (fileExists())
+            {
+                this.token = CargarToken();
+            }
+            configApi = new ConfiguracionApiClient(this);
 
             this.client = new HttpClient();
             client.BaseAddress = new Uri(currentServer);
-            this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            if (token != null){
+                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
         }
         public UserSession(string currentServer)
         {
             this.currentServer = currentServer;
             this.token = CargarToken();
-            configApi = new ConfiguracionApiClient();
-
+            configApi = new ConfiguracionApiClient(this);
+            if (fileExists() && tokenExpired())
+            {
+                BorrarToken();
+                this.token = null;
+            }
             this.client = new HttpClient();
             client.BaseAddress = new Uri(currentServer);
-            this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            if (token != null) { 
+                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token); 
+            }
         }
         public void Init(string email, string password)
         {
@@ -67,13 +89,20 @@ namespace SesionMT
             setConfiguracion(config);
             await configApi.GuardarConfiguracionPorCorreo(email, config);
         }
+        public string getToken()
+        {
+            return this.token;
+        }
         public bool tokenExpired()
         {
-            if (string.IsNullOrEmpty(this.token))
+            /*if (string.IsNullOrEmpty(this.token)) // RECORDAR: Activar de nuevo esta parte y hacer que no ocasione errores
             {
                 return true;
-            }
+            }*/
             var json = GetPayload();
+            if (json == null){
+                return true;
+            }
             var expString = json.Split("\"exp\":")[1].Split(",")[0];
             long exp;
             try
@@ -90,6 +119,7 @@ namespace SesionMT
         }
         private string GetPayload()
         {
+            if (string.IsNullOrEmpty(token)){return null;}
             var partes = token.Split('.');
             var payload = partes[1];
             payload = payload.PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
@@ -149,6 +179,7 @@ namespace SesionMT
         public void setToken(string token)
         {
             this.token = token;
+            this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
         public void GuardarToken()
         {
@@ -166,8 +197,11 @@ namespace SesionMT
                 Console.WriteLine($"Error al guardar el token: {ex.Message}");
             }
         }
-        public string CargarToken()
+        public string CargarToken(string token = null, string email = null, string password = null)
         {
+            this.email = email;
+            this.password = password;
+            this.token = token;
             try
             {
                 if (File.Exists(tokenPath))

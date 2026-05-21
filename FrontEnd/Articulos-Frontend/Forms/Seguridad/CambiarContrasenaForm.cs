@@ -21,7 +21,7 @@ namespace Articulos_Frontend.Forms.Seguridad
             InitializeComponent();
             StyleManager.StyleForm(this);
             this.correo = correo;
-            api = new UsuarioApiClient();
+            api = new UsuarioApiClient(AppState.getUserSession());
         }
         public async void CambiarContrasenaForm_Load(object sender, EventArgs e)
         {

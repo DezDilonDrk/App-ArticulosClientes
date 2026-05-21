@@ -21,7 +21,7 @@ public static class AppState
     {
         if (configuracion == null)
         {
-            ConfiguracionApiClient apiConfiguracion = new ConfiguracionApiClient();
+            ConfiguracionApiClient apiConfiguracion = new ConfiguracionApiClient(UserSession);
             apiConfiguracion.InitAsync(getServer()).Wait();
             apiConfiguracion.ObtenerConfiguracionPorCorreo(UserSession.getEmail()).ContinueWith(task =>
             {
@@ -42,6 +42,10 @@ public static class AppState
     public static void initSession()
     {
         UserSession = new UserSession(getServer(), "");
+    }
+    public static void setUserSession(UserSession session)
+    {
+        UserSession = session;
     }
     public static UserSession getUserSession()
     {

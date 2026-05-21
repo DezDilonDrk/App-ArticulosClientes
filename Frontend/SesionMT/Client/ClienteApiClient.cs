@@ -10,10 +10,12 @@ namespace Articulos_Frontend.Client
     public class ClienteApiClient
     {
         UserSession mySession;
-        public ClienteApiClient(){}
+        public ClienteApiClient(UserSession session){
+            this.mySession = session;
+        }
         public async Task InitAsync(string currentServer)
         {
-            this.mySession = new UserSession(currentServer, mySession.CargarToken());
+            this.mySession = new UserSession(currentServer);
             mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
         }
         public async Task<List<Cliente>> ObtenerClientes()

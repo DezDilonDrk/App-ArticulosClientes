@@ -20,8 +20,8 @@ public class PedidoApiClient
     }
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer, mySession.CargarToken());
-        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        /*this.mySession = new UserSession(currentServer, mySession.CargarToken());
+        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");*/
     }
     public UserSession GetSession()
     {

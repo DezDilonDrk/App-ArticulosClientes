@@ -10,11 +10,13 @@ namespace Articulos_Frontend.Client;
 public class UsuarioApiClient
 {
     private UserSession mySession;
+    public UsuarioApiClient(UserSession session) {
+        this.mySession = session;
+    }
     public UsuarioApiClient(){}
-
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer);
+        //this.mySession = new UserSession(currentServer);
         mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
     public async Task<LoginResponse> LoginAsync(LoginRequest request)

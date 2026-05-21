@@ -19,6 +19,7 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         Log.Info("---- Iniciando aplicación con versión: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
         UserSession userSession = new UserSession(UrlMT.serverLocal, "");
+        AppState.setUserSession(userSession);
         if (userSession.fileExists())
         {
             var form = new Menu(AppState.getUserSession().getUsuarioApiClient(), new Usuario(userSession.getEmail(), userSession.getNombre(), userSession.getContrasena()));

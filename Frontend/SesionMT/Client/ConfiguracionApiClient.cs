@@ -8,6 +8,9 @@ namespace Articulos_Frontend.Client
     public class ConfiguracionApiClient
     {
         UserSession mySession;
+        public ConfiguracionApiClient(UserSession session){
+            this.mySession = session;
+        }
         public ConfiguracionApiClient(){}
         /*public UserSession GetSession()
         {
@@ -15,9 +18,9 @@ namespace Articulos_Frontend.Client
         }*/
         public async Task InitAsync(string currentServer)
         {
-            this.mySession = new UserSession(currentServer);
+            /*this.mySession = new UserSession(currentServer);
             mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
-            mySession.CargarToken();
+            mySession.CargarToken();*/
         }
         public async Task<ConfiguracionModel> ObtenerConfiguracionPorCorreo(string correo)
         {

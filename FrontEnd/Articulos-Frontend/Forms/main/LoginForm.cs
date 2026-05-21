@@ -15,8 +15,8 @@ public partial class LoginForm : Form
     public LoginForm()
     {
         InitializeComponent();
-        api = new UsuarioApiClient();
-        configApi = new ConfiguracionApiClient();
+        api = new UsuarioApiClient(AppState.getUserSession());
+        configApi = new ConfiguracionApiClient(AppState.getUserSession());
         StyleManager.StyleForm(this);
         Log.Info("Formulario de login iniciado.");
         this.Text = stringValuesSP.login;
@@ -42,8 +42,7 @@ public partial class LoginForm : Form
             {
                 AppState.getUserSession().setToken(loginResponse.token);
                 AppState.getUserSession().setRoles(loginResponse.Roles);
-                UserSession userSession = new UserSession(UrlMT.serverLocal, AppState.getUserSession().CargarToken());
-                userSession.GuardarToken();
+                AppState.getUserSession().GuardarToken();
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
 
                 await ConfigurationSet(AppState.getUserSession().getEmail());

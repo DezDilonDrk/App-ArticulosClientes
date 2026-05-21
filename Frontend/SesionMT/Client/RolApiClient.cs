@@ -13,11 +13,14 @@ public class RolApiClient
 {
     UserSession mySession;
 
+    public RolApiClient(UserSession session) {
+        this.mySession = session;
+    }
     public RolApiClient(){}
     public async Task InitAsync(string currentServer)
     {
-        this.mySession = new UserSession(currentServer, mySession.CargarToken());
-        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+        /*this.mySession = new UserSession(currentServer, mySession.CargarToken());
+        mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");*/
     }
 
     public async Task<List<Rol>> ObtenerNombreRoles()

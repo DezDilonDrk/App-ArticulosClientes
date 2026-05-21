@@ -30,7 +30,7 @@ public partial class ClienteForm : Form
         animTimer.Interval = 1;
         animTimer.Tick += AnimarPanel;*/
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-        ClienteApiClient = new ClienteApiClient();
+        ClienteApiClient = new ClienteApiClient(AppState.getUserSession());
         StyleManager.StyleForm(this);
         this.ActiveControl = textBoxCliente;
         Log.Info("Formulario de clientes iniciado.");

@@ -22,7 +22,7 @@ namespace Articulos_Frontend
             textBoxEmail.Text = cliente.Email;
 
             string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-            clienteApiClient = new ClienteApiClient();
+            clienteApiClient = new ClienteApiClient(AppState.getUserSession());
             StyleManager.StyleForm(this);
             Log.Info("Formulario de actualización de cliente iniciado para cliente con DNI: " + cliente.Dni);
             if(AppState.getUserSession().getRoles().Contains(Roles.UserVentas))

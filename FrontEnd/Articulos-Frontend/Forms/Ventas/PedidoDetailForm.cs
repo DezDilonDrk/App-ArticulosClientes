@@ -11,7 +11,7 @@ namespace Articulos_Frontend
     {
         private PedidoApiClient pedidoApiClient;
         private string state;
-        private ClienteApiClient clienteApiClient = new ClienteApiClient();
+        private ClienteApiClient clienteApiClient = new ClienteApiClient(AppState.getUserSession());
         private ArticuloApiClient articuloApiClient;
         private Pedido pedidoCreated;
         public event Action<Pedido> PedidoModificadoCorrectamente;

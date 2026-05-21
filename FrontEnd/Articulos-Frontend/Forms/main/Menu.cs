@@ -16,7 +16,7 @@ namespace Articulos_Frontend
         AjustesForm ajustes;
         private Usuario user;
         UsuarioApiClient api;
-        ConfiguracionApiClient configuracionApiClient = new ConfiguracionApiClient();
+        ConfiguracionApiClient configuracionApiClient;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
@@ -41,6 +41,7 @@ namespace Articulos_Frontend
             {
                 seguridadToolStripMenuItem.Enabled = false;
             }
+            configuracionApiClient = new ConfiguracionApiClient(AppState.getUserSession());
             this.Load += Menu_Load;
             this.Shown += Menu_Shown;
             labelRolesTitulo.Text = stringValuesSP.roles;
@@ -133,11 +134,11 @@ namespace Articulos_Frontend
             var rolItem = new ToolStripMenuItem("RolForm");
             usuarioItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm(stringValuesSP.seccionUsuarios, this, () => new UsuarioForm(new UsuarioApiClient(), user));
+                WindowManager.ShowForm(stringValuesSP.seccionUsuarios, this, () => new UsuarioForm(new UsuarioApiClient(AppState.getUserSession()), user));
             };
             rolItem.Click += (s, ev) =>
             {
-                WindowManager.ShowForm(stringValuesSP.seccionRoles, this, () => new RolForm(new RolApiClient()));
+                WindowManager.ShowForm(stringValuesSP.seccionRoles, this, () => new RolForm(new RolApiClient(AppState.getUserSession())));
             };
 
             dropDown.Items.Add(usuarioItem);
@@ -275,8 +276,7 @@ namespace Articulos_Frontend
         private void buttonLogout_Click(object sender, EventArgs e)
         {
             WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
-            UserSession userSession = new UserSession("", "");
-            userSession.BorrarToken();
+            AppState.getUserSession().BorrarToken();
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {

@@ -22,7 +22,7 @@ public partial class ClienteDetailForm : Form
         LabelTitulo.Text = stringValuesSP.crearCliente;
         this.cliente = cliente;
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
-        clienteApiClient = new ClienteApiClient();
+        clienteApiClient = new ClienteApiClient(AppState.getUserSession());
         StyleManager.StyleForm(this);
     }
     private void InitializeComponent()
