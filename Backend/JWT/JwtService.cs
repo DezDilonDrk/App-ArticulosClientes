@@ -15,13 +15,13 @@ public class JwtService
 
     public string GenerateToken(string correo, List<string> roles, Usuario usuario)
     {
-        var claims = new List<Claim> { new Claim("correo", correo) };
+        var claims = new List<Claim>();
 
         foreach(var role in roles)
         {
             claims.Add(new Claim("roles", role));
         }
-        claims.Add(new Claim("email", correo));
+        claims.Add(new Claim("correo", correo));
         claims.Add(new Claim("nombre", usuario.Nombre));
         claims.Add(new Claim("password", usuario.Contrasena));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));

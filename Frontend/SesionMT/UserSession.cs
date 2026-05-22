@@ -95,21 +95,17 @@ namespace SesionMT
             setConfiguracion(config);
             await configApi.GuardarConfiguracionPorCorreo(email, config);
         }
-        public string getToken()
-        {
-            return this.token;
-        }
         public bool tokenExpired()
         {
             /*if (string.IsNullOrEmpty(this.token)) // RECORDAR: Activar de nuevo esta parte y hacer que no ocasione errores
             {
                 return true;
             }*/
-            var json = GetPayload();
-            if (json == null){
+            TokenDto tokenDto = getToken();
+            if (tokenDto == null){
                 return true;
             }
-            var expString = json.Split("\"exp\":")[1].Split("}")[0];
+            var expString = tokenDto.exp.ToString();
             long exp;
             try
             {
@@ -123,18 +119,10 @@ namespace SesionMT
             var expDate = DateTimeOffset.FromUnixTimeSeconds(exp);
             return expDate < DateTimeOffset.UtcNow.AddSeconds(300); // Número de segundos de margen. 300 son 5 minutos, por ejemplo
         }
-        private string GetPayload()
-        {
-            if (string.IsNullOrEmpty(token)){return null;}
-            var partes = token.Split('.');
-            var payload = partes[1];
-            payload = payload.PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
-            return Encoding.UTF8.GetString(Convert.FromBase64String(payload));
-        }
         public string getEmail()
         {
-            var json = GetPayload();
-            return json.Split("\"email\":\"")[1].Split('"')[0];
+            TokenDto tokenDto = getToken();
+            return tokenDto.correo;
         }
         public void setEmail(string email)
         {
@@ -142,41 +130,19 @@ namespace SesionMT
         }
         public string getContrasena()
         {
-            var json = GetPayload();
-            return json.Split("\"password\":\"")[1].Split('"')[0];
+            TokenDto tokenDto = getToken();
+            return tokenDto.password;
         }
         public string getNombre()
         {
-            var json = GetPayload();
-            return json.Split("\"nombre\":\"")[1].Split('"')[0];
+            TokenDto tokenDto = getToken();
+            return tokenDto.nombre;
         }
         public List<string> getRoles()
         {
-            var json = GetPayload();
-            int idx = json.IndexOf("\"roles\":");
-            if (idx == -1)
-                return new List<string>();
-            string sub = json.Substring(idx);
-            if (sub.Contains("["))
-            {
-                string arrayPart = sub.Split('[', 2)[1].Split(']', 2)[0];
-                return arrayPart
-                    .Replace("\"", "")
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(r => r.Trim())
-                    .ToList();
-            }
-            if (sub.Contains(":"))
-            {
-                string value = sub.Split(':', 2)[1]
-                                  .Split(',', 2)[0]
-                                  .Replace("\"", "")
-                                  .Trim();
-
-                return new List<string> { value };
-            }
-
-            return new List<string>();
+            TokenDto tokenDto = getToken();
+            if (tokenDto == null){ return new List<string>(); }
+            return tokenDto.roles;
         }
         public void setRoles(List<string> roles)
         {
@@ -270,6 +236,11 @@ namespace SesionMT
                 Init(email, password);
             }
             return this.client;
+        }
+        public TokenDto getToken()
+        {
+            TokenDto tokenDto = TokenDto.DecodeJwt(token);
+            return tokenDto;
         }
         public static ConfiguracionModel setConfiguracion(ConfiguracionModel config)
         {
