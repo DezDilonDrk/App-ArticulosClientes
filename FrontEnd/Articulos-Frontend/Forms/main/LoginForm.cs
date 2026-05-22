@@ -41,11 +41,8 @@ public partial class LoginForm : Form
             if (loginResponse != null)
             {
                 AppState.getUserSession().setToken(loginResponse.token);
-                AppState.getUserSession().setRoles(loginResponse.Roles);
-                AppState.getUserSession().GuardarToken();
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
 
-                await ConfigurationSet(AppState.getUserSession().getEmail());
                 WindowManager.ShowForm(
                     "MainForm",
                     this,
@@ -100,23 +97,6 @@ public partial class LoginForm : Form
             Log.Error("Error con el InitAsync del api en Login Form.", ex);
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
             alerta.ShowDialog();
-        }
-    }
-    private async Task ConfigurationSet(string email) {
-
-        await configApi.InitAsync(UrlMT.serverLocal);
-        var config = await configApi.ObtenerConfiguracionPorCorreo(email);
-        if (config != null)
-        {
-            AppState.setConfiguracion(config);
-            await configApi.GuardarConfiguracionPorCorreo(email, config);
-        }
-        else
-        {
-            Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
-            config = new ConfiguracionModel { SendNotifications = true };
-            AppState.setConfiguracion(config);
-            await configApi.GuardarConfiguracionPorCorreo(email, config);
         }
     }
 }

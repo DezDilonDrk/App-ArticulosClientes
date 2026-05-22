@@ -19,12 +19,6 @@ namespace Articulos_Frontend
                 AddLog(log);
             }
         }
-        /* protected override void OnActivated(EventArgs e)
-        {
-            rtextBoxTerminal.Clear();
-            refreshList();
-            base.OnActivated(e);
-        } */
         public void AddLog(string log)
         {
             Color color = Color.White;
@@ -46,7 +40,6 @@ namespace Articulos_Frontend
 
             rtextBoxTerminal.SelectionColor = rtextBoxTerminal.ForeColor;
         }
-
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
             rtextBoxTerminal.Clear();

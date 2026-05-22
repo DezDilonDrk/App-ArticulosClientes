@@ -40,68 +40,77 @@
             // 
             // labelTitulo
             // 
-            labelTitulo.Location = new Point(23, 22);
+            labelTitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelTitulo.Location = new Point(154, 10);
             labelTitulo.Name = "labelTitulo";
-            labelTitulo.Size = new Size(179, 23);
+            labelTitulo.Size = new Size(292, 40);
             labelTitulo.TabIndex = 0;
-            labelTitulo.Text = "Cambio de contraseña";
+            labelTitulo.Tag = "title";
+            labelTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // labelCorreo
             // 
-            labelCorreo.Location = new Point(117, 122);
+            labelCorreo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelCorreo.Location = new Point(107, 129);
             labelCorreo.Name = "labelCorreo";
-            labelCorreo.Size = new Size(51, 23);
+            labelCorreo.Size = new Size(143, 23);
             labelCorreo.TabIndex = 1;
             labelCorreo.Text = "Correo:";
             // 
             // labelContrasena
             // 
-            labelContrasena.Location = new Point(91, 169);
+            labelContrasena.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelContrasena.Location = new Point(81, 158);
             labelContrasena.Name = "labelContrasena";
-            labelContrasena.Size = new Size(77, 23);
+            labelContrasena.Size = new Size(169, 23);
             labelContrasena.TabIndex = 2;
             labelContrasena.Text = "Contraseña:";
             // 
             // labelConfirmarContrasena
             // 
-            labelConfirmarContrasena.Location = new Point(37, 216);
+            labelConfirmarContrasena.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            labelConfirmarContrasena.Location = new Point(27, 187);
             labelConfirmarContrasena.Name = "labelConfirmarContrasena";
-            labelConfirmarContrasena.Size = new Size(131, 23);
+            labelConfirmarContrasena.Size = new Size(223, 23);
             labelConfirmarContrasena.TabIndex = 3;
             labelConfirmarContrasena.Text = "Confirmar Contraseña:";
             // 
             // textBoxCorreo
             // 
-            textBoxCorreo.Location = new Point(174, 119);
+            textBoxCorreo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxCorreo.Location = new Point(164, 129);
             textBoxCorreo.Name = "textBoxCorreo";
-            textBoxCorreo.Size = new Size(200, 23);
+            textBoxCorreo.Size = new Size(292, 23);
             textBoxCorreo.TabIndex = 4;
             // 
             // textBoxContrasena
             // 
-            textBoxContrasena.Location = new Point(174, 166);
+            textBoxContrasena.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxContrasena.Location = new Point(164, 158);
             textBoxContrasena.Name = "textBoxContrasena";
             textBoxContrasena.PasswordChar = '*';
-            textBoxContrasena.Size = new Size(200, 23);
+            textBoxContrasena.Size = new Size(292, 23);
             textBoxContrasena.TabIndex = 5;
             textBoxContrasena.UseSystemPasswordChar = true;
             // 
             // textBoxConfirmarContrasena
             // 
-            textBoxConfirmarContrasena.Location = new Point(174, 213);
-            textBoxConfirmarContrasena.MaximumSize = new Size(200, 23);
-            textBoxConfirmarContrasena.MinimumSize = new Size(200, 23);
+            textBoxConfirmarContrasena.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxConfirmarContrasena.Location = new Point(164, 187);
             textBoxConfirmarContrasena.Name = "textBoxConfirmarContrasena";
             textBoxConfirmarContrasena.PasswordChar = '*';
-            textBoxConfirmarContrasena.Size = new Size(200, 23);
+            textBoxConfirmarContrasena.Size = new Size(292, 23);
             textBoxConfirmarContrasena.TabIndex = 6;
             textBoxConfirmarContrasena.UseSystemPasswordChar = true;
             // 
             // buttonConfirm
             // 
-            buttonConfirm.Location = new Point(187, 261);
+            buttonConfirm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonConfirm.Location = new Point(200, 260);
+            buttonConfirm.MaximumSize = new Size(200, 30);
+            buttonConfirm.MinimumSize = new Size(200, 30);
             buttonConfirm.Name = "buttonConfirm";
-            buttonConfirm.Size = new Size(175, 47);
+            buttonConfirm.Size = new Size(200, 30);
             buttonConfirm.TabIndex = 7;
             buttonConfirm.Text = "Cambiar contraseña";
             buttonConfirm.UseVisualStyleBackColor = true;
@@ -111,7 +120,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(492, 450);
+            ClientSize = new Size(584, 361);
             Controls.Add(buttonConfirm);
             Controls.Add(textBoxConfirmarContrasena);
             Controls.Add(textBoxContrasena);
@@ -120,6 +129,8 @@
             Controls.Add(labelContrasena);
             Controls.Add(labelCorreo);
             Controls.Add(labelTitulo);
+            MaximumSize = new Size(650, 500);
+            MinimumSize = new Size(600, 400);
             Name = "CambiarContrasenaForm";
             Text = "CambiarContrasenaForm";
             Load += CambiarContrasenaForm_Load;

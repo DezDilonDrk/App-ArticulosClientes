@@ -5,6 +5,7 @@ using Articulos_Frontend.Theme;
 using MTCore_AC.Entidades;
 using SesionMT;
 using SesionMT.LogConfig;
+using System.DirectoryServices.ActiveDirectory;
 using static MTCore_AC.DTO.LoginDtos;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
@@ -59,8 +60,6 @@ namespace Articulos_Frontend
                 if (loginResponse != null)
                 {
                     AppState.getUserSession().setToken(loginResponse.token);
-                    AppState.getUserSession().setRoles(loginResponse.Roles);
-                    userSession.GuardarToken();
                     Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
 
                     await ConfigurationSet(AppState.getUserSession().getEmail());
@@ -82,6 +81,7 @@ namespace Articulos_Frontend
         public async void Menu_Load(object sender, EventArgs e)
         {
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
+            await ConfigurationSet(AppState.getUserSession().getEmail());
             RegistrarClicks(this);
         }
         public async void Menu_Shown(object sender, EventArgs e)
@@ -93,7 +93,7 @@ namespace Articulos_Frontend
             await initAsync();
             Enabled = true;
             RefrescarMenuVentanas();
-        }   
+        }
         private void artículosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Log.Info("Abriendo formulario de artículos.");

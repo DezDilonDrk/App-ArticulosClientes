@@ -171,14 +171,16 @@ namespace SesionMT
             if (tokenDto == null){ return new List<string>(); }
             return tokenDto.roles;
         }
-        public void setRoles(List<string> roles)
+        public void setRoles()
         {
-            this.roles = roles;
+            roles = getToken().roles;
         }
         public void setToken(string token)
         {
             this.token = token;
             this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            setRoles();
+            GuardarToken();
         }
         public void GuardarToken()
         {

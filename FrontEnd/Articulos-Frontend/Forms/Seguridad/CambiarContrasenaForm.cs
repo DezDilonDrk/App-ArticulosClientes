@@ -16,12 +16,14 @@ namespace Articulos_Frontend.Forms.Seguridad
     {
         private string correo;
         private UsuarioApiClient api;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
         public CambiarContrasenaForm(string correo)
         {
             InitializeComponent();
             StyleManager.StyleForm(this);
             this.correo = correo;
             api = new UsuarioApiClient(AppState.getUserSession());
+            this.labelTitulo.Text = stringValuesSP.cambiarContrasena;
         }
         public async void CambiarContrasenaForm_Load(object sender, EventArgs e)
         {
