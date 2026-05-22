@@ -349,12 +349,20 @@ public partial class ArticuloForm : Form
         }
         if (dataGridView1.Columns.Count == 0) return;
 
-        dataGridView1.Columns[0].Width = 270;
-        dataGridView1.Columns[1].Width = 120;
-        dataGridView1.Columns[2].Width = 80;
-        dataGridView1.Columns[3].Width = 80;
-        dataGridView1.Columns[4].Width = 110;
-        dataGridView1.Columns[5].Width = 140;
+        try
+        {
+            dataGridView1.Columns["Id"].Width = 270;
+            dataGridView1.Columns["Nombre"].Width = 120;
+            dataGridView1.Columns["Precio"].Width = 80;
+            dataGridView1.Columns["Categoria"].Width = 80;
+            dataGridView1.Columns["DisenoCasco"].Width = 110;
+            dataGridView1.Columns["FechaCreacion"].Width = 110;
+            dataGridView1.Columns["FechaActualizacion"].Width = 140;
+        }
+        catch (Exception ex) // Por si hay NullReferenceException
+        {
+            Log.Warn(ex.ToString());
+        }
 
         DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
         col.Name = "colVacia";
