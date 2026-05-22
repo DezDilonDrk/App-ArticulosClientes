@@ -2,6 +2,7 @@
 using Articulos_Frontend.Client;
 using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
+using SesionMT.LogConfig;
 using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -33,8 +34,22 @@ namespace SesionMT
             }
             if (fileExists() && tokenExpired())
             {
-                BorrarToken();
-                this.token = null;
+                TokenDto tokenDto = getToken();
+                Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
+                if (tokenDto == null)
+                {
+                    Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
+                    BorrarToken();
+                    this.token = null;
+                }
+                else
+                {
+                    this.email = tokenDto.correo;
+                    this.password = tokenDto.password;
+                    this.token = GenerateToken().GetAwaiter().GetResult();
+                    GuardarToken();
+                    Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
+                }
             } else if (!string.IsNullOrEmpty(token))
             {
                 this.token = token;
@@ -61,13 +76,25 @@ namespace SesionMT
             }
             if (fileExists() && tokenExpired())
             {
-                BorrarToken();
-                this.token = null;
+                TokenDto tokenDto = getToken();
+                Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
+                if (tokenDto == null)
+                {
+                    Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
+                    BorrarToken();
+                    this.token = null;
+                }
+                else
+                {
+                    GuardarToken();
+                    Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
+                }
             }
             this.client = new HttpClient();
             client.BaseAddress = new Uri(currentServer);
-            if (!string.IsNullOrEmpty(this.token)) { 
-                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token); 
+            if (!string.IsNullOrEmpty(this.token))
+            {
+                this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
             }
         }
         public void Init(string email, string password)

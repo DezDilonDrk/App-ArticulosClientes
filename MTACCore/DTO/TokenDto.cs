@@ -15,11 +15,16 @@ public class TokenDto
 
     public static TokenDto DecodeJwt(string token)
     {
+        if (string.IsNullOrEmpty(token))
+        {
+            Console.WriteLine("El token es nulo o vacío.");
+            return null;
+        }
         string[] parts = token.Split('.');
         string payload = parts[1];
 
         int padding = payload.Length % 4;
-        if (padding != 0){ payload += new string('=', 4 - padding); }
+        if (padding != 0) { payload += new string('=', 4 - padding); }
 
         payload = payload.Replace('-', '+').Replace('_', '/');
         byte[] bytes = Convert.FromBase64String(payload);
