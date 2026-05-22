@@ -1,15 +1,14 @@
 ﻿
 using Microsoft.Data.SqlClient;
 
-namespace MTNegocios.ConexionDB
+namespace MTNegocios.ConexionDB;
+
+public class Builder
 {
-    public class Builder
+    public SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+    Conexion conexion = new Conexion();
+    public Builder()    
     {
-        public SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-        Conexion conexion = new Conexion();
-        public Builder()    
-        {
-            builder.ConnectionString = conexion.conexionString;
-        }
+        builder.ConnectionString = conexion.conexionString;
     }
 }

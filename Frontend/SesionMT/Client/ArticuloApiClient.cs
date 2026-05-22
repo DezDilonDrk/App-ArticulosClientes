@@ -1,6 +1,7 @@
 ﻿using Articulos_Frontend;
 using SesionMT.LogConfig;
 using MTCore_AC.Entidades;
+using MTCore_AC.DTO;
 using SesionMT;
 using SesionMT.LogConfig;
 using System.Net;
@@ -16,7 +17,7 @@ public class ArticuloApiClient
     {
         this.mySession = session;
     }
-    public async Task<List<Articulo>> ObtenerArticulos()
+    public async Task<List<ArticuloDTO>> ObtenerArticulos()
     {
         try {
             var response = await this.mySession.GetClient().GetAsync("/articulos");
@@ -25,7 +26,7 @@ public class ArticuloApiClient
                 Log.Error($"Error al obtener artículos: {response.StatusCode}");
                 throw new Exception($"Error API: {response.StatusCode}");
             }
-            return await response.Content.ReadFromJsonAsync<List<Articulo>>() ?? new List<Articulo>();
+            return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch(HttpRequestException ex)
         {
             Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
@@ -90,6 +91,147 @@ public class ArticuloApiClient
         catch (Exception ex)
         {
             Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
+            throw;
+        }
+    }
+
+    public async Task<List<ArticuloDTO>> ObtenerArticuloDTO()
+    {
+        try
+        {
+            var response = await this.mySession.GetClient().GetAsync($"/articulos/dto");
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener artículos DTO: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+            
+            return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
+        }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (TaskCanceledException ex)
+        {
+            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (WebException ex)
+        {
+            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (SocketException ex)
+        {
+            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
+            throw;
+        }
+    }
+
+    public async Task<List<DisenoCasco>> ObtenerDisenosCascos()
+    {
+        try
+        {
+            var response = await this.mySession.GetClient().GetAsync("/disenos-cascos");
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener diseños de cascos: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+            return await response.Content.ReadFromJsonAsync<List<DisenoCasco>>() ?? new List<DisenoCasco>();
+        }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (TaskCanceledException ex)
+        {
+            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (WebException ex)
+        {
+            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (SocketException ex)
+        {
+            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
+            throw;
+        }
+    }
+
+    public async Task<DisenoCasco> ObtenerDisenoPorId(string id)
+    {
+        try
+        {
+            var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/{id}");
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener diseño de casco: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+            return await response.Content.ReadFromJsonAsync<DisenoCasco>();
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (TaskCanceledException ex)
+        {
+            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (WebException ex)
+        {
+            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (SocketException ex)
+        {
+            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
+            throw;
+        }
+    }
+
+    public async Task<string> ObtenerIdDiseno(string nombre)
+    {
+        try
+        {
+            var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/nombre/{nombre}");
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error al obtener ID de diseño de casco: {response.StatusCode}");
+                throw new Exception($"Error API: {response.StatusCode}");
+            }
+            var diseno = await response.Content.ReadFromJsonAsync<string>();
+            return diseno;
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error al obtener ID de diseño de casco. Error: " + ex.Message, ex);
             throw;
         }
     }
