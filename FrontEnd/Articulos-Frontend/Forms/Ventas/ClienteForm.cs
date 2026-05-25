@@ -26,9 +26,6 @@ public partial class ClienteForm : Form
     public ClienteForm()
     {
         InitializeComponent();
-        /*animTimer = new System.Windows.Forms.Timer();
-        animTimer.Interval = 1;
-        animTimer.Tick += AnimarPanel;*/
         string connStr = "Server=localhost;Database=PracticasDB;Trusted_Connection=True;TrustServerCertificate=True;";
         ClienteApiClient = new ClienteApiClient(AppState.getUserSession());
         StyleManager.StyleForm(this);

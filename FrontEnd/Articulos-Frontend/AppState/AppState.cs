@@ -15,8 +15,8 @@ public static class AppState
 
     private static UserSession UserSession;
     private static ConfiguracionModel configuracion;
-    public static string serverLeandro = UrlMT.serverLeandro;
-    public static string serverEmilio = UrlMT.serverEmilio;
+    private static string serverLeandro = UrlMT.serverLeandro;
+    private static string serverEmilio = UrlMT.serverEmilio;
     public static ConfiguracionModel getConfiguracion()
     {
         if (configuracion == null)
@@ -62,6 +62,6 @@ public static class AppState
     }
     public static string getServer()
     {
-        return serverEmilio;
+        return serverLeandro;
     }
 }

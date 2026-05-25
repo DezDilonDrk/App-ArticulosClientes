@@ -18,8 +18,7 @@ internal static class Program
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
         Log.Info("---- Iniciando aplicación con versión: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
-        UserSession userSession = new UserSession(UrlMT.serverLocal);
-        AppState.setUserSession(userSession);
+        UserSession userSession = AppState.getUserSession();
         if (userSession.fileExists())
         {
             var form = new Menu(AppState.getUserSession().getUsuarioApiClient(), new Usuario(userSession.getEmail(), userSession.getNombre(), userSession.getContrasena()));
