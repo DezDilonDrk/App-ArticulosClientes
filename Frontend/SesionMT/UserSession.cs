@@ -36,7 +36,6 @@ namespace SesionMT
             if (fileExists() && tokenExpired())
             {
                 TokenDto tokenDto = getToken();
-                Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
                 if (tokenDto == null)
                 {
                     Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
@@ -45,6 +44,7 @@ namespace SesionMT
                 }
                 else
                 {
+                    Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
                     this.email = tokenDto.correo;
                     this.password = tokenDto.password;
                     this.token = GenerateToken().GetAwaiter().GetResult();
@@ -282,6 +282,7 @@ namespace SesionMT
         }
         public TokenDto getToken()
         {
+            if (string.IsNullOrEmpty(token)) { return null; }
             TokenDto tokenDto = TokenDto.DecodeJwt(token);
             return tokenDto;
         }

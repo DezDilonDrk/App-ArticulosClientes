@@ -21,15 +21,22 @@ public class TokenDto
             return null;
         }
         string[] parts = token.Split('.');
-        string payload = parts[1];
+        try
+        {
+            string payload = parts[1];
 
-        int padding = payload.Length % 4;
-        if (padding != 0) { payload += new string('=', 4 - padding); }
+            int padding = payload.Length % 4;
+            if (padding != 0) { payload += new string('=', 4 - padding); }
 
-        payload = payload.Replace('-', '+').Replace('_', '/');
-        byte[] bytes = Convert.FromBase64String(payload);
-        string json = Encoding.UTF8.GetString(bytes);
+            payload = payload.Replace('-', '+').Replace('_', '/');
+            byte[] bytes = Convert.FromBase64String(payload);
+            string json = Encoding.UTF8.GetString(bytes);
 
-        return JsonSerializer.Deserialize<TokenDto>(json);
+            return JsonSerializer.Deserialize<TokenDto>(json);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 }
