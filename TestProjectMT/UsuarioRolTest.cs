@@ -109,7 +109,6 @@ namespace TestProjectMT
                 Assert.That(asignarResp.IsSuccessStatusCode, Is.True);
                 var response = await this.mySession.GetClient().DeleteAsync($"/usuario-roles/{rol.Id}/{usuario.CorreoElectronico}");
                 Assert.That(response.IsSuccessStatusCode, Is.True);
-                this.mySession.GetClient().DeleteAsync($"/usuarios/correo/{usuario.CorreoElectronico}");
             }
             catch (Exception ex)
             {
