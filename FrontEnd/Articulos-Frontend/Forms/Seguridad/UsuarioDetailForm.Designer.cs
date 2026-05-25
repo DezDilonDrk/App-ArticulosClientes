@@ -43,53 +43,57 @@
             // 
             // labelDetallesUsuario
             // 
-            labelDetallesUsuario.Location = new Point(64, 28);
+            labelDetallesUsuario.Location = new Point(266, 9);
             labelDetallesUsuario.Name = "labelDetallesUsuario";
-            labelDetallesUsuario.Size = new Size(142, 27);
+            labelDetallesUsuario.Size = new Size(195, 36);
             labelDetallesUsuario.TabIndex = 0;
             labelDetallesUsuario.Text = "Detalles de usuario";
+            labelDetallesUsuario.Tag = "title";
             // 
             // labelNombre
             // 
-            labelNombre.Location = new Point(55, 70);
+            labelNombre.Location = new Point(29, 87);
             labelNombre.Name = "labelNombre";
-            labelNombre.Size = new Size(73, 23);
+            labelNombre.Size = new Size(91, 23);
             labelNombre.TabIndex = 1;
             labelNombre.Text = "Nombre: ";
+            labelNombre.TextAlign = ContentAlignment.MiddleRight;
             // 
             // labelCorreo
             // 
-            labelCorreo.Location = new Point(64, 113);
+            labelCorreo.Location = new Point(29, 116);
             labelCorreo.Name = "labelCorreo";
-            labelCorreo.Size = new Size(76, 23);
+            labelCorreo.Size = new Size(91, 23);
             labelCorreo.TabIndex = 2;
             labelCorreo.Text = "Correo:";
+            labelCorreo.TextAlign = ContentAlignment.MiddleRight;
             // 
             // labelContrasena
             // 
-            labelContrasena.Location = new Point(37, 158);
+            labelContrasena.Location = new Point(29, 142);
             labelContrasena.Name = "labelContrasena";
             labelContrasena.Size = new Size(91, 23);
             labelContrasena.TabIndex = 3;
             labelContrasena.Text = "Contraseña:";
+            labelContrasena.TextAlign = ContentAlignment.MiddleRight;
             // 
             // textBoxNombre
             // 
-            textBoxNombre.Location = new Point(123, 70);
+            textBoxNombre.Location = new Point(123, 84);
             textBoxNombre.Name = "textBoxNombre";
-            textBoxNombre.Size = new Size(281, 23);
+            textBoxNombre.Size = new Size(338, 23);
             textBoxNombre.TabIndex = 4;
             // 
             // textBoxCorreo
             // 
             textBoxCorreo.Location = new Point(123, 113);
             textBoxCorreo.Name = "textBoxCorreo";
-            textBoxCorreo.Size = new Size(365, 23);
+            textBoxCorreo.Size = new Size(338, 23);
             textBoxCorreo.TabIndex = 5;
             // 
             // textBoxContrasena
             // 
-            textBoxContrasena.Location = new Point(123, 158);
+            textBoxContrasena.Location = new Point(123, 142);
             textBoxContrasena.Name = "textBoxContrasena";
             textBoxContrasena.Size = new Size(338, 23);
             textBoxContrasena.TabIndex = 6;
@@ -100,7 +104,7 @@
             dataGridViewRoles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewRoles.Location = new Point(123, 202);
             dataGridViewRoles.Name = "dataGridViewRoles";
-            dataGridViewRoles.Size = new Size(281, 146);
+            dataGridViewRoles.Size = new Size(338, 146);
             dataGridViewRoles.TabIndex = 7;
             dataGridViewRoles.CellBeginEdit += dataGridViewRoles_CellBeginEdit;
             // 
@@ -117,13 +121,12 @@
             // 
             // buttonCC
             // 
-            buttonCC.Location = new Point(476, 158);
+            buttonCC.Location = new Point(467, 141);
             buttonCC.MaximumSize = new Size(147, 23);
             buttonCC.MinimumSize = new Size(147, 23);
             buttonCC.Name = "buttonCC";
             buttonCC.Size = new Size(147, 23);
             buttonCC.TabIndex = 9;
-            buttonCC.Text = "Cambiar contraseña";
             buttonCC.UseVisualStyleBackColor = true;
             buttonCC.Click += buttonCC_Click;
             // 

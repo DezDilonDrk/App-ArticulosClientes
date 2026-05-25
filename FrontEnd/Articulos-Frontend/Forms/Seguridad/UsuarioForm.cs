@@ -82,7 +82,7 @@ public partial class UsuarioForm : Form
         this,
         () =>
         {
-            var form = new UsuarioDetailForm(api, new RolApiClient(), usuarioActual, null);
+            var form = new UsuarioDetailForm(api, new RolApiClient(AppState.getUserSession()), usuarioActual, null);
             form.FormClosed += (s, e) => cargarUsuarios();
             return form;
         }
@@ -136,7 +136,7 @@ public partial class UsuarioForm : Form
             this,
             () =>
             {
-                var form = new UsuarioDetailForm(api, new RolApiClient(), usuarioActual, usuarioSeleccionado);
+                var form = new UsuarioDetailForm(api, new RolApiClient(AppState.getUserSession()), usuarioActual, usuarioSeleccionado);
                 form.FormClosed += (s, e) => cargarUsuarios();
                 return form;
             }

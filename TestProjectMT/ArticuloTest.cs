@@ -16,7 +16,7 @@ namespace TestProjectMT
         }
         private async Task<Articulo> NewArticulo()
         {
-            Articulo articulo = new Articulo("ArticuloPrueba1", 920384, "prueba", DateTime.Now, null);
+            Articulo articulo = new Articulo("ArticuloPrueba1", 920384, "prueba", null, DateTime.Now, null);
             return articulo;
         }
         private async void BorrarArticulo(string id)

@@ -13,6 +13,7 @@ namespace Articulos_Frontend.Forms.Seguridad
         private RolApiClient rolapi;
         private Usuario usuarioActual;
         private Usuario usuarioSeleccionado;
+        private StringValuesSP stringValuesSP = new StringValuesSP();
         public UsuarioDetailForm(UsuarioApiClient api, RolApiClient api2, Usuario usuario1, Usuario? usuario2)
         {
             InitializeComponent();
@@ -21,6 +22,9 @@ namespace Articulos_Frontend.Forms.Seguridad
             rolapi = api2;
             usuarioActual = usuario1;
             usuarioSeleccionado = usuario2;
+
+            buttonCC.Text = stringValuesSP.cambiarContrasena;
+
         }
         public async void UsuarioDetailForm_Load(object sender, EventArgs e)
         {
@@ -120,14 +124,7 @@ namespace Articulos_Frontend.Forms.Seguridad
                 });
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Se ha actualizado el usuarios correctamente"));
                 alerta.ShowDialog();
-                if (alerta.resultado)
-                {
-                    this.Close();
-                }
-                else
-                {
-                    this.Close();
-                }
+                this.Close();
             }
             else
             {
