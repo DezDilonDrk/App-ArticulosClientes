@@ -43,12 +43,14 @@
             // 
             // labelDetallesUsuario
             // 
-            labelDetallesUsuario.Location = new Point(266, 9);
+            labelDetallesUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelDetallesUsuario.Location = new Point(263, 9);
             labelDetallesUsuario.Name = "labelDetallesUsuario";
-            labelDetallesUsuario.Size = new Size(195, 36);
+            labelDetallesUsuario.Size = new Size(290, 36);
             labelDetallesUsuario.TabIndex = 0;
-            labelDetallesUsuario.Text = "Detalles de usuario";
             labelDetallesUsuario.Tag = "title";
+            labelDetallesUsuario.Text = "Detalles de usuario";
+            labelDetallesUsuario.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // labelNombre
             // 
@@ -79,6 +81,7 @@
             // 
             // textBoxNombre
             // 
+            textBoxNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxNombre.Location = new Point(123, 84);
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.Size = new Size(338, 23);
@@ -86,6 +89,7 @@
             // 
             // textBoxCorreo
             // 
+            textBoxCorreo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxCorreo.Location = new Point(123, 113);
             textBoxCorreo.Name = "textBoxCorreo";
             textBoxCorreo.Size = new Size(338, 23);
@@ -93,6 +97,7 @@
             // 
             // textBoxContrasena
             // 
+            textBoxContrasena.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBoxContrasena.Location = new Point(123, 142);
             textBoxContrasena.Name = "textBoxContrasena";
             textBoxContrasena.Size = new Size(338, 23);
@@ -121,6 +126,7 @@
             // 
             // buttonCC
             // 
+            buttonCC.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonCC.Location = new Point(467, 141);
             buttonCC.MaximumSize = new Size(147, 23);
             buttonCC.MinimumSize = new Size(147, 23);
