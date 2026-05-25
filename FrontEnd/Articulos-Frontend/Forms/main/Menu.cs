@@ -219,7 +219,7 @@ namespace Articulos_Frontend
 
             dropDown.Show(parent, new Point(bounds.Left, bounds.Bottom));
         }
-        private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dropDown = new ContextMenuStrip();
             var notificationSettingsItem = new ToolStripMenuItem(stringValuesSP.ajustesNotificacion);
@@ -238,14 +238,36 @@ namespace Articulos_Frontend
                 if (AppState.getConfiguracion().SendNotifications){
                     Log.Info("Desactivando notificaciones por email.");
                     AppState.changeCheckNotifications();
-                    configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
+                    try
+                    {
+                        configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Error al guardar la configuración de notificaciones: " + ex.Message);
+                        Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
+                        return;
+                    }
                     MessageBox.Show("Las notificaciones por email han sido desactivadas.\n\nNotifications: OFF", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     Log.Info("Activando notificaciones por email.");
                     AppState.changeCheckNotifications();
-                    configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
+                    try
+                    {
+                        configuracionApiClient.GuardarConfiguracionPorCorreo(user.CorreoElectronico, AppState.getConfiguracion());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Error al guardar la configuración de notificaciones: " + ex.Message);
+                        Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                        alerta.ShowDialog();
+                        return;
+                    }
                     MessageBox.Show("Las notificaciones por email han sido activadas.\n\nNotifications: ON", "Notificaciones", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 checkNotificaciones.Text = !AppState.getConfiguracion().SendNotifications ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
@@ -397,14 +419,36 @@ namespace Articulos_Frontend
             if (config != null)
             {
                 AppState.setConfiguracion(config);
-                await configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
+                try
+                {
+                    configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
+
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Error al guardar la configuración de notificaciones: " + ex.Message);
+                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                    alerta.ShowDialog();
+                    return;
+                }
             }
             else
             {
                 Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
                 config = new ConfiguracionModel { SendNotifications = true };
                 AppState.setConfiguracion(config);
-                await configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
+                try
+                {
+                    configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
+
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Error al guardar la configuración de notificaciones: " + ex.Message);
+                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
+                    alerta.ShowDialog();
+                    return;
+                }
             }
         }
     }

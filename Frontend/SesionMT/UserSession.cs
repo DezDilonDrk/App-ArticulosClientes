@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
 using static MTCore_AC.DTO.LoginDtos;
+using Articulos_Frontend;
 
 namespace SesionMT
 {
@@ -120,7 +121,15 @@ namespace SesionMT
                 config = new ConfiguracionModel { SendNotifications = true };
             }
             setConfiguracion(config);
-            await configApi.GuardarConfiguracionPorCorreo(email, config);
+            
+            try
+            {
+                await configApi.GuardarConfiguracionPorCorreo(email, config);
+            }catch (Exception ex)
+            {
+                Log.Error("Error al guardar la configuración del usuario: " + ex.Message);
+                throw;
+            }
         }
         public bool tokenExpired()
         {

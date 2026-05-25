@@ -36,7 +36,7 @@ namespace Articulos_Frontend.Client
             catch (Exception ex)
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
             }
         }
         public async Task<ConfiguracionModel> GuardarConfiguracionPorCorreo(string correo, ConfiguracionModel configuracion)
@@ -50,7 +50,7 @@ namespace Articulos_Frontend.Client
             catch (Exception ex)
             {
                 Log.Error("No se pudo conectar al servidor API.");
-                throw new Exception($"Error al conectar con el servidor API: {ex.Message}");
+                throw;
             }
         }
     }
