@@ -8,12 +8,14 @@ namespace Articulos_Frontend.Forms.Seguridad
     public partial class RolForm : Form
     {
         RolApiClient api;
+        StringValuesSP stringValuesSP = new StringValuesSP();
         public RolForm(RolApiClient apiRol)
         {
             InitializeComponent();
             StyleManager.StyleForm(this);
             Log.Info("Formulario de rol iniciado.");
             api = apiRol;
+            labelRoles.Text = stringValuesSP.rolesUsuarios;
             MinimumSize = new Size(800, 600);
         }
         public async void RolForm_Load(object sender, EventArgs e)
