@@ -38,6 +38,7 @@ namespace Articulos_Frontend.Theme
         public string ajustes = "Ajustes";
         public string seccionEnvios = "Confirmación de Envíos";
         public string listaEnvios = "Lista de Envíos";
+        public string rolesUsuarios = "Roles de Usuarios";
         public StringValuesSP() { 
         }
     }
