@@ -34,7 +34,10 @@ public static class ClienteEndpoints
                 return Results.Conflict($"Ya existe un cliente con DNI {cliente.Dni}");
             }
             await methods.Insertar(cliente);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "POST CLIENTE", $"/clientes/{cliente.Dni}");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "POST CLIENTE", $"/clientes/{cliente.Dni}", cliente.Dni, new {
+                Dni = cliente.Dni,
+                Nombre = cliente.Nombre
+            });
             return Results.Created($"/clientes/{cliente.Dni}", cliente);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces<Cliente>(StatusCodes.Status201Created)
@@ -48,7 +51,10 @@ public static class ClienteEndpoints
             }
             clienteActualizado.Dni = dni;
             await methods.Actualizar(clienteActualizado);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CLIENTE", $"/clientes/{dni}");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CLIENTE", $"/clientes/{dni}", dni, new {
+                Dni = dni,
+                Nombre = clienteActualizado.Nombre
+            });
             return Results.Ok(clienteActualizado);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces<Cliente>(StatusCodes.Status200OK)
@@ -62,7 +68,9 @@ public static class ClienteEndpoints
                 return Results.NotFound();
             }
             await methods.Eliminar(dni);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE CLIENTE", $"/clientes/{dni}");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE CLIENTE", $"/clientes/{dni}", dni, new {
+                Dni = dni
+            });
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminVentas))
         .Produces(StatusCodes.Status204NoContent)
