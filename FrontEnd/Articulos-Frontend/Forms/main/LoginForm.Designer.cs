@@ -34,6 +34,7 @@
             emailLabel = new Label();
             contrasenaLabel = new Label();
             loginButton = new Button();
+            buttonVerContrasena = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -49,7 +50,7 @@
             // 
             // emailText
             // 
-            emailText.Location = new Point(348, 207);
+            emailText.Location = new Point(319, 229);
             emailText.Name = "emailText";
             emailText.Size = new Size(201, 23);
             emailText.TabIndex = 1;
@@ -57,9 +58,8 @@
             // 
             // contrasenaText
             // 
-            contrasenaText.Location = new Point(348, 256);
+            contrasenaText.Location = new Point(319, 258);
             contrasenaText.Name = "contrasenaText";
-            contrasenaText.PasswordChar = '*';
             contrasenaText.Size = new Size(201, 23);
             contrasenaText.TabIndex = 2;
             contrasenaText.UseSystemPasswordChar = true;
@@ -68,7 +68,7 @@
             // emailLabel
             // 
             emailLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            emailLabel.Location = new Point(282, 207);
+            emailLabel.Location = new Point(253, 229);
             emailLabel.Name = "emailLabel";
             emailLabel.Size = new Size(60, 23);
             emailLabel.TabIndex = 5;
@@ -77,7 +77,7 @@
             // contrasenaLabel
             // 
             contrasenaLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            contrasenaLabel.Location = new Point(239, 256);
+            contrasenaLabel.Location = new Point(210, 258);
             contrasenaLabel.Name = "contrasenaLabel";
             contrasenaLabel.Size = new Size(103, 23);
             contrasenaLabel.TabIndex = 4;
@@ -85,26 +85,38 @@
             // 
             // loginButton
             // 
-            loginButton.Location = new Point(316, 308);
+            loginButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            loginButton.Location = new Point(319, 297);
             loginButton.Name = "loginButton";
-            loginButton.Size = new Size(172, 40);
+            loginButton.Size = new Size(201, 40);
             loginButton.TabIndex = 3;
             loginButton.Text = "Iniciar sesión";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_Click;
+            // 
+            // buttonVerContrasena
+            // 
+            buttonVerContrasena.Location = new Point(526, 259);
+            buttonVerContrasena.Name = "buttonVerContrasena";
+            buttonVerContrasena.Size = new Size(38, 23);
+            buttonVerContrasena.TabIndex = 6;
+            buttonVerContrasena.Text = "👁";
+            buttonVerContrasena.UseVisualStyleBackColor = true;
+            buttonVerContrasena.MouseUp += buttonVerContrasena_MouseUp;
+            buttonVerContrasena.MouseDown += buttonVerContrasena_MouseDown;
             // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(buttonVerContrasena);
             Controls.Add(loginButton);
             Controls.Add(contrasenaLabel);
             Controls.Add(emailLabel);
             Controls.Add(contrasenaText);
             Controls.Add(emailText);
             Controls.Add(pictureBox1);
-            Load += async (s, e) => await LoginForm_Load(s, e);
             Name = "LoginForm";
             Text = "LoginForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -120,5 +132,6 @@
         private Label emailLabel;
         private Label contrasenaLabel;
         private Button loginButton;
+        private Button buttonVerContrasena;
     }
 }

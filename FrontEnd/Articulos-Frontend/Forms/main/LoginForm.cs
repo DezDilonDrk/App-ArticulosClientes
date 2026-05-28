@@ -37,7 +37,7 @@ public partial class LoginForm : Form
         {
             var loginRequest = new LoginRequest { Email = email, Password = contrasena };
             var loginResponse = await api.LoginAsync(loginRequest);
-            
+
             if (loginResponse != null)
             {
                 AppState.getUserSession().setToken(loginResponse.token);
@@ -98,5 +98,14 @@ public partial class LoginForm : Form
             Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
             alerta.ShowDialog();
         }
+    }
+
+    private void buttonVerContrasena_MouseUp(object sender, MouseEventArgs e)
+    {
+        contrasenaText.UseSystemPasswordChar = true;
+    }
+    private void buttonVerContrasena_MouseDown(object sender, MouseEventArgs e)
+    {
+        contrasenaText.UseSystemPasswordChar = false;
     }
 }
