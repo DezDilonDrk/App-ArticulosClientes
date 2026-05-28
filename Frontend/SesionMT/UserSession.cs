@@ -52,7 +52,8 @@ namespace SesionMT
                     GuardarToken();
                     Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
                 }
-            } else if (!string.IsNullOrEmpty(token))
+            }
+            else if (!string.IsNullOrEmpty(token))
             {
                 this.token = token;
                 GuardarToken();
@@ -117,7 +118,7 @@ namespace SesionMT
         }
         private void checkClient()
         {
-            if(this.client == null)
+            if (this.client == null)
             {
                 client = new HttpClient();
                 client.BaseAddress = new Uri(currentServer);
@@ -131,15 +132,17 @@ namespace SesionMT
         {
             await configApi.InitAsync(currentServer);
             var config = await configApi.ObtenerConfiguracionPorCorreo(email);
-            if (config == null){
+            if (config == null)
+            {
                 config = new ConfiguracionModel { SendNotifications = true };
             }
             setConfiguracion(config);
-            
+
             try
             {
                 await configApi.GuardarConfiguracionPorCorreo(email, config);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error("Error al guardar la configuración del usuario: " + ex.Message);
                 throw;
@@ -152,7 +155,8 @@ namespace SesionMT
                 return true;
             }*/
             TokenDto tokenDto = getToken();
-            if (tokenDto == null){
+            if (tokenDto == null)
+            {
                 return true;
             }
             var expString = tokenDto.exp.ToString();
@@ -191,7 +195,7 @@ namespace SesionMT
         public List<string> getRoles()
         {
             TokenDto tokenDto = getToken();
-            if (tokenDto == null){ return new List<string>(); }
+            if (tokenDto == null) { return new List<string>(); }
             return tokenDto.roles;
         }
         public void setRoles()
@@ -279,7 +283,7 @@ namespace SesionMT
             var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
 
             token = doc.token;
-            
+
             return doc.token;
         }
         public HttpClient GetClient()
