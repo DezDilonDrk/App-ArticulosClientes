@@ -41,15 +41,15 @@ public partial class LoginForm : Form
             if (loginResponse != null)
             {
                 AppState.getUserSession().setToken(loginResponse.token);
-                Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
+                AppState.setLoginResponse(loginResponse);
+                Log.Info($"Usuario {email} ha iniciado sesión exitosamente."); // Sin Token
 
                 WindowManager.ShowForm(
                     "MainForm",
                     this,
                     () =>
                     {
-                        var form = new Menu(api, loginResponse.Usuario);
-                        form.FormClosed += (s, args) => this.Show();
+                        var form = new Menu(api, AppState.getLoginResponse().Usuario);
                         return form;
                     }
                 );

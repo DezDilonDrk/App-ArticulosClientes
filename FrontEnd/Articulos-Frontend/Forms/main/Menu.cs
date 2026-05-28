@@ -54,14 +54,23 @@ namespace Articulos_Frontend
                 UserSession userSession = AppState.getUserSession();
                 string email = userSession.getEmail();
                 string contrasena = userSession.getContrasena();
-                var loginRequest = new LoginRequest { Email = email, Password = contrasena };
-                var loginResponse = await api.LoginAsync(loginRequest);
+                var loginResponse = AppState.getLoginResponse();
+                if (AppState.getLoginResponse() == null){
+                    var loginRequest = new LoginRequest { Email = email, Password = contrasena };
+                    loginResponse = await api.LoginAsync(loginRequest);
+                    AppState.setLoginResponse(loginResponse);
+                    if (loginResponse != null)
+                    {
+                        Log.Info($"Usuario {email} ha iniciado sesión exitosamente."); // Con Token
+                    }
+                    else { 
+                        Log.Error($"Intento de login fallido para el usuario {email}.");
+                    }
+                }
 
-                if (loginResponse != null)
+                if (loginResponse.token != null)
                 {
                     AppState.getUserSession().setToken(loginResponse.token);
-                    Log.Info($"Usuario {email} ha iniciado sesión exitosamente.");
-
                     await ConfigurationSet(AppState.getUserSession().getEmail());
                 }
                 else
@@ -297,8 +306,9 @@ namespace Articulos_Frontend
         }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            WindowManager.ShowForm(stringValuesSP.apartadoIniciarSesion, this, () => new LoginForm());
             AppState.getUserSession().BorrarToken();
+            var form = new LoginForm();
+            this.FormClosed += (s, args) => form.Show();
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {
@@ -308,7 +318,6 @@ namespace Articulos_Frontend
                     Log.Error("Error al cerrar la ventana: " + ex.Message);
                 }
             }
-            this.Close();
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {

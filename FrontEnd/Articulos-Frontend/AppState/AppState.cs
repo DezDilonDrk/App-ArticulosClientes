@@ -1,4 +1,5 @@
 ﻿using Articulos_Frontend.Client;
+using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
 using SesionMT;
 using SesionMT.LogConfig;
@@ -17,6 +18,7 @@ public static class AppState
     private static ConfiguracionModel configuracion;
     private static string serverLeandro = UrlMT.serverLeandro;
     private static string serverEmilio = UrlMT.serverEmilio;
+    private static LoginDtos.LoginResponse loginResponse;
     public static ConfiguracionModel getConfiguracion()
     {
         if (configuracion == null)
@@ -63,5 +65,13 @@ public static class AppState
     public static string getServer()
     {
         return serverLeandro;
+    }
+    public static void setLoginResponse(LoginDtos.LoginResponse response)
+    {
+        loginResponse = response;
+    }
+    public static LoginDtos.LoginResponse getLoginResponse()
+    {
+        return loginResponse;
     }
 }
