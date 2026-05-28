@@ -57,7 +57,6 @@ namespace MTNegocios.Repositorios.Seguridad
         {
             using (var db = Connection)
             {
-                string hash = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
                 string sql = "INSERT INTO Usuarios (CorreoElectronico, NombreUsuario, Contrasena) VALUES (@CorreoElectronico, @NombreUsuario, @Contrasena)";
                 var contrasenaHash = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
                 await db.ExecuteAsync(sql, new { CorreoElectronico = usuario.CorreoElectronico, NombreUsuario = usuario.Nombre, Contrasena = contrasenaHash});

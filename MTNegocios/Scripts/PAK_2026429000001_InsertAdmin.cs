@@ -7,6 +7,8 @@ public class PAK_2026429000001_InsertAdmin: Script
     public PAK_2026429000001_InsertAdmin()
     {
         this.script = """
+IF NOT EXISTS (SELECT * FROM Usuarios WHERE CorreoElectronico = 'admin@mthelmets.com')
+BEGIN
 INSERT INTO Usuarios (CorreoElectronico, NombreUsuario, Contrasena)
 VALUES (
 'admin@mthelmets.com',
@@ -17,6 +19,7 @@ INSERT INTO UsuarioRoles (UsuarioEmail, RolId)
 SELECT 'admin@mthelmets.com', Id
 FROM Roles
 WHERE Nombre IN ('ADMIN_SEGURIDAD', 'ADMIN_ALMACEN', 'ADMIN_VENTAS')
+END
 """;
     }
 }

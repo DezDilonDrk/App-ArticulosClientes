@@ -1,5 +1,6 @@
 ﻿using MTNegocios.MTEndpoints.Seguridad;
 using MTCore_AC.Entidades;
+using MTNegocios.MTEndpoints.BBDD;
 
 namespace Articulos_Backend.Endpoints.Seguridad;
 
@@ -16,7 +17,7 @@ public static class ConfiguracionEndpoints
         })//.RequireAuthorization(policy => policy.RequireRole(Roles.Admin****, Roles.User****))
             .Produces<Cliente>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
-        app.MapPost("/guardar_configuracion/{correo}", async (string correo, ConfiguracionModel configuracion, ConfiguracionMethods methods) =>
+        app.MapPost("/guardar_configuracion/{correo}", async (string correo, ConfiguracionModel configuracion, ConfiguracionMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             var existente = await methods.ObtenerConfiguracionPorCorreo(correo);
             if (existente != null)

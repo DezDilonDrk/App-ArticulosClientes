@@ -7,6 +7,8 @@ public class PAK_2026429000000_CreatePedidos: Script
     public PAK_2026429000000_CreatePedidos()
     {
         this.script = """
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Pedidos')
+BEGIN
 CREATE TABLE Pedidos(
 id_pedido NVARCHAR(36) NOT NULL,
 id_cliente NVARCHAR(36) NOT NULL,
@@ -19,7 +21,8 @@ estado NVARCHAR(100) NOT NULL,
 porcentaje_impuestos INT NOT NULL,
 fecha_envio DATETIME2(7) NOT NULL,
 CONSTRAINT PK_Pedidos PRIMARY KEY CLUSTERED (id_pedido)
-);
+)
+END
 """;
     }
 }
