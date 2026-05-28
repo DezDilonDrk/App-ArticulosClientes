@@ -64,7 +64,7 @@ public static class ArticuloEndpoints
             string id = await methods.Insertar(articulo);
             articulo.id = id;
             var usuario = context.User.Identity?.Name ?? "Desconocido";
-            await auditoriaMethods.Registrar(usuario, "POST ARTICULO", $"/articulos/{articulo.id}", articulo.id);
+            await auditoriaMethods.Registrar(usuario, "POST ARTICULO", $"/articulos/{articulo.id}", articulo.id, articulo);
             return Results.Created($"/articulos/{articulo.id}", articulo);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces<Articulo>(StatusCodes.Status201Created)
@@ -75,7 +75,7 @@ public static class ArticuloEndpoints
             diseno.id = Guid.NewGuid().ToString();
             string id = await methods.InsertarDiseno(diseno);
             var usuario = context.User.Identity?.Name ?? "Desconocido";
-            await auditoriaMethods.Registrar(usuario, "POST DISEÑO", $"/disenos-cascos/{diseno.id}", diseno.id);
+            await auditoriaMethods.Registrar(usuario, "POST DISEÑO", $"/disenos-cascos/{diseno.id}", diseno.id, diseno);
             return Results.Created($"/disenos-cascos/{diseno.id}", diseno);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces<DisenoCasco>(StatusCodes.Status201Created)
@@ -97,7 +97,7 @@ public static class ArticuloEndpoints
         {
             var articulo = await methods.ObtenerPorId(id) ?? throw new KeyNotFoundException("Artículo no encontrado");
             await methods.Eliminar(id);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE ARTICULO", $"/articulos/{id}", id);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE ARTICULO", $"/articulos/{id}", id, articulo);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
         .Produces(StatusCodes.Status204NoContent)
