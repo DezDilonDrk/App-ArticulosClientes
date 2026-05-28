@@ -21,7 +21,7 @@ public class JwtService
         {
             claims.Add(new Claim("roles", role));
         }
-        claims.Add(new Claim("correo", correo));
+        claims.Add(new Claim(ClaimTypes.Name, correo));
         claims.Add(new Claim("nombre", usuario.Nombre));
         claims.Add(new Claim("password", usuario.Contrasena));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
