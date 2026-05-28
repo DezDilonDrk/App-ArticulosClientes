@@ -34,7 +34,11 @@ public class PAK_2026522000000_InsertDisenoCascos: Script
             var id = Guid.NewGuid().ToString();
             var nombre = d.nombre.Replace("'", "''");
             var descripcion = d.descripcion.Replace("'", "''");
-            sb.AppendLine($@"INSERT INTO DisenoCascos (Id, Nombre, Descripcion) VALUES ('{id}', '{nombre}', '{descripcion}');");
+            sb.AppendLine($@"
+IF NOT EXISTS (SELECT * FROM DisenoCascos WHERE Id = '{id}')
+BEGIN
+INSERT INTO DisenoCascos (Id, Nombre, Descripcion) VALUES ('{id}', '{nombre}', '{descripcion}')
+END");
         }
 
         script = sb.ToString();

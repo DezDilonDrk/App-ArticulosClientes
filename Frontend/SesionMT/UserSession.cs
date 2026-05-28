@@ -279,6 +279,7 @@ namespace SesionMT
             var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
 
             token = doc.token;
+            
             return doc.token;
         }
         public HttpClient GetClient()

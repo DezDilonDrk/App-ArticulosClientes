@@ -4,6 +4,7 @@ using MTCore_AC.DTO;
 using static MTCore_AC.DTO.LoginDtos;
 using MTNegocios.MTEndpoints.Seguridad;
 using Articulos_Backend.JWT;
+using MTNegocios.MTEndpoints.BBDD;
 
 namespace Articulos_Backend.Endpoints.Seguridad;
 
@@ -43,15 +44,17 @@ public static class UsuarioEndpoints
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapPost("/usuarios",  async (Usuario usuario, UsuarioMethods methods) =>
+        app.MapPost("/usuarios",  async (Usuario usuario, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.Insertar(usuario);
+            var usuarioc = context.User.Identity?.Name ?? "Desconocido";
+            await auditoriaMethods.Registrar(usuarioc, "POST CLIENTE", $"/usuarios/correo/{usuario.CorreoElectronico}", usuario.CorreoElectronico);
             return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapPost("/usuarios/login", async (MTCore_AC.DTO.LoginDtos.LoginRequest request, UsuarioMethods methods) =>
+        app.MapPost("/usuarios/login", async (MTCore_AC.DTO.LoginDtos.LoginRequest request, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             var jwtService = app.Services.GetRequiredService<JwtService>();
 
@@ -66,6 +69,8 @@ public static class UsuarioEndpoints
             var roles = await methods.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
             usuario.Contrasena = request.Password;
             var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles, usuario);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "LOGIN", "/usuarios/login");
+            Console.WriteLine("LOGIN EJECUTADO");
             return Results.Ok(new LoginResponse
             {
                 token = token,
@@ -74,33 +79,37 @@ public static class UsuarioEndpoints
             });
         });
 
-        app.MapPut("/usuarios", async (Usuario usuario, UsuarioMethods methods) =>
+        app.MapPut("/usuarios", async (Usuario usuario, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.Actualizar(usuario);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CLIENTE", $"/usuarios/correo/{usuario.CorreoElectronico}", usuario.CorreoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapPut("/usuarios/{correo}/contrasena", async (string correo, CambiarContrasenaRequest request, UsuarioMethods methods) =>
+        app.MapPut("/usuarios/{correo}/contrasena", async (string correo, CambiarContrasenaRequest request, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.ActualizarContrasena(correo, request.NuevaContrasena);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CONTRASEÑA", $"/usuarios/{correo}/contrasena", correo);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapPut("/usuarios/{correoElectronico}/roles", async (string correoElectronico, List<string> roles, UsuarioMethods methods) =>
+        app.MapPut("/usuarios/{correoElectronico}/roles", async (string correoElectronico, List<string> roles, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.ActualizarRoles(correoElectronico, roles);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT USUARIO ROLES", $"/usuarios/{correoElectronico}/roles", correoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
-        app.MapDelete("/usuarios/correo/{correoElectronico}", async (string correoElectronico, UsuarioMethods methods) =>
+        app.MapDelete("/usuarios/correo/{correoElectronico}", async (string correoElectronico, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.Eliminar(correoElectronico);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE USUARIO", $"/usuarios/correo/{correoElectronico}", correoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)

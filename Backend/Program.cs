@@ -7,6 +7,7 @@ using Articulos_Backend.Middleware;
 using MTNegocios.Repositorios.Almacen;
 using MTNegocios.Repositorios.Seguridad;
 using MTNegocios.Repositorios.Ventas;
+using MTNegocios.Repositorios;
 using MTNegocios.MTEndpoints.Seguridad;
 using MTNegocios.MTEndpoints.Almacen;
 using MTNegocios.MTEndpoints.Ventas;
@@ -59,6 +60,8 @@ builder.Services.AddScoped<RolMethods>();
 builder.Services.AddScoped<UsuarioRolMethods>();
 builder.Services.AddScoped<MigrationBBDD>();
 builder.Services.AddScoped<SeedService>();
+builder.Services.AddScoped<AuditoriaRepository>();
+builder.Services.AddScoped<AuditoriaMethods>();
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())

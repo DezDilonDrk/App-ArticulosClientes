@@ -1,6 +1,7 @@
 ﻿using Articulos_Backend.JWT;
 using MTCore_AC.Entidades;
 using MTNegocios.MTEndpoints.Ventas;
+using MTNegocios.MTEndpoints.BBDD;
 
 namespace Articulos_Backend.Endpoints.Ventas;
 
@@ -28,27 +29,29 @@ public static class PedidoEndpoints
             var pedidos = await methods.ObtenerPorId(id);
             return Results.Ok(pedidos);
         }).Produces<List<Pedido>>(StatusCodes.Status200OK);
-        app.MapPost("/pedidos", async (Pedido pedido, PedidoMethods methods) =>
+        app.MapPost("/pedidos", async (Pedido pedido, PedidoMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.Insertar(pedido);
            foreach(PedidoArticulos a in pedido.articulos) { 
                a.id_pedido = pedido.id_pedido;
                await methods.AgregarArticulo(a);
             }
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "POST PEDIDO", $"/pedidos/{pedido.id_pedido}");
             return Results.Created($"/pedidos/{pedido.id_pedido}", pedido);
         })
         .Produces<Pedido>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapPut("/pedidos/{id}", async (string id, Pedido pedidoActualizado, PedidoMethods methods) =>
+        app.MapPut("/pedidos/{id}", async (string id, Pedido pedidoActualizado, PedidoMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             pedidoActualizado.id_pedido = id;
             await methods.Actualizar(pedidoActualizado);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT PEDIDO", $"/pedidos/{id}");
             return Results.Ok(pedidoActualizado);
         })
         .Produces<Pedido>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
-        app.MapPut("/pedidos/articulo{id}", async (string id, PedidoArticulos articulo, PedidoMethods methods) =>
+        app.MapPut("/pedidos/articulo{id}", async (string id, PedidoArticulos articulo, PedidoMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             var cliente = await methods.ObtenerPorId(id);
             if (cliente == null)
@@ -57,6 +60,7 @@ public static class PedidoEndpoints
             }
             articulo.id_pedido = id;
             await methods.AgregarArticulo(articulo);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT PEDIDO ARTICULO", $"/pedidos/articulo/{id}");
             return Results.Ok(articulo);
         })
         .Produces<PedidoArticulos>(StatusCodes.Status200OK)
@@ -69,7 +73,7 @@ public static class PedidoEndpoints
         })
         .Produces<List<PedidoArticulos>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-        app.MapDelete("/pedidos/{id}", async (string id, PedidoMethods methods) =>
+        app.MapDelete("/pedidos/{id}", async (string id, PedidoMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             var pedido = await methods.ObtenerPorId(id);
             if (pedido == null)
@@ -77,6 +81,7 @@ public static class PedidoEndpoints
                 return Results.NotFound();
             }
             await methods.Eliminar(id);
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE PEDIDO", $"/pedidos/{id}");
             return Results.NoContent();
         })
         .Produces(StatusCodes.Status204NoContent)
