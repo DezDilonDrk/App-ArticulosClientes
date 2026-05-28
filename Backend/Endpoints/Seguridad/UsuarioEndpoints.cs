@@ -48,7 +48,7 @@ public static class UsuarioEndpoints
         {
             await methods.Insertar(usuario);
             var usuarioc = context.User.Identity?.Name ?? "Desconocido";
-            await auditoriaMethods.Registrar(usuarioc, "POST", $"/usuarios/correo/{usuario.CorreoElectronico}");
+            await auditoriaMethods.Registrar(usuarioc, "POST CLIENTE", $"/usuarios/correo/{usuario.CorreoElectronico}", usuario.CorreoElectronico);
             return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces<Usuario>(StatusCodes.Status201Created)
@@ -82,7 +82,7 @@ public static class UsuarioEndpoints
         app.MapPut("/usuarios", async (Usuario usuario, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.Actualizar(usuario);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT", $"/usuarios/correo/{usuario.CorreoElectronico}");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CLIENTE", $"/usuarios/correo/{usuario.CorreoElectronico}", usuario.CorreoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
@@ -91,7 +91,7 @@ public static class UsuarioEndpoints
         app.MapPut("/usuarios/{correo}/contrasena", async (string correo, CambiarContrasenaRequest request, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.ActualizarContrasena(correo, request.NuevaContrasena);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT", $"/usuarios/{correo}/contrasena");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CONTRASEÑA", $"/usuarios/{correo}/contrasena", correo);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
@@ -100,7 +100,7 @@ public static class UsuarioEndpoints
         app.MapPut("/usuarios/{correoElectronico}/roles", async (string correoElectronico, List<string> roles, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.ActualizarRoles(correoElectronico, roles);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT USUARIO ROLES", $"/usuarios/{correoElectronico}/roles");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT USUARIO ROLES", $"/usuarios/{correoElectronico}/roles", correoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
@@ -109,7 +109,7 @@ public static class UsuarioEndpoints
         app.MapDelete("/usuarios/correo/{correoElectronico}", async (string correoElectronico, UsuarioMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             await methods.Eliminar(correoElectronico);
-            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE USUARIO", $"/usuarios/correo/{correoElectronico}");
+            await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE USUARIO", $"/usuarios/correo/{correoElectronico}", correoElectronico);
             return Results.NoContent();
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
