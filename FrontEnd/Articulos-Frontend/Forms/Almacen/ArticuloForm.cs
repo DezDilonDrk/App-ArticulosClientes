@@ -59,8 +59,7 @@ public partial class ArticuloForm : Form
                 BotonAdd.Enabled = false;
                 BotonDel.Enabled = false;
                 admin = false;
-            }
-            else
+            }else
             {
                 admin = true;
             }
@@ -147,8 +146,6 @@ public partial class ArticuloForm : Form
                 MessageBox.Show("Precio máximo inválido (no es un número o no es negativo)");
                 return;
             }
-
-
             if (!string.IsNullOrWhiteSpace(nombre))
             {
                 articulos = articulos
@@ -229,7 +226,7 @@ public partial class ArticuloForm : Form
                 Nombre = dataGridView1.Rows[e.RowIndex].Cells["Nombre"].Value.ToString(),
                 Precio = (decimal)dataGridView1.Rows[e.RowIndex].Cells["Precio"].Value,
                 Categoria = dataGridView1.Rows[e.RowIndex].Cells["Categoria"].Value.ToString(),
-                IdDisenoCasco = dataGridView1.Rows[e.RowIndex].Cells["IdDisenoCasco"].Value?.ToString(),
+                IdDisenoCasco = (dataGridView1.Rows[e.RowIndex].Cells["DisenoCasco"].Value?.ToString() != null)? dataGridView1.Rows[e.RowIndex].Cells["DisenoCasco"].Value?.ToString() : null,
                 FechaCreacion = (DateTime)dataGridView1.Rows[e.RowIndex].Cells["FechaCreacion"].Value,
                 FechaActualizacion = dataGridView1.Rows[e.RowIndex].Cells["FechaActualizacion"].Value as DateTime?
             };
