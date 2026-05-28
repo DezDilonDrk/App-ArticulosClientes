@@ -33,10 +33,10 @@ namespace SesionMT
             {
                 this.token = CargarToken();
             }
+            checkClient();
             if (fileExists() && tokenExpired())
             {
                 TokenDto tokenDto = getToken();
-                Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
                 if (tokenDto == null)
                 {
                     Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
@@ -45,13 +45,15 @@ namespace SesionMT
                 }
                 else
                 {
+                    Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
                     this.email = tokenDto.correo;
                     this.password = tokenDto.password;
                     this.token = GenerateToken().GetAwaiter().GetResult();
                     GuardarToken();
                     Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
                 }
-            } else if (!string.IsNullOrEmpty(token))
+            }
+            else if (!string.IsNullOrEmpty(token))
             {
                 this.token = token;
                 GuardarToken();
@@ -61,10 +63,11 @@ namespace SesionMT
 
             this.client = new HttpClient();
             client.BaseAddress = new Uri(currentServer);
-
-            if (!string.IsNullOrEmpty(this.token)){
+            if (!string.IsNullOrEmpty(this.token))
+            {
                 this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
             }
+            checkClient();
         }
         public UserSession(string currentServer)
         {
@@ -113,19 +116,33 @@ namespace SesionMT
             this.email = getEmail();
             _ = ConfigurationSet(email); // Ojo
         }
+        private void checkClient()
+        {
+            if (this.client == null)
+            {
+                client = new HttpClient();
+                client.BaseAddress = new Uri(currentServer);
+                if (!string.IsNullOrEmpty(this.token))
+                {
+                    this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
+                }
+            }
+        }
         private async Task ConfigurationSet(string email)
         {
             await configApi.InitAsync(currentServer);
             var config = await configApi.ObtenerConfiguracionPorCorreo(email);
-            if (config == null){
+            if (config == null)
+            {
                 config = new ConfiguracionModel { SendNotifications = true };
             }
             setConfiguracion(config);
-            
+
             try
             {
                 await configApi.GuardarConfiguracionPorCorreo(email, config);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error("Error al guardar la configuración del usuario: " + ex.Message);
                 throw;
@@ -138,7 +155,8 @@ namespace SesionMT
                 return true;
             }*/
             TokenDto tokenDto = getToken();
-            if (tokenDto == null){
+            if (tokenDto == null)
+            {
                 return true;
             }
             var expString = tokenDto.exp.ToString();
@@ -177,7 +195,7 @@ namespace SesionMT
         public List<string> getRoles()
         {
             TokenDto tokenDto = getToken();
-            if (tokenDto == null){ return new List<string>(); }
+            if (tokenDto == null) { return new List<string>(); }
             return tokenDto.roles;
         }
         public void setRoles()
@@ -221,6 +239,7 @@ namespace SesionMT
                 }
                 else
                 {
+                    checkClient();
                     this.token = GenerateToken().GetAwaiter().GetResult();
                     GuardarToken();
                     return this.token;
@@ -257,7 +276,6 @@ namespace SesionMT
                 Email = email,
                 Password = password
             };
-
             var resp = await client.PostAsJsonAsync("/usuarios/login", loginData);
             resp.EnsureSuccessStatusCode();
 
@@ -265,7 +283,7 @@ namespace SesionMT
             var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
 
             token = doc.token;
-            
+
             return doc.token;
         }
         public HttpClient GetClient()
@@ -278,6 +296,7 @@ namespace SesionMT
         }
         public TokenDto getToken()
         {
+            if (string.IsNullOrEmpty(token)) { return null; }
             TokenDto tokenDto = TokenDto.DecodeJwt(token);
             return tokenDto;
         }
