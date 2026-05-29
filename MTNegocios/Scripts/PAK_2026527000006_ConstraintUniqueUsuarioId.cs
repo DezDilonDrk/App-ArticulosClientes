@@ -6,7 +6,7 @@ namespace MTNegocios.Scripts
     {
         public PAK_2026527000006_ConstraintUniqueUsuarioId()
         {
-            this.script = "ALTER TABLE PracticasDB.dbo.Usuarios ADD CONSTRAINT UQ_Usuarios_Id UNIQUE (Id)";
+            this.script = "ALTER TABLE Usuarios ADD CONSTRAINT UQ_Usuarios_Id UNIQUE (Id)";
         }
     }
 }

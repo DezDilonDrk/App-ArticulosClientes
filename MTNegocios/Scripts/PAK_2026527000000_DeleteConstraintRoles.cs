@@ -6,7 +6,7 @@ namespace MTNegocios.Scripts
     {
         public PAK_2026527000001_DeleteConstraintRoles()
         {
-            this.script = "ALTER TABLE UsuarioRoles eDROP CONSTRAINT FK_UsuarioRoles_Usuarios";
+            this.script = "ALTER TABLE UsuarioRoles DROP CONSTRAINT FK_UsuarioRoles_Usuarios";
         }
     }
 }

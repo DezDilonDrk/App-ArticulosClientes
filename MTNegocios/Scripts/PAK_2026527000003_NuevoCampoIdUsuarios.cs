@@ -6,7 +6,7 @@ namespace MTNegocios.Scripts
     {
         public PAK_2026527000003_NuevoCampoIdUsuarios()
         {
-            this.script = "ALTER TABLE Usuarios ADD Id NVARCHAR(36) NOT NULL";
+            this.script = "ALTER TABLE Usuarios ADD Id NVARCHAR(36) NULL";
         }
     }
 }
