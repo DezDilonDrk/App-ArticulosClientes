@@ -105,11 +105,8 @@ namespace SesionMT
         }
         public void Init(string email, string password)
         {
-            if (tokenExpired())
-            {
-                this.email = email;
-                this.password = password;
-            }
+            this.email = email;
+            this.password = password;
         }
         public void loginUser()
         {
