@@ -33,6 +33,7 @@ namespace SesionMT
             {
                 this.token = CargarToken();
             }
+            if (fileExists() && isToMuch()) { BorrarToken(); }
             checkClient();
             if (fileExists() && tokenExpired())
             {
@@ -78,6 +79,7 @@ namespace SesionMT
             {
                 this.token = CargarToken();
             }
+            if (fileExists() && isToMuch()) { BorrarToken(); }
             if (fileExists() && tokenExpired())
             {
                 TokenDto tokenDto = getToken();
@@ -147,6 +149,33 @@ namespace SesionMT
                 Log.Error("Error al guardar la configuración del usuario: " + ex.Message);
                 throw;
             }
+        }
+        public bool isToMuch()
+        {
+            TokenDto tokenDto = getToken();
+            try
+            {
+                var expString = tokenDto.exp.ToString();
+                long exp;
+                try
+                {
+                    exp = long.Parse(expString);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al verificar la expiración del token: {ex.Message}");
+                    return true; // Si hay un error, asumime que el token está expirado
+                }
+                var expDate = DateTimeOffset.FromUnixTimeSeconds(exp);
+                var limitDate = DateTimeOffset.UtcNow.AddDays(-30);
+                return expDate < limitDate;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al verificar la expiración del token: {ex.Message}");
+                return false;
+            }
+
         }
         public bool tokenExpired()
         {
@@ -269,7 +298,7 @@ namespace SesionMT
                 Console.WriteLine($"Error al borrar el token: {ex.Message}");
             }
         }
-        private async Task<string> GenerateToken()
+        public async Task<string> GenerateToken()
         {
             var loginData = new
             {

@@ -12,6 +12,8 @@ namespace TestProjectMT
         {
             this.mySession = new UserSession(currentServer);
             mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+            string token = await mySession.GenerateToken();
+            mySession.GetClient().DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
     }
 }

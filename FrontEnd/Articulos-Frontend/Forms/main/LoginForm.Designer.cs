@@ -102,8 +102,9 @@
             buttonVerContrasena.TabIndex = 6;
             buttonVerContrasena.Text = "👁";
             buttonVerContrasena.UseVisualStyleBackColor = true;
-            buttonVerContrasena.MouseUp += buttonVerContrasena_MouseUp;
             buttonVerContrasena.MouseDown += buttonVerContrasena_MouseDown;
+            buttonVerContrasena.MouseUp += buttonVerContrasena_MouseUp;
+
             // 
             // LoginForm
             // 

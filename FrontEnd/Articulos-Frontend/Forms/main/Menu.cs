@@ -308,7 +308,7 @@ namespace Articulos_Frontend
         {
             AppState.getUserSession().BorrarToken();
             var form = new LoginForm();
-            this.FormClosed += (s, args) => form.Show();
+            this.FormClosing += (s, args) => form.Show();
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {
@@ -318,6 +318,7 @@ namespace Articulos_Frontend
                     Log.Error("Error al cerrar la ventana: " + ex.Message);
                 }
             }
+            //this.Close(); //Esto es por si no se cierra por el foreach
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {
