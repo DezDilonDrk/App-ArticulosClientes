@@ -299,6 +299,7 @@ namespace Articulos_Frontend
             terminalItem.Click += buttonTerminal_Click;
             terminalDebugItem.Click += buttonTerminal_Click;
             debugItem.DropDownItems.Add(terminalDebugItem);
+            var debugServer = new ToolStripMenuItem();
             dropDown.Items.Add(debugItem);
             var parent = aplicacionToolStripMenuItem.GetCurrentParent();
             var bounds = aplicacionToolStripMenuItem.Bounds;

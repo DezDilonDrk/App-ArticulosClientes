@@ -19,12 +19,14 @@ public partial class LoginForm : Form
         configApi = new ConfiguracionApiClient(AppState.getUserSession());
         StyleManager.StyleForm(this);
         Log.Info("Formulario de login iniciado.");
+        comboBoxServer.Items.AddRange(new string[] { UrlMT.serverLeandro, UrlMT.serverEmilio });
         this.Text = stringValuesSP.login;
     }
     public async void loginButton_Click(object sender, EventArgs e)
     {
         string email = emailText.Text;
         string contrasena = contrasenaText.Text;
+        string server = comboBoxServer.Text;
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
         {
@@ -35,13 +37,14 @@ public partial class LoginForm : Form
         }
         try
         {
-            var loginRequest = new LoginRequest { Email = email, Password = contrasena };
+            var loginRequest = new LoginRequest { Email = email, Password = contrasena, Server = server };
             var loginResponse = await api.LoginAsync(loginRequest);
 
             if (loginResponse != null)
             {
                 AppState.getUserSession().setToken(loginResponse.token);
                 AppState.setLoginResponse(loginResponse);
+                AppState.setServer(comboBoxServer.SelectedItem.ToString());
                 Log.Info($"Usuario {email} ha iniciado sesión exitosamente."); // Sin Token
 
                 WindowManager.ShowForm(

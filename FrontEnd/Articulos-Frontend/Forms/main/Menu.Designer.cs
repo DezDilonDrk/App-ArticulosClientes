@@ -158,8 +158,8 @@ namespace Articulos_Frontend
             // 
             // panelSuperiorRoles
             // 
+            panelSuperiorRoles.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panelSuperiorRoles.Controls.Add(labelRolesTitulo);
-            panelSuperiorRoles.Dock = DockStyle.Top;
             panelSuperiorRoles.Location = new Point(0, 0);
             panelSuperiorRoles.Name = "panelSuperiorRoles";
             panelSuperiorRoles.Size = new Size(200, 60);
@@ -167,16 +167,18 @@ namespace Articulos_Frontend
             // 
             // labelRolesTitulo
             // 
-            labelRolesTitulo.AutoSize = true;
-            labelRolesTitulo.Location = new Point(80, 23);
+            labelRolesTitulo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelRolesTitulo.Location = new Point(10, 15);
             labelRolesTitulo.Name = "labelRolesTitulo";
             labelRolesTitulo.RightToLeft = RightToLeft.No;
-            labelRolesTitulo.Size = new Size(0, 15);
+            labelRolesTitulo.Size = new Size(180, 30);
             labelRolesTitulo.TabIndex = 1;
-            labelRolesTitulo.Tag = "mediumText";
+            labelRolesTitulo.Tag = "title";
+            labelRolesTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel2
             // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel2.Controls.Add(LabelListaRoles);
             panel2.Location = new Point(0, 59);
             panel2.Name = "panel2";
@@ -214,7 +216,6 @@ namespace Articulos_Frontend
             statusStripMenu.PerformLayout();
             panelRolesUsuario.ResumeLayout(false);
             panelSuperiorRoles.ResumeLayout(false);
-            panelSuperiorRoles.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);

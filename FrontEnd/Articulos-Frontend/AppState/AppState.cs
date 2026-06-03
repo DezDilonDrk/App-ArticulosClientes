@@ -16,6 +16,7 @@ public static class AppState
 
     private static UserSession UserSession;
     private static ConfiguracionModel configuracion;
+    private static string currentServer = UrlMT.serverLeandro;
     private static string serverLeandro = UrlMT.serverLeandro;
     private static string serverEmilio = UrlMT.serverEmilio;
     private static LoginDtos.LoginResponse loginResponse;
@@ -64,7 +65,11 @@ public static class AppState
     }
     public static string getServer()
     {
-        return serverLeandro;
+        return currentServer;
+    }
+    public static void setServer(string server)
+    {
+        currentServer = server;
     }
     public static void setLoginResponse(LoginDtos.LoginResponse response)
     {
