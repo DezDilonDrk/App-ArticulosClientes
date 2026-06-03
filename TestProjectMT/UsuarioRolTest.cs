@@ -41,6 +41,8 @@ namespace TestProjectMT
             Assert.That(roles, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
             Rol rol = roles[2];
             var response = await this.mySession.GetClient().GetAsync($"/usuario-roles/usuario/{usuario.CorreoElectronico}");
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);}
@@ -124,12 +126,18 @@ namespace TestProjectMT
                 {
                     Assert.Fail($"Excepción al actualizar roles de usuario: {ex.Message}");
                 }
+                try{
                 var response = await this.mySession.GetClient().DeleteAsync($"/usuario-roles/{rol.Id}/{usuario.CorreoElectronico}");
-                Assert.That(response.IsSuccessStatusCode, Is.True);
+                    Assert.That(response.IsSuccessStatusCode, Is.True);
+                } catch (Exception ex)
+                {
+                    Assert.Fail($"Excepción al actualizar roles de usuario: {ex.Message}");
+                }
             }
             catch (Exception ex)
             {
                 Assert.Fail($"Excepción al eliminar rol de usuario: {ex.Message}");
+                Console.WriteLine(ex.Message);
             }
         }
     }
