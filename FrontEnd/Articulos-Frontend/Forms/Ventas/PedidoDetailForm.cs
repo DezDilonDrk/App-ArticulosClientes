@@ -190,6 +190,9 @@ namespace Articulos_Frontend
             comboBoxImpuestos.Size = new Size(315, 23);
             comboBoxImpuestos.TabIndex = 12;
             comboBoxImpuestos.Tag = "comboBox";
+            comboBoxImpuestos.MaxLength = 5;
+            comboBoxImpuestos.SelectedIndexChanged += changeImpuestos;
+            comboBoxImpuestos.TextUpdate += changeImpuestos;
             // 
             // comboBoxMetodoPago
             // 
@@ -200,6 +203,7 @@ namespace Articulos_Frontend
             comboBoxMetodoPago.Size = new Size(315, 23);
             comboBoxMetodoPago.TabIndex = 13;
             comboBoxMetodoPago.Tag = "comboBox";
+            comboBoxMetodoPago.MaxLength = 30;
             // 
             // label1
             // 
@@ -501,6 +505,10 @@ namespace Articulos_Frontend
                 alerta.ShowDialog();
                 return;
             }
+        }
+        private void changeImpuestos(object sender, EventArgs e)
+        {
+            CalcularTotales();
         }
         private void BotonEliminarP_Click(object sender, EventArgs e)
         {

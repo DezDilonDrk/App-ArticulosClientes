@@ -92,6 +92,7 @@
             textBoxPrecio.Name = "textBoxPrecio";
             textBoxPrecio.Size = new Size(131, 23);
             textBoxPrecio.TabIndex = 4;
+            textBoxPrecio.MaxLength = 10;
             // 
             // detallesTitulo
             // 

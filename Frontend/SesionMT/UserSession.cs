@@ -300,7 +300,8 @@ namespace SesionMT
             var loginData = new
             {
                 Email = email,
-                Password = password
+                Password = password,
+                Server = this.currentServer
             };
             var resp = await client.PostAsJsonAsync("/usuarios/login", loginData);
             resp.EnsureSuccessStatusCode();
