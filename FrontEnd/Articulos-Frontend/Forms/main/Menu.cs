@@ -67,7 +67,7 @@ namespace Articulos_Frontend
                         Log.Error($"Intento de login fallido para el usuario {email}.");
                     }
                 }
-
+                if (loginResponse == null) { return; }
                 if (loginResponse.token != null)
                 {
                     AppState.getUserSession().setToken(loginResponse.token);
