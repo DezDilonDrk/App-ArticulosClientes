@@ -59,7 +59,7 @@ public static class UsuarioEndpoints
             var jwtService = app.Services.GetRequiredService<JwtService>();
 
             var usuario = await methods.ObtenerPorCorreo(request.Email);
-            string currentServer = request.Server;
+            //string currentServer = request.Server;
 
             if (usuario == null)
                 return Results.Unauthorized();
@@ -69,7 +69,7 @@ public static class UsuarioEndpoints
 
             var roles = await methods.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
             usuario.Contrasena = request.Password;
-            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles, usuario, currentServer);
+            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles, usuario, "");
             await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "LOGIN", "/usuarios/login");
             Console.WriteLine("LOGIN EJECUTADO");
             return Results.Ok(new LoginResponse
