@@ -56,7 +56,7 @@ namespace Articulos_Frontend
                 string contrasena = userSession.getContrasena();
                 var loginResponse = AppState.getLoginResponse();
                 if (AppState.getLoginResponse() == null){
-                    var loginRequest = new LoginRequest { Email = email, Password = contrasena };
+                    var loginRequest = new LoginRequest { Email = email, Password = contrasena, Server = AppState.getServer() };
                     loginResponse = await api.LoginAsync(loginRequest);
                     AppState.setLoginResponse(loginResponse);
                     if (loginResponse != null)

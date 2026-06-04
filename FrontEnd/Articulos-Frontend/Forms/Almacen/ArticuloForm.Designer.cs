@@ -73,7 +73,6 @@ namespace Articulos_Frontend
             EtiquetaNombre.TabIndex = 0;
             EtiquetaNombre.Tag = "normalText";
             EtiquetaNombre.Text = "Nombre: ";
-            EtiquetaNombre.Click += EtiquetaNombre_Click;
             // 
             // TextoNombre
             // 
@@ -138,7 +137,6 @@ namespace Articulos_Frontend
             dataGridView1.StandardTab = true;
             dataGridView1.TabIndex = 13;
             dataGridView1.VirtualMode = true;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             dataGridView1.DataBindingComplete += dataGridView1_DataBindingComplete;
             // 
@@ -207,7 +205,6 @@ namespace Articulos_Frontend
             checkBoxDesde.TabIndex = 4;
             checkBoxDesde.Text = "Desde:";
             checkBoxDesde.UseVisualStyleBackColor = false;
-            checkBoxDesde.CheckedChanged += checkBoxHasta_CheckedChanged;
             // 
             // groupBoxPrecio
             // 

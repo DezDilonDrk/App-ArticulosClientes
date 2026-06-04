@@ -177,10 +177,5 @@ namespace Articulos_Frontend
             }
 
         }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

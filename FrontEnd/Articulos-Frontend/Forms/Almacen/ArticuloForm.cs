@@ -285,37 +285,6 @@ public partial class ArticuloForm : Form
         
     }
 
-
-
-    private void EtiquetaNombre_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label1_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-    {
-
-    }
-
-    private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    private void checkBoxDesde_CheckedChanged(object sender, EventArgs e)
-    {
-
-    }
-    private void checkBoxHasta_CheckedChanged(object sender, EventArgs e)
-    {
-
-    }
-
     private void BotonFiltros_Click(object sender, EventArgs e)
     {
         if (panelFiltros.Visible)

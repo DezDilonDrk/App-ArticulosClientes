@@ -808,12 +808,12 @@ namespace Articulos_Frontend
                 dataGridViewArticulos.Columns["cantidad"].ReadOnly = false;
                 dataGridViewArticulos.Columns["cantidad"].HeaderText = "Cantidad";
             }
-            if (dataGridViewArticulos.Columns["id_articulo"] != null)
+            if (dataGridViewArticulos.Columns["Id"] != null)
             {
-                dataGridViewArticulos.Columns["id_articulo"].Width = 80;
-                dataGridViewArticulos.Columns["id_articulo"].Resizable = DataGridViewTriState.False;
-                dataGridViewArticulos.Columns["id_articulo"].ReadOnly = true;
-                dataGridViewArticulos.Columns["id_articulo"].HeaderText = "Id del Articulo";
+                dataGridViewArticulos.Columns["Id"].Width = 80;
+                dataGridViewArticulos.Columns["Id"].Resizable = DataGridViewTriState.False;
+                dataGridViewArticulos.Columns["Id"].ReadOnly = true;
+                dataGridViewArticulos.Columns["Id"].HeaderText = "Id del Articulo";
             }
             if (dataGridViewArticulos.Columns["Nombre"] != null)
             {
