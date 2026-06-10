@@ -28,7 +28,11 @@ namespace SesionMT
 
         public UserSession(string currentServer, string token = null)
         {
-            this.currentServer = UrlMT.baseUrl + currentServer.ToUpper();
+            currentServer = null;
+            if (!string.IsNullOrEmpty(currentServer))
+            {
+                this.currentServer = UrlMT.baseUrl + currentServer.ToUpper();
+            }
             /*this.email = email;
             this.password = password;*/
             checkClient();
@@ -64,7 +68,8 @@ namespace SesionMT
             api = new UsuarioApiClient(this);
 
             this.client = new HttpClient();
-            client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
+            if (!string.IsNullOrEmpty(currentServer)) { client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());  }
+           
             if (!string.IsNullOrEmpty(this.token))
             {
                 this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
@@ -215,10 +220,10 @@ namespace SesionMT
         }
         public void setServer(string server)
         {
-            this.currentServer = server;
+            this.currentServer = server.ToUpper();
             if (this.client != null)
             {
-                if (this.client.BaseAddress == null) { this.client.BaseAddress = new Uri(server); }
+                if (this.client.BaseAddress == null) { this.client.BaseAddress = new Uri(UrlMT.baseUrl + this.currentServer); }
             } else {
                 checkClient(); 
             }

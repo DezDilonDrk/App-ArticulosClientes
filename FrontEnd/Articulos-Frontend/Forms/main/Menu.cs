@@ -309,7 +309,7 @@ namespace Articulos_Frontend
         {
             AppState.tokenHelper.BorrarToken();
             var form = new LoginForm();
-            this.FormClosing += (s, args) => form.Show();
+            this.FormClosing += (s, args) => form.Show(); //Si ha iniciado sesión por login, podrá acceder de nuevo si se cierra sesión, de lo contrario directamente se cerraría
             var abiertos = WindowManager.OpenWindows.Values.ToList();
             foreach (var entry in abiertos)
             {

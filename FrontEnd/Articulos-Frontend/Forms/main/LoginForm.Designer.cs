@@ -37,6 +37,7 @@
             buttonVerContrasena = new Button();
             comboBoxServer = new ComboBox();
             servidorLabel = new Label();
+            labelAdvertencia = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -148,11 +149,23 @@
             servidorLabel.Text = "Servidor:";
             servidorLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // labelAdvertencia
+            // 
+            labelAdvertencia.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            labelAdvertencia.Location = new Point(526, 288);
+            labelAdvertencia.Name = "labelAdvertencia";
+            labelAdvertencia.Size = new Size(262, 42);
+            labelAdvertencia.TabIndex = 9;
+            labelAdvertencia.Text = "Es necesario reiniciar la ventana para cambiar el servidor";
+            labelAdvertencia.TextAlign = ContentAlignment.MiddleLeft;
+            labelAdvertencia.Visible = false;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelAdvertencia);
             Controls.Add(servidorLabel);
             Controls.Add(comboBoxServer);
             Controls.Add(buttonVerContrasena);
@@ -182,5 +195,6 @@
         private Button buttonVerContrasena;
         private ComboBox comboBoxServer;
         private Label servidorLabel;
+        private Label labelAdvertencia;
     }
 }

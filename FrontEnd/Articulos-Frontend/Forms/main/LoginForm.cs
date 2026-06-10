@@ -26,7 +26,9 @@ public partial class LoginForm : Form
     {
         string email = emailText.Text;
         string contrasena = contrasenaText.Text;
-        string server = comboBoxServer.Text;
+        string server = comboBoxServer.Text.ToUpper();
+        comboBoxServer.Enabled = false; //Ya que al cambiar el valor en segundos o más intentos, es inservible y repite el primer valor
+        labelAdvertencia.Visible = true;
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena) || string.IsNullOrWhiteSpace(server))
         {
@@ -37,6 +39,7 @@ public partial class LoginForm : Form
         }
         try
         {
+            AppState.setServer(server);
             var loginRequest = new LoginRequest { Email = email, Password = contrasena};
             var loginResponse = await api.LoginAsync(loginRequest);
 
