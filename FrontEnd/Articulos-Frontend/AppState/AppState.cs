@@ -74,7 +74,7 @@ public static class AppState
         {
             return currentServer;
         }
-        return UrlMT.serverLeandro;
+        return null;
     }
     public static void setServer(string server)
     {
