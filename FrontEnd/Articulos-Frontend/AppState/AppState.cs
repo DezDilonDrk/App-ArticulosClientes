@@ -16,10 +16,11 @@ public static class AppState
 
     private static UserSession UserSession;
     private static ConfiguracionModel configuracion;
-    private static string currentServer = UrlMT.serverLeandro;
+    private static string currentServer = serverLeandro;
     private static string serverLeandro = UrlMT.serverLeandro;
     private static string serverEmilio = UrlMT.serverEmilio;
     private static LoginDtos.LoginResponse loginResponse;
+    public static TokenHelper tokenHelper = new TokenHelper();
     public static ConfiguracionModel getConfiguracion()
     {
         if (configuracion == null)
@@ -65,11 +66,20 @@ public static class AppState
     }
     public static string getServer()
     {
-        return currentServer;
+        if (tokenHelper.tokenExists())
+        {
+            return tokenHelper.getServer(); 
+        }
+        if (!string.IsNullOrEmpty(currentServer))
+        {
+            return currentServer;
+        }
+        return UrlMT.serverLeandro;
     }
     public static void setServer(string server)
     {
         currentServer = server;
+        UserSession.setServer(server);
     }
     public static void setLoginResponse(LoginDtos.LoginResponse response)
     {

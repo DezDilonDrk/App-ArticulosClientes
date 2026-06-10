@@ -28,16 +28,16 @@ public partial class LoginForm : Form
         string contrasena = contrasenaText.Text;
         string server = comboBoxServer.Text;
 
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena) || string.IsNullOrWhiteSpace(server))
         {
             Log.Warn("Intento de login con campos vacíos.");
-            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("Por favor, complete ambos campos."));
+            Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, new Exception("Por favor, complete todos los campos."));
             alerta.ShowDialog();
             return;
         }
         try
         {
-            var loginRequest = new LoginRequest { Email = email, Password = contrasena, Server = server };
+            var loginRequest = new LoginRequest { Email = email, Password = contrasena};
             var loginResponse = await api.LoginAsync(loginRequest);
 
             if (loginResponse != null)

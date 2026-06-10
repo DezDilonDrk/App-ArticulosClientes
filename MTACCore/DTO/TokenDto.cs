@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MTCore_AC.DTO;
 
@@ -12,6 +13,10 @@ public class TokenDto
     public string nombre { get; set; }
     public string password { get; set; }
     public long exp { get; set; }
+    public string server { get; set; }
+
+    [JsonPropertyName("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")]
+    public string claimName { get; set; }
 
     public static TokenDto DecodeJwt(string token)
     {

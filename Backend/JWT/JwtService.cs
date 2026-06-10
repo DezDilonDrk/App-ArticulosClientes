@@ -25,7 +25,7 @@ public class JwtService
         claims.Add(new Claim("correo", correo));
         claims.Add(new Claim("nombre", usuario.Nombre));
         claims.Add(new Claim("password", usuario.Contrasena));
-        claims.Add(new Claim("server", currentServer));
+        claims.Add(new Claim("server", currentServer.ToUpper()));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
