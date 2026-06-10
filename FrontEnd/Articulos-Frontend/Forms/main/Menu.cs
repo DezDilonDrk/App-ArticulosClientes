@@ -307,7 +307,7 @@ namespace Articulos_Frontend
         }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            AppState.getUserSession().BorrarToken();
+            AppState.tokenHelper.BorrarToken();
             var form = new LoginForm();
             this.FormClosing += (s, args) => form.Show(); //Si ha iniciado sesión por login, podrá acceder de nuevo si se cierra sesión, de lo contrario directamente se cerraría
             var abiertos = WindowManager.OpenWindows.Values.ToList();
@@ -319,7 +319,7 @@ namespace Articulos_Frontend
                     Log.Error("Error al cerrar la ventana: " + ex.Message);
                 }
             }
-            //this.Close(); //Esto es por si no se cierra por el foreach
+            this.Close();
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {
