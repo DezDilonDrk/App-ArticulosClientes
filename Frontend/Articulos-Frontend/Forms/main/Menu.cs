@@ -55,17 +55,15 @@ namespace Articulos_Frontend
                 string email = userSession.getEmail();
                 string contrasena = userSession.getContrasena();
                 var loginResponse = AppState.getLoginResponse();
-                if (AppState.getLoginResponse() == null)
-                {
-                    var loginRequest = new LoginRequest { Email = email, Password = contrasena };
+                if (AppState.getLoginResponse() == null){
+                    var loginRequest = new LoginRequest { Email = email, Password = contrasena};
                     loginResponse = await api.LoginAsync(loginRequest);
                     AppState.setLoginResponse(loginResponse);
                     if (loginResponse != null)
                     {
                         Log.Info($"Usuario {email} ha iniciado sesión exitosamente."); // Con Token
                     }
-                    else
-                    {
+                    else { 
                         Log.Error($"Intento de login fallido para el usuario {email}.");
                     }
                 }
@@ -246,8 +244,7 @@ namespace Articulos_Frontend
             cerrarSesionItem.Click += buttonLogout_Click;
             checkNotificaciones.Click += (s, ev) =>
             {
-                if (AppState.getConfiguracion().SendNotifications)
-                {
+                if (AppState.getConfiguracion().SendNotifications){
                     Log.Info("Desactivando notificaciones por email.");
                     AppState.changeCheckNotifications();
                     try
@@ -310,7 +307,7 @@ namespace Articulos_Frontend
         }
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            AppState.tokenHelper.BorrarToken();
+            AppState.getUserSession().BorrarToken();
             var form = new LoginForm();
             this.FormClosing += (s, args) => form.Show();
             var abiertos = WindowManager.OpenWindows.Values.ToList();
@@ -322,7 +319,7 @@ namespace Articulos_Frontend
                     Log.Error("Error al cerrar la ventana: " + ex.Message);
                 }
             }
-            this.Close();
+            //this.Close(); //Esto es por si no se cierra por el foreach
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {
