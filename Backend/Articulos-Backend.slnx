@@ -2,6 +2,8 @@
   <Folder Name="/Elementos de la solución/" />
   <Project Path="../MTACCore/MTCore_AC.csproj" />
   <Project Path="../MTNegocios/MTNegocios.csproj" />
-  <Project Path="../TestProjectMT/TestProjectMT.csproj" />
+  <Project Path="../TestProjectMT/TestProjectMT.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="Articulos-Backend.csproj" />
 </Solution>
