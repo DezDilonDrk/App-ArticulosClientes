@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Frontend\SesionMT\SesionMT.csproj" />
     <ProjectReference Include="..\MTACCore\MTCore_AC.csproj" />
+    <ProjectReference Include="..\MTNegocios\MTNegocios.csproj" />
   </ItemGroup>
 
   <ItemGroup>

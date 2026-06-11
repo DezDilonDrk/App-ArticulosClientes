@@ -15,6 +15,11 @@ public class ArticuloRepository
         var x = new Cliente();
     }
 
+    public ArticuloRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
     private IDbConnection Connection => new SqlConnection(_connectionString);
 
     public async Task<IEnumerable<Articulo>> ObtenerArticulos()

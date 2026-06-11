@@ -1,13 +1,14 @@
-﻿using NUnit.Framework;
+﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Dapper;
 using Microsoft.Extensions.Logging.Abstractions;
-using MTNegocios.MTEndpoints.BBDD;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using MTNegocios.ConexionDB;
+using MTNegocios.MTEndpoints.BBDD;
+using NUnit.Framework;
 
 
-namespace MTNegocios.ScriptTest;
+namespace TestProjectMT.ScriptTest;
 
 [TestFixture]
 public class DatabaseTests
@@ -220,5 +221,5 @@ public class DatabaseTests
             await master.ExecuteAsync(sql);
         }
     }
-    
+
 }
