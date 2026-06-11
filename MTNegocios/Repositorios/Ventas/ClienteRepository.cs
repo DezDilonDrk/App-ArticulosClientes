@@ -14,6 +14,12 @@ public class ClienteRepository
     {
         _connectionString = config.GetConnectionString("DefaultConnection");
     }
+
+    public ClienteRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
     private IDbConnection Connection => new SqlConnection(_connectionString);
     public async Task<List<Cliente>> ObtenerClientes()
     {

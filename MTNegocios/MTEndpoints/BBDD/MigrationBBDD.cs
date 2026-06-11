@@ -9,6 +9,7 @@ namespace MTNegocios.MTEndpoints.BBDD;
 public class MigrationBBDD
 {
     private readonly Builder _builder;
+    private readonly IConfiguration _config;
 
     public MigrationBBDD()
     {
@@ -71,7 +72,12 @@ public class MigrationBBDD
                 if (existe > 0)
                     continue;
 
-                await db.ExecuteAsync(script.script);
+                if (!string.IsNullOrWhiteSpace(script.script))
+                {
+                    await db.ExecuteAsync(script.script);
+                }
+
+                await script.Execute(_builder.builder.ConnectionString);
 
                 await db.ExecuteAsync(
                     SqlQueries.InsertScript,

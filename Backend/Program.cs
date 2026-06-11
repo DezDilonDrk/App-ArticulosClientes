@@ -62,6 +62,7 @@ builder.Services.AddScoped<MigrationBBDD>();
 builder.Services.AddScoped<SeedService>();
 builder.Services.AddScoped<AuditoriaRepository>();
 builder.Services.AddScoped<AuditoriaMethods>();
+builder.Services.AddSingleton<MigrationBBDD>();
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
