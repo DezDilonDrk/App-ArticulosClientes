@@ -72,7 +72,7 @@ public static class UsuarioEndpoints
 
             var roles = await methods.ObtenerRolesPorUsuario(usuario.CorreoElectronico);
             usuario.Contrasena = request.Password;
-            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles, usuario);
+            var token = jwtService.GenerateToken(usuario.CorreoElectronico, roles, usuario, context.Request.Host.Value);
             await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "LOGIN", "/usuarios/login", null, new {
                 Email = usuario.CorreoElectronico
             });
