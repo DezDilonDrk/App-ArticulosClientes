@@ -11,6 +11,7 @@ namespace Articulos_Frontend.Client
     public class ClienteApiClient
     {
         UserSession mySession;
+        private EnsureFunctions ensureFunctions = new EnsureFunctions();
         public ClienteApiClient(UserSession session){
             this.mySession = session;
         }
@@ -54,7 +55,7 @@ namespace Articulos_Frontend.Client
             try
             {
                 var response = await this.mySession.GetClient().PostAsJsonAsync("/clientes", cliente);
-                ensureGet(response);
+                ensureFunctions.ensureGet(response);
             } catch (Exception ex) {
                 Log.Error(ex); 
                 throw;
@@ -65,7 +66,7 @@ namespace Articulos_Frontend.Client
             try
             {
                 var response = await this.mySession.GetClient().PutAsJsonAsync($"/clientes/{dni}", cliente);
-                ensureGet(response);
+                ensureFunctions.ensureGet(response);
                 return response.IsSuccessStatusCode;
             } catch (Exception ex) {
                 Log.Error(ex);
@@ -86,13 +87,6 @@ namespace Articulos_Frontend.Client
             } catch (Exception ex) {
                 Log.Error(ex);
                 throw;
-            }
-        }
-        private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = ""){
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error en {methodName}: {response.Content}");
-                throw new Exception($"Error con {methodName}: {response.StatusCode}");
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Articulos_Frontend.Client;
 public class RolApiClient
 {
     UserSession mySession;
-
+    private EnsureFunctions ensureFunctions = new EnsureFunctions();
     public RolApiClient(UserSession session) {
         this.mySession = session;
     }
@@ -29,7 +29,7 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync("/roles/nombres");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<Rol>>() ?? new List<Rol>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -41,7 +41,7 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync("/roles");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<Rol>>() ?? new List<Rol>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -54,7 +54,7 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/roles/{id}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Rol>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -67,7 +67,7 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/roles/nombre/{nombre}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Rol>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -80,7 +80,7 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().PostAsJsonAsync("/roles", rol);
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
@@ -90,7 +90,7 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/roles/{rol.Id}", rol);
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
@@ -100,18 +100,10 @@ public class RolApiClient
         try
         {
             var response = await this.mySession.GetClient().DeleteAsync($"/roles/{id}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
-        }
-    }
-    private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
-    {
-        if (!response.IsSuccessStatusCode)
-        {
-            Log.Error($"Error en {methodName}: {response.Content}");
-            throw new Exception($"Error con {methodName}: {response.StatusCode}");
         }
     }
 }

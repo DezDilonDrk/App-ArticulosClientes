@@ -9,6 +9,7 @@ namespace Articulos_Frontend.Client
     public class ConfiguracionApiClient
     {
         UserSession mySession;
+        private EnsureFunctions ensureFunctions = new EnsureFunctions();
         public ConfiguracionApiClient(UserSession session){
             this.mySession = session;
         }
@@ -32,7 +33,7 @@ namespace Articulos_Frontend.Client
                 {
                     return null;
                 }
-                ensureGet(response);
+                ensureFunctions.ensureGet(response);
                 return await this.mySession.GetClient().GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
             } catch (Exception ex) {
                 Log.Error(ex);
@@ -45,19 +46,11 @@ namespace Articulos_Frontend.Client
             {
                 var response = await this.mySession.GetClient().PostAsJsonAsync($"/guardar_configuracion/{correo}", configuracion);
                 response.EnsureSuccessStatusCode();
-                ensureGet(response);
+                ensureFunctions.ensureGet(response);
                 return await response.Content.ReadFromJsonAsync<ConfiguracionModel>();
             } catch (Exception ex) {
                 Log.Error(ex);
                 throw;
-            }
-        }
-        private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
-        {
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error en {methodName}: {response.Content}");
-                throw new Exception($"Error con {methodName}: {response.StatusCode}");
             }
         }
     }

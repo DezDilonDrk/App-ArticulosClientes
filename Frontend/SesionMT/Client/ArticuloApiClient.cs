@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 public class ArticuloApiClient
 {
     UserSession mySession;
-
+    private EnsureFunctions ensureFunctions = new EnsureFunctions();
     public ArticuloApiClient(UserSession session)
     {
         this.mySession = session;
@@ -22,7 +22,7 @@ public class ArticuloApiClient
     {
         try {
             var response = await this.mySession.GetClient().GetAsync("/articulos");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -37,7 +37,7 @@ public class ArticuloApiClient
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Articulo>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -50,7 +50,7 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/articulos/dto");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -63,7 +63,7 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync("/disenos-cascos");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<DisenoCasco>>() ?? new List<DisenoCasco>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -77,7 +77,7 @@ public class ArticuloApiClient
             var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/{id}");
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<DisenoCasco>();
 
         } catch (Exception ex) {
@@ -90,7 +90,7 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/nombre/{nombre}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             var diseno = await response.Content.ReadFromJsonAsync<string>();
             return diseno;
         } catch (Exception ex) {
@@ -103,7 +103,7 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().PostAsJsonAsync("/articulos", articulo);
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Articulo>();
         } catch (Exception ex) {
             Log.Error(ex);
@@ -115,7 +115,7 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
@@ -126,18 +126,10 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().DeleteAsync($"/articulos/{id}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
-        }
-    }
-    private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
-    {
-        if (!response.IsSuccessStatusCode)
-        {
-            Log.Error($"Error en {methodName}: {response.Content}");
-            throw new Exception($"Error con {methodName}: {response.StatusCode}");
         }
     }
 }

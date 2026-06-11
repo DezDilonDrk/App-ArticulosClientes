@@ -16,6 +16,7 @@ namespace Articulos_Frontend.Client;
 public class PedidoApiClient
 {
     UserSession mySession;
+    private EnsureFunctions ensureFunctions = new EnsureFunctions();
     public PedidoApiClient(UserSession session){
         this.mySession = session;
     }
@@ -65,7 +66,7 @@ public class PedidoApiClient
         {
             var response = await this.mySession.GetClient().PostAsJsonAsync("/pedidos", pedido);
             string contenido = await response.Content.ReadAsStringAsync();
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
@@ -76,7 +77,7 @@ public class PedidoApiClient
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/pedidos/{id}", pedido);
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return response.IsSuccessStatusCode;
         } catch (Exception ex) {
             Log.Error(ex);
@@ -88,7 +89,7 @@ public class PedidoApiClient
         try
         {
             var response = await this.mySession.GetClient().DeleteAsync($"/pedidos/{id}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
@@ -102,7 +103,7 @@ public class PedidoApiClient
             {
                 PedidoArticulos articulo = articulos[i];
                 var response = await this.mySession.GetClient().PostAsJsonAsync("/pedidos/articulo", articulo);
-                ensureGet(response);
+                ensureFunctions.ensureGet(response);
             }
         } catch (Exception ex) {
             Log.Error(ex);
@@ -124,19 +125,11 @@ public class PedidoApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/pedidos?Nombre={nombre}");
-            ensureGet(response);
+            ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<Pedido>>() ?? new List<Pedido>();
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
-        }
-    }
-    private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
-    {
-        if (!response.IsSuccessStatusCode)
-        {
-            Log.Error($"Error en {methodName}: {response.Content}");
-            throw new Exception($"Error con {methodName}: {response.StatusCode}");
         }
     }
 }
