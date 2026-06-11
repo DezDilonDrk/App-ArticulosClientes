@@ -27,27 +27,7 @@ public class ArticuloApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
-        } catch(HttpRequestException ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
-            throw;
-        }catch(TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Log.Error($"Error inesperado al obtener artículos. Error: {ex.Message}", ex);
             throw;
         }
@@ -68,29 +48,8 @@ public class ArticuloApiClient
             }
 
             return await response.Content.ReadFromJsonAsync<Articulo>();
-        }catch(HttpRequestException ex)
-        {
+        } catch (Exception ex) {
             Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
             throw;
         }
     }
@@ -107,30 +66,8 @@ public class ArticuloApiClient
             }
             
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
-        }
-        catch (HttpRequestException ex)
-        {
+        } catch (Exception ex) {
             Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
             throw;
         }
     }
@@ -142,38 +79,15 @@ public class ArticuloApiClient
             var response = await this.mySession.GetClient().GetAsync("/disenos-cascos");
             if (!response.IsSuccessStatusCode)
             {
-                Log.Error($"Error al obtener diseños de cascos: {response.StatusCode}");
+                Log.Error($"Error al obtener diseños de cascos: {response.Content}");
                 throw new Exception($"Error API: {response.StatusCode}");
             }
             return await response.Content.ReadFromJsonAsync<List<DisenoCasco>>() ?? new List<DisenoCasco>();
-        }
-        catch (HttpRequestException ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
+        } catch (Exception ex) {
+            Log.Error($"Error: {ex.Message}", ex);
             throw;
         }
     }
-
     public async Task<DisenoCasco> ObtenerDisenoPorId(string id)
     {
         try
@@ -188,34 +102,11 @@ public class ArticuloApiClient
             }
             return await response.Content.ReadFromJsonAsync<DisenoCasco>();
 
-        }
-        catch (HttpRequestException ex)
-        {
+        } catch (Exception ex) {
             Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
-            throw;
-        }
     }
-
     public async Task<string> ObtenerIdDiseno(string nombre)
     {
         try
@@ -228,10 +119,8 @@ public class ArticuloApiClient
             }
             var diseno = await response.Content.ReadFromJsonAsync<string>();
             return diseno;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("Error al obtener ID de diseño de casco. Error: " + ex.Message, ex);
+        } catch (Exception ex) {
+            Log.Error($"Error al obtener ID de diseño de casco. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -246,33 +135,11 @@ public class ArticuloApiClient
                 throw new Exception($"Error API: {response.StatusCode}");
             }
             return await response.Content.ReadFromJsonAsync<Articulo>();
-        }catch(HttpRequestException ex)
-        {
+        } catch (Exception ex) {
             Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
-        catch(TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API.");
-            throw;
-        }
     }
-
     public async Task Actualizar(string id, Articulo articulo)
     {
         try
@@ -280,18 +147,11 @@ public class ArticuloApiClient
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
             response.EnsureSuccessStatusCode();
 
-        }catch(HttpRequestException ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex); // Centralizarlo en una clase base
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
-
     public async Task Eliminar(string id)
     {
         try
@@ -302,29 +162,8 @@ public class ArticuloApiClient
                 Log.Error($"Error al eliminar artículo: {response.StatusCode}");
                 throw new Exception($"Error API: {response.StatusCode}");
             }
-        }catch(HttpRequestException ex)
-        {
+        } catch (Exception ex) {
             Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(TaskCanceledException ex)
-        {
-            Log.Error($"Tiempo de espera agotado al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(WebException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch(SocketException ex)
-        {
-            Log.Error($"Error de red al conectar con el servidor API. Error: {ex.Message}", ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message, ex);
             throw;
         }
     }

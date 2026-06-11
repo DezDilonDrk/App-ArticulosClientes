@@ -32,22 +32,8 @@ public class PedidoApiClient
         try
         {
             return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>("/pedidos");
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }catch (JsonException ex)
-        {
-            Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -56,24 +42,8 @@ public class PedidoApiClient
         try
         {
             return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/{id}");
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (JsonException ex)
-        {
-            Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}");
             throw;
         }
     }
@@ -82,24 +52,8 @@ public class PedidoApiClient
         try
         {
             return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/cliente?dni={dni}");
-        }catch(HttpRequestException ex) 
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-         catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (JsonException ex)
-        {
-            Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -114,19 +68,8 @@ public class PedidoApiClient
                 Log.Error($"Error al crear el pedido: {contenido}");
                 throw new Exception("Error al crear el pedido en el servidor API.");
             }
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -136,19 +79,8 @@ public class PedidoApiClient
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/pedidos/{id}", pedido);
             return response.IsSuccessStatusCode;
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -157,19 +89,8 @@ public class PedidoApiClient
         try
         {
             await this.mySession.GetClient().DeleteAsync($"/pedidos/{id}");
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -182,19 +103,8 @@ public class PedidoApiClient
                 PedidoArticulos articulo = articulos[i];
                 await this.mySession.GetClient().PostAsJsonAsync("/pedidos/articulo", articulo);
             }
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -203,24 +113,8 @@ public class PedidoApiClient
         try
         {
             return await this.mySession.GetClient().GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
-        }catch (HttpRequestException ex)
-        {
-            Log.Error($"Error al conectar con el servidor API: {ex.Message}");
-            throw;
-        }
-        catch (TaskCanceledException ex)
-        {
-            Log.Error($"La solicitud al servidor API se agotó: {ex.Message}");
-            throw;
-        }
-        catch (JsonException ex)
-        {
-            Log.Error($"Error al deserializar la respuesta del servidor API: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }
@@ -229,10 +123,8 @@ public class PedidoApiClient
         try
         {
             return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos?Nombre={nombre}");
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"No se pudo conectar al servidor API: {ex.Message}");
+        } catch (Exception ex) {
+            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
             throw;
         }
     }

@@ -23,22 +23,8 @@ namespace Articulos_Frontend.Client
             try
             {
                 return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>("/clientes");
-            }catch(HttpRequestException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-                throw;
-            }catch(SocketException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
-                throw;
-            }catch(WebException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
-                throw;
-            }
-            catch(Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API.");
+            } catch(Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
@@ -47,25 +33,8 @@ namespace Articulos_Frontend.Client
             try
             {
                 return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
-            }
-            catch (HttpRequestException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-                throw;
-            }
-            catch (SocketException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
-                throw;
-            }
-            catch (WebException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
@@ -74,24 +43,8 @@ namespace Articulos_Frontend.Client
             try
             {
                 return await this.mySession.GetClient().GetFromJsonAsync<Cliente>($"/clientes/{dni}");
-            }catch (HttpRequestException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-                throw;
-            }
-            catch (SocketException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
-                throw;
-            }
-            catch (WebException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
@@ -100,24 +53,8 @@ namespace Articulos_Frontend.Client
             try
             {
                 await this.mySession.GetClient().PostAsJsonAsync("/clientes", cliente);
-            }catch (HttpRequestException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-                throw;
-            }
-            catch (SocketException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
-                throw;
-            }
-            catch (WebException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
@@ -127,24 +64,8 @@ namespace Articulos_Frontend.Client
             {
                 var response = await this.mySession.GetClient().PutAsJsonAsync($"/clientes/{dni}", cliente);
                 return response.IsSuccessStatusCode;
-            }catch (HttpRequestException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-                throw;
-            }
-            catch (SocketException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
-                throw;
-            }
-            catch (WebException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API.");
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
@@ -153,24 +74,8 @@ namespace Articulos_Frontend.Client
             try
             {
                 await this.mySession.GetClient().DeleteAsync($"/clientes/{dni}");
-            }catch (HttpRequestException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
-                throw;
-            }
-            catch (SocketException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Socket error: " + ex.Message);
-                throw;
-            }
-            catch (WebException ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Web error: " + ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API. Error: " + ex.Message);
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }

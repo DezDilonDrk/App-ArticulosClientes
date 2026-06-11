@@ -32,10 +32,8 @@ namespace Articulos_Frontend.Client
                     return null;
                 }
                 return await this.mySession.GetClient().GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API.");
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
@@ -46,10 +44,8 @@ namespace Articulos_Frontend.Client
                 var response = await this.mySession.GetClient().PostAsJsonAsync($"/guardar_configuracion/{correo}", configuracion);
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<ConfiguracionModel>();
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API.");
+            } catch (Exception ex) {
+                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
                 throw;
             }
         }
