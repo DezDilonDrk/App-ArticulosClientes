@@ -37,19 +37,21 @@
             // 
             dataGridViewRoles.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewRoles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewRoles.Location = new Point(25, 77);
+            dataGridViewRoles.Location = new Point(12, 138);
             dataGridViewRoles.Name = "dataGridViewRoles";
-            dataGridViewRoles.Size = new Size(745, 342);
+            dataGridViewRoles.Size = new Size(776, 300);
             dataGridViewRoles.TabIndex = 0;
             dataGridViewRoles.DataBindingComplete += dataGridViewRoles_DataBindingComplete;
             // 
             // labelRoles
             // 
-            labelRoles.Location = new Point(38, 29);
+            labelRoles.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            labelRoles.Location = new Point(258, 9);
             labelRoles.Name = "labelRoles";
-            labelRoles.Size = new Size(114, 23);
+            labelRoles.Size = new Size(300, 80);
             labelRoles.TabIndex = 1;
-            labelRoles.Text = "Roles de usuarios";
+            labelRoles.Tag = "title";
+            labelRoles.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // RolForm
             // 

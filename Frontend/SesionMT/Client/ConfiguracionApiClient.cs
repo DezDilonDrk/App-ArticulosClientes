@@ -2,12 +2,14 @@
 using SesionMT;
 using SesionMT.LogConfig;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 
 namespace Articulos_Frontend.Client
 {
     public class ConfiguracionApiClient
     {
         UserSession mySession;
+        private EnsureFunctions ensureFunctions = new EnsureFunctions();
         public ConfiguracionApiClient(UserSession session){
             this.mySession = session;
         }
@@ -31,11 +33,10 @@ namespace Articulos_Frontend.Client
                 {
                     return null;
                 }
+                ensureFunctions.ensureGet(response);
                 return await this.mySession.GetClient().GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API.");
+            } catch (Exception ex) {
+                Log.Error(ex);
                 throw;
             }
         }
@@ -45,11 +46,10 @@ namespace Articulos_Frontend.Client
             {
                 var response = await this.mySession.GetClient().PostAsJsonAsync($"/guardar_configuracion/{correo}", configuracion);
                 response.EnsureSuccessStatusCode();
+                ensureFunctions.ensureGet(response);
                 return await response.Content.ReadFromJsonAsync<ConfiguracionModel>();
-            }
-            catch (Exception ex)
-            {
-                Log.Error("No se pudo conectar al servidor API.");
+            } catch (Exception ex) {
+                Log.Error(ex);
                 throw;
             }
         }

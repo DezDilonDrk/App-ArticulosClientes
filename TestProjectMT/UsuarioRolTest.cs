@@ -41,6 +41,8 @@ namespace TestProjectMT
             Assert.That(roles, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
             Rol rol = roles[2];
             var response = await this.mySession.GetClient().GetAsync($"/usuario-roles/usuario/{usuario.CorreoElectronico}");
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
             Assert.That(response.IsSuccessStatusCode, Is.True);
             var body = await response.Content.ReadAsStringAsync();
             Assert.That(body, Is.Not.Empty);}
@@ -94,25 +96,48 @@ namespace TestProjectMT
                 var obtenerRoles = await this.mySession.GetClient().GetAsync($"/roles");
                 Assert.That(obtenerRoles.IsSuccessStatusCode, Is.True, "El endpoint no devolvió 200");
 
-                var roles = await obtenerRoles.Content.ReadFromJsonAsync<List<Rol>>();
-                Assert.That(roles, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
+                var rolesA = await obtenerRoles.Content.ReadFromJsonAsync<List<Rol>>();
+                Assert.That(rolesA, Is.Not.Null.And.Not.Empty, "No se obtuvieron roles para el test");
 
-                var rol = roles[2];
-
+                var rol = rolesA[1];
                 Usuario usuario = new Usuario("prueba@correo.com", "Fausto", "contraseña123");
-                var userResp = await this.mySession.GetClient().PostAsJsonAsync($"/usuarios", usuario);
 
-                var asignarResp = await this.mySession.GetClient().PutAsJsonAsync(
-                    $"/usuarios/{usuario.CorreoElectronico}/roles",
-                    new List<string> { rol.Nombre }
-                );
-                Assert.That(asignarResp.IsSuccessStatusCode, Is.True);
+                var responseBU = await this.mySession.GetClient().GetAsync($"/usuarios/correo/{usuario.CorreoElectronico}");
+                try
+                {
+                    if (!responseBU.IsSuccessStatusCode.Equals(true))
+                    {
+                        var responseU = await this.mySession.GetClient().PostAsJsonAsync($"/usuarios", usuario);
+                        Assert.That(responseU.IsSuccessStatusCode, Is.True);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail($"Excepción al crear usuario: {ex.Message}");
+                }
+                try
+                {
+                    List<string> rolesI = new List<string> { rol.Nombre };
+                    var responseR = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios/{usuario.CorreoElectronico}/roles", rolesI);
+                    responseR.EnsureSuccessStatusCode();
+                    Assert.That(responseR.IsSuccessStatusCode, Is.True);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail($"Excepción al actualizar roles de usuario: {ex.Message}");
+                }
+                try{
                 var response = await this.mySession.GetClient().DeleteAsync($"/usuario-roles/{rol.Id}/{usuario.CorreoElectronico}");
-                Assert.That(response.IsSuccessStatusCode, Is.True);
+                    Assert.That(response.IsSuccessStatusCode, Is.True);
+                } catch (Exception ex)
+                {
+                    Assert.Fail($"Excepción al actualizar roles de usuario: {ex.Message}");
+                }
             }
             catch (Exception ex)
             {
                 Assert.Fail($"Excepción al eliminar rol de usuario: {ex.Message}");
+                Console.WriteLine(ex.Message);
             }
         }
     }

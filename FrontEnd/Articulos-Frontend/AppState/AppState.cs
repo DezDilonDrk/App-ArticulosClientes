@@ -1,4 +1,5 @@
 ﻿using Articulos_Frontend.Client;
+using MTCore_AC.DTO;
 using MTCore_AC.Entidades;
 using SesionMT;
 using SesionMT.LogConfig;
@@ -15,8 +16,11 @@ public static class AppState
 
     private static UserSession UserSession;
     private static ConfiguracionModel configuracion;
+    private static string currentServer = serverLeandro;
     private static string serverLeandro = UrlMT.serverLeandro;
     private static string serverEmilio = UrlMT.serverEmilio;
+    private static LoginDtos.LoginResponse loginResponse;
+    public static TokenHelper tokenHelper = new TokenHelper();
     public static ConfiguracionModel getConfiguracion()
     {
         if (configuracion == null)
@@ -62,6 +66,27 @@ public static class AppState
     }
     public static string getServer()
     {
-        return serverEmilio;
+        if (tokenHelper.tokenExists())
+        {
+            return tokenHelper.getServer(); 
+        }
+        if (!string.IsNullOrEmpty(currentServer))
+        {
+            return currentServer;
+        }
+        return null;
+    }
+    public static void setServer(string server)
+    {
+        currentServer = server;
+        UserSession.setServer(server);
+    }
+    public static void setLoginResponse(LoginDtos.LoginResponse response)
+    {
+        loginResponse = response;
+    }
+    public static LoginDtos.LoginResponse getLoginResponse()
+    {
+        return loginResponse;
     }
 }

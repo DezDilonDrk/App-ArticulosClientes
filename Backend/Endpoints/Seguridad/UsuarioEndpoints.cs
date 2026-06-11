@@ -62,6 +62,7 @@ public static class UsuarioEndpoints
             var jwtService = app.Services.GetRequiredService<JwtService>();
 
             var usuario = await methods.ObtenerPorCorreo(request.Email);
+            //string currentServer = request.Server;
 
             if (usuario == null)
                 return Results.Unauthorized();
@@ -125,6 +126,11 @@ public static class UsuarioEndpoints
         }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
+
+        app.MapGet("/hostget", async (HttpContext context) =>
+        {
+            return context.Request.Host.Value;
+        });
 
         return app;
     }

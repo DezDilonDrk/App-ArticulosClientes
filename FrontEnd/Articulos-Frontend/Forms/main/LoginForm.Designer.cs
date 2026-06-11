@@ -34,22 +34,33 @@
             emailLabel = new Label();
             contrasenaLabel = new Label();
             loginButton = new Button();
+            buttonVerContrasena = new Button();
+            comboBoxServer = new ComboBox();
+            servidorLabel = new Label();
+            labelAdvertencia = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
+            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.BackgroundImage = Properties.Resources.MT_GROUP;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Location = new Point(214, 26);
+            pictureBox1.MaximumSize = new Size(379, 149);
+            pictureBox1.MinimumSize = new Size(379, 149);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(379, 149);
+            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // emailText
             // 
-            emailText.Location = new Point(348, 207);
+            emailText.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            emailText.Location = new Point(319, 229);
+            emailText.MaximumSize = new Size(201, 23);
+            emailText.MinimumSize = new Size(201, 23);
             emailText.Name = "emailText";
             emailText.Size = new Size(201, 23);
             emailText.TabIndex = 1;
@@ -57,9 +68,11 @@
             // 
             // contrasenaText
             // 
-            contrasenaText.Location = new Point(348, 256);
+            contrasenaText.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            contrasenaText.Location = new Point(319, 258);
+            contrasenaText.MaximumSize = new Size(201, 23);
+            contrasenaText.MinimumSize = new Size(201, 23);
             contrasenaText.Name = "contrasenaText";
-            contrasenaText.PasswordChar = '*';
             contrasenaText.Size = new Size(201, 23);
             contrasenaText.TabIndex = 2;
             contrasenaText.UseSystemPasswordChar = true;
@@ -67,44 +80,103 @@
             // 
             // emailLabel
             // 
+            emailLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             emailLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            emailLabel.Location = new Point(282, 207);
+            emailLabel.Location = new Point(253, 226);
             emailLabel.Name = "emailLabel";
             emailLabel.Size = new Size(60, 23);
             emailLabel.TabIndex = 5;
             emailLabel.Text = "Email:";
+            emailLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // contrasenaLabel
             // 
+            contrasenaLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             contrasenaLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            contrasenaLabel.Location = new Point(239, 256);
+            contrasenaLabel.Location = new Point(210, 255);
             contrasenaLabel.Name = "contrasenaLabel";
             contrasenaLabel.Size = new Size(103, 23);
             contrasenaLabel.TabIndex = 4;
             contrasenaLabel.Text = "Contraseña:";
+            contrasenaLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // loginButton
             // 
-            loginButton.Location = new Point(316, 308);
+            loginButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            loginButton.Location = new Point(319, 324);
+            loginButton.MaximumSize = new Size(201, 40);
+            loginButton.MinimumSize = new Size(201, 40);
             loginButton.Name = "loginButton";
-            loginButton.Size = new Size(172, 40);
+            loginButton.Size = new Size(201, 40);
             loginButton.TabIndex = 3;
             loginButton.Text = "Iniciar sesión";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += loginButton_Click;
+            // 
+            // buttonVerContrasena
+            // 
+            buttonVerContrasena.Anchor = AnchorStyles.Bottom;
+            buttonVerContrasena.Location = new Point(526, 257);
+            buttonVerContrasena.MaximumSize = new Size(38, 23);
+            buttonVerContrasena.MinimumSize = new Size(38, 23);
+            buttonVerContrasena.Name = "buttonVerContrasena";
+            buttonVerContrasena.Size = new Size(38, 23);
+            buttonVerContrasena.TabIndex = 6;
+            buttonVerContrasena.Text = "👁";
+            buttonVerContrasena.UseVisualStyleBackColor = true;
+            buttonVerContrasena.MouseDown += buttonVerContrasena_MouseDown;
+            buttonVerContrasena.MouseUp += buttonVerContrasena_MouseUp;
+            // 
+            // comboBoxServer
+            // 
+            comboBoxServer.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            comboBoxServer.FormattingEnabled = true;
+            comboBoxServer.Location = new Point(319, 288);
+            comboBoxServer.MaximumSize = new Size(201, 0);
+            comboBoxServer.MinimumSize = new Size(201, 0);
+            comboBoxServer.Name = "comboBoxServer";
+            comboBoxServer.Size = new Size(201, 23);
+            comboBoxServer.TabIndex = 7;
+            // 
+            // servidorLabel
+            // 
+            servidorLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            servidorLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            servidorLabel.Location = new Point(210, 285);
+            servidorLabel.Name = "servidorLabel";
+            servidorLabel.Size = new Size(103, 23);
+            servidorLabel.TabIndex = 8;
+            servidorLabel.Text = "Servidor:";
+            servidorLabel.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // labelAdvertencia
+            // 
+            labelAdvertencia.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            labelAdvertencia.Location = new Point(526, 288);
+            labelAdvertencia.Name = "labelAdvertencia";
+            labelAdvertencia.Size = new Size(262, 42);
+            labelAdvertencia.TabIndex = 9;
+            labelAdvertencia.Text = "Es necesario reiniciar la ventana para cambiar el servidor";
+            labelAdvertencia.TextAlign = ContentAlignment.MiddleLeft;
+            labelAdvertencia.Visible = false;
             // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelAdvertencia);
+            Controls.Add(servidorLabel);
+            Controls.Add(comboBoxServer);
+            Controls.Add(buttonVerContrasena);
             Controls.Add(loginButton);
             Controls.Add(contrasenaLabel);
             Controls.Add(emailLabel);
             Controls.Add(contrasenaText);
             Controls.Add(emailText);
             Controls.Add(pictureBox1);
-            Load += async (s, e) => await LoginForm_Load(s, e);
+            MaximumSize = new Size(816, 489);
+            MinimumSize = new Size(816, 489);
             Name = "LoginForm";
             Text = "LoginForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -120,5 +192,9 @@
         private Label emailLabel;
         private Label contrasenaLabel;
         private Button loginButton;
+        private Button buttonVerContrasena;
+        private ComboBox comboBoxServer;
+        private Label servidorLabel;
+        private Label labelAdvertencia;
     }
 }

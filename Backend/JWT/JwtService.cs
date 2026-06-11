@@ -13,7 +13,7 @@ public class JwtService
     private readonly string _secretKey = "CLAVE_SECRETA_SECRETOSA_PORFAVOR_FUNCIONA_SOCORRO";
 
 
-    public string GenerateToken(string correo, List<string> roles, Usuario usuario)
+    public string GenerateToken(string correo, List<string> roles, Usuario usuario, string currentServer)
     {
         var claims = new List<Claim>();
 
@@ -22,8 +22,10 @@ public class JwtService
             claims.Add(new Claim("roles", role));
         }
         claims.Add(new Claim(ClaimTypes.Name, correo));
+        claims.Add(new Claim("correo", correo));
         claims.Add(new Claim("nombre", usuario.Nombre));
         claims.Add(new Claim("password", usuario.Contrasena));
+        claims.Add(new Claim("server", currentServer.ToUpper()));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

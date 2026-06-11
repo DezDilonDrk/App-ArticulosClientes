@@ -24,45 +24,52 @@ namespace SesionMT
         private string currentServer = "";
         string tokenPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ERP_MT", "sessionToken.txt");
 
+        TokenHelper tokenHelper = new TokenHelper();
+
         public UserSession(string currentServer, string token = null)
         {
-            this.currentServer = currentServer;
-            this.email = email;
-            this.password = password;
-            if (fileExists())
+            currentServer = null;
+            if (!string.IsNullOrEmpty(currentServer))
+            {
+                this.currentServer = UrlMT.baseUrl + currentServer.ToUpper();
+            }
+            /*this.email = email;
+            this.password = password;*/
+            checkClient();
+            if (tokenHelper.tokenExists())
             {
                 this.token = CargarToken();
-            }
-            checkClient();
-            if (fileExists() && tokenExpired())
-            {
-                TokenDto tokenDto = getToken();
-                if (tokenDto == null)
+                if (tokenHelper.tokenExpired())
                 {
-                    Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
-                    BorrarToken();
-                    this.token = null;
+                    TokenDto tokenDto = tokenHelper.getToken();
+                    if (tokenDto == null)
+                    {
+                        Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
+                        tokenHelper.BorrarToken();
+                        this.token = null;
+                    }
+                    else
+                    {
+                        Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
+                        this.email = tokenDto.correo;
+                        this.password = tokenDto.password;
+                        this.token = GenerateToken().GetAwaiter().GetResult();
+                        tokenHelper.GuardarToken(this.token);
+                        Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
+                    }
                 }
-                else
+                else if (!string.IsNullOrEmpty(token))
                 {
-                    Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
-                    this.email = tokenDto.correo;
-                    this.password = tokenDto.password;
-                    this.token = GenerateToken().GetAwaiter().GetResult();
-                    GuardarToken();
-                    Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
+                    this.token = token;
+                    tokenHelper.GuardarToken(this.token);
                 }
-            }
-            else if (!string.IsNullOrEmpty(token))
-            {
-                this.token = token;
-                GuardarToken();
             }
             configApi = new ConfiguracionApiClient(this);
             api = new UsuarioApiClient(this);
 
             this.client = new HttpClient();
-            client.BaseAddress = new Uri(currentServer);
+            if (!string.IsNullOrEmpty(currentServer)) { client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());  }
+           
             if (!string.IsNullOrEmpty(this.token))
             {
                 this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
@@ -74,40 +81,43 @@ namespace SesionMT
             this.currentServer = currentServer;
             configApi = new ConfiguracionApiClient(this);
             api = new UsuarioApiClient(this);
-            if (fileExists())
+            if (tokenHelper.tokenExists())
             {
-                this.token = CargarToken();
+                if (tokenHelper.tokenExpired()) { 
+                    tokenHelper.BorrarToken(); 
+                }
+                this.token = tokenHelper.ObtenerToken();
             }
-            if (fileExists() && tokenExpired())
+           
+            TokenDto tokenDto = tokenHelper.getToken();
+            Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
+            if (tokenDto == null)
             {
-                TokenDto tokenDto = getToken();
-                Log.Info($"Token para {tokenDto.correo} ha expirado. Renovando token.");
-                if (tokenDto == null)
-                {
-                    Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
-                    BorrarToken();
-                    this.token = null;
-                }
-                else
-                {
-                    GuardarToken();
-                    Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
-                }
+                Log.Warn("No se pudo decodificar el token. Eliminando token almacenado.");
+                tokenHelper.BorrarToken();
+                this.token = null;
+            }
+            else
+            {
+                tokenHelper.GuardarToken(this.token);
+                Log.Info($"Token renovado exitosamente para {tokenDto.correo}.");
             }
             this.client = new HttpClient();
-            client.BaseAddress = new Uri(currentServer);
+            if(string.IsNullOrEmpty(currentServer))
+            {
+                currentServer = UrlMT.serverLeandro; // Valor por defecto
+            }
+            client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
             if (!string.IsNullOrEmpty(this.token))
             {
                 this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
             }
+
         }
         public void Init(string email, string password)
         {
-            if (tokenExpired())
-            {
-                this.email = email;
-                this.password = password;
-            }
+            this.email = email;
+            this.password = password;
         }
         public void loginUser()
         {
@@ -121,7 +131,11 @@ namespace SesionMT
             if (this.client == null)
             {
                 client = new HttpClient();
-                client.BaseAddress = new Uri(currentServer);
+                if (string.IsNullOrEmpty(currentServer))
+                {
+                    currentServer = UrlMT.serverLeandro; // Valor por defecto
+                }
+                client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
                 if (!string.IsNullOrEmpty(this.token))
                 {
                     this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
@@ -154,7 +168,7 @@ namespace SesionMT
             {
                 return true;
             }*/
-            TokenDto tokenDto = getToken();
+            TokenDto tokenDto = tokenHelper.getToken();
             if (tokenDto == null)
             {
                 return true;
@@ -175,39 +189,44 @@ namespace SesionMT
         }
         public string getEmail()
         {
-            TokenDto tokenDto = getToken();
-            return tokenDto.correo;
-        }
-        public void setEmail(string email)
-        {
-            this.email = email;
+            return tokenHelper.getEmail();
         }
         public string getContrasena()
         {
-            TokenDto tokenDto = getToken();
-            return tokenDto.password;
+            return tokenHelper.getContrasena();
         }
         public string getNombre()
         {
-            TokenDto tokenDto = getToken();
-            return tokenDto.nombre;
+            return tokenHelper.getNombre();
         }
         public List<string> getRoles()
         {
-            TokenDto tokenDto = getToken();
-            if (tokenDto == null) { return new List<string>(); }
-            return tokenDto.roles;
+            return tokenHelper.getRoles();
         }
         public void setRoles()
         {
-            roles = getToken().roles;
+            roles = tokenHelper.getRoles();
         }
         public void setToken(string token)
         {
-            this.token = token;
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentException("El token no puede ser nulo o vacío.");
+            }
+            tokenHelper.setToken(token);
             this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             setRoles();
-            GuardarToken();
+            tokenHelper.GuardarToken(token);
+        }
+        public void setServer(string server)
+        {
+            this.currentServer = server.ToUpper();
+            if (this.client != null)
+            {
+                if (this.client.BaseAddress == null) { this.client.BaseAddress = new Uri(UrlMT.baseUrl + this.currentServer); }
+            } else {
+                checkClient(); 
+            }
         }
         public void GuardarToken()
         {
@@ -231,19 +250,16 @@ namespace SesionMT
             this.password = password;
             try
             {
-                if (File.Exists(tokenPath))
+                if (tokenHelper.tokenExists())
                 {
                     var content = File.ReadAllText(tokenPath);
-                    token = content;
-                    return token;
-                }
-                else
-                {
-                    checkClient();
-                    this.token = GenerateToken().GetAwaiter().GetResult();
-                    GuardarToken();
+                    this.token = content;
                     return this.token;
                 }
+                checkClient();
+                this.token = GenerateToken().GetAwaiter().GetResult();
+                tokenHelper.GuardarToken(this.token);
+                return this.token;
             }
             catch (Exception ex)
             {
@@ -251,25 +267,7 @@ namespace SesionMT
             }
             return null;
         }
-        public bool fileExists()
-        {
-            return File.Exists(tokenPath);
-        }
-        public void BorrarToken()
-        {
-            try
-            {
-                if (File.Exists(tokenPath))
-                {
-                    File.Delete(tokenPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al borrar el token: {ex.Message}");
-            }
-        }
-        private async Task<string> GenerateToken()
+        public async Task<string> GenerateToken()
         {
             var loginData = new
             {
@@ -288,9 +286,13 @@ namespace SesionMT
         }
         public HttpClient GetClient()
         {
-            if (tokenExpired())
+            if (tokenHelper.tokenExpired())
             {
                 Init(email, password);
+            }
+            if (this.client.BaseAddress == null)
+            {
+                client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
             }
             return this.client;
         }

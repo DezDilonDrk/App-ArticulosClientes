@@ -6,8 +6,9 @@ namespace SesionMT;
 
 public static class UrlMT
 {
-    public static string serverLeandro = "http://PT-0057:5000";
-    public static string serverEmilio = "http://PT-0041:5000";
-    public static string serverLocal = "http://localhost:5000";
+    public static string serverLeandro = "PT-0057:5000";
+    public static string serverEmilio = "PT-0041:5000";
+    public static string serverLocal = "localhost:5000";
+    public static string baseUrl = "http://";
 
 }

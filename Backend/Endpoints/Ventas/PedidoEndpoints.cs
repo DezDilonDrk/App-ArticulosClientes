@@ -14,9 +14,9 @@ public static class PedidoEndpoints
                 ? await methods.ObtenerPedidos()
                 : await methods.BuscarPorNombreCliente(nombre);
             return Results.Ok(productos);
-        });//.RequireAuthorization(policy => policy.RequireRole(Roles.AdminPedidos, Roles.UserPedidos)).Produces<List<Pedido>>(StatusCodes.Status200OK);
+        }).Produces<List<Pedido>>(StatusCodes.Status200OK);//.RequireAuthorization(policy => policy.RequireRole(Roles.AdminPedidos, Roles.UserPedidos)).Produces<List<Pedido>>(StatusCodes.Status200OK);
         app.MapGet("/pedidos/cliente", async (string? dni, PedidoMethods methods) => {
-            var pedidos = string.IsNullOrEmpty(dni)
+            List<Pedido> pedidos = string.IsNullOrEmpty(dni)
                 ? await methods.ObtenerPedidos()
                 : await methods.ObtenerPorDniCliente(dni);
             return Results.Ok(pedidos);
