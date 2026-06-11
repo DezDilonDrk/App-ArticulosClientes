@@ -17,8 +17,7 @@ namespace Articulos_Frontend.Client
         }
         public async Task InitAsync(string currentServer)
         {
-            this.mySession = new UserSession(currentServer);
-            mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
+            //this.mySession = new UserSession(currentServer);
         }
         public async Task<List<Cliente>> ObtenerClientes()
         {
