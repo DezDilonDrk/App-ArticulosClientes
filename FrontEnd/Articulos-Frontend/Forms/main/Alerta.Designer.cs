@@ -50,6 +50,7 @@
             // 
             // titulolAlerta
             // 
+            titulolAlerta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             titulolAlerta.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             titulolAlerta.Location = new Point(117, 12);
             titulolAlerta.Name = "titulolAlerta";
@@ -121,6 +122,7 @@
             Controls.Add(descripcionAlerta);
             Controls.Add(titulolAlerta);
             Controls.Add(imagenAlerta);
+            MinimumSize = new Size(438, 324);
             Name = "Alerta";
             Text = "Alerta";
             ((System.ComponentModel.ISupportInitialize)imagenAlerta).EndInit();

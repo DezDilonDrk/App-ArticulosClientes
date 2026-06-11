@@ -4,6 +4,7 @@ using SesionMT.LogConfig;
 using System.Net;
 using System.Net.Http.Json;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 
 namespace Articulos_Frontend.Client
 {
@@ -24,7 +25,7 @@ namespace Articulos_Frontend.Client
             {
                 return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>("/clientes");
             } catch(Exception ex) {
-                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+                Log.Error(ex);
                 throw;
             }
         }
@@ -34,7 +35,7 @@ namespace Articulos_Frontend.Client
             {
                 return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
             } catch (Exception ex) {
-                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+                Log.Error(ex);
                 throw;
             }
         }
@@ -44,7 +45,7 @@ namespace Articulos_Frontend.Client
             {
                 return await this.mySession.GetClient().GetFromJsonAsync<Cliente>($"/clientes/{dni}");
             } catch (Exception ex) {
-                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+                Log.Error(ex);
                 throw;
             }
         }
@@ -52,9 +53,10 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                await this.mySession.GetClient().PostAsJsonAsync("/clientes", cliente);
+                var response = await this.mySession.GetClient().PostAsJsonAsync("/clientes", cliente);
+                ensureGet(response);
             } catch (Exception ex) {
-                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+                Log.Error(ex); 
                 throw;
             }
         }
@@ -63,9 +65,10 @@ namespace Articulos_Frontend.Client
             try
             {
                 var response = await this.mySession.GetClient().PutAsJsonAsync($"/clientes/{dni}", cliente);
+                ensureGet(response);
                 return response.IsSuccessStatusCode;
             } catch (Exception ex) {
-                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+                Log.Error(ex);
                 throw;
             }
         }
@@ -73,10 +76,23 @@ namespace Articulos_Frontend.Client
         {
             try
             {
-                await this.mySession.GetClient().DeleteAsync($"/clientes/{dni}");
+                var pedidos = await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos/cliente?dni={dni}");
+                if (pedidos != null && pedidos.Count > 0)
+                {
+                    Log.Warn($"No se puede eliminar el cliente con DNI {dni} porque tiene pedidos asociados.");
+                    throw new Exception($"El cliente tiene pedidos asociados, por lo que no se ha realizado su eliminación");
+                }
+                var response = await this.mySession.GetClient().DeleteAsync($"/clientes/{dni}");
             } catch (Exception ex) {
-                Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+                Log.Error(ex);
                 throw;
+            }
+        }
+        private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = ""){
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Error($"Error en {methodName}: {response.Content}");
+                throw new Exception($"Error con {methodName}: {response.StatusCode}");
             }
         }
     }

@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 
 public class ArticuloApiClient
 {
@@ -21,14 +22,10 @@ public class ArticuloApiClient
     {
         try {
             var response = await this.mySession.GetClient().GetAsync("/articulos");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener artículos: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch (Exception ex) {
-            Log.Error($"Error inesperado al obtener artículos. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -40,16 +37,10 @@ public class ArticuloApiClient
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener artículo: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
-
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Articulo>();
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -59,15 +50,10 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/articulos/dto");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener artículos DTO: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
-            
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -77,14 +63,10 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync("/disenos-cascos");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener diseños de cascos: {response.Content}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<DisenoCasco>>() ?? new List<DisenoCasco>();
         } catch (Exception ex) {
-            Log.Error($"Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -95,15 +77,11 @@ public class ArticuloApiClient
             var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/{id}");
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener diseño de casco: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<DisenoCasco>();
 
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -112,15 +90,11 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/nombre/{nombre}");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener ID de diseño de casco: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             var diseno = await response.Content.ReadFromJsonAsync<string>();
             return diseno;
         } catch (Exception ex) {
-            Log.Error($"Error al obtener ID de diseño de casco. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -129,14 +103,10 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().PostAsJsonAsync("/articulos", articulo);
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al crear artículo: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Articulo>();
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -145,10 +115,9 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
-            response.EnsureSuccessStatusCode();
-
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -157,14 +126,18 @@ public class ArticuloApiClient
         try
         {
             var response = await this.mySession.GetClient().DeleteAsync($"/articulos/{id}");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al eliminar artículo: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
+        }
+    }
+    private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            Log.Error($"Error en {methodName}: {response.Content}");
+            throw new Exception($"Error con {methodName}: {response.StatusCode}");
         }
     }
 }

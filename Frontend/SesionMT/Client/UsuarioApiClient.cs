@@ -2,6 +2,7 @@
 using SesionMT;
 using SesionMT.LogConfig;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using static MTCore_AC.DTO.LoginDtos;
 
@@ -35,14 +36,10 @@ public class UsuarioApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync("/usuarios");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener usuarios: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<Usuario>>() ?? new List<Usuario>();
         } catch (Exception ex) {
-            Log.Error($"Error inesperado: {ex.Message}");
+            Log.Error(ex);
             throw;
         }
     }
@@ -53,11 +50,7 @@ public class UsuarioApiClient
         {
             var response = await this.mySession.GetClient().GetAsync($"/usuarios/{correo}/roles");
 
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener los roles del usuario: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
 
             var json = await response.Content.ReadAsStringAsync();
 
@@ -66,7 +59,7 @@ public class UsuarioApiClient
                 PropertyNameCaseInsensitive = true
             });
         } catch (Exception ex) {
-            Log.Error($"Error inesperado al obtener los roles del usuario: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -76,14 +69,10 @@ public class UsuarioApiClient
         try
         {
             var response = await this.mySession.GetClient().GetAsync($"/usuarios/{Correo}");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al obtener usuario por correo: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Usuario>() ?? new Usuario();
         } catch (Exception ex) {
-            Log.Error($"Error inesperado al obtener usuario por correo: {Correo}. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -93,13 +82,9 @@ public class UsuarioApiClient
         try
         {
             var response = await this.mySession.GetClient().PostAsJsonAsync("/usuarios", usuario);
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al crear usuario: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"Error al crear usuario: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -108,13 +93,9 @@ public class UsuarioApiClient
         try
         {
             var response = await this.mySession.GetClient().DeleteAsync($"/usuarios/correo/{correo}");
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al eliminar usuario: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"Error al eliminar usuario: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -123,13 +104,9 @@ public class UsuarioApiClient
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios", usuario);
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al actualizar usuario: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"Error al actualizar usuario: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -140,33 +117,31 @@ public class UsuarioApiClient
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync(
             $"/usuarios/{correo}/contrasena",
-            new { NuevaContrasena = nuevaContrasena }
-        );
+            new { NuevaContrasena = nuevaContrasena });
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Error API: {response.StatusCode} - {error}");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"Error al actualizar contraseña: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
 
-    public async Task ActualizarRolesUsuario(string correo, List<string> roles)
-    {
+    public async Task ActualizarRolesUsuario(string correo, List<string> roles){
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios/{correo}/roles", roles);
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al actualizar roles del usuario: {response.StatusCode}");
-                throw new Exception($"Error API: {response.StatusCode}");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"Error al actualizar roles del usuario: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
+        }
+    }
+    private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            Log.Error($"Error en {methodName}: {response.Content}");
+            throw new Exception($"Error con {methodName}: {response.StatusCode}");
         }
     }
 }

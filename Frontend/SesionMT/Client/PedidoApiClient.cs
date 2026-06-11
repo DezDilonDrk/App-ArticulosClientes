@@ -1,11 +1,12 @@
-﻿using SesionMT.LogConfig;
-using MTCore_AC.Entidades;
+﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.LogConfig;
 using SesionMT.LogConfig;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 
@@ -33,7 +34,7 @@ public class PedidoApiClient
         {
             return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>("/pedidos");
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -43,17 +44,18 @@ public class PedidoApiClient
         {
             return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/{id}");
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}");
+            Log.Error(ex);
             throw;
         }
     }
-    public async Task<Pedido?> ObtenerPorDniCliente(string dni)
+    public async Task<List<Pedido>?> ObtenerPorDniCliente(string dni)
     {
         try
         {
-            return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/cliente?dni={dni}");
+            List<Pedido> pedidos = await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos/cliente?dni={dni}");
+            return pedidos;
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -63,13 +65,9 @@ public class PedidoApiClient
         {
             var response = await this.mySession.GetClient().PostAsJsonAsync("/pedidos", pedido);
             string contenido = await response.Content.ReadAsStringAsync();
-            if (!response.IsSuccessStatusCode)
-            {
-                Log.Error($"Error al crear el pedido: {contenido}");
-                throw new Exception("Error al crear el pedido en el servidor API.");
-            }
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -78,9 +76,10 @@ public class PedidoApiClient
         try
         {
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/pedidos/{id}", pedido);
+            ensureGet(response);
             return response.IsSuccessStatusCode;
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -88,9 +87,10 @@ public class PedidoApiClient
     {
         try
         {
-            await this.mySession.GetClient().DeleteAsync($"/pedidos/{id}");
+            var response = await this.mySession.GetClient().DeleteAsync($"/pedidos/{id}");
+            ensureGet(response);
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -101,10 +101,11 @@ public class PedidoApiClient
             for (int i = 0; i < articulos.ToArray().Length; i++)
             {
                 PedidoArticulos articulo = articulos[i];
-                await this.mySession.GetClient().PostAsJsonAsync("/pedidos/articulo", articulo);
+                var response = await this.mySession.GetClient().PostAsJsonAsync("/pedidos/articulo", articulo);
+                ensureGet(response);
             }
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -114,7 +115,7 @@ public class PedidoApiClient
         {
             return await this.mySession.GetClient().GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
         }
     }
@@ -122,10 +123,20 @@ public class PedidoApiClient
     {
         try
         {
-            return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos?Nombre={nombre}");
+            var response = await this.mySession.GetClient().GetAsync($"/pedidos?Nombre={nombre}");
+            ensureGet(response);
+            return await response.Content.ReadFromJsonAsync<List<Pedido>>() ?? new List<Pedido>();
         } catch (Exception ex) {
-            Log.Error($"No se pudo conectar al servidor API. Error: {ex.Message}", ex);
+            Log.Error(ex);
             throw;
+        }
+    }
+    private void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            Log.Error($"Error en {methodName}: {response.Content}");
+            throw new Exception($"Error con {methodName}: {response.StatusCode}");
         }
     }
 }
