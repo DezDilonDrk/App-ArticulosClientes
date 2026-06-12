@@ -69,6 +69,7 @@ namespace Articulos_Frontend.Forms.Seguridad
                 Alerta alerta = new Alerta(Alerta.AlertaTipo.Info, new Exception("Contraseña actualizada correctamente.")); alerta.ShowDialog();
                 EmailSender emailSender = new EmailSender();
                 emailSender.SendEmail("leandro.santilario@mthelmets.com", $"Email {textBoxCorreo.Text}: cambio de contraseña", $"Hola,\n\nEl usuario con email {textBoxCorreo.Text} ha cambiado su contraseña en el instante: {DateTime.Now}\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
+                //emailSender.SendEmail("{correo}@mthelmets.com", $"Email {textBoxCorreo.Text}: cambio de contraseña", $"Hola,\n\nEl usuario con email {textBoxCorreo.Text} ha cambiado su contraseña en el instante: {DateTime.Now}\n\nSaludos cordiales,\nEl equipo de MTHelmets-AC");
             }
             catch (Exception ex)
             {
