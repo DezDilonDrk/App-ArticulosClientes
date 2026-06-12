@@ -317,7 +317,7 @@ namespace Articulos_Frontend
                     Log.Error("Error al cerrar la ventana: " + ex.Message);
                 }
             }
-            this.Close();
+            Application.Exit(); //Se sale del todo
         }
         private void Ajustes_Paint(object sender, PaintEventArgs e)
         {
