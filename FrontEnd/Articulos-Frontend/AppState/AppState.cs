@@ -58,7 +58,11 @@ public static class AppState
     }
     public static void setConfiguracion(ConfiguracionModel config)
     {
-        configuracion = config;
+        if (config != null) {
+            configuracion = config;
+            return;
+        }
+        configuracion = getConfiguracion();
     }
     public static void changeCheckNotifications()
     {
@@ -80,6 +84,13 @@ public static class AppState
     {
         currentServer = server;
         UserSession.setServer(server);
+    }
+    public static void setTokenServer()
+    {
+        if (tokenHelper.tokenExists())
+        {
+            UserSession.setServer(tokenHelper.getServer());
+        }
     }
     public static void setLoginResponse(LoginDtos.LoginResponse response)
     {

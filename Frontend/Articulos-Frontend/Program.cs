@@ -21,6 +21,7 @@ internal static class Program
         if (AppState.tokenHelper.tokenExists())
         {
             UserSession userSession = AppState.getUserSession();
+            AppState.setTokenServer();
             var form = new Menu(AppState.getUserSession().getUsuarioApiClient(), new Usuario(userSession.getEmail(), userSession.getNombre(), userSession.getContrasena()));
             userSession.loginUser();
             Application.Run(form);
