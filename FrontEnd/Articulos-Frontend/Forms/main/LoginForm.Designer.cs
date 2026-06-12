@@ -130,6 +130,7 @@
             // comboBoxServer
             // 
             comboBoxServer.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            comboBoxServer.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxServer.FormattingEnabled = true;
             comboBoxServer.Location = new Point(319, 288);
             comboBoxServer.MaximumSize = new Size(201, 0);
