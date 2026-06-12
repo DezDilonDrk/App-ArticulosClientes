@@ -4,7 +4,7 @@ using MTCore_AC.Entidades;
 
 namespace MTNegocios.Scripts;
 
-public class PAK_2026611000000_InsertClientes: Script
+public class PAK_2026611000002_InsertClientes: Script
 {
     public override async Task Execute(string connectionString)
     {
@@ -14,6 +14,7 @@ public class PAK_2026611000000_InsertClientes: Script
         {
             new Cliente
             {
+                Id = Guid.NewGuid().ToString(),
                 Dni = "12345678A",
                 Nombre = "Juan",
                 Apellidos = "Pérez García",
@@ -23,6 +24,7 @@ public class PAK_2026611000000_InsertClientes: Script
             },
             new Cliente
             {
+                Id = Guid.NewGuid().ToString(),
                 Dni = "87654321B",
                 Nombre = "María",
                 Apellidos = "López Fernández",
@@ -32,6 +34,7 @@ public class PAK_2026611000000_InsertClientes: Script
             },
             new Cliente
             {
+                Id = Guid.NewGuid().ToString(),
                 Dni = "11223344C",
                 Nombre = "Carlos",
                 Apellidos = "Sánchez Martínez",
@@ -41,6 +44,7 @@ public class PAK_2026611000000_InsertClientes: Script
             },
             new Cliente
             {
+                Id = Guid.NewGuid().ToString(),
                 Dni = "44332211D",
                 Nombre = "Ana",
                 Apellidos = "Gómez Rodríguez",
@@ -50,6 +54,7 @@ public class PAK_2026611000000_InsertClientes: Script
             },
             new Cliente
             {
+                Id = Guid.NewGuid().ToString(),
                 Dni = "55667788E",
                 Nombre = "Luis",
                 Apellidos = "Fernández López",

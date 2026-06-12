@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Connections;
 
 namespace MTNegocios.Scripts;
 
-public class PAK_2026601000000_InsertArticulos: Script
+public class PAK_2026611000001_InsertArticulos: Script
 {
     public override async Task Execute(string connectionString)
     {  
