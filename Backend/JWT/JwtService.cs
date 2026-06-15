@@ -31,7 +31,7 @@ public class JwtService
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(6), // expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: creds
         );
 
