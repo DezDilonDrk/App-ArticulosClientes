@@ -15,6 +15,7 @@ namespace Articulos_Frontend.Client;
 
 public class PedidoApiClient
 {
+    private TokenHelper tokenHelper = new TokenHelper();
     UserSession mySession;
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
     public PedidoApiClient(UserSession session){
@@ -33,6 +34,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             return await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>("/pedidos");
         } catch (Exception ex) {
             Log.Error(ex);
@@ -43,6 +45,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             return await this.mySession.GetClient().GetFromJsonAsync<Pedido>($"/pedidos/{id}");
         } catch (Exception ex) {
             Log.Error(ex);
@@ -53,6 +56,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             List<Pedido> pedidos = await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos/cliente?dni={dni}");
             return pedidos;
         } catch (Exception ex) {
@@ -64,6 +68,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PostAsJsonAsync("/pedidos", pedido);
             string contenido = await response.Content.ReadAsStringAsync();
             ensureFunctions.ensureGet(response);
@@ -76,6 +81,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/pedidos/{id}", pedido);
             ensureFunctions.ensureGet(response);
             return response.IsSuccessStatusCode;
@@ -88,6 +94,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().DeleteAsync($"/pedidos/{id}");
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
@@ -99,6 +106,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             for (int i = 0; i < articulos.ToArray().Length; i++)
             {
                 PedidoArticulos articulo = articulos[i];
@@ -114,6 +122,7 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             return await this.mySession.GetClient().GetFromJsonAsync<List<PedidoArticulos>>($"/pedidos/{idPedido}/articulos");
         } catch (Exception ex) {
             Log.Error(ex);
@@ -124,12 +133,20 @@ public class PedidoApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/pedidos?Nombre={nombre}");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<Pedido>>() ?? new List<Pedido>();
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
+        }
+    }
+    public async Task checkTokenExpiration()
+    {
+        if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
+        {
+            await mySession.GenerateToken();
         }
     }
 }

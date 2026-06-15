@@ -2,6 +2,7 @@
 using MTCore_AC.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json;
 
@@ -68,7 +69,7 @@ public class TokenHelper
         }
         var expDate = DateTimeOffset.FromUnixTimeSeconds(exp);
         var limitDate = DateTimeOffset.UtcNow.AddDays(-30);
-        return ((expDate < DateTimeOffset.UtcNow.AddSeconds(300)) && (expDate < limitDate)); // Número de segundos de margen. 300 son 5 minutos, por ejemplo. Además de que no tenga más de 30 días de haber caducado
+        return ((expDate < DateTimeOffset.UtcNow.AddSeconds(300)) || (expDate < limitDate)); // Número de segundos de margen. 300 son 5 minutos, por ejemplo. Además de que no tenga más de 30 días de haber caducado
     }
     public string ObtenerToken()
     {
@@ -125,7 +126,12 @@ public class TokenHelper
     public string getServer()
     {
         TokenDto tokenDto = getToken();
-        var miralo = tokenDto.server;
         return tokenDto.server;
+    }
+    public bool checkRenovateToken(long expToken)
+    {
+        var expDate = DateTimeOffset.FromUnixTimeSeconds(expToken);
+        var limitDate = DateTimeOffset.UtcNow.AddDays(-30);
+        return ((expDate < DateTimeOffset.UtcNow.AddSeconds(300)) || (expDate < limitDate));
     }
 }

@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 
 public class ArticuloApiClient
 {
+    private TokenHelper tokenHelper = new TokenHelper();
     UserSession mySession;
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
     public ArticuloApiClient(UserSession session)
@@ -21,6 +22,7 @@ public class ArticuloApiClient
     public async Task<List<ArticuloDTO>> ObtenerArticulos()
     {
         try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync("/articulos");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
@@ -31,8 +33,8 @@ public class ArticuloApiClient
     }
     public async Task<Articulo?> ObtenerPorId(string id)
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/articulos/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -47,8 +49,8 @@ public class ArticuloApiClient
 
     public async Task<List<ArticuloDTO>> ObtenerArticuloDTO()
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/articulos/dto");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
@@ -60,8 +62,8 @@ public class ArticuloApiClient
 
     public async Task<List<DisenoCasco>> ObtenerDisenosCascos()
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync("/disenos-cascos");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<DisenoCasco>>() ?? new List<DisenoCasco>();
@@ -72,8 +74,8 @@ public class ArticuloApiClient
     }
     public async Task<DisenoCasco> ObtenerDisenoPorId(string id)
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/{id}");
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
@@ -87,8 +89,8 @@ public class ArticuloApiClient
     }
     public async Task<string> ObtenerIdDiseno(string nombre)
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/nombre/{nombre}");
             ensureFunctions.ensureGet(response);
             var diseno = await response.Content.ReadFromJsonAsync<string>();
@@ -100,8 +102,8 @@ public class ArticuloApiClient
     }
     public async Task<Articulo?> Crear(Articulo articulo)
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PostAsJsonAsync("/articulos", articulo);
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Articulo>();
@@ -112,8 +114,8 @@ public class ArticuloApiClient
     }
     public async Task Actualizar(string id, Articulo articulo)
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
@@ -123,13 +125,20 @@ public class ArticuloApiClient
     }
     public async Task Eliminar(string id)
     {
-        try
-        {
+        try {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().DeleteAsync($"/articulos/{id}");
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
+        }
+    }
+    public async Task checkTokenExpiration()
+    {
+        if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
+        {
+            await mySession.GenerateToken();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Articulos_Frontend.Client;
 public class UsuarioApiClient
 {
     private UserSession mySession;
+    private TokenHelper tokenHelper = new TokenHelper();
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
     public UsuarioApiClient(UserSession session) {
         this.mySession = session;
@@ -23,18 +24,25 @@ public class UsuarioApiClient
     }
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
-        var response = await this.mySession.GetClient().PostAsJsonAsync("usuarios/login", request);
+        try {
+            await checkTokenExpiration();
+            var response = await this.mySession.GetClient().PostAsJsonAsync("usuarios/login", request);
 
         if (!response.IsSuccessStatusCode)
             return null;
 
-        var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
-        return loginResponse;
+            var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            return loginResponse;
+        } catch (Exception ex) {
+            Log.Error(ex);
+            throw;
+        }
     }
     public async Task<List<Usuario>> ObtenerUsuarios()
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync("/usuarios");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<Usuario>>() ?? new List<Usuario>();
@@ -47,6 +55,7 @@ public class UsuarioApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/usuarios/{correo}/roles");
 
             ensureFunctions.ensureGet(response);
@@ -66,6 +75,7 @@ public class UsuarioApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().GetAsync($"/usuarios/{Correo}");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Usuario>() ?? new Usuario();
@@ -78,6 +88,7 @@ public class UsuarioApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PostAsJsonAsync("/usuarios", usuario);
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
@@ -89,6 +100,7 @@ public class UsuarioApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().DeleteAsync($"/usuarios/correo/{correo}");
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
@@ -100,6 +112,7 @@ public class UsuarioApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios", usuario);
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
@@ -111,6 +124,7 @@ public class UsuarioApiClient
     {
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PutAsJsonAsync(
             $"/usuarios/{correo}/contrasena",
             new { NuevaContrasena = nuevaContrasena });
@@ -124,11 +138,19 @@ public class UsuarioApiClient
     public async Task ActualizarRolesUsuario(string correo, List<string> roles){
         try
         {
+            await checkTokenExpiration();
             var response = await this.mySession.GetClient().PutAsJsonAsync($"/usuarios/{correo}/roles", roles);
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
+        }
+    }
+    public async Task checkTokenExpiration()
+    {
+        if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
+        {
+            await mySession.GenerateToken();
         }
     }
 }

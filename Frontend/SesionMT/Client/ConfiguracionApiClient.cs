@@ -8,6 +8,7 @@ namespace Articulos_Frontend.Client
 {
     public class ConfiguracionApiClient
     {
+        TokenHelper tokenHelper = new TokenHelper();
         UserSession mySession;
         private EnsureFunctions ensureFunctions = new EnsureFunctions();
         public ConfiguracionApiClient(UserSession session){
@@ -28,6 +29,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 var response = await this.mySession.GetClient().GetAsync($"/configuracion/{correo}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
@@ -44,6 +46,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 var response = await this.mySession.GetClient().PostAsJsonAsync($"/guardar_configuracion/{correo}", configuracion);
                 response.EnsureSuccessStatusCode();
                 ensureFunctions.ensureGet(response);
@@ -51,6 +54,13 @@ namespace Articulos_Frontend.Client
             } catch (Exception ex) {
                 Log.Error(ex);
                 throw;
+            }
+        }
+        public async Task checkTokenExpiration()
+        {
+            if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
+            {
+                await mySession.GenerateToken();
             }
         }
     }

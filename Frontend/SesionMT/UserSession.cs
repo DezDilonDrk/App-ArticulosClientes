@@ -28,7 +28,8 @@ namespace SesionMT
 
         public UserSession(string currentServer, string token = null)
         {
-            currentServer = null;
+            //currentServer = null;
+            this.currentServer = currentServer;
             if (!string.IsNullOrEmpty(currentServer))
             {
                 this.currentServer = UrlMT.baseUrl + currentServer.ToUpper();
@@ -68,7 +69,13 @@ namespace SesionMT
             api = new UsuarioApiClient(this);
 
             this.client = new HttpClient();
-            if (!string.IsNullOrEmpty(currentServer)) { client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());  }
+            if (!string.IsNullOrEmpty(currentServer)) { 
+                if(currentServer.ToUpper().Contains(UrlMT.baseUrl.ToUpper())){ 
+                    client.BaseAddress = new Uri(currentServer.ToUpper());  
+                } else {
+                    client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
+                }
+            }
            
             if (!string.IsNullOrEmpty(this.token))
             {
@@ -131,11 +138,12 @@ namespace SesionMT
             if (this.client == null)
             {
                 client = new HttpClient();
-                if (string.IsNullOrEmpty(currentServer))
+                if (currentServer.ToUpper().Contains(UrlMT.baseUrl.ToUpper())) { 
+                    client.BaseAddress = new Uri(currentServer.ToUpper()); 
+                } else
                 {
-                    currentServer = UrlMT.serverLeandro; // Valor por defecto
+                    client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
                 }
-                client.BaseAddress = new Uri(UrlMT.baseUrl + currentServer.ToUpper());
                 if (!string.IsNullOrEmpty(this.token))
                 {
                     this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", this.token);
@@ -146,8 +154,7 @@ namespace SesionMT
         {
             await configApi.InitAsync(currentServer);
             var config = await configApi.ObtenerConfiguracionPorCorreo(email);
-            if (config == null)
-            {
+            if (config == null) {
                 config = new ConfiguracionModel { SendNotifications = true };
             }
             setConfiguracion(config);
@@ -281,7 +288,7 @@ namespace SesionMT
             var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
 
             token = doc.token;
-
+            tokenHelper.setToken(token);
             return doc.token;
         }
         public HttpClient GetClient()

@@ -12,6 +12,7 @@ namespace Articulos_Frontend.Client
     {
         UserSession mySession;
         private EnsureFunctions ensureFunctions = new EnsureFunctions();
+        TokenHelper tokenHelper = new TokenHelper();
         public ClienteApiClient(UserSession session){
             this.mySession = session;
         }
@@ -23,6 +24,14 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                bool tokenExpired = await checkTokenExpiration();
+                if (tokenExpired)
+                {
+                    Log.Info("Token renovado automáticamente.");
+                    string token = tokenHelper.ObtenerToken();
+                    mySession.setToken(token);
+                    tokenHelper.GuardarToken(token);
+                }
                 return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>("/clientes");
             } catch(Exception ex) {
                 Log.Error(ex);
@@ -33,6 +42,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 return await this.mySession.GetClient().GetFromJsonAsync<List<Cliente>>($"/clientes?nombre={nombre}");
             } catch (Exception ex) {
                 Log.Error(ex);
@@ -43,6 +53,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 return await this.mySession.GetClient().GetFromJsonAsync<Cliente>($"/clientes/{dni}");
             } catch (Exception ex) {
                 Log.Error(ex);
@@ -53,6 +64,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 var response = await this.mySession.GetClient().PostAsJsonAsync("/clientes", cliente);
                 ensureFunctions.ensureGet(response);
             } catch (Exception ex) {
@@ -64,6 +76,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 var response = await this.mySession.GetClient().PutAsJsonAsync($"/clientes/{dni}", cliente);
                 ensureFunctions.ensureGet(response);
                 return response.IsSuccessStatusCode;
@@ -76,6 +89,7 @@ namespace Articulos_Frontend.Client
         {
             try
             {
+                await checkTokenExpiration();
                 var pedidos = await this.mySession.GetClient().GetFromJsonAsync<List<Pedido>>($"/pedidos/cliente?dni={dni}");
                 if (pedidos != null && pedidos.Count > 0)
                 {
@@ -87,6 +101,13 @@ namespace Articulos_Frontend.Client
                 Log.Error(ex);
                 throw;
             }
+        }
+        public async Task<bool> checkTokenExpiration() {
+            if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp)) {
+                await mySession.GenerateToken();
+                return true;
+            }
+            return false;
         }
     }
 }
