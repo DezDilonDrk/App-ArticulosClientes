@@ -200,7 +200,7 @@ namespace Articulos_Frontend
         {
             var dropDown = new ContextMenuStrip();
 
-            if (WindowManager.OpenWindows.Count == 1)
+            if (WindowManager.OpenWindows.Count == 1 && WindowManager.OpenWindows.ContainsKey(stringValuesSP.menu))
             {
                 dropDown.Items.Add("(Sin ventanas)").Enabled = false;
             }
