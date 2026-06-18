@@ -23,8 +23,7 @@ internal static class Program
             var form = new Menu(AppState.getUserSession().getUsuarioApiClient(), new Usuario(userSession.getEmail(), userSession.getNombre(), userSession.getContrasena()));
             userSession.loginUser();
             Application.Run(form);
-        } else
-        {
+        } else {
             Application.Run(new LoginForm());
         }
         Log.Info("---- Aplicación finalizada");
