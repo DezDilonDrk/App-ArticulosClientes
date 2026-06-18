@@ -138,6 +138,7 @@ namespace SesionMT
             if (this.client == null)
             {
                 client = new HttpClient();
+                if (string.IsNullOrEmpty(currentServer)) { return; }
                 if (currentServer.ToUpper().Contains(UrlMT.baseUrl.ToUpper())) { 
                     client.BaseAddress = new Uri(currentServer.ToUpper()); 
                 } else
@@ -208,7 +209,12 @@ namespace SesionMT
         }
         public List<string> getRoles()
         {
-            return tokenHelper.getRoles();
+            var roles = tokenHelper.getRoles();
+            if (roles == null)
+            {
+                return new List<string>();
+            }
+            return roles;
         }
         public void setRoles()
         {
@@ -305,7 +311,7 @@ namespace SesionMT
         }
         public TokenDto getToken()
         {
-            if (string.IsNullOrEmpty(token)) { return null; }
+            if (string.IsNullOrEmpty(token)) { return tokenHelper.getToken(); }
             TokenDto tokenDto = TokenDto.DecodeJwt(token);
             return tokenDto;
         }

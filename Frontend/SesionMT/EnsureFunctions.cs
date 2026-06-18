@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SesionMT
 {
-    internal class EnsureFunctions
+    public class EnsureFunctions
     {
 
         public void ensureGet(HttpResponseMessage response, [CallerMemberName] string methodName = "")

@@ -1,29 +1,29 @@
 ﻿using Articulos_Frontend;
-using SesionMT.LogConfig;
-using MTCore_AC.Entidades;
 using MTCore_AC.DTO;
+using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
+using SesionMT.LogConfig;
 using SesionMT.LogConfig;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using static System.Collections.Specialized.BitVector32;
 
-public class ArticuloApiClient
+public class ArticuloApiClient: BaseApiClient
 {
     private TokenHelper tokenHelper = new TokenHelper();
-    UserSession mySession;
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
-    public ArticuloApiClient(UserSession session)
+    public ArticuloApiClient(UserSession session): base(session)
     {
-        this.mySession = session;
     }
     public async Task<List<ArticuloDTO>> ObtenerArticulos()
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().GetAsync("/articulos");
+            var response = await mySession.GetClient().GetAsync("/articulos");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch (Exception ex) {
@@ -35,7 +35,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().GetAsync($"/articulos/{id}");
+            var response = await mySession.GetClient().GetAsync($"/articulos/{id}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
@@ -51,7 +51,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().GetAsync($"/articulos/dto");
+            var response = await mySession.GetClient().GetAsync($"/articulos/dto");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
         } catch (Exception ex) {
@@ -64,7 +64,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().GetAsync("/disenos-cascos");
+            var response = await mySession.GetClient().GetAsync("/disenos-cascos");
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<List<DisenoCasco>>() ?? new List<DisenoCasco>();
         } catch (Exception ex) {
@@ -76,7 +76,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/{id}");
+            var response = await mySession.GetClient().GetAsync($"/disenos-cascos/{id}");
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
             ensureFunctions.ensureGet(response);
@@ -91,7 +91,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().GetAsync($"/disenos-cascos/nombre/{nombre}");
+            var response = await mySession.GetClient().GetAsync($"/disenos-cascos/nombre/{nombre}");
             ensureFunctions.ensureGet(response);
             var diseno = await response.Content.ReadFromJsonAsync<string>();
             return diseno;
@@ -104,7 +104,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().PostAsJsonAsync("/articulos", articulo);
+            var response = await mySession.GetClient().PostAsJsonAsync("/articulos", articulo);
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<Articulo>();
         } catch (Exception ex) {
@@ -116,7 +116,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
+            var response = await mySession.GetClient().PutAsJsonAsync($"/articulos/{id}", articulo);
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);
@@ -127,7 +127,7 @@ public class ArticuloApiClient
     {
         try {
             await checkTokenExpiration();
-            var response = await this.mySession.GetClient().DeleteAsync($"/articulos/{id}");
+            var response = await mySession.GetClient().DeleteAsync($"/articulos/{id}");
             ensureFunctions.ensureGet(response);
         } catch (Exception ex) {
             Log.Error(ex);

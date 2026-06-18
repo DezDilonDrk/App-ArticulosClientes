@@ -148,6 +148,7 @@ public class UsuarioApiClient
     }
     public async Task checkTokenExpiration()
     {
+        if (this.mySession.getToken() == null){ return; }
         if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
         {
             await mySession.GenerateToken();
