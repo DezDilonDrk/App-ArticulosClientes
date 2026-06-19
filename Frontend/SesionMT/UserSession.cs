@@ -288,7 +288,11 @@ namespace SesionMT
                 Password = password
             };
             var resp = await client.PostAsJsonAsync("/usuarios/login", loginData);
-            resp.EnsureSuccessStatusCode();
+            if (!resp.IsSuccessStatusCode)
+            {
+                tokenHelper.BorrarToken();
+                throw new Exception($"Error al generar token: {resp.StatusCode} - {await resp.Content.ReadAsStringAsync()}");
+            }
 
             var json = await resp.Content.ReadAsStringAsync();
             var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
