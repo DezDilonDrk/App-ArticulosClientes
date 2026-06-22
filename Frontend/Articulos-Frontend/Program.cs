@@ -22,6 +22,17 @@ internal static class Program
             AppState.setTokenServer();
             var form = new Menu(AppState.getUserSession().getUsuarioApiClient(), new Usuario(userSession.getEmail(), userSession.getNombre(), userSession.getContrasena()));
             userSession.loginUser();
+            Application.ThreadException += (s, e) =>
+            {
+                MessageBox.Show(e.Exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            };
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                var ex = e.ExceptionObject as Exception;
+                MessageBox.Show(ex?.Message ?? "Error desconocido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            };
             Application.Run(form);
         } else {
             Application.Run(new LoginForm());

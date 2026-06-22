@@ -30,12 +30,18 @@ namespace Articulos_Frontend.Client
             try
             {
                 await checkTokenExpiration();
-                var response = await this.mySession.GetClient().GetAsync($"/configuracion/{correo}");
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    return null;
+                try { 
+                    var response = await this.mySession.GetClient().GetAsync($"/configuracion/{correo}");
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        return null;
+                    }
+                    ensureFunctions.ensureGet(response);
+                } catch (HttpRequestException ex) {
+                    Log.Error(ex);
+                    tokenHelper.BorrarToken();
+                    throw;
                 }
-                ensureFunctions.ensureGet(response);
                 return await this.mySession.GetClient().GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
             } catch (Exception ex) {
                 Log.Error(ex);
