@@ -134,7 +134,7 @@ namespace Articulos_Frontend
                     }
                     var fechaCreacion = DateTime.Now;
                     var fechaActualizacion = (DateTime?)null;
-                    var articulo = new Articulo(nombre, precio, categoria, idDisenoCasco, fechaCreacion, fechaActualizacion);
+                    var articulo = new Articulo(Guid.NewGuid().ToString(), nombre, precio, categoria, idDisenoCasco, fechaCreacion, fechaActualizacion);
                     var creado = await _client.Crear(articulo);
                     if (creado == null) throw new Exception("No se ha podido crear el artículo");
                     string articuloId = creado.id;

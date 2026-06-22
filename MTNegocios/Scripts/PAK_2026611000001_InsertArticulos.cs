@@ -17,13 +17,13 @@ public class PAK_2026611000001_InsertArticulos: Script
 
         var articulos = new List<Articulo>
         {
-            new Articulo("Braker SV", 134.99m, "Cascos", null, DateTime.UtcNow, null),
-            new Articulo("Thunder 4 R SV", 184.95m, "Cascos", null, DateTime.UtcNow, null),
-            new Articulo("Chaqueta", 149.99m, "Ropa", null, DateTime.UtcNow, null),
-            new Articulo("Pantalones", 89.99m, "Ropa", null, DateTime.UtcNow, null),
-            new Articulo("Botas", 129.99m, "Ropa", null, DateTime.UtcNow, null),
-            new Articulo("Visor solar", 29.99m, "Accesorios", null, DateTime.UtcNow, null),
-            new Articulo("Intercomunicador", 53.69m, "Otros", null, DateTime.UtcNow, null)
+            new Articulo(Guid.NewGuid(), "Braker SV", 134.99m, "Cascos", null, DateTime.UtcNow, null),
+            new Articulo(Guid.NewGuid(), "Thunder 4 R SV", 184.95m, "Cascos", null, DateTime.UtcNow, null),
+            new Articulo(Guid.NewGuid(), "Chaqueta", 149.99m, "Ropa", null, DateTime.UtcNow, null),
+            new Articulo(Guid.NewGuid(), "Pantalones", 89.99m, "Ropa", null, DateTime.UtcNow, null),
+            new Articulo(Guid.NewGuid(), "Botas", 129.99m, "Ropa", null, DateTime.UtcNow, null),
+            new Articulo(Guid.NewGuid(), "Visor solar", 29.99m, "Accesorios", null, DateTime.UtcNow, null),
+            new Articulo(Guid.NewGuid(), "Intercomunicador", 53.69m, "Otros", null, DateTime.UtcNow, null)
         };
 
         foreach(var articulo in articulos)

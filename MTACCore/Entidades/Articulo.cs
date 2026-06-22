@@ -27,9 +27,9 @@ public class Articulo
         this.FechaCreacion = fechaCreacion;
         this.FechaActualizacion = fechaActualizacion;
     }
-    public Articulo(String nombre, decimal precio, String categoria, String? idDisenoCasco, DateTime fechaCreacion, DateTime? fechaActualizacion)
+    public Articulo(Guid id, String nombre, decimal precio, String categoria, String? idDisenoCasco, DateTime fechaCreacion, DateTime? fechaActualizacion)
     {
-        this.id = Guid.NewGuid().ToString();
+        this.id = id.ToString();
         this.Nombre = nombre;
         this.Precio = precio;
         this.Categoria = categoria;
