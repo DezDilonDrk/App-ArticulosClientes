@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using static System.Collections.Specialized.BitVector32;
 
 public class ArticuloApiClient: BaseApiClient
@@ -53,7 +54,15 @@ public class ArticuloApiClient: BaseApiClient
             await checkTokenExpiration();
             var response = await mySession.GetClient().GetAsync($"/articulos/dto");
             ensureFunctions.ensureGet(response);
-            return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>() ?? new List<ArticuloDTO>();
+            try {
+                return await response.Content.ReadFromJsonAsync<List<ArticuloDTO>>();
+            } catch (JsonException ex)
+            {
+                return new List<ArticuloDTO>();
+            } catch (Exception ex) { 
+                Log.Error(ex);
+                 throw;
+            }
         } catch (Exception ex) {
             Log.Error(ex);
             throw;
@@ -81,7 +90,6 @@ public class ArticuloApiClient: BaseApiClient
                 return null;
             ensureFunctions.ensureGet(response);
             return await response.Content.ReadFromJsonAsync<DisenoCasco>();
-
         } catch (Exception ex) {
             Log.Error(ex);
             throw;

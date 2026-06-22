@@ -58,6 +58,7 @@ namespace Articulos_Frontend.Client
         }
         public async Task checkTokenExpiration()
         {
+
             if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
             {
                 await mySession.GenerateToken();

@@ -22,6 +22,9 @@ public partial class Alerta : Form
     private string _alertaTipo;
     private string _alertaDesc;
     private string _alertaLinea;
+    private AlertaTipo error;
+    private string v;
+
     public Alerta(AlertaTipo alertaTipo, Exception ex)
     {
         InitializeComponent();
@@ -72,6 +75,12 @@ public partial class Alerta : Form
                 descripcionAlerta.Text = "La acción se ha completado exitosamente.";
                 break;
         }
+    }
+
+    public Alerta(AlertaTipo error, string v)
+    {
+        this.error = error;
+        this.v = v;
     }
 
     private void label1_Click(object sender, EventArgs e)

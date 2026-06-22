@@ -382,8 +382,13 @@ public partial class ClienteForm : Form
         {
             clientes = await ClienteApiClient.BuscarPorNombre(nombreFiltro);
         }
+        if (clientes != null){
         clientes = clientes.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date);
-        clientes = clientes.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
+            clientes = clientes.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
+        } else
+        {
+            clientes = new List<Cliente>();
+        }
         dgvCliente.DataSource = clientes.ToList();
         listaActual = clientes.ToList();
         if (dgvCliente.Columns["Id"] != null)
