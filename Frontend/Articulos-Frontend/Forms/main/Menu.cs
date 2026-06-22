@@ -18,6 +18,7 @@ namespace Articulos_Frontend
         private Usuario user;
         UsuarioApiClient api;
         ConfiguracionApiClient configuracionApiClient;
+        ConfiguracionHelper configuracionHelper;
         public Menu(UsuarioApiClient api, Usuario usuario)
         {
             InitializeComponent();
@@ -43,6 +44,7 @@ namespace Articulos_Frontend
                 seguridadToolStripMenuItem.Enabled = false;
             }
             configuracionApiClient = new ConfiguracionApiClient(AppState.getUserSession());
+            configuracionHelper = new ConfiguracionHelper(AppState.getUserSession());
             this.Load += Menu_Load;
             this.Shown += Menu_Shown;
             labelRolesTitulo.Text = stringValuesSP.roles;
@@ -71,7 +73,7 @@ namespace Articulos_Frontend
                 if (loginResponse.token != null)
                 {
                     AppState.getUserSession().setToken(loginResponse.token);
-                    await ConfigurationSet(AppState.getUserSession().getEmail());
+                    await ConfigurationVerify(AppState.getUserSession().getEmail());
                 }
                 else
                 {
@@ -90,7 +92,7 @@ namespace Articulos_Frontend
         public async void Menu_Load(object sender, EventArgs e)
         {
             WindowManager.OnWindowsChanged += RefrescarMenuVentanas;
-            await ConfigurationSet(AppState.getUserSession().getEmail());
+            await ConfigurationVerify(AppState.getUserSession().getEmail());
             RegistrarClicks(this);
         }
         public async void Menu_Shown(object sender, EventArgs e)
@@ -98,8 +100,8 @@ namespace Articulos_Frontend
             Enabled = false;
             await configuracionApiClient.InitAsync(AppState.getServer());
             await api.InitAsync(AppState.getServer());
-            await ConfigurationSet(AppState.getUserSession().getEmail());
             await initAsync();
+            await ConfigurationVerify(AppState.getUserSession().getEmail());
             Enabled = true;
             RefrescarMenuVentanas();
         }
@@ -235,9 +237,9 @@ namespace Articulos_Frontend
             var accountSettingsItem = new ToolStripMenuItem(stringValuesSP.ajustesCuenta);
             var cambiarContrasenaItem = new ToolStripMenuItem(stringValuesSP.cambiarContrasena);
             var cerrarSesionItem = new ToolStripMenuItem(stringValuesSP.logout);
+            await ConfigurationVerify(AppState.getUserSession().getEmail());
             var stringValue = AppState.getConfiguracion().SendNotifications ? stringValuesSP.notificacionesEmailSi : stringValuesSP.notificacionesEmailNo;
             var checkNotificaciones = new ToolStripMenuItem(stringValue);
-
             cambiarContrasenaItem.Click += (s, ev) => {
                 WindowManager.ShowForm(stringValuesSP.cambiarContrasena, this, () => new CambiarContrasenaForm(user.CorreoElectronico));
             };
@@ -421,44 +423,26 @@ namespace Articulos_Frontend
                 return ajustes;
             });
         }
-        private async Task ConfigurationSet(string email)
+        private async Task ConfigurationVerify(string email)
         {
-            await configuracionApiClient.InitAsync(UrlMT.serverLocal);
-            var config = await configuracionApiClient.ObtenerConfiguracionPorCorreo(email);
-            if (config != null)
-            {
-                AppState.setConfiguracion(config);
-                try
-                {
-                    configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
-
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Error al guardar la configuración de notificaciones: " + ex.Message);
-                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
-                    alerta.ShowDialog();
-                    return;
-                }
-            }
-            else
-            {
-                Log.Warn($"No se encontró configuración para el usuario {email}. Se establecerá la configuración predeterminada.");
-                config = new ConfiguracionModel { SendNotifications = true };
-                AppState.setConfiguracion(config);
-                try
-                {
-                    configuracionApiClient.GuardarConfiguracionPorCorreo(email, config);
-
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Error al guardar la configuración de notificaciones: " + ex.Message);
-                    Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, ex);
-                    alerta.ShowDialog();
-                    return;
-                }
+            var config = await ObtenerConfiguracion(email);
+            if (config != null) {
+                await EstablecerConfiguracion(email, config);
             }
         }
+        private async Task<ConfiguracionModel> ObtenerConfiguracion(string email){
+            var config = await configuracionHelper.getConfiguracion(email);
+            if (config == null)
+            {
+                Alerta alerta = new Alerta(Alerta.AlertaTipo.Error, "Error al obtener la configuración.");
+                alerta.ShowDialog();
+            }
+            return config;
+        }
+        private async Task EstablecerConfiguracion(string email, ConfiguracionModel config) {
+            AppState.setConfiguracion(config);
+            await configuracionHelper.guardarConfiguracion(email, config);
+        }
+
     }
 }
