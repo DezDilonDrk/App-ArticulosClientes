@@ -3,15 +3,18 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using System.Net.Http.Json;
+using MTCore_AC.DTO;
 using MTNegocios.ConexionDB;
 using MTNegocios.MTEndpoints.BBDD;
 using NUnit.Framework;
+using SesionMT;
 
 
 namespace TestProjectMT.ScriptTest;
 
 [TestFixture]
-public class DatabaseTests
+public class DatabaseTests: BaseTest
 {
     static string databaseName = $"DB_{Guid.NewGuid():N}";
     private string connectionString = $"Server=localhost;Database={databaseName};Trusted_Connection=true;TrustServerCertificate=true;";
@@ -20,16 +23,16 @@ public class DatabaseTests
     [OneTimeSetUp]
     public async Task Init()
     {
+        Console.WriteLine(AppContext.BaseDirectory);
 
         _migration = new MigrationBBDD();
 
         var logger = NullLogger<Program>.Instance;
 
-        var resultado = await _migration.InitDatabase(
-            databaseName,
-            logger);
+        await this.Init(UrlMT.serverLocal);
+        var response = await this.mySession.GetClient().PostAsJsonAsync($"/database/init", new DatabaseInitRequest { DbName = databaseName });
 
-        Assert.That(resultado.Success, Is.True);
+        Assert.That(response.IsSuccessStatusCode, Is.True);
     }
 
     [Test]
@@ -63,10 +66,7 @@ public class DatabaseTests
     [Test]
     public async Task Tabla_ScriptsEjecutados_Creada()
     {
-        var builder = new Builder();
-        builder.builder.InitialCatalog = databaseName;
-
-        using var db = new SqlConnection(builder.builder.ConnectionString);
+        using var db = new SqlConnection(connectionString);
         await db.OpenAsync();
         var existe = await db.ExecuteScalarAsync<int>(@"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ScriptEjecutados'");
         Assert.That(existe, Is.EqualTo(1));
@@ -75,9 +75,7 @@ public class DatabaseTests
     [Test]
     public async Task Comprobar_ScriptsEjecutados()
     {
-        var builder = new Builder();
-        builder.builder.InitialCatalog = databaseName;
-        using var db = new SqlConnection(builder.builder.ConnectionString);
+        using var db = new SqlConnection(connectionString);
         await db.OpenAsync();
         var total = await db.ExecuteScalarAsync<int>(@"SELECT COUNT(*) FROM ScriptEjecutados");
         Assert.That(total, Is.GreaterThan(0));
