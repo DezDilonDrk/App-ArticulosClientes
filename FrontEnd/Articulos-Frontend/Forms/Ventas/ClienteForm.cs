@@ -122,7 +122,6 @@ public partial class ClienteForm : Form
         BotonBuscar.TabIndex = 1;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
-        BotonBuscar.Click += async (s, e) => await BotonBuscar_ClickAsync(s, e);
         BotonBuscar.MouseEnter += Boton_MouseEnter;
         BotonBuscar.MouseLeave += Boton_MouseLeave;
         // 
@@ -156,7 +155,7 @@ public partial class ClienteForm : Form
         dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
         dgvCliente.EnableHeadersVisualStyles = false;
         dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
-        dgvCliente.Location = new Point(0, 0);
+        dgvCliente.Location = new Point(4, 4);
         dgvCliente.MultiSelect = false;
         dgvCliente.Name = "dgvCliente";
         dgvCliente.ReadOnly = true;
@@ -171,7 +170,7 @@ public partial class ClienteForm : Form
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
         dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dgvCliente.SelectionMode = DataGridViewSelectionMode.CellSelect;
-        dgvCliente.Size = new Size(648, 267);
+        dgvCliente.Size = new Size(640, 259);
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
         // 
@@ -278,6 +277,7 @@ public partial class ClienteForm : Form
         panelDGV.Dock = DockStyle.Fill;
         panelDGV.Location = new Point(0, 125);
         panelDGV.Name = "panelDGV";
+        panelDGV.Padding = new Padding(4);
         panelDGV.Size = new Size(648, 267);
         panelDGV.TabIndex = 9;
         // 
@@ -317,7 +317,6 @@ public partial class ClienteForm : Form
         MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = stringValuesSP.listaClientes;
         Load += ClienteForm_Load;
         ((ISupportInitialize)dgvCliente).EndInit();
         panelFiltros.ResumeLayout(false);
