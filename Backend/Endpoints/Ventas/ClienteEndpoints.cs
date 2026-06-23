@@ -17,7 +17,7 @@ public static class ClienteEndpoints
                 return result is not null
                     ? Results.Ok(result)
                     : Results.NotFound();
-            }).RequireAuthorization(Roles.VentasAdminOUser)
+            }).RequireAuthorization(Roles.AlmacenAdminOUser)
             .Produces<Cliente>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
         app.MapGet("/clientes", async (string? nombre, ClienteMethods methods) => {
@@ -25,7 +25,7 @@ public static class ClienteEndpoints
                 ? await methods.ObtenerClientes()
                 : await methods.BuscarPorNombre(nombre);
             return Results.Ok(clientes);
-        }).RequireAuthorization(Roles.VentasAdminOUser).Produces<List<Cliente>>(StatusCodes.Status200OK);
+        }).RequireAuthorization(Roles.AlmacenAdminOUser).Produces<List<Cliente>>(StatusCodes.Status200OK);
         app.MapPost("/clientes", async (Cliente cliente, ClienteMethods methods, AuditoriaMethods auditoriaMethods, HttpContext context) =>
         {
             var existente = await methods.ObtenerPorDni(cliente.Dni);

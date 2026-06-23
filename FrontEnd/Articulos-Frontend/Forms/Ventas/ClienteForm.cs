@@ -122,7 +122,7 @@ public partial class ClienteForm : Form
         BotonBuscar.TabIndex = 1;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
-        BotonBuscar.Click += BotonBuscar_Click;
+        BotonBuscar.Click += async (s, e) => await BotonBuscar_ClickAsync(s, e);
         BotonBuscar.MouseEnter += Boton_MouseEnter;
         BotonBuscar.MouseLeave += Boton_MouseLeave;
         // 
@@ -336,7 +336,7 @@ public partial class ClienteForm : Form
         {
             await ClienteApiClient.InitAsync(UrlMT.serverLocal);
             Log.Info("Cargando clientes en el formulario.");
-            buscarClientes(null);
+            await buscarClientes(null);
             RegistrarClicks(this);
             if (!AppState.getUserSession().getRoles().Contains(Roles.AdminVentas))
             {
@@ -370,7 +370,7 @@ public partial class ClienteForm : Form
         clientesFiltrados = clientesFiltrados.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date).ToList();
         dgvCliente.DataSource = clientesFiltrados;
     }
-    private async void buscarClientes(string nombreFiltro)
+    private async Task buscarClientes(string nombreFiltro)
     {
         Log.Info($"Buscando clientes: '{nombreFiltro}'");
         IEnumerable<Cliente> clientes;
@@ -383,7 +383,7 @@ public partial class ClienteForm : Form
             clientes = await ClienteApiClient.BuscarPorNombre(nombreFiltro);
         }
         if (clientes != null){
-        clientes = clientes.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date);
+            clientes = clientes.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date);
             clientes = clientes.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
         } else
         {
@@ -438,11 +438,11 @@ public partial class ClienteForm : Form
             dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
         }
     }
-    private void BotonBuscar_Click(object sender, EventArgs e)
+    private async Task BotonBuscar_ClickAsync(object sender, EventArgs e)
     {
         try
         {
-            buscarClientes(textBoxCliente.Text);
+            await buscarClientes(textBoxCliente.Text);
         } catch (Exception ex)
         {
             Log.Error("Error al buscar clientes.", ex);
@@ -462,7 +462,7 @@ public partial class ClienteForm : Form
         {
             if (!string.IsNullOrEmpty(cliente.Dni))
             {
-                buscarClientes(textBoxCliente.Text);
+                await buscarClientes(textBoxCliente.Text);
 
                 var actualizarClienteForm = new ClienteDetailForm(cliente);
                 WindowManager.ShowForm(
@@ -474,7 +474,7 @@ public partial class ClienteForm : Form
                 {
                     if (!string.IsNullOrEmpty(updatedCliente.Dni) && !string.IsNullOrEmpty(updatedCliente.Nombre) && !string.IsNullOrEmpty(updatedCliente.Apellidos) && !string.IsNullOrEmpty(updatedCliente.Email))
                     {
-                        buscarClientes(textBoxCliente.Text);
+                        await buscarClientes(textBoxCliente.Text);
                     }
                 };
             }
@@ -501,7 +501,7 @@ public partial class ClienteForm : Form
             {
                 Log.Info("Eliminación cancelada por el usuario.");
             }
-            buscarClientes(textBoxCliente.Text);
+            await buscarClientes(textBoxCliente.Text);
         }
         catch (Exception ex)
         {

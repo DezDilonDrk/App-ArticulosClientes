@@ -38,11 +38,15 @@ namespace Articulos_Frontend.Client
                 if (response.StatusCode == HttpStatusCode.Forbidden ||
                     response.StatusCode == HttpStatusCode.Unauthorized){
                     Log.Error($"El usuario no tiene permisos: código: {response.StatusCode}");
-                    return null;
+                    return new List<Cliente>();
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<Cliente>>(json);
+
+                Log.Error("JSON CLIENTES:");
+                Log.Error(json);
+                var jsonOptions = new JsonSerializerOptions{ PropertyNameCaseInsensitive = true };
+                return JsonSerializer.Deserialize<List<Cliente>>(json, jsonOptions);
             } catch(Exception ex) {
                 Log.Error(ex);
                 throw;

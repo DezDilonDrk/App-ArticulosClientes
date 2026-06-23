@@ -14,13 +14,13 @@ public class Cliente
     public DateTime FechaCreacion { get; set; }
     public DateTime? FechaModificacion { get; set; }
 
-    public Cliente() { }
+    public Cliente() {}
 
-    public Cliente(string dni, string nombre, string apellidos, string email, DateTime FechaCreacion, DateTime? FechaModificacion)
+    public Cliente(string dni, string Nombre, string apellidos, string email, DateTime FechaCreacion, DateTime? FechaModificacion)
     {
         this.Id = Guid.NewGuid().ToString();
         this.Dni = dni;
-        this.Nombre = nombre;
+        this.Nombre = Nombre;
         this.Apellidos = apellidos;
         this.Email = email;
         this.FechaCreacion = FechaCreacion;
