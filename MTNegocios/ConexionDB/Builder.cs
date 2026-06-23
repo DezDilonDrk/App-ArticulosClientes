@@ -12,5 +12,7 @@ public class Builder
         var config = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json", optional: false).Build();
         builder.ConnectionString = config.GetConnectionString("DefaultConnection");
+        
+        config.GetConnectionString("DefaultConnection");
     }
 }
