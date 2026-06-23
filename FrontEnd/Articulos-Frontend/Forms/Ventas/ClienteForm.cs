@@ -122,7 +122,7 @@ public partial class ClienteForm : Form
         BotonBuscar.TabIndex = 1;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
-        BotonBuscar.Click += BotonBuscar_Click;
+        BotonBuscar.Click += BotonBuscar_ClickAsync;
         BotonBuscar.MouseEnter += Boton_MouseEnter;
         BotonBuscar.MouseLeave += Boton_MouseLeave;
         // 
@@ -156,7 +156,7 @@ public partial class ClienteForm : Form
         dgvCliente.EditMode = DataGridViewEditMode.EditOnEnter;
         dgvCliente.EnableHeadersVisualStyles = false;
         dgvCliente.GridColor = Color.FromArgb(42, 42, 42);
-        dgvCliente.Location = new Point(0, 0);
+        dgvCliente.Location = new Point(4, 4);
         dgvCliente.MultiSelect = false;
         dgvCliente.Name = "dgvCliente";
         dgvCliente.ReadOnly = true;
@@ -171,7 +171,7 @@ public partial class ClienteForm : Form
         dgvCliente.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(242, 242, 242);
         dgvCliente.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 42, 36);
         dgvCliente.SelectionMode = DataGridViewSelectionMode.CellSelect;
-        dgvCliente.Size = new Size(648, 267);
+        dgvCliente.Size = new Size(640, 259);
         dgvCliente.TabIndex = 5;
         dgvCliente.CellDoubleClick += dgvCliente_CellDoubleClick;
         // 
@@ -278,6 +278,7 @@ public partial class ClienteForm : Form
         panelDGV.Dock = DockStyle.Fill;
         panelDGV.Location = new Point(0, 125);
         panelDGV.Name = "panelDGV";
+        panelDGV.Padding = new Padding(4);
         panelDGV.Size = new Size(648, 267);
         panelDGV.TabIndex = 9;
         // 
@@ -317,7 +318,6 @@ public partial class ClienteForm : Form
         MinimumSize = new Size(848, 431);
         Name = "ClienteForm";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = stringValuesSP.listaClientes;
         Load += ClienteForm_Load;
         ((ISupportInitialize)dgvCliente).EndInit();
         panelFiltros.ResumeLayout(false);
@@ -336,7 +336,7 @@ public partial class ClienteForm : Form
         {
             await ClienteApiClient.InitAsync(UrlMT.serverLocal);
             Log.Info("Cargando clientes en el formulario.");
-            buscarClientes(null);
+            await buscarClientes(null);
             RegistrarClicks(this);
             if (!AppState.getUserSession().getRoles().Contains(Roles.AdminVentas))
             {
@@ -370,7 +370,7 @@ public partial class ClienteForm : Form
         clientesFiltrados = clientesFiltrados.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date).ToList();
         dgvCliente.DataSource = clientesFiltrados;
     }
-    private async void buscarClientes(string nombreFiltro)
+    private async Task buscarClientes(string nombreFiltro)
     {
         Log.Info($"Buscando clientes: '{nombreFiltro}'");
         IEnumerable<Cliente> clientes;
@@ -382,8 +382,13 @@ public partial class ClienteForm : Form
         {
             clientes = await ClienteApiClient.BuscarPorNombre(nombreFiltro);
         }
-        clientes = clientes.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date);
-        clientes = clientes.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
+        if (clientes != null){
+            clientes = clientes.Where(c => c.FechaCreacion.Date >= FechaDesde.Value.Date);
+            clientes = clientes.Where(c => c.FechaCreacion.Date <= FechaHasta.Value.Date);
+        } else
+        {
+            clientes = new List<Cliente>();
+        }
         dgvCliente.DataSource = clientes.ToList();
         listaActual = clientes.ToList();
         if (dgvCliente.Columns["Id"] != null)
@@ -433,7 +438,7 @@ public partial class ClienteForm : Form
             dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
         }
     }
-    private void BotonBuscar_Click(object sender, EventArgs e)
+    private async void BotonBuscar_ClickAsync(object sender, EventArgs e)
     {
         try
         {
@@ -457,7 +462,7 @@ public partial class ClienteForm : Form
         {
             if (!string.IsNullOrEmpty(cliente.Dni))
             {
-                buscarClientes(textBoxCliente.Text);
+                await buscarClientes(textBoxCliente.Text);
 
                 var actualizarClienteForm = new ClienteDetailForm(cliente);
                 WindowManager.ShowForm(
@@ -469,7 +474,7 @@ public partial class ClienteForm : Form
                 {
                     if (!string.IsNullOrEmpty(updatedCliente.Dni) && !string.IsNullOrEmpty(updatedCliente.Nombre) && !string.IsNullOrEmpty(updatedCliente.Apellidos) && !string.IsNullOrEmpty(updatedCliente.Email))
                     {
-                        buscarClientes(textBoxCliente.Text);
+                        await buscarClientes(textBoxCliente.Text);
                     }
                 };
             }
@@ -496,7 +501,7 @@ public partial class ClienteForm : Form
             {
                 Log.Info("Eliminación cancelada por el usuario.");
             }
-            buscarClientes(textBoxCliente.Text);
+            await buscarClientes(textBoxCliente.Text);
         }
         catch (Exception ex)
         {

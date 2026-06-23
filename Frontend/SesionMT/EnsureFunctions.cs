@@ -14,7 +14,7 @@ namespace SesionMT
             if (!response.IsSuccessStatusCode)
             {
                 Log.Error($"Error en {methodName}: {response.Content}");
-                throw new Exception($"Error con {methodName}: {response.StatusCode}");
+               // throw new Exception($"Error con {methodName}: {response.StatusCode}");
             }
         }
     }

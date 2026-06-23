@@ -1,24 +1,18 @@
 ﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
 using SesionMT.LogConfig;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 
 namespace Articulos_Frontend.Client
 {
-    public class ConfiguracionApiClient
+    public class ConfiguracionApiClient: BaseApiClient
     {
         TokenHelper tokenHelper = new TokenHelper();
-        UserSession mySession;
         private EnsureFunctions ensureFunctions = new EnsureFunctions();
-        public ConfiguracionApiClient(UserSession session){
-            this.mySession = session;
+        public ConfiguracionApiClient(UserSession session): base(session){
         }
-        public ConfiguracionApiClient(){}
-        /*public UserSession GetSession()
-        {
-            return this.mySession;
-        }*/
         public async Task InitAsync(string currentServer)
         {
             /*this.mySession = new UserSession(currentServer);
@@ -30,12 +24,18 @@ namespace Articulos_Frontend.Client
             try
             {
                 await checkTokenExpiration();
-                var response = await this.mySession.GetClient().GetAsync($"/configuracion/{correo}");
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    return null;
+                try { 
+                    var response = await this.mySession.GetClient().GetAsync($"/configuracion/{correo}");
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        return null;
+                    }
+                    ensureFunctions.ensureGet(response);
+                } catch (HttpRequestException ex) {
+                    Log.Error(ex);
+                    tokenHelper.BorrarToken();
+                    throw;
                 }
-                ensureFunctions.ensureGet(response);
                 return await this.mySession.GetClient().GetFromJsonAsync<ConfiguracionModel>($"/configuracion/{correo}");
             } catch (Exception ex) {
                 Log.Error(ex);
@@ -58,6 +58,7 @@ namespace Articulos_Frontend.Client
         }
         public async Task checkTokenExpiration()
         {
+
             if (tokenHelper.checkRenovateToken(this.mySession.getToken().exp))
             {
                 await mySession.GenerateToken();

@@ -1,5 +1,6 @@
 ﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
 using SesionMT.LogConfig;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
@@ -8,18 +9,14 @@ using static MTCore_AC.DTO.LoginDtos;
 
 namespace Articulos_Frontend.Client;
 
-public class UsuarioApiClient
+public class UsuarioApiClient: BaseApiClient
 {
-    private UserSession mySession;
     private TokenHelper tokenHelper = new TokenHelper();
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
-    public UsuarioApiClient(UserSession session) {
-        this.mySession = session;
+    public UsuarioApiClient(UserSession session): base(session) {
     }
-    public UsuarioApiClient(){}
     public async Task InitAsync(string currentServer)
     {
-        //this.mySession = new UserSession(currentServer);
         mySession.Init("leandro.santilario@mthelmets.com", "Leandro321");
     }
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
@@ -62,10 +59,7 @@ public class UsuarioApiClient
 
             var json = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<string>>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            return JsonSerializer.Deserialize<List<string>>(json, optionsNotCaseSensitive);
         } catch (Exception ex) {
             Log.Error(ex);
             throw;

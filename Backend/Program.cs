@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Serilog;
+using MTCore_AC.Entidades;
 
 var builder = WebApplication.CreateBuilder(args);
 Log.Logger = new LoggerConfiguration()
@@ -32,18 +33,109 @@ builder.WebHost.UseUrls("http://0.0.0.0:5000");
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<JwtService>();
-builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
+        ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+string[] roles = new[]
+{
+    Roles.AdminSeguridad,
+    Roles.AdminVentas,
+    Roles.AdminAlmacen,
+    Roles.AdminPedidos,
+    Roles.UserVentas,
+    Roles.UserPedidos,
+    Roles.UserAlmacen
+};
+builder.Services.AddAuthorization(options =>
+{
+    foreach (var rol in roles)
+    {
+        options.AddPolicy(rol, policy =>
+            policy.RequireAssertion(async context =>
+            {
+                var email = context.User.FindFirst("correo")?.Value;
+                if (email == null)
+                    return false;
+
+                var httpContext = context.Resource as HttpContext;
+                if (httpContext == null)
+                    return false;
+
+                var usuarioRolMethods = httpContext.RequestServices.GetRequiredService<UsuarioRolMethods>();
+
+                var rolesUsuario = await usuarioRolMethods.ObtenerRolesPorUsuario(email);
+
+                return rolesUsuario.Any(r => r.Nombre == rol);
+            })
+        );
+    }
+    options.AddPolicy(Roles.VentasAdminOUser, policy =>
+       policy.RequireAssertion(async context =>
+       {
+           var email = context.User.FindFirst("correo")?.Value;
+           if (email == null)
+               return false;
+
+           var httpContext = context.Resource as HttpContext;
+           if (httpContext == null)
+               return false;
+
+           var usuarioRolMethods = httpContext.RequestServices.GetRequiredService<UsuarioRolMethods>();
+           var rolesUsuario = await usuarioRolMethods.ObtenerRolesPorUsuario(email);
+
+           return rolesUsuario.Any(r =>
+               r.Nombre == Roles.AdminVentas ||
+               r.Nombre == Roles.UserVentas
+           );
+       }));
+    options.AddPolicy(Roles.AlmacenAdminOUser, policy =>
+       policy.RequireAssertion(async context =>
+       {
+           var email = context.User.FindFirst("correo")?.Value;
+           if (email == null)
+               return false;
+
+           var httpContext = context.Resource as HttpContext;
+           if (httpContext == null)
+               return false;
+
+           var usuarioRolMethods = httpContext.RequestServices.GetRequiredService<UsuarioRolMethods>();
+           var rolesUsuario = await usuarioRolMethods.ObtenerRolesPorUsuario(email);
+
+           return rolesUsuario.Any(r =>
+               r.Nombre == Roles.AdminAlmacen ||
+               r.Nombre == Roles.UserAlmacen
+           );
+       }));
+    options.AddPolicy(Roles.PedidosAdminOUser, policy =>
+       policy.RequireAssertion(async context =>
+       {
+           var email = context.User.FindFirst("correo")?.Value;
+           if (email == null)
+               return false;
+
+           var httpContext = context.Resource as HttpContext;
+           if (httpContext == null)
+               return false;
+
+           var usuarioRolMethods = httpContext.RequestServices.GetRequiredService<UsuarioRolMethods>();
+           var rolesUsuario = await usuarioRolMethods.ObtenerRolesPorUsuario(email);
+
+           return rolesUsuario.Any(r =>
+               r.Nombre == Roles.AdminPedidos ||
+               r.Nombre == Roles.UserPedidos
+           );
+       }));
+});
+
 builder.Services.AddScoped<ClienteRepository>();
 builder.Services.AddScoped<ArticuloRepository>();
 builder.Services.AddScoped<UsuarioRepository>();

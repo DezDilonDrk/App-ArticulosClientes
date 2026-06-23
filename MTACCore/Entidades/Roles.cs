@@ -9,4 +9,10 @@ public static class Roles
     public const string AdminPedidos = "ADMIN_PEDIDOS";
     public const string UserPedidos = "USER_PEDIDOS";
     public const string AdminSeguridad = "ADMIN_SEGURIDAD";
+
+    // _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \\
+
+    public const string VentasAdminOUser = "Ventas_Admin_O_User";
+    public const string AlmacenAdminOUser = "Almacen_Admin_O_User";
+    public const string PedidosAdminOUser = "Pedidos_Admin_O_User";
 }

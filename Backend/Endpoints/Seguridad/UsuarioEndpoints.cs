@@ -16,7 +16,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = await methods.ObtenerUsuarios();
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<IEnumerable<Usuario>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -24,7 +24,7 @@ public static class UsuarioEndpoints
         {
             var roles = await methods.ObtenerRolesPorUsuario(correoElectronico);
             return Results.Ok(roles);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<IEnumerable<string>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -32,7 +32,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = await methods.ObtenerPorCorreo(correoElectronico);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -40,7 +40,7 @@ public static class UsuarioEndpoints
         {
             var usuarios = await methods.ObtenerPorNombre(nombre);
             return usuarios is not null ? Results.Ok(usuarios) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Usuario>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -53,7 +53,7 @@ public static class UsuarioEndpoints
                 Nombre = usuario.Nombre
             });
             return Results.Created($"/usuarios/correo/{usuario.CorreoElectronico}", usuario);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Usuario>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -90,7 +90,7 @@ public static class UsuarioEndpoints
             await methods.Actualizar(usuario);
             await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CLIENTE", $"/usuarios/correo/{usuario.CorreoElectronico}", usuario.CorreoElectronico);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -99,7 +99,7 @@ public static class UsuarioEndpoints
             await methods.ActualizarContrasena(correo, request.NuevaContrasena);
             await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT CONTRASEÑA", $"/usuarios/{correo}/contrasena", correo);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -112,7 +112,7 @@ public static class UsuarioEndpoints
                 Roles = roles.ToArray()
             });
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 
@@ -123,7 +123,7 @@ public static class UsuarioEndpoints
                 CorreoElectronico = correoElectronico
             });
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest);
 

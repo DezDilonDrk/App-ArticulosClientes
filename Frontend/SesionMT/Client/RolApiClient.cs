@@ -1,5 +1,6 @@
 ﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
 using SesionMT.LogConfig;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,12 @@ using System.Text;
 
 namespace Articulos_Frontend.Client;
 
-public class RolApiClient
+public class RolApiClient: BaseApiClient
 {
-    UserSession mySession;
     TokenHelper tokenHelper = new TokenHelper();
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
-    public RolApiClient(UserSession session) {
-        this.mySession = session;
+    public RolApiClient(UserSession session): base(session){
     }
-    public RolApiClient(){}
     public async Task InitAsync(string currentServer)
     {
         /*this.mySession = new UserSession(currentServer, mySession.CargarToken());

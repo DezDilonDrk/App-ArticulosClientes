@@ -21,7 +21,7 @@ public static class ArticuloEndpoints
         {
             var articulo = await methods.ObtenerPorId(id);
             return articulo is not null ? Results.Ok(articulo) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen))
+        }).RequireAuthorization(Roles.AlmacenAdminOUser)
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
         app.MapGet("/articulos", async (string? nombre, ArticuloMethods methods) =>
@@ -29,7 +29,7 @@ public static class ArticuloEndpoints
             if (string.IsNullOrWhiteSpace(nombre)) { return Results.Ok(await methods.ObtenerArticulos()); }
             var articulo = await methods.ObtenerPorNombre(nombre) ?? throw new KeyNotFoundException("Artículo no encontrado");
             return Results.Ok(articulo);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen))
+        }).RequireAuthorization(Roles.AlmacenAdminOUser)
         .Produces<List<Articulo>>(StatusCodes.Status200OK)
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
@@ -38,7 +38,7 @@ public static class ArticuloEndpoints
         {
             var articulos = await methods.ObtenerArticuloDTO();
             return Results.Ok(articulos);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen))
+        }).RequireAuthorization(Roles.AlmacenAdminOUser)
         .Produces<List<ArticuloDTO>>(StatusCodes.Status200OK)
         .Produces<ArticuloDTO>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
@@ -47,17 +47,17 @@ public static class ArticuloEndpoints
         {
             var disenos = await methods.ObtenerDisenosCascos();
             return Results.Ok(disenos);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen));
+        }).RequireAuthorization(Roles.AlmacenAdminOUser);
         app.MapGet("/disenos-cascos/{id}", async (string id, ArticuloMethods methods) =>
         {
             var diseno = await methods.ObtenerDisenoPorId(id);
             return diseno is not null ? Results.Ok(diseno) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen));
+        }).RequireAuthorization(Roles.AlmacenAdminOUser);
         app.MapGet("/disenos-cascos/nombre/{nombre}", async (string nombre, ArticuloMethods methods) =>
         {
             var id = await methods.ObtenerIdDiseno(nombre);
             return Results.Ok(id);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen, Roles.UserAlmacen));
+        }).RequireAuthorization(Roles.AlmacenAdminOUser);
 
         app.MapPost("/articulos", async (Articulo articulo, AuditoriaMethods auditoriaMethods, ArticuloMethods methods, HttpContext context) =>
         {          
@@ -66,7 +66,7 @@ public static class ArticuloEndpoints
             var usuario = context.User.Identity?.Name ?? "Desconocido";
             await auditoriaMethods.Registrar(usuario, "POST ARTICULO", $"/articulos/{articulo.id}", articulo.id, articulo);
             return Results.Created($"/articulos/{articulo.id}", articulo);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
+        }).RequireAuthorization(Roles.AdminAlmacen)
         .Produces<Articulo>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
 
@@ -77,7 +77,7 @@ public static class ArticuloEndpoints
             var usuario = context.User.Identity?.Name ?? "Desconocido";
             await auditoriaMethods.Registrar(usuario, "POST DISEÑO", $"/disenos-cascos/{diseno.id}", diseno.id, diseno);
             return Results.Created($"/disenos-cascos/{diseno.id}", diseno);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
+        }).RequireAuthorization(Roles.AdminAlmacen)
         .Produces<DisenoCasco>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
 
@@ -89,7 +89,7 @@ public static class ArticuloEndpoints
             var refreshed = await methods.ObtenerPorId(id) ?? updatedArticulo;
             await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "PUT ARTICULO", $"/articulos/{id}", id, updatedArticulo);
             return Results.Ok(refreshed);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
+        }).RequireAuthorization(Roles.AdminAlmacen)
         .Produces<Articulo>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
@@ -99,7 +99,7 @@ public static class ArticuloEndpoints
             await methods.Eliminar(id);
             await auditoriaMethods.Registrar(context.User.Identity?.Name ?? "Desconocido", "DELETE ARTICULO", $"/articulos/{id}", id, articulo);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminAlmacen))
+        }).RequireAuthorization(Roles.AdminAlmacen)
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status404NotFound);
 

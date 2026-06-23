@@ -295,8 +295,7 @@ namespace SesionMT
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
-
+            var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             token = doc.token;
             tokenHelper.setToken(token);
             return doc.token;

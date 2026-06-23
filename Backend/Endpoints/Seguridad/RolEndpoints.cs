@@ -12,7 +12,7 @@ public static class RolEndpoints
         {
             var roles = await methods.ObtenerRoles();
             return roles is not null ? Results.Ok(roles) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<IEnumerable<Rol>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -20,7 +20,7 @@ public static class RolEndpoints
         {
             var nombres = await methods.ObtenerNombreRoles();
             return nombres is not null ? Results.Ok(nombres) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<IEnumerable<Rol>>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -28,7 +28,7 @@ public static class RolEndpoints
         {
             var rol = await methods.ObtenerPorId(id);
             return rol is not null ? Results.Ok(rol) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Rol>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -36,7 +36,7 @@ public static class RolEndpoints
         {
             var rol = await methods.ObtenerPorNombre(nombre);
             return rol is not null ? Results.Ok(rol) : Results.NotFound();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Rol>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
@@ -47,7 +47,7 @@ public static class RolEndpoints
             int id = await methods.Insertar(rol);
             rol.Id = id;
             return Results.Created($"/roles/{rol.Id}", rol);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Rol>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status409Conflict);
 
@@ -58,7 +58,7 @@ public static class RolEndpoints
             await methods.Actualizar(id, updatedRol);
             var refreshed = await methods.ObtenerPorId(id) ?? updatedRol;
             return Results.Ok(refreshed);
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces<Rol>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status409Conflict);
@@ -68,7 +68,7 @@ public static class RolEndpoints
             var rol = await methods.ObtenerPorId(id) ?? throw new KeyNotFoundException("Rol no encontrado");
             await methods.Eliminar(id);
             return Results.NoContent();
-        }).RequireAuthorization(policy => policy.RequireRole(Roles.AdminSeguridad))
+        }).RequireAuthorization(Roles.AdminSeguridad)
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status404NotFound);
 
