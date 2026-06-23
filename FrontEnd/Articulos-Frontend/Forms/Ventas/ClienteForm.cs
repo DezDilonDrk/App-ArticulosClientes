@@ -122,6 +122,7 @@ public partial class ClienteForm : Form
         BotonBuscar.TabIndex = 1;
         BotonBuscar.Text = "Buscar";
         BotonBuscar.UseVisualStyleBackColor = false;
+        BotonBuscar.Click += BotonBuscar_ClickAsync;
         BotonBuscar.MouseEnter += Boton_MouseEnter;
         BotonBuscar.MouseLeave += Boton_MouseLeave;
         // 
@@ -437,11 +438,11 @@ public partial class ClienteForm : Form
             dgvCliente.Columns["FechaModificacion"].Resizable = DataGridViewTriState.False;
         }
     }
-    private async Task BotonBuscar_ClickAsync(object sender, EventArgs e)
+    private async void BotonBuscar_ClickAsync(object sender, EventArgs e)
     {
         try
         {
-            await buscarClientes(textBoxCliente.Text);
+            buscarClientes(textBoxCliente.Text);
         } catch (Exception ex)
         {
             Log.Error("Error al buscar clientes.", ex);

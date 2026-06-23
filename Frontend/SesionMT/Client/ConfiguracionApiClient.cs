@@ -1,24 +1,18 @@
 ﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
 using SesionMT.LogConfig;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 
 namespace Articulos_Frontend.Client
 {
-    public class ConfiguracionApiClient
+    public class ConfiguracionApiClient: BaseApiClient
     {
         TokenHelper tokenHelper = new TokenHelper();
-        UserSession mySession;
         private EnsureFunctions ensureFunctions = new EnsureFunctions();
-        public ConfiguracionApiClient(UserSession session){
-            this.mySession = session;
+        public ConfiguracionApiClient(UserSession session): base(session){
         }
-        public ConfiguracionApiClient(){}
-        /*public UserSession GetSession()
-        {
-            return this.mySession;
-        }*/
         public async Task InitAsync(string currentServer)
         {
             /*this.mySession = new UserSession(currentServer);

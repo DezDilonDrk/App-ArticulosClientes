@@ -1,5 +1,6 @@
 ﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
 using SesionMT.LogConfig;
 using System.Net;
 using System.Net.Http.Json;
@@ -9,13 +10,11 @@ using System.Text.Json;
 
 namespace Articulos_Frontend.Client
 {
-    public class ClienteApiClient
+    public class ClienteApiClient: BaseApiClient
     {
-        UserSession mySession;
         private EnsureFunctions ensureFunctions = new EnsureFunctions();
         TokenHelper tokenHelper = new TokenHelper();
-        public ClienteApiClient(UserSession session){
-            this.mySession = session;
+        public ClienteApiClient(UserSession session): base(session){
         }
         public async Task InitAsync(string currentServer)
         {
@@ -42,11 +41,7 @@ namespace Articulos_Frontend.Client
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-
-                Log.Error("JSON CLIENTES:");
-                Log.Error(json);
-                var jsonOptions = new JsonSerializerOptions{ PropertyNameCaseInsensitive = true };
-                return JsonSerializer.Deserialize<List<Cliente>>(json, jsonOptions);
+                return JsonSerializer.Deserialize<List<Cliente>>(json, optionsNotCaseSensitive);
             } catch(Exception ex) {
                 Log.Error(ex);
                 throw;
@@ -65,9 +60,8 @@ namespace Articulos_Frontend.Client
                     Log.Error($"El usuario no tiene permisos: código: {response.StatusCode}");
                     return null;
                 }
-
                 var json = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<Cliente>>(json);
+                return JsonSerializer.Deserialize<List<Cliente>>(json, optionsNotCaseSensitive); //Se dejó con Deserialize y no como ReadFromJsonAsync porque en una ocasión, solucionando errores, así lo establecí en algunos lugares. Esto permite manejar mejor los errores.
             } catch (Exception ex) {
                 Log.Error(ex);
                 throw;

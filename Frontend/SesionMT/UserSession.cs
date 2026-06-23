@@ -295,7 +295,7 @@ namespace SesionMT
             }
 
             var json = await resp.Content.ReadAsStringAsync();
-            var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json);
+            var doc = JsonSerializer.Deserialize<LoginDtos.LoginResponse>(json); // Único Deserialize sin la configuración de quirar el Case Sensitive, ya que siempre funcionó y no puede heredar de BaseApiClient, porque no es un ApiClient.
 
             token = doc.token;
             tokenHelper.setToken(token);

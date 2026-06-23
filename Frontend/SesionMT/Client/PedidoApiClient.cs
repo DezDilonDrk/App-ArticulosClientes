@@ -1,5 +1,6 @@
 ﻿using MTCore_AC.Entidades;
 using SesionMT;
+using SesionMT.Client;
 using SesionMT.LogConfig;
 using SesionMT.LogConfig;
 using System;
@@ -13,13 +14,11 @@ using System.Text.Json;
 
 namespace Articulos_Frontend.Client;
 
-public class PedidoApiClient
+public class PedidoApiClient: BaseApiClient
 {
     private TokenHelper tokenHelper = new TokenHelper();
-    UserSession mySession;
     private EnsureFunctions ensureFunctions = new EnsureFunctions();
-    public PedidoApiClient(UserSession session){
-        this.mySession = session;
+    public PedidoApiClient(UserSession session): base(session){
     }
     public async Task InitAsync(string currentServer)
     {
