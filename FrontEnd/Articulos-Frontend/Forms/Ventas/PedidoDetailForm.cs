@@ -99,9 +99,10 @@ namespace Articulos_Frontend
             textBoxDniCliente.Location = new Point(247, 128);
             textBoxDniCliente.Name = "textBoxDniCliente";
             textBoxDniCliente.PlaceholderText = "Introduzca el dni del cliente";
+            textBoxDniCliente.ReadOnly = true;
             textBoxDniCliente.Size = new Size(315, 23);
-            textBoxDniCliente.TabIndex = 0;
-            textBoxDniCliente.DoubleClick += textBoxDniCliente_DoubleClick;
+            textBoxDniCliente.TabIndex = 10;
+            textBoxDniCliente.Click += funcionSeleccionarCLiente;
             // 
             // LabelDniCliente
             // 
@@ -138,7 +139,7 @@ namespace Articulos_Frontend
             BotonCrearC.MaximumSize = new Size(150, 30);
             BotonCrearC.Name = "BotonCrearC";
             BotonCrearC.Size = new Size(150, 30);
-            BotonCrearC.TabIndex = 5;
+            BotonCrearC.TabIndex = 7;
             BotonCrearC.Text = "Crear";
             BotonCrearC.UseVisualStyleBackColor = false;
             BotonCrearC.Click += BotonCrearC_Click;
@@ -186,11 +187,11 @@ namespace Articulos_Frontend
             comboBoxImpuestos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxImpuestos.FormattingEnabled = true;
             comboBoxImpuestos.Location = new Point(247, 248);
+            comboBoxImpuestos.MaxLength = 5;
             comboBoxImpuestos.Name = "comboBoxImpuestos";
             comboBoxImpuestos.Size = new Size(315, 23);
-            comboBoxImpuestos.TabIndex = 12;
+            comboBoxImpuestos.TabIndex = 2;
             comboBoxImpuestos.Tag = "comboBox";
-            comboBoxImpuestos.MaxLength = 5;
             comboBoxImpuestos.SelectedIndexChanged += changeImpuestos;
             comboBoxImpuestos.TextUpdate += changeImpuestos;
             // 
@@ -199,11 +200,11 @@ namespace Articulos_Frontend
             comboBoxMetodoPago.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxMetodoPago.FormattingEnabled = true;
             comboBoxMetodoPago.Location = new Point(247, 188);
+            comboBoxMetodoPago.MaxLength = 30;
             comboBoxMetodoPago.Name = "comboBoxMetodoPago";
             comboBoxMetodoPago.Size = new Size(315, 23);
-            comboBoxMetodoPago.TabIndex = 13;
+            comboBoxMetodoPago.TabIndex = 0;
             comboBoxMetodoPago.Tag = "comboBox";
-            comboBoxMetodoPago.MaxLength = 30;
             // 
             // label1
             // 
@@ -223,7 +224,7 @@ namespace Articulos_Frontend
             comboBoxEstado.Location = new Point(247, 217);
             comboBoxEstado.Name = "comboBoxEstado";
             comboBoxEstado.Size = new Size(247, 23);
-            comboBoxEstado.TabIndex = 20;
+            comboBoxEstado.TabIndex = 1;
             comboBoxEstado.Tag = "comboBox";
             // 
             // buttonCerrar
@@ -236,7 +237,7 @@ namespace Articulos_Frontend
             buttonCerrar.MaximumSize = new Size(150, 30);
             buttonCerrar.Name = "buttonCerrar";
             buttonCerrar.Size = new Size(68, 30);
-            buttonCerrar.TabIndex = 21;
+            buttonCerrar.TabIndex = 6;
             buttonCerrar.Text = "Cerrar";
             buttonCerrar.UseVisualStyleBackColor = false;
             buttonCerrar.Click += buttonCerrar_Click;
@@ -259,7 +260,7 @@ namespace Articulos_Frontend
             dateTimePickerFechaEnvio.Location = new Point(247, 277);
             dateTimePickerFechaEnvio.Name = "dateTimePickerFechaEnvio";
             dateTimePickerFechaEnvio.Size = new Size(315, 23);
-            dateTimePickerFechaEnvio.TabIndex = 23;
+            dateTimePickerFechaEnvio.TabIndex = 3;
             // 
             // label3
             // 
@@ -281,7 +282,8 @@ namespace Articulos_Frontend
             textBoxIdCliente.PlaceholderText = "Id del cliente";
             textBoxIdCliente.ReadOnly = true;
             textBoxIdCliente.Size = new Size(315, 23);
-            textBoxIdCliente.TabIndex = 29;
+            textBoxIdCliente.TabIndex = 9;
+            textBoxIdCliente.Click += funcionSeleccionarCLiente;
             // 
             // labelTotalCantidades
             // 
@@ -309,7 +311,7 @@ namespace Articulos_Frontend
             button3.Location = new Point(568, 368);
             button3.Name = "button3";
             button3.Size = new Size(68, 51);
-            button3.TabIndex = 33;
+            button3.TabIndex = 5;
             button3.Text = "-";
             button3.UseVisualStyleBackColor = true;
             button3.Click += BotonEliminarP_Click;
@@ -321,7 +323,7 @@ namespace Articulos_Frontend
             button2.MaximumSize = new Size(68, 51);
             button2.Name = "button2";
             button2.Size = new Size(68, 51);
-            button2.TabIndex = 32;
+            button2.TabIndex = 4;
             button2.Text = "+";
             button2.UseVisualStyleBackColor = true;
             button2.Click += BotonAgregarP_Click;
@@ -355,7 +357,8 @@ namespace Articulos_Frontend
             textBoxNombreCliente.PlaceholderText = "Nombre del cliente";
             textBoxNombreCliente.ReadOnly = true;
             textBoxNombreCliente.Size = new Size(315, 23);
-            textBoxNombreCliente.TabIndex = 36;
+            textBoxNombreCliente.TabIndex = 10;
+            textBoxNombreCliente.Click += funcionSeleccionarCLiente;
             // 
             // PedidoDetailForm
             // 
@@ -569,7 +572,7 @@ namespace Articulos_Frontend
             this.textBoxDniCliente.Text = "12345678Z";
             this.comboBoxImpuestos.Text = "21";
         }
-        private void textBoxDniCliente_DoubleClick(object sender, EventArgs e)
+        private void funcionSeleccionarCLiente(object sender, EventArgs e)
         {
             using (var form = new ClienteForm())
             {
