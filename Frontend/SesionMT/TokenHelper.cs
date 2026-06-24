@@ -96,7 +96,7 @@ public class TokenHelper
         if (string.IsNullOrEmpty(token)) { 
             token = ObtenerToken();
             if (string.IsNullOrEmpty(token)) {
-                return null; 
+                return null;
             }
         }
         TokenDto tokenDto = TokenDto.DecodeJwt(token);
@@ -126,12 +126,17 @@ public class TokenHelper
     public string getServer()
     {
         TokenDto tokenDto = getToken();
+        if (tokenDto == null) {
+            TokenHelper tokenHelper = new TokenHelper();
+            tokenHelper.BorrarToken();
+            return null;
+        }
         return tokenDto.server;
     }
     public bool checkRenovateToken(long expToken)
     {
         var expDate = DateTimeOffset.FromUnixTimeSeconds(expToken);
         var limitDate = DateTimeOffset.UtcNow.AddDays(-30);
-        return ((expDate < DateTimeOffset.UtcNow.AddSeconds(300)) || (expDate < limitDate));
+        return ((expDate < DateTimeOffset.UtcNow.AddMinutes(5)) || (expDate < limitDate));
     }
 }

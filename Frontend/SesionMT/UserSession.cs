@@ -170,31 +170,6 @@ namespace SesionMT
                 throw;
             }
         }
-        public bool tokenExpired()
-        {
-            /*if (string.IsNullOrEmpty(this.token)) // RECORDAR: Activar de nuevo esta parte y hacer que no ocasione errores
-            {
-                return true;
-            }*/
-            TokenDto tokenDto = tokenHelper.getToken();
-            if (tokenDto == null)
-            {
-                return true;
-            }
-            var expString = tokenDto.exp.ToString();
-            long exp;
-            try
-            {
-                exp = long.Parse(expString);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al verificar la expiración del token: {ex.Message}");
-                return true; // Si hay un error, asumime que el token está expirado
-            }
-            var expDate = DateTimeOffset.FromUnixTimeSeconds(exp);
-            return expDate < DateTimeOffset.UtcNow.AddSeconds(300); // Número de segundos de margen. 300 son 5 minutos, por ejemplo
-        }
         public string getEmail()
         {
             return tokenHelper.getEmail();
@@ -241,22 +216,6 @@ namespace SesionMT
                 checkClient(); 
             }
         }
-        public void GuardarToken()
-        {
-            try
-            {
-                var directory = Path.GetDirectoryName(tokenPath);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-                File.WriteAllText(tokenPath, token);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al guardar el token: {ex.Message}");
-            }
-        }
         public string CargarToken(string token = null, string email = null, string password = null)
         {
             this.email = email;
@@ -291,7 +250,6 @@ namespace SesionMT
             if (!resp.IsSuccessStatusCode)
             {
                 tokenHelper.BorrarToken();
-                throw new Exception($"Error al generar token: {resp.StatusCode} - {await resp.Content.ReadAsStringAsync()}");
             }
 
             var json = await resp.Content.ReadAsStringAsync();
